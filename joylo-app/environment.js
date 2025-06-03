@@ -11,13 +11,9 @@ const useEnvVars = (env = Updates.channel) => {
   const configuration = useContext(ConfigurationContext)
   if (env === 'production' || env === 'staging') {
     return {
-      // GRAPHQL_URL: 'https://localhost:8001/graphql',
-      // WS_GRAPHQL_URL: 'wss://localhost:8001/graphql',
-      // SERVER_URL: 'https://localhost:8001/graphql',
       GRAPHQL_URL: 'https://base.clobit.com/graphql',
       WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
       SERVER_URL: 'https://base.clobit.com/',
-
       IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
       ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
       AMPLITUDE_API_KEY: configuration?.appAmplitudeApiKey,

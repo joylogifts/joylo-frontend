@@ -28,7 +28,7 @@
       "userInterfaceStyle": "automatic",
       "bundleIdentifier": "com.joylo.multivendor",
       "config": {
-        "googleMapsApiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
+        "googleMapsApiKey": "AIzaSyAqKUpCr0oLM9Xb51iPuMmiFytheuTim1o"
       },
       "usesAppleSignIn": true,
       "infoPlist": {
@@ -67,7 +67,7 @@
       "userInterfaceStyle": "automatic",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
+          "apiKey": "AIzaSyAqKUpCr0oLM9Xb51iPuMmiFytheuTim1o"
         }
       },
       "permissions": [
