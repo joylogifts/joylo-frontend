@@ -1,0 +1,3 @@
+primary color: #FFA500
+primary light color: #FFDBBB
+secondary color: #0074D9

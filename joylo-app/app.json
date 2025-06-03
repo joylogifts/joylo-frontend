@@ -1,0 +1,151 @@
+{
+  "expo": {
+    "name": "Joylo App",
+    "scheme": "joylo-app",
+    "version": "1.0.1",
+    "description": "Joylo is a starter kit food ordering app built in React Native using Expo for IOS and Android. It's made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app",
+    "slug": "joylo-app",
+    "owner": "joylogifts",
+    "privacy": "public",
+    "androidStatusBar": {
+      "backgroundColor": "#000"
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "entitlements": {
+        "com.apple.developer.networking.wifi-info": true
+      },
+      "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.joylo.multivendor",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
+      },
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to use location to determine the delivery address for your orders.",
+        "UIBackgroundModes": [
+          "remote-notification",
+          "remote-notification"
+        ],
+        "NSUserTrackingUsageDescription": "Allow this app to collect app-related data that can be used for tracking you or your device.",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.967541328677-nf8h4ou7rhmq9fahs87p057rggo95eah"
+            ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.967541328677-nf8h4ou7rhmq9fahs87p057rggo95eah"
+            ]
+          }
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "notification": {
+      "iosDisplayInForeground": true,
+      "color": "#FFA500",
+      "icon": "./assets/not-icon.png",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Joylo Multivendor"
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.joylo.multivendor",
+      "googleServicesFile": "./google-services.json",
+      "userInterfaceStyle": "automatic",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
+        }
+      },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.FOREGROUND_SERVICE",
+        "com.google.android.gms.permission.AD_ID"
+      ],
+      "queries": {
+        "packages": [
+          "com.whatsapp",
+          "com.whatsapp.w4b"
+        ]
+      },
+      "intentFilters": [
+        {
+          "action": "android.intent.action.VIEW",
+          "data": [
+            {
+              "scheme": "whatsapp"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "joylo",
+            "project": "joylo-customer-app",
+            "authToken": "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"
+          }
+        }
+      ]
+    },
+    "plugins": [
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "Allow this app to collect app-related data that can be used for tracking you or your device."
+        }
+      ],
+      [
+        "expo-updates",
+        {
+          "username": "joylogifts"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $Joylo Multivendor to use your location."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a04df82b-7cf3-48dd-8c8a-211983a6efd8"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a04df82b-7cf3-48dd-8c8a-211983a6efd8"
+    }
+  }
+}
