@@ -294,11 +294,11 @@ const fr = {
     emailConfirmation: "E-mail envoyé avec succès!",
     welcomeText: "Bienvenue sur Joylo",
     emailConfirmationDescription:
-      "Nous sommes ravis de vous accueillir parmi nous alors que nous visons à améliorer la livraison pour tout le monde. En tant que partenaire de livraison/ramassage, vous pouvez travailler selon votre emploi du temps, n’importe où, n’importe quand. Besoin d’aide ? Envoyez-nous un e-mail à enatega.nb@gmail.com",
+      "Nous sommes ravis de vous accueillir parmi nous alors que nous visons à améliorer la livraison pour tout le monde. En tant que partenaire de livraison/ramassage, vous pouvez travailler selon votre emploi du temps, n’importe où, n’importe quand. Besoin d’aide ? Envoyez-nous un e-mail à joylogifts@gmail.com",
     getStarted: "Commencer",
     thankyouPageHeading: "Votre e-mail a été envoyé avec succès!",
     thankyouPageDescription:
-      "Un membre de notre équipe vous contactera sous peu pour vous aider à configurer votre compte et répondre à toutes vos questions. Besoin d’aide ? Envoyez-nous un e-mail à enatega.nb@gmail.com",
+      "Un membre de notre équipe vous contactera sous peu pour vous aider à configurer votre compte et répondre à toutes vos questions. Besoin d’aide ? Envoyez-nous un e-mail à joylogifts@gmail.com",
     getStartedToday: "Commencez dès aujourd’hui!",
     termsRequired: "Vous devez accepter les termes et conditions.",
     passNotMatch: "Les mots de passe ne correspondent pas.",

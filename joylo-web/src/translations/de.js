@@ -3,11 +3,11 @@ const de = {
     selectLanguage: "Sprache auswählen",
     saveButton: "speichern",
     footerText:
-      "enatega ist eine Open-Source-Liefermanagementplattform für Zukunft. Wir legen Wert auf Innovation, Flexibilität und Erschwinglichkeit. und bieten Sie eine skalierbare, anpassbare Lösung, die Ihre Prozesse optimiert Lieferprozesse.",
+      "joylo ist eine Open-Source-Liefermanagementplattform für Zukunft. Wir legen Wert auf Innovation, Flexibilität und Erschwinglichkeit. und bieten Sie eine skalierbare, anpassbare Lösung, die Ihre Prozesse optimiert Lieferprozesse.",
     footerLinkHome: "Startseite",
     footerLinkPP: "Datenschutzbestimmungen",
     footerLinkTC: "Geschäftsbedingungen",
-    footerEndText: "enatega - © 2022 Alle Rechte vorbehalten",
+    footerEndText: "joylo - © 2022 Alle Rechte vorbehalten",
     followUs: "Folge uns",
     poweredBy: "Angetrieben von",
     linksTitle: "Verknüpfungen",
@@ -148,7 +148,7 @@ const de = {
     continue: "Weiter",
     invalidEmail: "Ungültige E-Mail-Adresse",
     letsGetStarted: "Lass uns anfangen!",
-    createAccount: "Erstelle dein enatega-Konto",
+    createAccount: "Erstelle dein joylo-Konto",
     firstnameErr1: "Vorname ist erforderlich!",
     firstnameErr2: "Ungültiger Vorname!",
     lastnameErr1: "Nachname ist erforderlich!",
@@ -293,11 +293,11 @@ const de = {
     emailConfirmation: "E-Mail erfolgreich gesendet!",
     welcomeText: "Willkommen bei Joylo",
     emailConfirmationDescription:
-      "Wir freuen uns, dass Sie sich uns anschließen, während wir darauf abzielen, den Lieferservice für alle zu verbessern. Als Liefer-/Abholpartner können Sie nach Ihrem eigenen Zeitplan überall und jederzeit arbeiten. Brauchen Sie Hilfe? Senden Sie uns eine E-Mail an enatega.nb@gmail.com",
+      "Wir freuen uns, dass Sie sich uns anschließen, während wir darauf abzielen, den Lieferservice für alle zu verbessern. Als Liefer-/Abholpartner können Sie nach Ihrem eigenen Zeitplan überall und jederzeit arbeiten. Brauchen Sie Hilfe? Senden Sie uns eine E-Mail an joylogifts@gmail.com",
     getStarted: "Jetzt loslegen",
     thankyouPageHeading: "Ihre E-Mail wurde erfolgreich gesendet!",
     thankyouPageDescription:
-      "Ein Mitglied unseres Teams wird sich in Kürze bei Ihnen melden, um Ihnen bei der Einrichtung zu helfen und alle Fragen zu beantworten, die Sie haben könnten. Brauchen Sie Hilfe? Senden Sie uns eine E-Mail an enatega.nb@gmail.com",
+      "Ein Mitglied unseres Teams wird sich in Kürze bei Ihnen melden, um Ihnen bei der Einrichtung zu helfen und alle Fragen zu beantworten, die Sie haben könnten. Brauchen Sie Hilfe? Senden Sie uns eine E-Mail an joylogifts@gmail.com",
     getStartedToday: "Fangen Sie noch heute an!",
     termsRequired:
       "Sie müssen die Allgemeinen Geschäftsbedingungen akzeptieren.",

@@ -310,11 +310,11 @@ const en = {
     emailConfirmation: "Email Sent Successfully!",
     welcomeText: "Welcome to Joylo",
     emailConfirmationDescription:
-      "We are thrilled to have you join us as we aim to make delivery better for everyone. As a delivery/pickup partner, you get to work according to your schedule anywhere, anytime. Need Help? send us an email at enatega.nb@gmail.com",
+      "We are thrilled to have you join us as we aim to make delivery better for everyone. As a delivery/pickup partner, you get to work according to your schedule anywhere, anytime. Need Help? send us an email at joylogifts@gmail.com",
     getStarted: "Get Started",
     thankyouPageHeading: "Your email has been sent successfully!",
     thankyouPageDescription:
-      "A member of our team will reach out to you shortly to help you get set-up and answer any questions you might have. Need Help? send us an email at enatega.nb@gmail.com",
+      "A member of our team will reach out to you shortly to help you get set-up and answer any questions you might have. Need Help? send us an email at joylogifts@gmail.com",
     getStartedToday: "Get Started Today!",
     termsRequired: "You must accept the terms and conditions.",
     passNotMatch: "Passwords do not match.",

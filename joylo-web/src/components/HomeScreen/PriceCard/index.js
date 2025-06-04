@@ -101,7 +101,7 @@ export default function PriceCard({ price, offer, desc, center }) {
                 variant="contained"
                 disableElevation
                 onClick={() =>
-                  window.open("https://enatega.com/#contact", "_blank")
+                  window.open("https://joylo.netlify.app/#/contact_us", "_blank")
                 }
               >
                 {t("getQuote")}

@@ -1,3 +1,12 @@
 primary color: #FFA500
 primary light color: #FFDBBB
 secondary color: #0074D9
+
+
+  --joylo-gold: #FFDC00;
+  --joylo-red: #FF4136;
+  --joylo-green: #36C75C;
+  --joylo-purple: #B10DC9;
+  --joylo-bg: #FFFFFF;
+  --joylo-text: #232629;
+  --joylo-border: #EFEFEF;

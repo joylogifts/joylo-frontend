@@ -38,7 +38,7 @@ function PrivacyPolicy() {
             >
               This policy explains how we, Joylo, a brand of
               <a
-                href="https://enatega.com/"
+                href="https://joylo.netlify.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={classes.linkDecoration}
@@ -48,7 +48,7 @@ function PrivacyPolicy() {
                   color="primary"
                   className={classes.link}
                 >
-                  {"https://enatega.com/"}
+                  {"https://joylo.netlify.app/"}
                 </Typography>
               </a>
               , use your personal information which you provide to us when using
@@ -156,7 +156,7 @@ function PrivacyPolicy() {
                 color="primary"
                 className={classes.link}
               >
-                {" info@enatega.com"}
+                {" joylogifts@gmail.com	"}
               </Typography>
             </Typography>
             <Typography variant="subtitle1" className={classes.boldText}>
@@ -171,7 +171,7 @@ function PrivacyPolicy() {
                 color="primary"
                 className={classes.link}
               >
-                {" info@enatega.com"}
+                {" joylogifts@gmail.com	"}
               </Typography>
               . There will be a small charge for processing this request.
             </Typography>

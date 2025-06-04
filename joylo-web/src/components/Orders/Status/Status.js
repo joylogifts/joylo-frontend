@@ -42,7 +42,7 @@ export function Status({
   isEta,
   last,
   isActive,
-  firstCol = "#90EA93",
+  firstCol = "#FFA500",
   secondCol = "#C4C4C4",
 }) {
   const theme = useTheme();

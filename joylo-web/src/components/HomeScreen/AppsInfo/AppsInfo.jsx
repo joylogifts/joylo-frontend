@@ -86,7 +86,7 @@ const AppsInfo = () => {
       text: "Download Our App",
       color: "white",
       link: "https://play.google.com/store/apps/details?id=com.enatega.multivendor",
-      textColor: "green",
+      textColor: "#FFA500",
       isOutline: true,
     },
   ];

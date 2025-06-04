@@ -65,10 +65,10 @@ function FAQ() {
             Frequently Asked Questions
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            How can I get enatega delivery?
+            How can I get joylo delivery?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            To get enatega delivery, simply locate the restaurants near you by typing in your address, browse through a
+            To get joylo delivery, simply locate the restaurants near you by typing in your address, browse through a
             variety of restaurants and cuisines, check menus and prices, choose your dishes and add them to the basket.
             Now you only need to checkout and make the payment. Soon your delicious food will arrive at your doorstep!
           </Typography>
@@ -89,37 +89,37 @@ function FAQ() {
             </p>
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            Does enatega deliver 24 hours?
+            Does joylo deliver 24 hours?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            Yes, enatega in Pakistan delivers 24 hours. However, many restaurants may be unavailable for a late night
+            Yes, joylo in Pakistan delivers 24 hours. However, many restaurants may be unavailable for a late night
             delivery. Please check which places in Pakistan deliver to you 24 hours by using your address.
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            Can you pay cash for enatega?
+            Can you pay cash for joylo?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            Yes, you can pay cash on delivery for enatega in Pakistan.
+            Yes, you can pay cash on delivery for joylo in Pakistan.
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            How can I pay enatega online?
+            How can I pay joylo online?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            You can pay online while ordering at enatega Pakistan by using a credit or debit card or PayPal.
+            You can pay online while ordering at joylo Pakistan by using a credit or debit card or PayPal.
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            Can I order enatega for someone else?
+            Can I order joylo for someone else?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            Yes, enatega Pakistan allows you to place an order for someone else. During checkout, just update the name
+            Yes, joylo Pakistan allows you to place an order for someone else. During checkout, just update the name
             and delivery address of the person you're ordering for. Please keep in mind that if the delivery details are
             not correct and the order cannot be delivered, we won't be able to process a refund.
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            How much does enatega charge for delivery?
+            How much does joylo charge for delivery?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            Delivery fee charged by enatega in Pakistan depends on many operational factors, most of all - location and
+            Delivery fee charged by joylo in Pakistan depends on many operational factors, most of all - location and
             a restaurant you are ordering from. You can always check the delivery fee while forming your order. Besides,
             you can filter the restaurants by clicking on "Free Delivery" icon on the top of your restaurants listing.
           </Typography>
@@ -127,7 +127,7 @@ function FAQ() {
             What restaurants let you order online?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            There are hundreds of restaurants on enatega Pakistan that let you order online. For example, KFC,
+            There are hundreds of restaurants on joylo Pakistan that let you order online. For example, KFC,
             McDonald's, Pizza Hut, OPTP, Hardee's, Domino's, Kababjees and many-many more! In order to check all the
             restaurants near you that deliver, just type in your address and discover all the available places.
           </Typography>
@@ -135,12 +135,12 @@ function FAQ() {
             What restaurants let you order online?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
-            There are hundreds of restaurants on enatega Pakistan that let you order online. For example, KFC,
+            There are hundreds of restaurants on joylo Pakistan that let you order online. For example, KFC,
             McDonald's, Pizza Hut, OPTP, Hardee's, Domino's, Kababjees and many-many more! In order to check all the
             restaurants near you that deliver, just type in your address and discover all the available places.
           </Typography>
           <Typography variant="h6" className={classes.FAQTitle}>
-            Does enatega have minimum order?
+            Does joylo have minimum order?
           </Typography>
           <Typography variant="subtitle1" className={classes.FAQAns}>
             Yes, many restaurants have a minimum order. The minimum order value depends on the restaurant you order from

@@ -213,11 +213,11 @@ const zh = {
     emailConfirmation: "电子邮件发送成功！",
     welcomeText: "欢迎来到 Joylo",
     emailConfirmationDescription:
-      "我们很高兴您加入我们，我们旨在为每个人提供更好的配送服务。作为配送/自取合作伙伴，您可以根据自己的时间表在任何地方、任何时候工作。需要帮助？请给我们发邮件至 enatega.nb@gmail.com",
+      "我们很高兴您加入我们，我们旨在为每个人提供更好的配送服务。作为配送/自取合作伙伴，您可以根据自己的时间表在任何地方、任何时候工作。需要帮助？请给我们发邮件至 joylogifts@gmail.com",
     getStarted: "开始",
     thankyouPageHeading: "您的电子邮件已成功发送！",
     thankyouPageDescription:
-      "我们的团队成员将尽快与您联系，帮助您设置并解答任何问题。需要帮助？请给我们发邮件至 enatega.nb@gmail.com",
+      "我们的团队成员将尽快与您联系，帮助您设置并解答任何问题。需要帮助？请给我们发邮件至 joylogifts@gmail.com",
     getStartedToday: "立即开始！",
     termsRequired: "您必须接受条款和条件。",
     passNotMatch: "密码不匹配。",
