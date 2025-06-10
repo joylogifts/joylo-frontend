@@ -104,7 +104,7 @@ const styles = (props = null) =>
       gap: scale(8)
     },
     reviewButton: {
-      backgroundColor: props?.newButtonBackground ?? '#F3FFEE',
+      backgroundColor: props?.newButtonBackground ?? '#FFDBBB',
       borderRadius: scale(4),
       paddingVertical: scale(8),
       paddingHorizontal: scale(12)
@@ -121,7 +121,7 @@ const styles = (props = null) =>
       gap: scale(5)
     },
     statusButton: {
-      backgroundColor: props?.newButtonBackground ?? '#F3FFEE',
+      backgroundColor: props?.newButtonBackground ?? '#FFDBBB',
       borderRadius: scale(4),
       paddingVertical: scale(8),
       paddingHorizontal: scale(12)

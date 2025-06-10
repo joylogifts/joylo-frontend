@@ -253,7 +253,7 @@ const styles = (props = null) =>
       ...alignment.MTlarge,
     },
     seeAll: {
-      backgroundColor: props !== null ? props?.newButtonBackground : '#F3FFEE',
+      backgroundColor: props !== null ? props?.newButtonBackground : '#FFDBBB',
       ...alignment.Psmall,
       borderRadius: scale(5),
     },

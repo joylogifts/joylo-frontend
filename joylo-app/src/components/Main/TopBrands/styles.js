@@ -69,7 +69,7 @@ const styles = (props = null) =>
       // marginHorizontal: scale(10),
     },
     seeAllBtn: {
-      backgroundColor: props != null ? props?.newButtonBackground : '#F3FFEE',
+      backgroundColor: props != null ? props?.newButtonBackground : '#FFDBBB',
       borderRadius: 4,
       paddingTop: 8,
       paddingBottom: 8,
