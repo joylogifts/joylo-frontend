@@ -41,15 +41,15 @@ export const Colors = {
     mapBackground: "#ffffff",
   },
   dark: {
-    primary: "#A5C616", // Slightly darker green to avoid too much brightness
+    primary: "#FFA500", // Slightly darker green to avoid too much brightness
     themeBackground: "black", // Dark gray for background
     screenBackground: "black",
     iconColor: "black", // Light gray for icons
     tagColor: "#8CA30D", // Muted green for tags
     iconPink: "#8CA30D",
     radioColor: "#1E1E1E", // Matches the dark background
-    radioOuterColor: "#A5C616",
-    spinnerColor: "#A5C616",
+    radioOuterColor: "#FFA500",
+    spinnerColor: "#FFA500",
     orderComplete: "#6F8B05", // Muted green
     orderUncomplete: "#FF6B6B", // Softer red for dark mode
     horizontalLine: "#444444", // Dark gray for dividers

@@ -24,6 +24,16 @@ const useStyle = makeStyles((theme) => ({
     marginBottom: "30px",
   },
   greenButton: {
+    backgroundColor: "#36C75C",
+    margin: "4px",
+    border: "1px solid #36C75C",
+    transition: "all 0.5s",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "black",
+    },
+  },
+  yellowButton: {
     backgroundColor: "#FFA500",
     margin: "4px",
     border: "1px solid #FFA500",
@@ -33,20 +43,10 @@ const useStyle = makeStyles((theme) => ({
       color: "black",
     },
   },
-  yellowButton: {
-    backgroundColor: "#FF9900",
-    margin: "4px",
-    border: "1px solid #FF9900",
-    transition: "all 0.5s",
-    "&:hover": {
-      backgroundColor: "white",
-      color: "black",
-    },
-  },
   blueButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#0074D9",
     margin: "4px",
-    border: "1px solid #007BFF",
+    border: "1px solid #0074D9",
     transition: "all 0.5s",
     "&:hover": {
       backgroundColor: "white",
