@@ -8,17 +8,17 @@ export const Colors = {
     primary: "#FFA500",
     themeBackground: "#FAFAFA",
     iconColor: "#333333",
-    tagColor: "#AAC810",
-    iconPink: "#AAC810",
+    tagColor: "#36C75C",
+    iconPink: "#36C75C",
     radioColor: "#FFF",
-    radioOuterColor: "#AAC810",
-    spinnerColor: "#AAC810",
+    radioOuterColor: "#36C75C",
+    spinnerColor: "#36C75C",
     orderComplete: "#89a207",
     orderUncomplete: "#fe0000",
     horizontalLine: "#B8B8B8",
-    buttonBackground: "#AAC810",
+    buttonBackground: "#36C75C",
     buttonText: "black",
-    buttonBackgroundPink: "#AAC810",
+    buttonBackgroundPink: "#36C75C",
     buttonTextPink: "#FFF",
     textErrorColor: "#FA7751",
     headerBackground: "#FFF",
@@ -26,7 +26,7 @@ export const Colors = {
     fontMainColor: "#212121",
     fontSecondColor: "#949393",
     cartContainer: "#FFF",
-    startColor: "#AAC810",
+    startColor: "#36C75C",
     white: "#FFF",
     black: "#000",
     tabNaviatorBackground: "#1F2937",
@@ -42,15 +42,15 @@ export const Colors = {
     error: "#ef4444",
   },
   dark: {
-    primary: "#A5C616", // Slightly darker green to avoid too much brightness
+    primary: "#FFA500", // Slightly darker green to avoid too much brightness
     themeBackground: "black", // Dark gray for background
     screenBackground: "black",
     iconColor: "black", // Light gray for icons
     tagColor: "#8CA30D", // Muted green for tags
     iconPink: "#8CA30D",
     radioColor: "#1E1E1E", // Matches the dark background
-    radioOuterColor: "#A5C616",
-    spinnerColor: "#A5C616",
+    radioOuterColor: "#FFA500",
+    spinnerColor: "#FFA500",
     orderComplete: "#6F8B05", // Muted green
     orderUncomplete: "#FF6B6B", // Softer red for dark mode
     horizontalLine: "#444444", // Dark gray for dividers
