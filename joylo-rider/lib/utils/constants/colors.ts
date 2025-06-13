@@ -31,7 +31,7 @@ export const Colors = {
     black: "#000",
     tabNaviatorBackground: "#1F2937",
     secondaryTextColor: "#4B5563",
-    lowOpacityPrimaryColor: "rgba(144, 227, 109, 0.15)",
+    lowOpacityPrimaryColor: "rgba(255, 165, 0, 0.15)",
     mainTextColor: "#000000",
     switchButtonColor: "#4F46E5",
     sidebarIconBackground: "#E5E7EB",
