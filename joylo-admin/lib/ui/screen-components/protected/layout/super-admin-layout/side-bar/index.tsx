@@ -16,6 +16,7 @@ import {
 // Icons
 import {
   faCog,
+  faGlobe,
   faHome,
   faSliders,
   faUpRightFromSquare,
@@ -211,6 +212,14 @@ export default function MakeSidebar() {
       shouldShow: function () {
         return this.subMenu ? this.subMenu.length > 0 : false;
       },
+    },
+    {
+      label: "Language Managment",
+      text: "Language Managment",
+      route: '/language-management',
+      isParent: true,
+      icon: faGlobe,
+      isClickable: true,
     },
     {
       text: 'CustomerSupport',

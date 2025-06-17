@@ -19,3 +19,4 @@ export * from './configuration';
 export * from './food';
 export * from './app-versions';
 export * from './shop-type'
+export * from './language'
