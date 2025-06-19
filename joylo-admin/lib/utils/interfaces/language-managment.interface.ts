@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
 import { IGlobalComponentProps, IQueryResult } from './global.interface';
 import { TLanguageManagementMobileTabs } from '../types/language-management';
 
@@ -40,13 +39,13 @@ export interface ILanguageCardProps extends IGlobalComponentProps {
   isLast: boolean;
 }
 
-
-
 // Language Respone
 export interface ILanguageReponse {
   _id: string;
   label: string;
   code: string;
+  processed: boolean;
+  processedAt: string;
   isDefault: boolean;
   createdAt: string;
   updatedAt: string;

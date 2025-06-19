@@ -29,10 +29,12 @@ import { LanguageManagementContext } from '@/lib/context/super-admin/language-ma
 
 // Utils & Constants
 import { useTranslations } from 'next-intl';
+import { Chip } from 'primereact/chip';
+import { Tag } from 'primereact/tag';
 
 export default function LanguageCard({ lng }: ILanguageCardProps) {
   // Props
-  const { _id, label, code, isDefault } = lng;
+  const { _id, label, code, isDefault, processed, processedAt } = lng;
 
   // Hooks
   const t = useTranslations();
@@ -125,11 +127,16 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
       <div
         className={`flex items-center bg-${language?.code === code ? 'black' : 'white'} cursor-pointer p-2 px-3`}
       >
-        <div className="flex flex-1 flex-col gap-y-1">
-          <div className="w-fit flex">
+        <div className="flex flex-1 flex-col">
+          <div className="w-fit flex gap-x-2">
             <TextComponent
               className={`text-card-h3 flex flex-1 text-xs text-${language?.code === code ? 'white' : 'black'}`}
               text={label}
+            />
+
+            <TextComponent
+              className={`text-card-h3 flex flex-1 text-[10px] text-${language?.code === code ? 'white' : 'black'}`}
+              text={`(${code ?? ''})`}
             />
 
             {isDefault && (
@@ -140,14 +147,23 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
               />
             )}
           </div>
-          <TextComponent
-            className={`text-card-h3 flex flex-1 text-xs text-${language?.code === code ? 'white' : 'black'}`}
-            text={code ?? ''}
+
+          {processedAt && (
+            <TextComponent
+              className={`m-0 flex flex-1 text-[9px] text-gray-400`}
+              text={new Date(processedAt).toUTCString()}
+            />
+          )}
+
+          <Tag
+            value={processed ? 'Processed' : 'Processing'}
+            severity={processed ? 'success' : 'info'}
+            className="w-fit h-fit mt-2 text-[8px] pl-2 pr-2"
           />
         </div>
 
         <div className="three-dots relative">
-          {language?.code === code && (
+          {language?.code === code && (!isDefault) && (
             <FontAwesomeIcon
               icon={faRemove}
               className={`p-1 ${

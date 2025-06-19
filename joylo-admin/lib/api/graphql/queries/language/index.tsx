@@ -6,6 +6,8 @@ export const GET_LANGUAGES = gql`
       _id
       label
       code
+      processed
+      processedAt
       isDefault
       createdAt
       updatedAt

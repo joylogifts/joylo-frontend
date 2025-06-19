@@ -578,3 +578,9 @@ body {
   .react-international-phone-country-selector-button {
   height: 40px;
 }
+
+
+/* Language Messages */
+.language-message.p-message-detail {
+  font-size: 8px !important;
+}
