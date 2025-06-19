@@ -22,6 +22,7 @@ import { DELETE_LANGUAGE, GET_LANGUAGES } from '@/lib/api/graphql';
 // Components
 import CustomDialog from '../delete-dialog';
 import TextComponent from '../text-field';
+import { Tag } from 'primereact/tag';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
@@ -29,8 +30,6 @@ import { LanguageManagementContext } from '@/lib/context/super-admin/language-ma
 
 // Utils & Constants
 import { useTranslations } from 'next-intl';
-import { Chip } from 'primereact/chip';
-import { Tag } from 'primereact/tag';
 
 export default function LanguageCard({ lng }: ILanguageCardProps) {
   // Props
