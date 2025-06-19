@@ -26,10 +26,10 @@ export default function LanguageManagementHeader() {
     message1.current?.show({
       id: '1',
       sticky: true,
-      severity: 'warn',
+      severity: 'error',
       // summary: '',
       detail:
-        'Translation key-value pairs are static and used across all apps (admin, web, mobile). Only developers should add or modify them.',
+        'Translation key-value pairs are static and used across all apps (admin, web, mobile). Only developers should add or modify them. Deleting them will raise issues in the system.',
       closable: false,
       icon: <></>,
     });
