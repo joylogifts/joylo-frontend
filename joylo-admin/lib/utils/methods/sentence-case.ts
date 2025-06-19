@@ -1,7 +1,7 @@
 import { TTextCase } from '../types';
 
 const toTitleCase = (str: string | Record<string, string>) => {
-  let data = str;
+
   if (!str) return '';
 
   if (typeof str === 'string') {
