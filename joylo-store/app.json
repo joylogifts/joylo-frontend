@@ -12,7 +12,7 @@
     "scheme": "joylo-store",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-  "splash": {
+    "splash": {
       "image": "./lib/assets/images/black.png",
       "resizeMode": "cover",
       "backgroundColor": "#000000"
@@ -32,7 +32,9 @@
         {
           "photosPermission": "The app accesses your photos for license, vehicle plate and profile image. Please allow these to continue using the app."
         }
-      ]
+      ],
+      "expo-localization",
+      "expo-secure-store"
     ],
     "platforms": [
       "ios",
@@ -55,7 +57,7 @@
       "googleServicesFile": "./google-services.json",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
-      "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION"
       ],
       "package": "com.joylo.store",
       "adaptiveIcon": {

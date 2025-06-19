@@ -22,10 +22,10 @@ const getEnvVars = (env = Updates.channel) => {
   }
 
   return {
-    // GRAPHQL_URL: "http://10.97.10.65:8001/graphql",
-    // WS_GRAPHQL_URL: "ws://10.97.10.65:8001/graphql",
-    GRAPHQL_URL: "https://base.clobit.com/graphql",
-    WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
+    GRAPHQL_URL: "http://localhost:8001/graphql",
+    WS_GRAPHQL_URL: "ws://localhost:8001/graphql",
+    // GRAPHQL_URL: "https://base.clobit.com/graphql",
+    // WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
     SENTRY_DSN:
       configuration?.riderAppSentryUrl ??
       "https://458c34c24ec38dad214559e6742b6755@o4509427784744960.ingest.us.sentry.io/4509430525263872",
