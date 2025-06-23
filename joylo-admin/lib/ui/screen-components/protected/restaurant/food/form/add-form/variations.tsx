@@ -100,7 +100,7 @@ export default function VariationAddForm({
   };
 
   // Query
-  const { data, loading } = useQueryGQL(
+/*   const { data, loading } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
     { id: restaurantId },
     {
@@ -109,7 +109,7 @@ export default function VariationAddForm({
       onCompleted: onFetchAddonsByRestaurantCompleted,
       onError: onErrorFetchAddonsByRestaurant,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>; */
 
   const [createFood] = useMutation(
     foodContextData?.isEditing ? EDIT_FOOD : CREATE_FOOD,
@@ -146,24 +146,24 @@ export default function VariationAddForm({
   );
 
   // Memoized Data
-  const addonsDropdown = useMemo(
+/*   const addonsDropdown = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
         return { label: addon.title, code: addon._id };
       }),
     [data?.restaurant?.addons]
-  );
+  ); */
 
   // API Handlers
-  function onFetchAddonsByRestaurantCompleted() {}
-  function onErrorFetchAddonsByRestaurant() {
-    showToast({
-      type: 'error',
-      title: t('Addons Fetch'),
-      message: t('Addons fetch failed'),
-      duration: 2500,
-    });
-  }
+  // function onFetchAddonsByRestaurantCompleted() {}
+  // function onErrorFetchAddonsByRestaurant() {
+  //   showToast({
+  //     type: 'error',
+  //     title: t('Addons Fetch'),
+  //     message: t('Addons fetch failed'),
+  //     duration: 2500,
+  //   });
+  // }
 
   // Handlers
   const onHandleSubmit = async ({
@@ -173,12 +173,12 @@ export default function VariationAddForm({
   }) => {
     try {
       const _variations = variations.map(
-        ({ discounted, ...item }: IVariationForm) => {
+        ({ discounted,addons, ...item }: IVariationForm) => {
           delete item.__typename;
           return {
             ...item,
             discounted: discounted,
-            addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
+            // addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
           };
         }
       );
@@ -382,7 +382,7 @@ export default function VariationAddForm({
                                               />
                                             </div>
 
-                                            <div className="col-span-12 sm:col-span-12">
+                                          {/*   <div className="col-span-12 sm:col-span-12">
                                               <CustomMultiSelectComponent
                                                 name={`variations[${index}].addons`}
                                                 placeholder={t('Addons')}
@@ -426,7 +426,7 @@ export default function VariationAddForm({
                                                   }}
                                                 />
                                               </div>
-                                            </div>
+                                            </div> */}
                                           </div>
                                         </Fieldset>
                                       </div>

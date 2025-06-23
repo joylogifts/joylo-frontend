@@ -33,6 +33,8 @@ export const AddonSchema = Yup.object({
           .of(Yup.mixed<IDropdownSelectItem>())
           .min(1, 'Option field must have at least 1 items')
           .required('Required'),
+        categoryId: Yup.mixed<IDropdownSelectItem>().required('Required'),
+        subCategoryId: Yup.mixed<IDropdownSelectItem>().nullable(),
       })
     )
     .min(1)

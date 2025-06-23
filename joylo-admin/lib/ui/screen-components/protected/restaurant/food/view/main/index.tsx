@@ -46,7 +46,6 @@ import useToast from '@/lib/hooks/useToast';
 // GraphQL
 import { DELETE_FOOD } from '@/lib/api/graphql';
 import {
-  GET_ADDONS_BY_RESTAURANT_ID,
   GET_FOODS_BY_RESTAURANT_ID,
 } from '@/lib/api/graphql/queries';
 import {
@@ -90,14 +89,15 @@ export default function FoodsMain() {
     }
   ) as IQueryResult<IFoodByRestaurantResponse | undefined, undefined>;
 
-  const { data } = useQueryGQL(
+ /*  const { data } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
     { id: restaurantId },
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>; */
+
   const [fetchSubcategory, { loading: subCategoriesLoading }] = useLazyQuery(
     GET_SUBCATEGORY,
     {
@@ -136,13 +136,13 @@ export default function FoodsMain() {
   });
 
   // Memoized Data
-  const addons = useMemo(
+/*   const addons = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
         return { label: addon.title, code: addon._id };
       }),
     [data?.restaurant?.addons]
-  );
+  ); */
 
   // Handlers
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -223,13 +223,13 @@ export default function FoodsMain() {
               return {
                 ..._variation,
                 discounted: discounted,
-                addons: variation?.addons?.map((addonId) => {
+               /*  addons: variation?.addons?.map((addonId) => {
                   return (
                     addons?.find(
                       (addon: IDropdownSelectItem) => addon.code === addonId
                     ) ?? ({} as IDropdownSelectItem)
                   );
-                }),
+                }), */
               };
             }) as IVariationForm[]) ?? ([] as IVariationForm[]);
 

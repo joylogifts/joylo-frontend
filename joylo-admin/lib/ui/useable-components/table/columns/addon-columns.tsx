@@ -14,6 +14,8 @@ export const ADDON_TABLE_COLUMNS = ({
     { headerName: t('Description'), propertyName: 'description' },
     { headerName: t('Minimum'), propertyName: 'quantityMinimum' },
     { headerName: t('Maximum'), propertyName: 'quantityMaximum' },
+    { headerName: t('Category'), propertyName: 'categoryId.title' },
+    { headerName: t('Sub-Category'), propertyName: 'subCategoryId.title' },
     {
       propertyName: 'actions',
       body: (option: IAddon) => (
