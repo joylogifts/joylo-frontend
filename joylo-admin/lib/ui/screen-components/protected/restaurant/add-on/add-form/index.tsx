@@ -50,6 +50,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
 const initialFormValuesTemplate: IAddonForm = {
@@ -73,17 +74,20 @@ export default function AddonAddForm({
   addon,
   position = 'right',
   isAddAddonVisible,
-
 }: IAddonAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
   // Context
 
-  const { restaurantLayoutContextData ,   setIsAddOptionsVisible,
+  const {
+    restaurantLayoutContextData,
+    setIsAddOptionsVisible,
     option,
     setOption,
-    isAddOptionsVisible,} = useContext(RestaurantLayoutContext);
+    isAddOptionsVisible,
+  } = useContext(RestaurantLayoutContext);
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   const [initialValues, setInitialValues] = useState({
@@ -128,8 +132,8 @@ export default function AddonAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('New Addon'),
-          message: `${t('Addon have been')} ${addon ? t('edited') : t('added')} ${t('successfully')}.`,
+          title: getTranslation('new_addon'),
+          message: `${getTranslation('addon_have_been')} ${addon ? getTranslation('edited') : getTranslation('added')} ${getTranslation('successfully')}.`,
         });
 
         onHide();
@@ -139,11 +143,11 @@ export default function AddonAddForm({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = `${t('Something went wrong')}.`;
+          message = `${getTranslation('something_went_wrong')}.`;
         }
         showToast({
           type: 'error',
-          title: t('New Addon'),
+          title: getTranslation('new_addon'),
           message,
         });
       },
@@ -156,8 +160,8 @@ export default function AddonAddForm({
   function onErrorFetchAddonsByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Addons Fetch'),
-      message: t('Addons fetch failed'),
+      title: getTranslation('addons_fetch'),
+      message: getTranslation('addons_fetch_failed'),
       duration: 2500,
     });
   }
@@ -230,7 +234,8 @@ export default function AddonAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {addon ? t('Edit') : t('Add')} {t('Addons')}
+                {addon ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('addons')}
               </span>
             </div>
 
@@ -279,7 +284,7 @@ export default function AddonAddForm({
                                             </button>
                                           )}
                                           <Fieldset
-                                            legend={`${t('Addons')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                            legend={`${getTranslation('addons')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
                                             toggleable
                                           >
                                             <div className="grid grid-cols-12 gap-4">
@@ -287,7 +292,9 @@ export default function AddonAddForm({
                                                 <CustomTextField
                                                   type="text"
                                                   name={`addons[${index}].title`}
-                                                  placeholder={t('Title')}
+                                                  placeholder={getTranslation(
+                                                    'title'
+                                                  )}
                                                   maxLength={35}
                                                   value={value.title}
                                                   onChange={(e) =>
@@ -369,7 +376,9 @@ export default function AddonAddForm({
                                               <div className="col-span-12 sm:col-span-12">
                                                 <CustomTextAreaField
                                                   name={`addons[${index}].description`}
-                                                  placeholder={t('Description')}
+                                                  placeholder={getTranslation(
+                                                    'description'
+                                                  )}
                                                   value={value.description}
                                                   onChange={handleChange}
                                                   showLabel={true}
@@ -391,7 +400,9 @@ export default function AddonAddForm({
                                               <div className="col-span-12 sm:col-span-12">
                                                 <CustomMultiSelectComponent
                                                   name={`addons[${index}].options`}
-                                                  placeholder={t('Options')}
+                                                  placeholder={getTranslation(
+                                                    'options'
+                                                  )}
                                                   options={
                                                     optionsDropdown ?? []
                                                   }
@@ -434,7 +445,7 @@ export default function AddonAddForm({
                                     className="w-full rounded border border-black bg-transparent text-black"
                                     icon={faAdd}
                                     iconStyles={{ color: 'black' }}
-                                    title={t('Add New Addon')}
+                                    title={getTranslation('add_new_addon')}
                                     onClick={() =>
                                       push(initialFormValuesTemplate)
                                     }
@@ -448,7 +459,11 @@ export default function AddonAddForm({
                         <div className="mt-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={addon ? t('Edit') : t('Add')}
+                            label={
+                              addon
+                                ? getTranslation('edit')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

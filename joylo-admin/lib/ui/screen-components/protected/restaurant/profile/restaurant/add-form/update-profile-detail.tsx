@@ -41,6 +41,7 @@ import {
 } from '@/lib/utils/interfaces/cuisine.interface';
 import { useTranslations } from 'next-intl';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UpdateRestaurantDetails({
   stepperProps,
@@ -52,6 +53,7 @@ export default function UpdateRestaurantDetails({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Contexts
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
@@ -65,19 +67,19 @@ export default function UpdateRestaurantDetails({
     onError: ({ graphQLErrors, networkError }) => {
       showToast({
         type: 'error',
-        title: t('Edit Store'),
+        title: getTranslation('edit_store'),
         message:
           graphQLErrors[0]?.message ??
           networkError?.message ??
-          t('Store Edit Failed'),
+          getTranslation('store_edit_failed'),
         duration: 2500,
       });
     },
     onCompleted: async () => {
       showToast({
         type: 'success',
-        title: t('Store Details Saved'),
-        message: t('Store has been updated successfully'),
+        title: getTranslation('store_details_saved'),
+        message: getTranslation('store_has_been_updated_successfully'),
         duration: 3000,
       });
 
@@ -132,8 +134,8 @@ export default function UpdateRestaurantDetails({
     if (!restaurantId) {
       showToast({
         type: 'error',
-        title: t('Edit Store'),
-        message: t('Store Edit Failed - Please select a vendor'),
+        title: getTranslation('edit_store'),
+        message: getTranslation('store_edit_failed_please_select_a_vendor'),
         duration: 2500,
       });
       return;
@@ -163,8 +165,8 @@ export default function UpdateRestaurantDetails({
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('Store Details'),
-        message: t('Something went wrong'),
+        title: getTranslation('store_details'),
+        message: getTranslation('something_went_wrong_please_try_again'),
       });
     }
   };
@@ -174,7 +176,7 @@ export default function UpdateRestaurantDetails({
       <div className="h-full w-full">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col mb-2">
-            <span className="text-lg">{t('Update Profile')}</span>
+            <span className="text-lg">{getTranslation('update_profile')}</span>
           </div>
 
           <Formik
@@ -200,7 +202,7 @@ export default function UpdateRestaurantDetails({
                     <CustomIconTextField
                       type="email"
                       name="username"
-                      placeholder={t('Email')}
+                      placeholder={getTranslation('email')}
                       maxLength={35}
                       showLabel={true}
                       iconProperties={{
@@ -222,7 +224,7 @@ export default function UpdateRestaurantDetails({
                     />
 
                     <CustomPasswordTextField
-                      placeholder={t('Password')}
+                      placeholder={getTranslation('password')}
                       name="password"
                       maxLength={20}
                       value={values.password}
@@ -241,7 +243,7 @@ export default function UpdateRestaurantDetails({
 
                     <div>
                       <CustomPasswordTextField
-                        placeholder={t('Confirm Password')}
+                        placeholder={getTranslation('confirm_password')}
                         name="confirmPassword"
                         maxLength={20}
                         showLabel={true}
@@ -263,7 +265,7 @@ export default function UpdateRestaurantDetails({
                     <CustomTextField
                       type="text"
                       name="name"
-                      placeholder={t('Name')}
+                      placeholder={getTranslation('name')}
                       maxLength={35}
                       value={values.name}
                       onChange={handleChange}
@@ -280,7 +282,7 @@ export default function UpdateRestaurantDetails({
                     />
                     <div>
                       <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                        {t('Phone')}
+                        {getTranslation('phone')}
                       </label>
                       <CustomPhoneTextField
                         mask="999-999-9999"
@@ -309,7 +311,7 @@ export default function UpdateRestaurantDetails({
                     </div>
 
                     <CustomTextField
-                      placeholder={t('Address')}
+                      placeholder={getTranslation('address')}
                       name="address"
                       type="text"
                       maxLength={100}
@@ -331,7 +333,7 @@ export default function UpdateRestaurantDetails({
                       suffix=" m"
                       min={0}
                       max={500}
-                      placeholder={t('Delivery Time')}
+                      placeholder={getTranslation('delivery_time')}
                       name="deliveryTime"
                       showLabel={true}
                       value={values.deliveryTime}
@@ -350,7 +352,7 @@ export default function UpdateRestaurantDetails({
                     <CustomNumberField
                       min={1}
                       max={99999}
-                      placeholder={t('Min Order')}
+                      placeholder={getTranslation('min_order')}
                       name="minOrder"
                       showLabel={true}
                       value={values.minOrder}
@@ -370,7 +372,7 @@ export default function UpdateRestaurantDetails({
                       suffix=" %"
                       min={0}
                       max={100}
-                      placeholder={t('Service Charges')}
+                      placeholder={getTranslation('service_charges')}
                       minFractionDigits={2}
                       maxFractionDigits={2}
                       name="salesTax"
@@ -389,7 +391,7 @@ export default function UpdateRestaurantDetails({
                     />
 
                     <CustomTextField
-                      placeholder={t('Order Prefix')}
+                      placeholder={getTranslation('order_prefix')}
                       name="orderprefix"
                       type="text"
                       maxLength={100}
@@ -409,7 +411,7 @@ export default function UpdateRestaurantDetails({
 
                     <CustomDropdownComponent
                       name="shopType"
-                      placeholder={t('Shop Category')}
+                      placeholder={getTranslation('shop_category')}
                       selectedItem={values.shopType}
                       setSelectedItem={setFieldValue}
                       options={SHOP_TYPE}
@@ -427,7 +429,7 @@ export default function UpdateRestaurantDetails({
 
                     <CustomMultiSelectComponent
                       name="cuisines"
-                      placeholder={t('Cuisines')}
+                      placeholder={getTranslation('cuisines')}
                       options={cuisinesDropdown ?? []}
                       selectedItems={values.cuisines}
                       setSelectedItems={setFieldValue}
@@ -447,7 +449,7 @@ export default function UpdateRestaurantDetails({
                       <CustomUploadImageComponent
                         key="logo"
                         name="logo"
-                        title={t('Upload Profile Image')}
+                        title={getTranslation('upload_profile_image')}
                         fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                         maxFileHeight={1080}
                         maxFileWidth={1080}
@@ -469,7 +471,7 @@ export default function UpdateRestaurantDetails({
                       <CustomUploadImageComponent
                         key="image"
                         name="image"
-                        title={t('Upload Image')}
+                        title={getTranslation('upload_image')}
                         fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                         maxFileHeight={841}
                         maxFileWidth={1980}
@@ -493,7 +495,7 @@ export default function UpdateRestaurantDetails({
                     <div className="flex justify-end mt-4">
                       <CustomButton
                         className="w-fit h-10 bg-black text-white border-gray-300 px-8"
-                        label={t('Update')}
+                        label={getTranslation('update')}
                         type="submit"
                         loading={isSubmitting}
                       />
