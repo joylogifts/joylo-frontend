@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Core
 import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 
@@ -130,8 +132,7 @@ export default function AddonAddForm({
   // Queries
   const {
     data: categoriesData,
-    loading: categoriesLoading,
-    refetch: refetchCategories,
+    loading: categoriesLoading
   } = useQueryGQL(
     GET_CATEGORY_BY_RESTAURANT_ID,
     { id: restaurantId ?? '' },
@@ -144,7 +145,6 @@ export default function AddonAddForm({
   const {
     data: subCategoriesData,
     loading: subCategoriesLoading,
-    refetch: refetchSubCategories,
   } = useQueryGQL(
     GET_SUBCATEGORIES_BY_PARENT_ID,
     {

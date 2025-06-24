@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 import { Fieldset } from 'primereact/fieldset';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Context
 import { FoodsContext } from '@/lib/context/restaurant/foods.context';
@@ -11,11 +11,8 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 // Interface and Types
 import {
   IAddon,
-  IAddonByRestaurantResponse,
-  IDropdownSelectItem,
   IFoodNew,
   IFoodVariationsAddRestaurantComponentProps,
-  IQueryResult,
   IVariationForm,
 } from '@/lib/utils/interfaces';
 
@@ -25,8 +22,6 @@ import { onErrorMessageMatcher } from '@/lib/utils/methods';
 import { VariationSchema } from '@/lib/utils/schema';
 
 // Components
-import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
-import CustomMultiSelectComponent from '@/lib/ui/useable-components/custom-multi-select';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
 import AddonAddForm from '../../../add-on/add-form';
@@ -40,7 +35,6 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 import {
   CREATE_FOOD,
   EDIT_FOOD,
-  GET_ADDONS_BY_RESTAURANT_ID,
   GET_FOODS_BY_RESTAURANT_ID,
 } from '@/lib/api/graphql';
 
@@ -48,7 +42,6 @@ import {
 import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Apollo
-import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { useMutation } from '@apollo/client';
 import { useTranslations } from 'next-intl';
 
@@ -173,8 +166,9 @@ export default function VariationAddForm({
   }) => {
     try {
       const _variations = variations.map(
-        ({ discounted,addons, ...item }: IVariationForm) => {
+        ({ discounted, ...item }: IVariationForm) => {
           delete item.__typename;
+         
           return {
             ...item,
             discounted: discounted,

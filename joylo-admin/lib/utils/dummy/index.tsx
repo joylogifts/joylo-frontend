@@ -289,6 +289,7 @@ export const generateDummyAddons = (count: number = 10): IAddon[] => {
       quantityMaximum: 1,
       __typename: 'Addon',
       options: [],
+      isActive: false
     });
   }
 
