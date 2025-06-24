@@ -27,6 +27,8 @@ import { IconButton } from 'react-native-paper'
 import { Text } from 'react-native'
 import { scale } from '../../utils/scaling'
 import { TextField } from 'react-native-material-textfield'
+import { useQuery } from '@apollo/client'
+import { GET_ADDONS_BY_CATEGORY } from '../../apollo/queries'
 
 const { height } = Dimensions.get('window')
 const TOP_BAR_HEIGHT = Math.round(height * 0.08)
@@ -35,23 +37,22 @@ const HEADER_MIN_HEIGHT = TOP_BAR_HEIGHT
 const SCROLL_RANGE = HEADER_MAX_HEIGHT
 
 function ItemDetail(props) {
-  const { food, addons, options, restaurant } = props?.route?.params
+  const { food, addons, options, restaurant, categoryId, subCategoryId } = props?.route?.params
 
   // States
   const [listZindex, setListZindex] = useState(0)
-  const [isDescriptionVisible, setIsDescriptionVisible] = useState(false)
   const [selectedVariation, setSelectedVariation] = useState({
-    ...food?.variations[0],
-    addons: food?.variations[0].addons?.map((fa) => {
-      const addon = addons?.find((a) => a._id === fa)
-      const addonOptions = addon.options?.map((ao) => {
-        return options?.find((o) => o._id === ao)
-      })
-      return {
-        ...addon,
-        options: addonOptions
-      }
-    })
+    ...food?.variations[0]
+    // addons: food?.variations[0].addons?.map((fa) => {
+    //   const addon = addons?.find((a) => a._id === fa)
+    //   const addonOptions = addon.options?.map((ao) => {
+    //     return options?.find((o) => o._id === ao)
+    //   })
+    //   return {
+    //     ...addon,
+    //     options: addonOptions
+    //   }
+    // })
   })
   const [selectedAddons, setSelectedAddons] = useState([])
   const [specialInstructions, setSpecialInstructions] = useState('')
@@ -87,6 +88,16 @@ function ItemDetail(props) {
     isRTL: i18n.dir() === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
+
+  // API
+  const { data: addonsByCategory, loading: isAddonsLoading } = useQuery(GET_ADDONS_BY_CATEGORY, {
+    variables: {
+      restaurantId: restaurant,
+      categoryId,
+      subCategoryId
+    },
+    fetchPolicy: 'cache-and-network'
+  })
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
@@ -317,10 +328,7 @@ function ItemDetail(props) {
 
   if (!connect) return <ErrorView />
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <View style={[styles().flex, styles(currentTheme).mainContainer]}>
         <Animated.ScrollView
           ref={scrollViewRef}
@@ -384,18 +392,24 @@ function ItemDetail(props) {
                   />
                 </View>
               )}
-              {selectedVariation?.addons?.map((addon) => (
+              {addonsByCategory?.getAddonsByCategory?.map((addon) => (
                 <View key={addon?._id}>
                   <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
                   <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
                 </View>
               ))}
+              {/*  {selectedVariation?.addons?.map((addon) => (
+                <View key={addon?._id}>
+                  <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
+                  <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
+                </View>
+              ))} */}
             </View>
 
             <View style={styles(currentTheme).line}></View>
             <View style={styles(currentTheme).inputContainer}>
               <TitleComponent title={t('specialInstructions')} subTitle={t('anySpecificPreferences')} status={t('optional')} />
-              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} />
+              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} />
             </View>
             {/** frequently bought together */}
             <FrequentlyBoughtTogether itemId={food?._id} restaurantId={restaurant} />

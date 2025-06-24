@@ -6,7 +6,7 @@ import {
   useMutation,
   useQuery,
 } from '@apollo/client';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
@@ -14,9 +14,6 @@ import { FilterMatchMode } from 'primereact/api';
 // Interface and Types
 import {
   IActionMenuItem,
-  IAddon,
-  IAddonByRestaurantResponse,
-  IDropdownSelectItem,
   IFood,
   IFoodByRestaurantResponse,
   IFoodNew,

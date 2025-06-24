@@ -41,6 +41,7 @@ export interface IAddon {
   // subCategoryId?: string | null;
   categoryId?: ICategory | null;
   subCategoryId?: ISubCategory | null;
+  isActive: boolean;
   __typename: string;
 }
 export interface IAddonByRestaurantResponse {

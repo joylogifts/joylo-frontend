@@ -28,12 +28,13 @@ const useEnvVars = (env = Updates.channel) => {
   }
 
   return {
-    // GRAPHQL_URL: 'http://10.97.34.172:8001/graphql',
-    // WS_GRAPHQL_URL: 'ws://10.97.34.172:8001/graphql',
-    // SERVER_URL: 'http://10.97.34.172:8001/',
-    GRAPHQL_URL: 'https://base.clobit.com/graphql',
-    WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
-    SERVER_URL: 'https://base.clobit.com/',
+    GRAPHQL_URL: 'http://172.16.220.112:8001/graphql',
+    WS_GRAPHQL_URL: 'ws://172.16.220.112:8001/graphql',
+    SERVER_URL: 'http://172.16.220.112:8001/',
+
+    // GRAPHQL_URL: 'https://base.clobit.com/graphql',
+    // WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
+    // SERVER_URL: 'https://base.clobit.com/',
     IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
     ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
     AMPLITUDE_API_KEY: configuration?.appAmplitudeApiKey,

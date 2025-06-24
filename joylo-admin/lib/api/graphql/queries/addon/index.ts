@@ -13,6 +13,7 @@ export const GET_ADDONS_BY_RESTAURANT_ID = gql`
         options
         categoryId
         subCategoryId
+        isActive
       }
     }
   }
