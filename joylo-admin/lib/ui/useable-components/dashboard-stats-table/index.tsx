@@ -24,7 +24,7 @@ export default function DashboardStatsTable({
       <div className="bg-white shadow-md rounded-lg border border-gray-300">
         <div className="flex justify-between items-center bg-gray-100 p-4 rounded-t-lg">
           <h2 className="text-lg font-bold text-gray-800">
-            {getTranslation(title)}
+            {getTranslation(title.toLowerCase().split(' ').join('_'))}
           </h2>
           <i className="fas fa-arrow-down text-primary-color"></i>
         </div>
@@ -35,7 +35,7 @@ export default function DashboardStatsTable({
               className={`flex justify-between py-2 ${index !== data.length - 1 ? 'border-b border-gray-300' : ''}`}
             >
               <span className="text-gray-800">
-                {getTranslation(item.label)}
+                {getTranslation(item.label.toLowerCase().split(' ').join('_'))}
               </span>
               <span className="text-gray-800">
                 {amountConfig
