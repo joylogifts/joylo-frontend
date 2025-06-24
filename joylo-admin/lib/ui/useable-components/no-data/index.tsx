@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
@@ -9,6 +10,7 @@ export default function NoData({
   message?: string;
 }) {
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   return (
     <div className="w-full flex flex-col items-center justify-center p-8 text-center">
       <svg
@@ -26,10 +28,10 @@ export default function NoData({
         />
       </svg>
       <h3 className="text-xl font-semibold text-gray-700 mb-2">
-        {title ?? t('No Data Available')}
+        {title ?? getTranslation('no_data_available')}
       </h3>
       <p className="text-gray-500">
-        {message ?? t("There's nothing to display at the moment")}.
+        {message ?? getTranslation('theres_nothing_to_display_at_the_moment')}.
       </p>
     </div>
   );

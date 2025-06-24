@@ -3,7 +3,11 @@ import { ChangeEvent, useContext } from 'react';
 import { useTranslations } from 'next-intl';
 import { useMutation } from '@apollo/client';
 // GraphQL
-import { CREATE_SHOP_TYPE, GET_SHOP_TYPES, UPDATE_SHOP_TYPE } from '@/lib/api/graphql';
+import {
+  CREATE_SHOP_TYPE,
+  GET_SHOP_TYPES,
+  UPDATE_SHOP_TYPE,
+} from '@/lib/api/graphql';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
@@ -30,12 +34,8 @@ import { Sidebar } from 'primereact/sidebar';
 import { onErrorMessageMatcher } from '@/lib/utils/methods';
 
 // Constants
-import {
-  MAX_SQUARE_FILE_SIZE,
-  ShopTypeErrors,
-} from '@/lib/utils/constants';
-
-
+import { MAX_SQUARE_FILE_SIZE, ShopTypeErrors } from '@/lib/utils/constants';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ShopTypesForm({
   setVisible,
@@ -46,6 +46,7 @@ export default function ShopTypesForm({
   // Hooks
   const { showToast } = useContext(ToastContext);
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Initial values
   const initialValues = {
@@ -62,9 +63,9 @@ export default function ShopTypesForm({
       refetchQueries: [{ query: GET_SHOP_TYPES }],
       onCompleted: () => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('ShopType')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('shop_type')}`,
           type: 'success',
-          message: t('ShopType has been added successfully'),
+          message: getTranslation('shop_type_has_been_added_successfully'),
           duration: 2000,
         });
         setIsEditing({
@@ -80,11 +81,11 @@ export default function ShopTypesForm({
       },
       onError: (err) => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('ShopType')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('shop_type')}`,
           type: 'error',
           message:
             err.message ||
-            `${t('ShopType')} ${isEditing.bool ? t('Edition') : t('Creation')} ${t('Failed')}`,
+            `${getTranslation('shop_type')} ${isEditing.bool ? getTranslation('edition') : getTranslation('creation')} ${getTranslation('failed')}`,
           duration: 2000,
         });
         setIsEditing({
@@ -106,9 +107,9 @@ export default function ShopTypesForm({
       refetchQueries: [{ query: GET_SHOP_TYPES }],
       onCompleted: () => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('ShopType')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('shop_type')}`,
           type: 'success',
-          message: `${t('ShopType has been')} ${isEditing.bool ? t('Edited') : t('Added')}  ${t('Successfully')}`,
+          message: `${getTranslation('shop_type_has_been')} ${isEditing.bool ? getTranslation('edited') : getTranslation('added')}  ${getTranslation('successfully')}`,
           duration: 2000,
         });
         setIsEditing({
@@ -124,11 +125,11 @@ export default function ShopTypesForm({
       },
       onError: (err) => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('ShopType')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('shop_type')}`,
           type: 'error',
           message:
             err.message ||
-            `${t('ShopType')} ${isEditing.bool ? t('Edition') : t('Creation')} ${t('Failed')}`,
+            `${getTranslation('shop_type')} ${isEditing.bool ? getTranslation('edition') : getTranslation('creation')} ${getTranslation('failed')}`,
           duration: 2000,
         });
         setIsEditing({
@@ -209,10 +210,15 @@ export default function ShopTypesForm({
               <div className="space-y-4">
                 <div className="flex gap-4">
                   <h2 className='className="mb-3 text-xl font-bold'>
-                    {isEditing.bool ? t('Edit') : t('Add')} {t('ShopType')}
+                    {isEditing.bool
+                      ? getTranslation('edit')
+                      : getTranslation('add')}{' '}
+                    {getTranslation('shop_type')}
                   </h2>
                   <div className="flex items-center gap-x-1">
-                    {values.isActive ? t('Enabled') : t('Disabled')}
+                    {values.isActive
+                      ? getTranslation('enabled')
+                      : getTranslation('disabled')}
                     <CustomInputSwitch
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setFieldValue('isActive', e.target.checked)
@@ -226,7 +232,7 @@ export default function ShopTypesForm({
                 <CustomUploadImageComponent
                   key="image"
                   name="image"
-                  title={t('Upload Profile Image')}
+                  title={getTranslation('upload_profile_image')}
                   fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                   maxFileHeight={1080}
                   maxFileWidth={1080}
@@ -249,7 +255,7 @@ export default function ShopTypesForm({
                   value={values.title}
                   name="title"
                   showLabel={true}
-                  placeholder={t('Title')}
+                  placeholder={getTranslation('title')}
                   type="text"
                   onChange={(e) => setFieldValue('title', e.target.value)}
                   style={{
@@ -280,9 +286,9 @@ export default function ShopTypesForm({
                       color="white"
                     />
                   ) : isEditing.bool ? (
-                    t('Update')
+                    getTranslation('update')
                   ) : (
-                    t('Add')
+                    getTranslation('add')
                   )}
                 </button>
               </div>

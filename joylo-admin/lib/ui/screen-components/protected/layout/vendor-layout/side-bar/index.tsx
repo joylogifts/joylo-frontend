@@ -88,7 +88,9 @@ export default function MakeVendorSidebar() {
   if (user?.userType === 'ADMIN' || user?.userType === 'STAFF') {
     console.log(lastRoute);
     navBarItems.push({
-      text: lastRoute ? t(`Back to ${lastRoute}`) : 'Back',
+      text: lastRoute
+        ? getTranslation(`back_to_${lastRoute.toLowerCase()}`)
+        : getTranslation('back'),
       route: '/general/vendors',
       isParent: true,
       icon: faArrowLeft,

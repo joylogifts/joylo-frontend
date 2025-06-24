@@ -17,6 +17,7 @@ import { useTranslations } from 'use-intl';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 
 import { GET_STORE_RIDER } from '@/lib/api/graphql/queries/concurrent';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function EarningTableHeader({
   globalFilterValue,
@@ -28,6 +29,7 @@ export default function EarningTableHeader({
   const [userType, setUserType] = useState<UserTypeEnum>();
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Query
   const { data } = useQueryGQL(GET_STORE_RIDER, {
@@ -52,22 +54,22 @@ export default function EarningTableHeader({
 
   // Constants
   const userTypes = [
-    { label: t('All'), value: UserTypeEnum.ALL },
-    { label: t('Rider'), value: UserTypeEnum.RIDER },
-    { label: t('Store'), value: UserTypeEnum.STORE },
+    { label: getTranslation('all'), value: UserTypeEnum.ALL },
+    { label: getTranslation('rider'), value: UserTypeEnum.RIDER },
+    { label: getTranslation('store'), value: UserTypeEnum.STORE },
   ];
 
   const orderTypes = [
-    { label: t('All'), value: OrderTypeEnum.ALL },
-    { label: t('Delivery'), value: OrderTypeEnum.RIDER },
-    { label: t('Pickup'), value: OrderTypeEnum.STORE },
+    { label: getTranslation('all'), value: OrderTypeEnum.ALL },
+    { label: getTranslation('delivery'), value: OrderTypeEnum.RIDER },
+    { label: getTranslation('pickup'), value: OrderTypeEnum.STORE },
   ];
 
   const paymentTypes = [
-    { label: t('All'), value: PaymentMethodEnum.ALL },
-    { label: t('COD'), value: PaymentMethodEnum.COD },
-    { label: t('PayPal'), value: PaymentMethodEnum.PAYPAL },
-    { label: t('Stripe'), value: PaymentMethodEnum.STRIPE },
+    { label: getTranslation('all'), value: PaymentMethodEnum.ALL },
+    { label: getTranslation('cod'), value: PaymentMethodEnum.COD },
+    { label: getTranslation('paypal'), value: PaymentMethodEnum.PAYPAL },
+    { label: getTranslation('stripe'), value: PaymentMethodEnum.STRIPE },
   ];
 
   // Handlers
@@ -79,7 +81,7 @@ export default function EarningTableHeader({
     ) {
       setErrors((prev) => ({
         ...prev,
-        startDate: t('Start date cannot be after the end date'),
+        startDate: getTranslation('start_date_cannot_be_after_the_end_date'),
       }));
       return;
     }
@@ -95,7 +97,7 @@ export default function EarningTableHeader({
     ) {
       setErrors((prev) => ({
         ...prev,
-        endDate: t('End date cannot be before the start date'),
+        endDate: getTranslation('end_date_cannot_be_before_the_start_date'),
       }));
       return;
     }
@@ -112,13 +114,13 @@ export default function EarningTableHeader({
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Search')}
+            placeholder={getTranslation('search')}
           />
         </span>
         <div className="flex flex-col">
           <Calendar
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-sm"
-            placeholder={t('Start Date')}
+            placeholder={getTranslation('start_date')}
             value={
               dateFilters.startingDate
                 ? new Date(dateFilters.startingDate)
@@ -137,7 +139,7 @@ export default function EarningTableHeader({
         <div className="flex flex-col">
           <Calendar
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-sm"
-            placeholder={t('End Date')}
+            placeholder={getTranslation('end_date')}
             value={
               dateFilters.endingDate ? new Date(dateFilters.endingDate) : null
             }
@@ -166,7 +168,7 @@ export default function EarningTableHeader({
               setUserType(e.value);
             }
           }}
-          placeholder={`${t('Select')} ${t('User')} ${t('Type')}`}
+          placeholder={`${getTranslation('select')} ${getTranslation('user')} ${getTranslation('type')}`}
         />
         {userType !== undefined && userType !== 'ALL' && (
           <Dropdown
@@ -176,7 +178,7 @@ export default function EarningTableHeader({
             onChange={(e) =>
               setDateFilters((prev) => ({ ...prev, userType, userId: e.value }))
             }
-            placeholder={t('Select User ID')}
+            placeholder={getTranslation('select_user_id')}
           />
         )}
         <Dropdown
@@ -186,7 +188,7 @@ export default function EarningTableHeader({
           onChange={(e) =>
             setDateFilters((prev) => ({ ...prev, orderType: e.value }))
           }
-          placeholder={`${t('Select')} ${t('Order')} ${t('Type')}`}
+          placeholder={`${getTranslation('select')} ${getTranslation('order')} ${getTranslation('type')}`}
         />
         <Dropdown
           className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-sm"
@@ -195,7 +197,9 @@ export default function EarningTableHeader({
           onChange={(e) =>
             setDateFilters((prev) => ({ ...prev, paymentMethod: e.value }))
           }
-          placeholder={t(`${t('Select')} ${t('Payment Method')}`)}
+          placeholder={getTranslation(
+            `${getTranslation('select')} ${getTranslation('payment_method')}`
+          )}
         />
       </div>
     </div>

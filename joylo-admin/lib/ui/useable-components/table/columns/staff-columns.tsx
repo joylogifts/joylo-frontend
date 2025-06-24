@@ -13,6 +13,7 @@ import { EDIT_STAFF } from '@/lib/api/graphql/mutations/staff';
 import { GET_STAFFS } from '@/lib/api/graphql/queries/staff';
 import useToast from '@/lib/hooks/useToast';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const STAFF_TABLE_COLUMNS = ({
   menuItems,
@@ -21,6 +22,7 @@ export const STAFF_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
   // States
@@ -32,20 +34,22 @@ export const STAFF_TABLE_COLUMNS = ({
     awaitRefetchQueries: true,
     onCompleted: () => {
       showToast({
-        title: t('Toggle Staff Status'),
+        title: getTranslation('toggle_staff_status'),
         type: 'success',
-        message: t('The staff status has been updated successfully'),
+        message: getTranslation(
+          'the_staff_status_has_been_updated_successfully'
+        ),
       });
     },
     onError: (error) => {
       showToast({
         type: 'error',
-        title: t('Toggle Staff Status'),
+        title: getTranslation('toggle_staff_status'),
         message:
           error.graphQLErrors[0].message ||
           error.clientErrors[0].message ||
           error.networkError?.message ||
-          t('An error occured while updating the staff status'),
+          getTranslation('an_error_occured_while_updating_the_staff_status'),
       });
     },
   });
@@ -77,10 +81,10 @@ export const STAFF_TABLE_COLUMNS = ({
   };
 
   return [
-    { headerName: t('Name'), propertyName: 'name' },
-    { headerName: t('Email'), propertyName: 'email' },
-    { headerName: t('Password'), propertyName: 'plainPassword' },
-    { headerName: t('Phone'), propertyName: 'phone' },
+    { headerName: getTranslation('name'), propertyName: 'name' },
+    { headerName: getTranslation('email'), propertyName: 'email' },
+    { headerName: getTranslation('password'), propertyName: 'plainPassword' },
+    { headerName: getTranslation('phone'), propertyName: 'phone' },
     // ? Should this be added as it will make table overflow on normal screens
     // {
     //   headerName: 'Permissions',
@@ -90,7 +94,7 @@ export const STAFF_TABLE_COLUMNS = ({
     //   },
     // },
     {
-      headerName: t('Status'),
+      headerName: getTranslation('status'),
       propertyName: 'status',
       body: (staff: IStaffResponse) => {
         return (

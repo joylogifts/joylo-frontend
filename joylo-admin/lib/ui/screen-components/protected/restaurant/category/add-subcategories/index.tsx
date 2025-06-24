@@ -140,11 +140,11 @@ export default function SubCategoriesAddForm({
         return JSON.stringify(e.message);
       });
       showToast({
-        title: t(`Create Sub-Category`),
+        title: getTranslation('create_sub_categories'),
         type: response.errors?.length ? 'error' : 'success',
         message: response.errors?.length
           ? JSON.stringify(errMsg)
-          : t(`Created Sub-Category Successfully`),
+          : getTranslation(`created_sub_category_successfully`),
       });
       formikHelpers.resetForm();
       isAddSubCategoriesVisible.bool = false;

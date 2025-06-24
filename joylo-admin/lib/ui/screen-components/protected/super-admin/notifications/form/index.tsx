@@ -1,5 +1,6 @@
 // GraphQL
 import { GET_NOTIFICATIONS, SEND_NOTIFICATION_USER } from '@/lib/api/graphql';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
@@ -26,6 +27,7 @@ export default function NotificationForm({
 }: INotificationFormProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   //Toast
   const { showToast } = useContext(ToastContext);
@@ -41,17 +43,17 @@ export default function NotificationForm({
     refetchQueries: [{ query: GET_NOTIFICATIONS }],
     onCompleted: () => {
       showToast({
-        title: t('New Notification'),
+        title: getTranslation('new_notification'),
         type: 'success',
-        message: t('Notification has been sent successfully'),
+        message: getTranslation('notification_has_been_sent_successfully'),
         duration: 2500,
       });
     },
     onError: (err) => {
       showToast({
-        title: t('Error Notification'),
+        title: getTranslation('error_notification'),
         type: 'error',
-        message: err.cause?.message || t('Something went wrong'),
+        message: err.cause?.message || getTranslation('something_went_wrong'),
         duration: 2500,
       });
     },
@@ -86,7 +88,7 @@ export default function NotificationForm({
             <Form onSubmit={handleSubmit}>
               <div className="mb-2 flex flex-col">
                 <h2 className='className="mb-3 text-xl font-bold'>
-                  {t('Send Notification')}
+                  {getTranslation('send_notification')}
                 </h2>
               </div>
               <div className="space-y-4">
@@ -97,7 +99,7 @@ export default function NotificationForm({
                   }
                   name="title"
                   showLabel={true}
-                  placeholder={t('Title')}
+                  placeholder={getTranslation('title')}
                   type="text"
                   className={`${
                     onErrorMessageMatcher(
@@ -115,9 +117,9 @@ export default function NotificationForm({
                     setFieldValue('body', e.target.value)
                   }
                   showLabel={true}
-                  label={t('Description')}
+                  label={getTranslation('description')}
                   name="body"
-                  placeholder={t('Add description here')}
+                  placeholder={getTranslation('add_description_here')}
                   className={`${
                     onErrorMessageMatcher(
                       'body',
@@ -133,7 +135,7 @@ export default function NotificationForm({
                 <div className="mt-4 flex justify-end">
                   <CustomButton
                     className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                    label={t('Send')}
+                    label={getTranslation('send')}
                     type="submit"
                     loading={isSubmitting}
                   />

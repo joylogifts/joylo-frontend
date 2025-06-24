@@ -179,7 +179,9 @@ export default function MakeSidebar() {
       isClickable: true,
     },
     {
-      text: lastRoute ? t(`Back to ${lastRoute}`) : 'Back',
+      text: lastRoute
+        ? getTranslation(`back_to_${lastRoute.toLowerCase()}`)
+        : getTranslation('back'),
       route: lastRoute == 'Vendor' ? `/admin/vendor/dashboard` : '/home',
       isParent: true,
       icon: faArrowLeft,

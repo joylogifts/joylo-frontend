@@ -33,6 +33,7 @@ import { TPolygonPoints } from '@/lib/utils/types';
 import { useTranslations } from 'next-intl';
 import { GoogleMapsContext } from '@/lib/context/global/google-maps.context';
 import { useContext } from 'react';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ZoneAddForm({
   onHide,
@@ -50,6 +51,7 @@ export default function ZoneAddForm({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
   // Context
@@ -99,8 +101,8 @@ export default function ZoneAddForm({
         onCompleted: () => {
           showToast({
             type: 'success',
-            title: `${zone ? t('New') : t('Edit')} ${t('Zone')}`,
-            message: `${t('Zone has been')} ${zone ? t('updated') : t('added')} ${t('successfully')}`,
+            title: `${zone ? getTranslation('new') : getTranslation('edit')} ${getTranslation('zone')}`,
+            message: `${getTranslation('zone_has_been')} ${zone ? getTranslation('updated') : getTranslation('added')} ${getTranslation('successfully')}`,
           });
           resetForm();
           onHide();
@@ -109,11 +111,11 @@ export default function ZoneAddForm({
           const message =
             graphQLErrors[0]?.message ??
             networkError?.message ??
-            t('Something went wrong, Please try again');
+            getTranslation('something_went_wrong_please_try_again');
 
           showToast({
             type: 'error',
-            title: `${zone ? t('New') : t('Edit')} ${t('Zone')}`,
+            title: `${zone ? getTranslation('new') : getTranslation('edit')} ${getTranslation('zone')}`,
             message,
           });
         },
@@ -133,7 +135,8 @@ export default function ZoneAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {zone ? t('Edit') : t('Add')} {t('Zone')}
+                {zone ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('zone')}
               </span>
             </div>
 
@@ -159,7 +162,7 @@ export default function ZoneAddForm({
                           <CustomTextField
                             type="text"
                             name="title"
-                            placeholder={t('Title')}
+                            placeholder={getTranslation('title')}
                             maxLength={35}
                             value={values.title}
                             onChange={handleChange}
@@ -178,7 +181,7 @@ export default function ZoneAddForm({
                         <div>
                           <CustomTextAreaField
                             name="description"
-                            placeholder={t('Description')}
+                            placeholder={getTranslation('description')}
                             value={values.description}
                             onChange={handleChange}
                             showLabel={true}
@@ -208,7 +211,11 @@ export default function ZoneAddForm({
                         <div className="mt-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={zone ? t('Update') : t('Add')}
+                            label={
+                              zone
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

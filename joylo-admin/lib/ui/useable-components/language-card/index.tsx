@@ -30,6 +30,7 @@ import { LanguageManagementContext } from '@/lib/context/super-admin/language-ma
 
 // Utils & Constants
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function LanguageCard({ lng }: ILanguageCardProps) {
   // Props
@@ -37,7 +38,7 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
 
   // Hooks
   const t = useTranslations();
-
+  const { getTranslation } = useLangTranslation();
   // Context
   const { language, onSetLanguage, languageResponse } = useContext(
     LanguageManagementContext
@@ -92,15 +93,17 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
         setDeletePopupOpen(false);
         showToast({
           type: 'error',
-          title: t('You are using free version'),
-          message: t('This Feature is only Available in Paid Version'),
+          title: getTranslation('you_are_using_free_version'),
+          message: getTranslation(
+            'this_feature_is_only_available_in_paid_version'
+          ),
         });
       }
     } catch (error) {
       showToast({
         type: 'error',
-        title: 'Language Delete',
-        message: 'Language failed to delete',
+        title: getTranslation('language_delete'),
+        message: getTranslation('language_failed_to_delete'),
       });
     }
   };
@@ -162,7 +165,7 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
         </div>
 
         <div className="three-dots relative">
-          {language?.code === code && (!isDefault) && (
+          {language?.code === code && !isDefault && (
             <FontAwesomeIcon
               icon={faRemove}
               className={`p-1 ${

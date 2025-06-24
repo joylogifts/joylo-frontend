@@ -323,8 +323,8 @@ export default function AddonAddForm({
                                                   max={99999}
                                                   minFractionDigits={0}
                                                   maxFractionDigits={0}
-                                                  placeholder={t(
-                                                    'Minimum Quantity'
+                                                  placeholder={getTranslation(
+                                                    'minimum_quantity'
                                                   )}
                                                   showLabel={true}
                                                   value={value.quantityMinimum}
@@ -351,8 +351,8 @@ export default function AddonAddForm({
                                                   max={99999}
                                                   minFractionDigits={0}
                                                   maxFractionDigits={0}
-                                                  placeholder={t(
-                                                    'Maximum Quantity'
+                                                  placeholder={getTranslation(
+                                                    'maximum_quantity'
                                                   )}
                                                   showLabel={true}
                                                   value={value.quantityMaximum}

@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import {
   faLocationCrosshairs,
   faTimes,
@@ -42,6 +43,7 @@ const CountryService: Country[] = [
 export default function TemplateDemo() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [countries, setCountries] = useState<Country[]>([]);
@@ -106,7 +108,7 @@ export default function TemplateDemo() {
           suggestions={filteredCountries}
           completeMethod={search}
           onChange={(e: AutoCompleteChangeEvent) => setSelectedCountry(e.value)}
-          placeholder={t('Select Location')}
+          placeholder={getTranslation('select_location')}
         />
 
         {selectedCountry && (

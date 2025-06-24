@@ -20,6 +20,7 @@ import { ILanguageForm } from '@/lib/utils/interfaces';
 
 // Schema
 import { LanguageSchema } from '@/lib/utils/schema';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: ILanguageForm = {
   label: '',
@@ -29,6 +30,7 @@ const initialValues: ILanguageForm = {
 export default function VendorAddForm() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { isLangFormVisible, onToggleLangFormVisibility, languageResponse } =
@@ -42,8 +44,8 @@ export default function VendorAddForm() {
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('New Vendor'),
-        message: `Language has been ${'added'} ${t('successfully')}`,
+        title: getTranslation('new_vendor'),
+        message: `${getTranslation('Language has been')} ${getTranslation('added')} ${getTranslation('successfully')}`,
         duration: 3000,
       });
 
@@ -67,8 +69,8 @@ export default function VendorAddForm() {
       console.log('error during add vendor ==> ', error);
       showToast({
         type: 'error',
-        title: `${t('Create')} Language`,
-        message: `Language ${t('Create')} ${t('Failed')}`,
+        title: `${getTranslation('create')} Language`,
+        message: `Language ${getTranslation('create')} ${getTranslation('failed')}`,
         duration: 2500,
       });
     }
@@ -77,11 +79,11 @@ export default function VendorAddForm() {
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: `${t('Create')} Language`,
+      title: `${getTranslation('create')} Language`,
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        `Language ${t('Create')} ${t('Failed')}`,
+        `Language ${getTranslation('create')} ${getTranslation('failed')}`,
       duration: 2500,
     });
   }
@@ -97,7 +99,9 @@ export default function VendorAddForm() {
         <div className="h-full w-full">
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
-              <span className="text-lg">{t('Add')} Language</span>
+              <span className="text-lg">
+                {getTranslation('add')} {getTranslation('language')}
+              </span>
             </div>
 
             <div>
@@ -111,11 +115,10 @@ export default function VendorAddForm() {
               >
                 {({
                   values,
-             
+
                   handleChange,
                   handleSubmit,
                   isSubmitting,
-            
                 }) => {
                   return (
                     <Form onSubmit={handleSubmit}>
@@ -136,9 +139,7 @@ export default function VendorAddForm() {
                           maxLength={35}
                           value={values.code}
                           onChange={handleChange}
-                  
                           showLabel={true}
-                         
                         />
 
                         <div className="mt-4 flex justify-end">

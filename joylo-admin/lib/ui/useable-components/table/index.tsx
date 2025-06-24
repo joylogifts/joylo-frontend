@@ -13,6 +13,7 @@ import {
 } from 'primereact/datatable';
 import DataTableColumnSkeleton from '../custom-skeletons/datatable.column.skeleton';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const Table = <T extends ITableExtends>({
   header,
@@ -47,6 +48,7 @@ const Table = <T extends ITableExtends>({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Handlers
   const handlePageChange = (event: DataTablePageEvent) => {
@@ -113,7 +115,7 @@ const Table = <T extends ITableExtends>({
         removableSort
         rowClassName={rowClassName}
         onRowClick={handleRowClick}
-        emptyMessage={t('No Data Available')}
+        emptyMessage={getTranslation('no_data_available')}
         {...paginationProps} // Spread pagination props conditionally
       >
         {isSelectable && (

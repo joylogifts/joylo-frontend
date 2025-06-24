@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IActionMenuProps } from '@/lib/utils/interfaces';
 import { IEarning } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
@@ -10,17 +11,18 @@ export const EARNING_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   console.log({ isSuperAdmin });
 
   // Columns
   return [
     {
-      headerName: t('Order ID'),
+      headerName: getTranslation('order_id'),
       propertyName: 'orderId',
     },
     {
-      headerName: t('Created At'),
+      headerName: getTranslation('created_at'),
       propertyName: 'createdAt',
       body: (earning: IEarning) => {
         const date = new Date(earning?.createdAt);
@@ -32,15 +34,15 @@ export const EARNING_COLUMNS = ({
       },
     },
     {
-      headerName: t('Order Type'),
+      headerName: getTranslation('order_type'),
       propertyName: 'orderType',
     },
     {
-      headerName: t('Payment Method'),
+      headerName: getTranslation('payment_method'),
       propertyName: 'paymentMethod',
     },
     {
-      headerName: t('Platform Earnings'),
+      headerName: getTranslation('platform_earnings'),
       propertyName: 'platformEarnings.totalEarnings',
       hidden: !isSuperAdmin,
       body: (earning: IEarning) =>
@@ -51,14 +53,14 @@ export const EARNING_COLUMNS = ({
         ),
     },
     {
-      headerName: t('Store') + ' ID',
+      headerName: getTranslation('store') + ' ' + getTranslation('id'),
       propertyName: 'storeEarnings.storeId.username',
       body: (earning: IEarning) => (
         <div>{earning?.storeEarnings?.storeId?.username}</div>
       ),
     },
     {
-      headerName: t('Store Earnings'),
+      headerName: getTranslation('store_earnings'),
       propertyName: 'storeEarnings.totalEarnings.',
 
       body: (earning: IEarning) => (
@@ -66,7 +68,7 @@ export const EARNING_COLUMNS = ({
       ),
     },
     {
-      headerName: t('Rider') + ' ID',
+      headerName: getTranslation('rider') + ' ' + getTranslation('id'),
       propertyName: 'riderEarnings.riderId.username',
       hidden: !isSuperAdmin,
       body: (earning: IEarning) => (
@@ -74,7 +76,7 @@ export const EARNING_COLUMNS = ({
       ),
     },
     {
-      headerName: t('Riders') + ' ' + t('Earnings'),
+      headerName: getTranslation('riders') + ' ' + getTranslation('earnings'),
       propertyName: 'riderEarnings.totalEarnings',
       hidden: !isSuperAdmin,
       body: (earning: IEarning) => (

@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
-
 // Core
 import { useContext, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -44,18 +42,19 @@ import {
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function LanguageManagementMain({
   activeTab,
 }: ILanguageManagementMainComponentsProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
   // Context
   const { language, languageResponse } = useContext(LanguageManagementContext);
 
-  
   // States
   const [data, setData] = useState({});
   const [addedOrUpdated, setAddedOrUpdated] = useState<Record<string, string>>(
@@ -71,7 +70,7 @@ export default function LanguageManagementMain({
     },
     {
       debounceMs: 300,
-      fetchPolicy: "network-only"
+      fetchPolicy: 'network-only',
     }
   ) as IQueryResult<ITranslationResponseGraphQL | undefined, undefined>;
 
@@ -156,7 +155,7 @@ export default function LanguageManagementMain({
   const handleSubmit = () => {
     console.log('Removed Keys:', removedKeys);
     console.log('Added/Updated:', addedOrUpdated);
- 
+
     modifyTranslations({
       variables: {
         keys: removedKeys,
@@ -188,12 +187,12 @@ export default function LanguageManagementMain({
         {/* Mobile-only header for Vendors section */}
         <div className="mt-3  border-b p-3 sm:hidden">
           <div className="mb-4 flex items-center justify-between">
-            <HeaderText text={t('Vendors')} />
+            <HeaderText text={getTranslation('vendors')} />
             <TextIconClickable
               className="rounded border-gray-300 bg-black text-white sm:w-auto"
               icon={faAdd}
               iconStyles={{ color: 'white' }}
-              title={t('Add Vendor')}
+              title={getTranslation('add_vendor')}
               onClick={() => {}}
             />
           </div>
@@ -249,7 +248,11 @@ export default function LanguageManagementMain({
           onAdd={handleAddOrEdit}
           onEdit={handleAddOrEdit}
           onDelete={handleDelete}
-          editable={language?.isDefault ? {add: true, edit: true, delete: true }: undefined}
+          editable={
+            language?.isDefault
+              ? { add: true, edit: true, delete: true }
+              : undefined
+          }
           collapsed={false}
         />
         <button

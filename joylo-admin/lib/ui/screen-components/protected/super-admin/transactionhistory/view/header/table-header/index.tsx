@@ -4,6 +4,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { ITransactionHistoryTableHeaderProps } from '@/lib/utils/interfaces';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function TransactionHistoryTableHeader({
   globalFilterValue,
@@ -13,14 +14,15 @@ export default function TransactionHistoryTableHeader({
 }: ITransactionHistoryTableHeaderProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [errors, setErrors] = useState({ startDate: '', endDate: '' });
 
   const userTypes = [
-    { label: t('All'), value: 'ALL' },
-    { label: t('Rider'), value: 'RIDER' },
-    { label: t('Store'), value: 'STORE' },
+    { label: getTranslation('all'), value: 'ALL' },
+    { label: getTranslation('rider'), value: 'RIDER' },
+    { label: getTranslation('store'), value: 'STORE' },
   ];
 
   const handleStartDateChange = (e: { value: Date | null }) => {
@@ -31,7 +33,7 @@ export default function TransactionHistoryTableHeader({
     ) {
       setErrors((prev) => ({
         ...prev,
-        startDate: t('Start date cannot be after the end date'),
+        startDate: getTranslation('start_date_cannot_be_after_the_end_date'),
       }));
       return;
     }
@@ -47,7 +49,7 @@ export default function TransactionHistoryTableHeader({
     ) {
       setErrors((prev) => ({
         ...prev,
-        endDate: t('End date cannot be before the start date'),
+        endDate: getTranslation('end_date_cannot_be_before_the_start_date'),
       }));
       return;
     }
@@ -61,7 +63,7 @@ export default function TransactionHistoryTableHeader({
         <div className="flex flex-col">
           <Calendar
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-black"
-            placeholder={t('Start Date')}
+            placeholder={getTranslation('start_date')}
             value={
               dateFilters.startingDate
                 ? new Date(dateFilters.startingDate)
@@ -78,7 +80,7 @@ export default function TransactionHistoryTableHeader({
         <div className="flex flex-col">
           <Calendar
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-black"
-            placeholder={t('End Date')}
+            placeholder={getTranslation('end_date')}
             value={
               dateFilters.endingDate ? new Date(dateFilters.endingDate) : null
             }
@@ -101,7 +103,7 @@ export default function TransactionHistoryTableHeader({
                 userType: e.value,
               }))
             }
-            placeholder={`${t('Select')} ${t('User')} ${t('Type')}`}
+            placeholder={`${getTranslation('select')} ${getTranslation('user')} ${getTranslation('type')}`}
           />
         </div>
       </div>
@@ -112,7 +114,7 @@ export default function TransactionHistoryTableHeader({
             className="w-[14rem] h-10 border-[1px] font-light border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-black"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Search')}
+            placeholder={getTranslation('search')}
           />
         </span>
       </div>

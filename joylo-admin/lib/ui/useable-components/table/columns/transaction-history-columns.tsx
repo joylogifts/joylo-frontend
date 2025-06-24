@@ -2,6 +2,7 @@ import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
 import { ITransactionHistory } from '@/lib/utils/interfaces';
 import ActionMenu from '@/lib/ui/useable-components/action-menu';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const TRANSACTION_HISTORY_COLUMNS = ({
   menuItems,
@@ -14,19 +15,20 @@ export const TRANSACTION_HISTORY_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Columns
   return [
     {
-      headerName: t('Transaction ID'),
+      headerName: getTranslation('transaction_id'),
       propertyName: 'transactionId',
     },
     {
-      headerName: t('User Type'),
+      headerName: getTranslation('user_type'),
       propertyName: 'userType',
     },
     {
-      headerName: t('User'),
+      headerName: getTranslation('user'),
       propertyName: 'user',
       body: (transaction: ITransactionHistory) => {
         if (transaction.userType === 'RIDER' && transaction.rider) {
@@ -39,13 +41,13 @@ export const TRANSACTION_HISTORY_COLUMNS = ({
       },
     },
     {
-      headerName: t('Amount'),
+      headerName: getTranslation('amount'),
       propertyName: 'amount',
       body: (transaction: ITransactionHistory) =>
         `${transaction.amountCurrency} ${transaction.amountTransferred?.toFixed(2)}`,
     },
     {
-      headerName: t('Created At'),
+      headerName: getTranslation('created_at'),
       propertyName: 'createdAt',
       body: (transaction: ITransactionHistory) => {
         const date = new Date(transaction.createdAt);
@@ -54,7 +56,7 @@ export const TRANSACTION_HISTORY_COLUMNS = ({
       },
     },
     {
-      headerName: t('Status'),
+      headerName: getTranslation('status'),
       propertyName: 'status',
       body: (transaction: ITransactionHistory) => (
         <span

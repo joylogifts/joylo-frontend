@@ -38,6 +38,7 @@ import { ApolloCache, ApolloError, useMutation } from '@apollo/client';
 import CustomGoogleMapsLocationBounds from '@/lib/ui/useable-components/google-maps/location-bounds-restaurant(vendor)';
 import { GoogleMapsContext } from '@/lib/context/global/google-maps.context';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IRestaurantDeliveryForm = {
   minDeliveryFee: null,
@@ -55,6 +56,7 @@ export default function RestaurantDelivery({
   };
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { isLoaded } = useContext(GoogleMapsContext);
@@ -70,8 +72,10 @@ export default function RestaurantDelivery({
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Store Delivery Info'),
-        message: t(`Store delivery info has been added successfully`),
+        title: getTranslation('store_delivery_info'),
+        message: getTranslation(
+          `store_delivery_info_has_been_added_successfully`
+        ),
         duration: 3000,
       });
 
@@ -94,8 +98,8 @@ export default function RestaurantDelivery({
     } catch (error) {
       showToast({
         type: 'error',
-        title: t(`Failed to add Store delivery info`),
-        message: t(`Store Create Failed`),
+        title: getTranslation(`failed_to_add_store_delivery_info`),
+        message: getTranslation(`store_create_failed`),
         duration: 2500,
       });
     }
@@ -104,11 +108,11 @@ export default function RestaurantDelivery({
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Store delivery info'),
+      title: getTranslation('store_delivery_info'),
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        t(`Store Create Failed`),
+        getTranslation(`store_create_failed`),
       duration: 2500,
     });
   }
@@ -144,7 +148,7 @@ export default function RestaurantDelivery({
       <div className="h-full w-full">
         <div className="flex flex-col gap-2">
           <div className="mb-2 flex flex-col">
-            <span className="text-lg">{t('Store Delivery')}</span>
+            <span className="text-lg">{getTranslation('store_delivery')}</span>
           </div>
 
           <div>
@@ -172,7 +176,7 @@ export default function RestaurantDelivery({
                           max={99999}
                           minFractionDigits={0}
                           maxFractionDigits={2}
-                          placeholder={t('Min Delivery Fee')}
+                          placeholder={getTranslation('min_delivery_fee')}
                           name="minDeliveryFee"
                           useGrouping={false}
                           showLabel={true}
@@ -196,7 +200,9 @@ export default function RestaurantDelivery({
                           max={99999}
                           minFractionDigits={0}
                           maxFractionDigits={2}
-                          placeholder={t("Delivery Distance (In Km's)")}
+                          placeholder={getTranslation(
+                            'delivery_distance_in_kms'
+                          )}
                           name="deliveryDistance"
                           showLabel={true}
                           useGrouping={false}
@@ -220,8 +226,8 @@ export default function RestaurantDelivery({
                           max={99999}
                           minFractionDigits={0}
                           maxFractionDigits={2}
-                          placeholder={t(
-                            "Delivery Fee (per Km's) when delivery distance exceeded"
+                          placeholder={getTranslation(
+                            'delivery_fee_per_kms_when_delivery_distance_exceeded'
                           )}
                           name="deliveryFee"
                           showLabel={true}
@@ -252,7 +258,7 @@ export default function RestaurantDelivery({
                       <div className="mt-4 flex justify-end">
                         <CustomButton
                           className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                          label={t('Add')}
+                          label={getTranslation('add')}
                           type="submit"
                           loading={isSubmitting}
                         />

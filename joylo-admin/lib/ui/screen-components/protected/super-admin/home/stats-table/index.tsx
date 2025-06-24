@@ -2,6 +2,7 @@ import {
   GET_DASHBOARD_ORDERS_BY_TYPE,
   GET_DASHBOARD_SALES_BY_TYPE,
 } from '@/lib/api/graphql/queries/dashboard';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import DashboardStatsTable from '@/lib/ui/useable-components/dashboard-stats-table';
@@ -16,6 +17,7 @@ import React, { useMemo } from 'react';
 export default function StatesTable() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { CURRENCY_CODE } = useConfiguration();
@@ -54,13 +56,13 @@ export default function StatesTable() {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 p-3">
       <DashboardStatsTable
         loading={loading}
-        title={t('Orders')}
+        title={getTranslation('orders')}
         data={dashboardOrdersByType ?? []}
         amountConfig={{ format: 'number', currency: CURRENCY_CODE ?? 'USD' }}
       />
       <DashboardStatsTable
         loading={salesLoading}
-        title={t('Sales')}
+        title={getTranslation('sales')}
         data={dashboardSalesByType ?? []}
         amountConfig={{ format: 'currency', currency: CURRENCY_CODE ?? 'USD' }}
       />
