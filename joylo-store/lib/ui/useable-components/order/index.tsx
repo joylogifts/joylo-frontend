@@ -545,7 +545,7 @@ const Order = ({
                 fontWeight: "600",
               }}
             >
-              {t("Comment")}
+              Gift Message
             </Text>
             <Text
               style={{
