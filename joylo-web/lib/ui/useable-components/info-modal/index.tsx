@@ -129,7 +129,7 @@ const InfoModal = ({ visible, onHide, restaurantInfo }: IInfoModalProps) => {
             visible={visible && !!GOOGLE_MAPS_KEY}
           />
           {visible && !GOOGLE_MAPS_KEY && (
-            <div className="w-full h-[360px] flex items-center justify-center bg-gray-100">
+            <div className="w-full h-[360px] flex items-center justify-center FFA500gray-100">
               <p>Map not available</p>
             </div>
           )}
@@ -146,7 +146,7 @@ const InfoModal = ({ visible, onHide, restaurantInfo }: IInfoModalProps) => {
           <div className="flex items-center mb-4">
             <FontAwesomeIcon
               icon={faCircle}
-              className={`text-[10px] md:text-xs font-normal md:text-[16px] mr-2 ${restaurantInfo.isAvailable && getCurrentDayHours() !== "Closed" ? "text-primary-color" : "text-red-500"}`}
+              className={`text-[10px] md:text-xs font-normal md:text-[16px] mr-2 ${restaurantInfo.isAvailable && getCurrentDayHours() !== "Closed" ? "text-green-500" : "text-red-500"}`}
             />
             <span>
               {getCurrentDay(currentDay)} {getCurrentDayHours()}
