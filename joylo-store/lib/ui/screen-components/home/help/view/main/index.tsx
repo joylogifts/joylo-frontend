@@ -99,7 +99,6 @@ export default function HelpMain() {
         <TouchableOpacity
           activeOpacity={0.7}
           className="w-[90%] h-12 rounded-full bg-green-500 flex flex-row items-center justify-center gap-2 shadow-lg"
-          style={{ backgroundColor: appTheme.primary }}
           onPress={openWhatsAppChat}
         >
           <FontAwesome name="whatsapp" size={24} color="white" />

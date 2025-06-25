@@ -1,2 +1,2 @@
-export * from "./restuarant.js";
-export * from "./tab.js";
+export * from "./restuarant.d.ts";
+export * from "./tab.d.ts";
