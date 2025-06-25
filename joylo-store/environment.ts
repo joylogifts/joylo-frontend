@@ -12,22 +12,22 @@ const getEnvVars = (env = Updates.channel) => {
 
   if (env === "production" || env === "staging") {
     return {
-      GRAPHQL_URL: "https://base.clobit.com/graphql",
-      WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
+      GRAPHQL_URL: "https://enatega-multivendor-revamp.up.railway.app/graphql",
+      WS_GRAPHQL_URL: "wss://enatega-multivendor-revamp.up.railway.app/graphql",
       SENTRY_DSN:
         configuration?.restaurantAppSentryUrl ??
-        "https://599cde43bafba02a81bd13214b0d4097@o4509427784744960.ingest.us.sentry.io/4509430486859776",
+        "https://91b55f514a2c4708845789d6e79abf10@o1103026.ingest.sentry.io/6131933",
     };
   }
   return {
-    GRAPHQL_URL: "http://localhost:8001/graphql",
-    WS_GRAPHQL_URL: "ws://localhost:8001/graphql",
-    // GRAPHQL_URL: "https://base.clobit.com/graphql",
-    // WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
+    // GRAPHQL_URL: "http://10.97.4.84:8001/graphql",
+    // WS_GRAPHQL_URL: "ws://10.97.4.84:8001/graphql",
+    GRAPHQL_URL: "https://enatega-multivendor-revamp.up.railway.app/graphql",
+    WS_GRAPHQL_URL: "wss://enatega-multivendor-revamp.up.railway.app/graphql",
 
     SENTRY_DSN:
       configuration?.restaurantAppSentryUrl ??
-      "https://599cde43bafba02a81bd13214b0d4097@o4509427784744960.ingest.us.sentry.io/4509430486859776",
+      "https://91b55f514a2c4708845789d6e79abf10@o1103026.ingest.sentry.io/6131933",
   };
 };
 
