@@ -744,7 +744,7 @@ export default function OrderCheckoutScreen() {
                   directions,
                   suppressMarkers: true, // Hide default markers
                   polylineOptions: {
-                    strokeColor: "#5AC12F", // blue line
+                    strokeColor: "#FFA500", // blue line
                     strokeOpacity: 0.8,
                     strokeWeight: 3, // thickness
                     zIndex: 10,
@@ -762,7 +762,7 @@ export default function OrderCheckoutScreen() {
               src="https://storage.googleapis.com/a1aa/image/jt1AynRJJVtM9j1LRb30CodA1xsK2R23pWTOmRv3nsM.jpg"
               width="1200"
             />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5AC12F] text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#FFA500] text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold">
               H
             </div>{" "}
           </>
@@ -771,7 +771,7 @@ export default function OrderCheckoutScreen() {
       {/* <!-- Toggle Prices Button for Mobile --> 
           <div className="sm:hidden fixed top-14 left-0 right-0 bg-transparent z-10 p-4">
             <button
-              className="bg-white text-[#5AC12F] w-full py-2 px-4 rounded-full border border-gray-300 flex justify-between items-center"
+              className="bg-white text-[#FFA500] w-full py-2 px-4 rounded-full border border-gray-300 flex justify-between items-center"
               onClick={togglePriceSummary}
             >
               <span className="font-inter text-[14px]">
@@ -790,7 +790,7 @@ export default function OrderCheckoutScreen() {
             {/* <!-- Delivery and Pickup Toggle --> */}
             <div className="flex justify-between bg-gray-100 rounded-full p-2 mb-6">
               <button
-                className={`w-1/2 bg-${deliveryType === "Delivery" ? "[#5AC12F]" : "-gray-600"} text-white py-2 rounded-full flex items-center justify-center`}
+                className={`w-1/2 bg-${deliveryType === "Delivery" ? "[#FFA500]" : "-gray-600"} text-white py-2 rounded-full flex items-center justify-center`}
                 onClick={() => {
                   setDeliveryType("Delivery");
                   setIsPickUp(false);
@@ -806,7 +806,7 @@ export default function OrderCheckoutScreen() {
               </button>
 
               <button
-                className={`w-1/2 bg-${deliveryType === "Pickup" ? "[#5AC12F]" : "-gray-600"} px-6 py-2 rounded-full mx-2 flex items-center justify-center`}
+                className={`w-1/2 bg-${deliveryType === "Pickup" ? "[#FFA500]" : "-gray-600"} px-6 py-2 rounded-full mx-2 flex items-center justify-center`}
                 onClick={() => {
                   setDeliveryType("Pickup");
                   setIsPickUp(true);
@@ -1045,7 +1045,7 @@ export default function OrderCheckoutScreen() {
                       disabled={couponLoading}
                     />
                     <button
-                      className="bg-[#5AC12F] sm:mt-0 mt-2 sm:w-fit w-full h-10 px-8 space-x-2 font-medium text-gray-900  tracking-normal font-inter text-sm sm:text-base md:text-[12px] lg:text-[14px] rounded-full"
+                      className="bg-[#FFA500] sm:mt-0 mt-2 sm:w-fit w-full h-10 px-8 space-x-2 font-medium text-gray-900  tracking-normal font-inter text-sm sm:text-base md:text-[12px] lg:text-[14px] rounded-full"
                       onClick={onApplyCoupon}
                     >
                       {couponLoading ? (
@@ -1161,7 +1161,7 @@ export default function OrderCheckoutScreen() {
               </div>
 
               <button
-                className="bg-[#5AC12F] text-gray-900 w-full py-2 rounded-full font-semibold text-xs lg:text-[16px]"
+                className="bg-[#FFA500] text-gray-900 w-full py-2 rounded-full font-semibold text-xs lg:text-[16px]"
                 onClick={onPlaceOrder}
               >
                 {loadingOrderMutation ? (
@@ -1268,7 +1268,7 @@ export default function OrderCheckoutScreen() {
               </div>
 
               <button
-                className="bg-[#5AC12F] text-gray-900 w-full py-2 rounded-full text-xs lg:text-[12px]"
+                className="bg-[#FFA500] text-gray-900 w-full py-2 rounded-full text-xs lg:text-[12px]"
                 onClick={onPlaceOrder}
               >
                 {loadingOrderMutation ? (
@@ -1380,7 +1380,7 @@ export default function OrderCheckoutScreen() {
                         </span>
                       </div>
                       <button
-                        className="bg-[#5AC12F] text-gray-900 w-full py-2 rounded-full text-sm"
+                        className="bg-[#FFA500] text-gray-900 w-full py-2 rounded-full text-sm"
                         onClick={onPlaceOrder}
                       >
                         {loadingOrderMutation ?

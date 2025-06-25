@@ -265,7 +265,7 @@ function TrackingStatusCard({ orderTrackingDetails }: TrackingStatusCardProps) {
             <div className="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-green-500"
+                className="h-5 w-5 text-primary-color"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -279,7 +279,7 @@ function TrackingStatusCard({ orderTrackingDetails }: TrackingStatusCardProps) {
             <div className="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-green-500"
+                className="h-5 w-5 text-primary-color"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -324,8 +324,8 @@ function TrackingStatusCard({ orderTrackingDetails }: TrackingStatusCardProps) {
             >
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  status === "completed" ? "bg-green-500"
-                  : status === "active" ? "bg-green-500 animate-pulse"
+                  status === "completed" ? "bg-primary-color"
+                  : status === "active" ? "bg-primary-color animate-pulse"
                   : "bg-gray-200"
                 }`}
                 style={{
@@ -347,7 +347,7 @@ function TrackingStatusCard({ orderTrackingDetails }: TrackingStatusCardProps) {
         orderTrackingDetails.orderStatus !== "COMPLETED" &&
         orderTrackingDetails.orderStatus !== "CANCELLED" && (
           <div className="mt-2 flex items-center text-xs text-gray-500">
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+            <span className="w-2 h-2 bg-primary-color rounded-full mr-2 animate-pulse"></span>
             Live updates enabled
           </div>
         )}

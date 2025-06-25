@@ -74,7 +74,7 @@ const CitiesTiles: React.FC<CitiesTilesProps> = ({
         <p className="text-[#111827] font-semibold text-xl">Explore Cities</p>
         {data?.getCitiesByCountry?.name && (
           <div className="relative flex gap-x-2">
-            <p className="text-[#94e469] border-2 border-[#94e469] px-2 rounded">
+            <p className="text-[#FFA500] border-2 border-[#FFA500] px-2 rounded">
               {data?.getCitiesByCountry?.name}
             </p>
 

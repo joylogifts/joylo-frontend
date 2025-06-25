@@ -146,7 +146,7 @@ export default function CustomerTicketsMain() {
         <CustomButton 
           label="Retry"
           onClick={() => window.location.reload()}
-          className="bg-[#5AC12F] text-white px-4 py-2 rounded-full"
+          className="bg-[#FFA500] text-white px-4 py-2 rounded-full"
         />
       </div>
     );
@@ -199,7 +199,7 @@ export default function CustomerTicketsMain() {
           <CustomButton 
             label="Create Your First Ticket"
             onClick={handleCreateTicket}
-            className="bg-[#5AC12F] text-white px-4 py-2 rounded-full"
+            className="bg-[#FFA500] text-white px-4 py-2 rounded-full"
           />
         </div>
       )}

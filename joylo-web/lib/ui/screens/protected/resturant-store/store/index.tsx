@@ -139,7 +139,7 @@ export default function StoreDetailsScreen() {
         onClick={() => handleScroll(_url ?? "", true)}
       >
         <span
-          className={`mx-2 ${item.items && "font-semibold"} text-${isClicked ? "[#5AC12F]" : "gray-600"
+          className={`mx-2 ${item.items && "font-semibold"} text-${isClicked ? "[#FFA500]" : "gray-600"
             }`}
         >
           {item.label}
@@ -165,12 +165,12 @@ export default function StoreDetailsScreen() {
 
     return (
       <div
-        className={`flex align-items-center px-3 py-2 cursor-pointer bg-${isClicked ? "[#F3FFEE]" : ""
+        className={`flex align-items-center px-3 py-2 cursor-pointer bg-${isClicked ? "[#FFDBBB]" : ""
           }`}
         onClick={() => handleScroll(_url ?? "", false, 80)}
       >
         <span
-          className={`mx-2 ${item.items && "font-semibold"} text-${isClicked ? "[#5AC12F]" : "gray-600"
+          className={`mx-2 ${item.items && "font-semibold"} text-${isClicked ? "[#FFA500]" : "gray-600"
             }`}
         >
           {item.label}
@@ -738,10 +738,10 @@ export default function StoreDetailsScreen() {
                       <li key={index} className="shrink-0">
                         <button
                           className={`bg-${selectedCategory === _slug
-                              ? "[#F3FFEE]"
+                              ? "[#FFDBBB]"
                               : "gray-100"
                             } text-${selectedCategory === _slug
-                              ? "[#5AC12F]"
+                              ? "[#FFA500]"
                               : "gray-600"
                             } rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
                           onClick={() => handleScroll(_slug, true, 100)}
@@ -770,10 +770,10 @@ export default function StoreDetailsScreen() {
                         <li key={index} className="shrink-0">
                           <button
                             className={`bg-${selectedSubCategory === _slug
-                                ? "[#F3FFEE]"
+                                ? "[#FFDBBB]"
                                 : "gray-100"
                               } text-${selectedSubCategory === _slug
-                                ? "[#5AC12F]"
+                                ? "[#FFA500]"
                                 : "gray-600"
                               } rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
                             onClick={() => handleScroll(_slug, false, 170)}

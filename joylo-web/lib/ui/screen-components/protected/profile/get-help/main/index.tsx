@@ -232,7 +232,7 @@ export default function GetHelpMain() {
                 <CustomButton
                     label="Chat with a person"
                     onClick={handleChatWithPerson}
-                    className="bg-[#5AC12F] text-white px-6 py-3 rounded-full"
+                    className="bg-[#FFA500] text-white px-6 py-3 rounded-full"
                 />
             </div>
 
@@ -331,7 +331,7 @@ export default function GetHelpMain() {
                                 onChange={(e) => setDescription(e.target.value)}
                                 rows={4}
                                 placeholder="Please describe your issue in detail..."
-                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5AC12F]"
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFA500]"
                             />
                         </div>
                     </div>
@@ -348,7 +348,7 @@ export default function GetHelpMain() {
                                 !description.trim() ||
                                 isSubmitting
                             }
-                            className={`bg-[#5AC12F] text-white w-full py-3 rounded-full flex items-center justify-center ${
+                            className={`bg-[#FFA500] text-white w-full py-3 rounded-full flex items-center justify-center ${
                                 !reason ||
                                 (reason === "order related" &&
                                     !orderId.trim()) ||
