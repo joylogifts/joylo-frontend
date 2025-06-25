@@ -94,7 +94,7 @@ export default function Cart({ onClose }: CartProps) {
 
                             router.push("/discovery", { scroll: true });
                         }}
-                        className="bg-[#5AC12F] text-black px-6 py-2 rounded-full font-medium"
+                        className="bg-[#FFA500] text-black px-6 py-2 rounded-full font-medium"
                         type="button"
                     >
                         Browse Restaurant
@@ -283,7 +283,7 @@ export default function Cart({ onClose }: CartProps) {
             {/* Fixed Checkout Button */}
             <div className="p-4 border-t bg-white">
                 <button
-                    className="flex justify-between items-center w-full bg-[#5AC12F] text-black rounded-full px-4 py-3"
+                    className="flex justify-between items-center w-full bg-[#FFA500] text-black rounded-full px-4 py-3"
                     onClick={() => {
                         router.push("/order/checkout");
                         if (onClose) onClose();
@@ -291,7 +291,7 @@ export default function Cart({ onClose }: CartProps) {
                     type="button"
                 >
                     <div className="flex items-center">
-                        <span className="bg-black text-[#5AC12F] rounded-full w-6 h-6 flex items-center justify-center mr-2 text-sm font-medium">
+                        <span className="bg-black text-[#FFA500] rounded-full w-6 h-6 flex items-center justify-center mr-2 text-sm font-medium">
                             {cartCount}
                         </span>
                         <span className="text-black text-base font-medium">

@@ -155,7 +155,7 @@ export default function AddressesMain() {
           <CustomIconButton
             title="Add New Address"
             iconColor="black"
-            classNames="bg-[#5AC12F] w-[content] px-4"
+            classNames="bg-[#FFA500] w-[content] px-4"
             Icon={faPlus}
             loading={false}
             handleClick={() => {

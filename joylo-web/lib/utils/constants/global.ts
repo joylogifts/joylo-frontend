@@ -11,7 +11,7 @@ import { ISeverityStyles } from "../interfaces/toast.interface";
 export const ENV: "DEV" | "STAGE" | "PROD" = "STAGE";
 
 // Prices
-export const APP_NAME = "Enatega";
+export const APP_NAME = "Joylo";
 export const LOGO_URL = "/";
 
 export const MIN_PRICE = 0.0;

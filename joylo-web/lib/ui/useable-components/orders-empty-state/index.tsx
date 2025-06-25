@@ -30,7 +30,7 @@ const EmptyState: FC<EmptyStateProps> = ({ title, message, actionLabel, actionLi
       {actionLabel && actionLink && (
         <Link
         href={actionLink}
-        className="inline-flex items-center justify-center px-6 py-3 bg-[#F3FFEE]  text-black hover:text-white font-medium rounded-full transition-colors hover:bg-[#5AC12F] focus:outline-none focus:ring-2 focus:ring-[#5AC12F] focus:ring-offset-2"
+        className="inline-flex items-center justify-center px-6 py-3 bg-[#FFDBBB]  text-black hover:text-white font-medium rounded-full transition-colors hover:bg-[#FFA500] focus:outline-none focus:ring-2 focus:ring-[#FFA500] focus:ring-offset-2"
       >
         Explore Store
       </Link>

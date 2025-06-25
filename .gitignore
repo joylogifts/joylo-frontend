@@ -1,3 +1,6 @@
 .expo
 .DS_Store
 ios
+
+/public/sw.js
+sw.js

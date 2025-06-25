@@ -9,7 +9,7 @@ export default function ProfileHeader() {
   return (
   <div className='w-full flex justify-between'>
      <TextComponent text="Profile" className='font-semibold md:text-3xl text-xl'/>
-     <CustomButton onClick={()=>router.push("/profile/getHelp")} label='Get help' type='button' className='text-base font-light bg-[#F3FFEE] px-[16px] py-[8px] text-[#63C43B]'/>
+     <CustomButton onClick={()=>router.push("/profile/getHelp")} label='Get help' type='button' className='text-base font-light bg-[#FFDBBB] px-[16px] py-[8px] text-[#63C43B]'/>
   </div>
   )
 }

@@ -380,7 +380,7 @@ export default function UserAddressComponent(
       </div>
 
       <button
-        className="w-[90%] h-fit bg-[#5AC12F] mb-2 text-gray-900 py-2 space-x-2 rounded-full text-base lg:text-[14px]"
+        className="w-[90%] h-fit bg-[#FFA500] mb-2 text-gray-900 py-2 space-x-2 rounded-full text-base lg:text-[14px]"
         onClick={() => {
           getCurrentLocation(onSetUserLocation);
           onHide();
@@ -472,7 +472,7 @@ export default function UserAddressComponent(
         }
 
         <button
-          className="w-[90%] h-fit bg-[#5AC12F] text-gray-900 py-2 rounded-full text-base lg:text-[14px]"
+          className="w-[90%] h-fit bg-[#FFA500] text-gray-900 py-2 rounded-full text-base lg:text-[14px]"
           onClick={() => paginate(1)}
         >
           <FontAwesomeIcon icon={faPlus} /> <span>Add new address</span>
@@ -645,7 +645,7 @@ export default function UserAddressComponent(
             <span>Cancel</span>
           </button>
           <button
-            className="w-full h-fit bg-[#5AC12F] text-gray-900 py-2 rounded-full text-base lg:text-[14px]"
+            className="w-full h-fit bg-[#FFA500] text-gray-900 py-2 rounded-full text-base lg:text-[14px]"
             onClick={() => onHandleCreateAddress()}
           >
             {modifyingAddressLoading ?
@@ -822,7 +822,7 @@ export default function UserAddressComponent(
             <span>Cancel</span>
           </button>
           <button
-            className="w-full h-fit bg-[#5AC12F] text-gray-900 py-2 rounded-full text-base lg:text-[14px]"
+            className="w-full h-fit bg-[#FFA500] text-gray-900 py-2 rounded-full text-base lg:text-[14px]"
             onClick={() => onHandleCreateAddress()}
           >
             {modifyingAddressLoading ?

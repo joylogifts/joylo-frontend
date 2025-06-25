@@ -50,7 +50,7 @@ const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
                                 className="text-sm text-gray-600 mb-6"
                             />
                         </div>
-                        <p className=" text-[#5AC12F] bg-[#F3FFEE] p-2 rounded-md font-light text-xs flex items-center justify-center">
+                        <p className=" text-[#FFA500] bg-[#FFDBBB] p-2 rounded-md font-light text-xs flex items-center justify-center">
                             {`${item?.deliveryTime}`} min
                         </p>
                     </div>

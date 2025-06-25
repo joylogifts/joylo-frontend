@@ -301,7 +301,7 @@ const pollingIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="Type your message here..."
-                className="flex-1 p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#5AC12F] resize-none"
+                className="flex-1 p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#FFA500] resize-none"
                 rows={2}
                 disabled={isSending}
               />

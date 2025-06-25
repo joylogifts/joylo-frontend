@@ -26,8 +26,8 @@ const config = {
         none: "none",
       },
       colors: {
-        "primary-color": "#5AC12F",
-        "secondary-color": "#d8e3a3",
+        "primary-color": "#FFA500",
+        "secondary-color": "#0074D9",
         "secondary-border-color": "#111827",
         sky: {
           500: "#0EA5E9", // Ensure sky-500 is set correctly
