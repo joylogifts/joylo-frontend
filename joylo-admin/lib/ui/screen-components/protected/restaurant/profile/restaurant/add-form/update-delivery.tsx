@@ -33,6 +33,7 @@ import { UPDATE_RESTAURANT_DELIVERY } from '@/lib/api/graphql';
 import { ApolloError, useMutation } from '@apollo/client';
 import UpdateRestaurantLocation from './update-restaurant-location';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UpdateDelivery({
   stepperProps,
@@ -45,6 +46,7 @@ export default function UpdateDelivery({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -66,8 +68,10 @@ export default function UpdateDelivery({
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Store Delivery Info'),
-        message: t(`Store delivery info has been added successfully`),
+        title: getTranslation('store_delivery_info'),
+        message: getTranslation(
+          `store_delivery_info_has_been_added_successfully`
+        ),
         duration: 3000,
       });
 
@@ -89,8 +93,8 @@ export default function UpdateDelivery({
     } catch (error) {
       showToast({
         type: 'error',
-        title: t(`Failed to add Store delivery info`),
-        message: t(`Store Creation Failed`),
+        title: getTranslation(`failed_to_add_store_delivery_info`),
+        message: getTranslation(`store_creation_failed_please_select_a_vendor`),
         duration: 2500,
       });
     }
@@ -99,11 +103,11 @@ export default function UpdateDelivery({
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Store delivery info'),
+      title: getTranslation('store_delivery_info'),
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        t(`Store Creation Failed`),
+        getTranslation(`store_creation_failed_please_select_a_vendor`),
       duration: 2500,
     });
   }
@@ -113,7 +117,7 @@ export default function UpdateDelivery({
       <div className="h-full w-full">
         <div className="flex flex-col gap-2">
           <div className="mb-2 flex flex-col">
-            <span className="text-lg">{t('Update Delivery')}</span>
+            <span className="text-lg">{getTranslation('update_delivery')}</span>
           </div>
 
           <div>
@@ -140,7 +144,7 @@ export default function UpdateDelivery({
                         <CustomNumberField
                           min={1}
                           max={99999}
-                          placeholder={t('Min Delivery Fee')}
+                          placeholder={getTranslation('min_delivery_fee')}
                           name="minDeliveryFee"
                           showLabel={true}
                           useGrouping={false}
@@ -162,7 +166,9 @@ export default function UpdateDelivery({
                         <CustomNumberField
                           min={1}
                           max={99999}
-                          placeholder={t("Delivery Distance (In Km's)")}
+                          placeholder={getTranslation(
+                            'delivery_distance_in_kms'
+                          )}
                           name="deliveryDistance"
                           showLabel={true}
                           value={values.deliveryDistance}
@@ -184,8 +190,8 @@ export default function UpdateDelivery({
                         <CustomNumberField
                           min={1}
                           max={99999}
-                          placeholder={t(
-                            "Delivery Fee (per Km's) when delivery distance exceeded"
+                          placeholder={getTranslation(
+                            'delivery_fee_per_kms_when_delivery_distance_exceeded'
                           )}
                           name="deliveryFee"
                           showLabel={true}
@@ -214,7 +220,7 @@ export default function UpdateDelivery({
                       <div className="mt-4 flex justify-end">
                         <CustomButton
                           className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                          label={t('Add')}
+                          label={getTranslation('add')}
                           type="submit"
                           loading={isSubmitting}
                         />

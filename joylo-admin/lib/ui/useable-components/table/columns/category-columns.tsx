@@ -1,14 +1,25 @@
-import { IActionMenuProps, ICategory, ISubCategory, IQueryResult, ISubCategoryByParentIdResponse } from '@/lib/utils/interfaces';
+import {
+  IActionMenuProps,
+  ICategory,
+  ISubCategory,
+  IQueryResult,
+  ISubCategoryByParentIdResponse,
+} from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import TextIconClickable from '../../text-icon-clickable';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
-
-
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface ColumnDefinition {
   headerName: string;
@@ -23,7 +34,10 @@ const SubcategoryCell = ({ categoryId }: { categoryId: string }) => {
     GET_SUBCATEGORIES_BY_PARENT_ID,
     { parentCategoryId: categoryId },
     { enabled: !!categoryId }
-  ) as IQueryResult<ISubCategoryByParentIdResponse | undefined, { parentCategoryId: string }>;
+  ) as IQueryResult<
+    ISubCategoryByParentIdResponse | undefined,
+    { parentCategoryId: string }
+  >;
 
   useEffect(() => {
     if (data?.subCategoriesByParentId) {
@@ -32,7 +46,8 @@ const SubcategoryCell = ({ categoryId }: { categoryId: string }) => {
   }, [data]);
 
   if (loading) return <div className="text-gray-400 text-sm">Loading...</div>;
-  if (!subcategories.length) return <div className="text-gray-400 text-sm italic">None</div>;
+  if (!subcategories.length)
+    return <div className="text-gray-400 text-sm italic">None</div>;
 
   return (
     <div className="space-y-1">
@@ -62,16 +77,15 @@ export const CATEGORY_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
-
-
+  const { getTranslation } = useLangTranslation();
 
   // Define base columns
   const columns: ColumnDefinition[] = [];
 
   if (shopType === 'grocery') {
-    console.log("🚀 ~ shopType:", shopType)
+    console.log('🚀 ~ shopType:', shopType);
     columns.push({
-      headerName: t('Image'),
+      headerName: getTranslation('image'),
       propertyName: 'image',
       body: (item: ICategory) =>
         item.image ? (
@@ -79,25 +93,28 @@ export const CATEGORY_TABLE_COLUMNS = ({
         ) : (
           <></>
         ),
-    })
+    });
   }
-  columns.push({ headerName: t('Title'), propertyName: 'title' })
-  
-  
+  columns.push({ headerName: getTranslation('title'), propertyName: 'title' });
+
   // Add subcategories column if shop type is grocery
   if (shopType === 'grocery') {
     columns.push({
-      headerName: t('Subcategories'),
+      headerName: getTranslation('sub_categories'),
       propertyName: 'subcategories',
-      body: (category: ICategory) => <SubcategoryCell categoryId={category._id} />
+      body: (category: ICategory) => (
+        <SubcategoryCell categoryId={category._id} />
+      ),
     });
     columns.push({
-      headerName: t('Subcategories'),
+      headerName: getTranslation('sub_categories'),
       propertyName: 'subcategories',
-      body: (category: ICategory) => <SubcategoryCell categoryId={category._id} />
+      body: (category: ICategory) => (
+        <SubcategoryCell categoryId={category._id} />
+      ),
     });
   }
-  
+
   // Add actions column
   columns.push({
     propertyName: 'actions',
@@ -115,7 +132,7 @@ export const CATEGORY_TABLE_COLUMNS = ({
                     parentCategoryId: rider._id,
                   })
                 }
-                title={t('Add Sub-Category')}
+                title={getTranslation('add_sub_category')}
                 className="border border-gray-400 border-dashed"
               />
             </div>

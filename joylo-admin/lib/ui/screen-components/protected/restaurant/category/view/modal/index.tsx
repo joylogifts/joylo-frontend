@@ -1,5 +1,6 @@
 // GraphQL
 import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Components
 import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
@@ -24,6 +25,7 @@ export default function SubCategoriesPreiwModal({
 }: ISubCategoriesPreviewModalProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Queries
   const { data: sub_categories_data, loading: sub_categories_loading } =
@@ -45,7 +47,7 @@ export default function SubCategoriesPreiwModal({
       header={() => {
         return (
           <div className="mx-auto font-bold text-gray-700">
-            {t('Child Categories')}
+            {getTranslation('child_categories')}
           </div>
         );
       }}
@@ -55,7 +57,7 @@ export default function SubCategoriesPreiwModal({
           <InputSkeleton />
         ) : !sub_categories_data?.subCategoriesByParentId?.length ? (
           <li className="my-1 font-semibold text-red-600">
-            {t('No sub-categories to show')}
+            {getTranslation('no_sub_categories_to_show')}
           </li>
         ) : (
           sub_categories_data?.subCategoriesByParentId?.map((sub_ctg) => {

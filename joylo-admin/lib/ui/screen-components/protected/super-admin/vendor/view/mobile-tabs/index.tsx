@@ -1,4 +1,5 @@
 // Interface
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IVendorMobileTabsComponentProps } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
 
@@ -8,6 +9,8 @@ export default function VendorMobilesTabs({
 }: IVendorMobileTabsComponentProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
+
   return (
     <div className="flex border-b bg-gray-100 sm:hidden">
       <button
@@ -18,7 +21,7 @@ export default function VendorMobilesTabs({
         }`}
         onClick={() => setActiveTab('vendors')}
       >
-        {t('Vendors')}
+        {getTranslation('vendors')}
       </button>
       <button
         className={`flex-1 px-4 py-2 text-center ${
@@ -28,7 +31,7 @@ export default function VendorMobilesTabs({
         }`}
         onClick={() => setActiveTab('restaurants')}
       >
-        {t('Stores')}
+        {getTranslation('stores')}
       </button>
     </div>
   );

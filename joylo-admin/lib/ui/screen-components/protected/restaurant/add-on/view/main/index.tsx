@@ -34,6 +34,7 @@ import { GET_ADDONS_BY_RESTAURANT_ID } from '@/lib/api/graphql/queries/addon';
 // Context
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OptionMain({
   setIsAddAddonVisible,
@@ -45,6 +46,7 @@ export default function OptionMain({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
   // State - Table
@@ -99,8 +101,8 @@ export default function OptionMain({
   function onErrorFetchAddonsByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Addons Fetch'),
-      message: t('Addons fetch failed'),
+      title: getTranslation('addons_fetch'),
+      message: getTranslation('addons_fetch_failed'),
       duration: 2500,
     });
   }
@@ -108,7 +110,7 @@ export default function OptionMain({
   // Constants
   const menuItems: IActionMenuItem<IAddon>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: IAddon) => {
         if (data) {
           setIsAddAddonVisible(true);
@@ -118,7 +120,7 @@ export default function OptionMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IAddon) => {
         if (data) {
           setDeleteId(data._id);
@@ -158,15 +160,15 @@ export default function OptionMain({
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Delete Add-on'),
-                message: t('Add-on has been deleted successfully'),
+                title: getTranslation('delete_add_on'),
+                message: getTranslation('add_on_has_been_deleted_successfully'),
                 duration: 3000,
               });
               setDeleteId('');
             },
           });
         }}
-        message={t('Are you sure you want to delete this Add-on?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_add_on')}
       />
     </div>
   );

@@ -16,12 +16,13 @@ import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 
 // Interfaces
 import { IPaymentMethod } from '@/lib/utils/interfaces/payment.card.interface';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function PaymentMain() {
-
   // Hooks
   const { SERVER_URL } = useConfiguration();
-  const t = useTranslations()
+  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Contexts
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
@@ -47,8 +48,8 @@ export default function PaymentMain() {
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('Stripe Payment'),
-        message: t('Error connecting to Stripe'),
+        title: getTranslation('stripe_payment'),
+        message: getTranslation('error_connecting_to_stripe'),
       });
     } finally {
       setSubmittingMethod(null);

@@ -1,11 +1,23 @@
 import { TTextCase } from '../types';
 
-const toTitleCase = (str: string) => {
-  return str
-    .toLowerCase()
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+const toTitleCase = (str: string | Record<string, string>) => {
+
+  if (!str) return '';
+
+  if (typeof str === 'string') {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  } else {
+    // The select language must be passed to it
+    return str['en']
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 };
 
 export const toTextCase = (text: string, type: TTextCase): string => {

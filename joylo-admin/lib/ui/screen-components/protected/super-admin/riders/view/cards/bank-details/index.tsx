@@ -6,14 +6,16 @@ import { Skeleton } from 'primereact/skeleton';
 
 // Localization
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const BankDetails = ({ loading, rider }: IRiderDetailsProps) => {
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   return (
     <div className="flex flex-col gap-2 border rounded-lg overflow-hidden">
       <header className="bg-[#F4F4F5] px-6 py-3 border-b-[1px] text-lg font-medium">
-        {t('Bank Details')}
+        {getTranslation('bank_details')}
       </header>
 
       {/* columns */}
@@ -21,7 +23,7 @@ const BankDetails = ({ loading, rider }: IRiderDetailsProps) => {
         {/* left-column */}
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
-            <span className="text-xs">{t('Bank Name')}</span>
+            <span className="text-xs">{getTranslation('bank_name')}</span>
             <span className="font-medium">
               {loading ? (
                 <Skeleton height="1.5rem" />
@@ -31,7 +33,7 @@ const BankDetails = ({ loading, rider }: IRiderDetailsProps) => {
             </span>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-xs">{t('Account Name')}</span>
+            <span className="text-xs">{getTranslation('account_name')}</span>
             <span className="font-medium">
               {loading ? (
                 <Skeleton height="1.5rem" />
@@ -41,7 +43,9 @@ const BankDetails = ({ loading, rider }: IRiderDetailsProps) => {
             </span>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-xs">{t('BSB / IBAN / Swift Code')}</span>
+            <span className="text-xs">
+              {getTranslation('bsb_iban_swift_code')}
+            </span>
             <span className="font-medium ">
               {loading ? (
                 <Skeleton height="1.5rem" />
@@ -55,7 +59,7 @@ const BankDetails = ({ loading, rider }: IRiderDetailsProps) => {
         {/* right-column */}
         <div className="flex pl-5 flex-col gap-5">
           <div className="flex flex-col gap-1">
-            <span className="text-xs">{t('Account Name')}</span>
+            <span className="text-xs">{getTranslation('account_name')}</span>
             <span className="font-medium">
               {loading ? (
                 <Skeleton height="1.5rem" />
@@ -65,7 +69,7 @@ const BankDetails = ({ loading, rider }: IRiderDetailsProps) => {
             </span>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-xs">{t('Account No')}</span>
+            <span className="text-xs">{getTranslation('account_number')}</span>
             <span className="font-medium">
               {loading ? (
                 <Skeleton height="1.5rem" />

@@ -30,6 +30,7 @@ import { EDIT_VENDOR } from '@/lib/api/graphql';
 // Icons
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IVendorForm = {
   name: '',
@@ -45,6 +46,7 @@ const initialValues: IVendorForm = {
 export default function VendorUpdateForms() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -85,8 +87,8 @@ export default function VendorUpdateForms() {
 
       showToast({
         type: 'success',
-        title: t('Edit Vendor'),
-        message: t(`Vendor has been edited successfully`),
+        title: getTranslation('edit_vendor'),
+        message: getTranslation(`vendor_has_been_edited_successfully`),
         duration: 3000,
       });
       // setIsUpdateProfileVisible(false);
@@ -95,8 +97,8 @@ export default function VendorUpdateForms() {
 
       showToast({
         type: 'error',
-        title: t(`Edit Vendor`),
-        message: t(`Vendor Edit Failed`),
+        title: getTranslation('edit_vendor'),
+        message: getTranslation(`vendor_edit_failed`),
         duration: 2500,
       });
     }
@@ -104,11 +106,11 @@ export default function VendorUpdateForms() {
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: t(`Edit Vendor`),
+      title: getTranslation('edit_vendor'),
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        t(`Vendor Edit Failed`),
+        getTranslation(`vendor_edit_failed`),
       duration: 2500,
     });
   }
@@ -165,7 +167,7 @@ export default function VendorUpdateForms() {
                                   profileImage ||
                                   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWpobWs-3hvPvk690kT3zKFY7BVXScJfLomw&s'
                                 }
-                                alt={t('profile')}
+                                alt={getTranslation('profile')}
                                 className="h-full w-full object-cover"
                                 width={120}
                                 height={120}
@@ -192,14 +194,14 @@ export default function VendorUpdateForms() {
                           <div className="border-t border-[#E4E4E7] pt-[32px] max-[991px]:pt-[20px]">
                             <div>
                               <h3 className="pb-[32px] text-[20px] font-semibold text-[#18181B] max-[991px]:pb-[8px]">
-                                {t('Personal Information')}
+                                {getTranslation('personal_information')}
                               </h3>
                             </div>
                           </div>
                           <div className="!mb-8 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
                             <div>
                               <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                                {t('First Name')}
+                                {getTranslation('first_name')}
                               </label>
                               <CustomTextField
                                 type="text"
@@ -224,7 +226,7 @@ export default function VendorUpdateForms() {
 
                             <div>
                               <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                                {t('Last Name')}
+                                {getTranslation('last_name')}
                               </label>
                               <CustomTextField
                                 type="text"
@@ -239,7 +241,7 @@ export default function VendorUpdateForms() {
                             </div>
                             <div>
                               <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                                {t('Email')}
+                                {getTranslation('email')}
                               </label>
                               <CustomTextField
                                 type="email"
@@ -264,7 +266,7 @@ export default function VendorUpdateForms() {
 
                             <div>
                               <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                                {t('Phone')}
+                                {getTranslation('phone')}
                               </label>
                               <CustomPhoneTextField
                                 mask="999-999-9999"
@@ -297,7 +299,7 @@ export default function VendorUpdateForms() {
                           <div className="border-t border-[#E4E4E7] pt-[32px] max-[991px]:pt-[20px]">
                             <div>
                               <h3 className="pb-[32px] text-[20px] font-semibold text-[#18181B] max-[991px]:pb-[20px]">
-                                {t('Change Password')}
+                                {getTranslation('change_password')}
                               </h3>
                             </div>
                           </div>
@@ -305,7 +307,7 @@ export default function VendorUpdateForms() {
                           <div className="!mt-0 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
                             <div>
                               <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                                {t('Current Password')}
+                                {getTranslation('current_password')}
                               </label>
                               <CustomPasswordTextField
                                 autoComplete="new-password"
@@ -331,7 +333,7 @@ export default function VendorUpdateForms() {
                             <div>
                               <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
                                 {' '}
-                                {t('New Password')}
+                                {getTranslation('new_password')}
                               </label>
                               <CustomPasswordTextField
                                 autoComplete="new-password"
@@ -357,7 +359,7 @@ export default function VendorUpdateForms() {
                           <div className="mt-4 flex justify-end">
                             <CustomButton
                               className="h-10 w-[65px] border-gray-300 bg-[#18181B] text-center text-[#FAFAFA]"
-                              label={t('Save')}
+                              label={getTranslation('save')}
                               type="submit"
                               loading={isSubmitting}
                             />

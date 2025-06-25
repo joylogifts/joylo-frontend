@@ -23,12 +23,14 @@ import DashboardStatsTableSkeleton from '@/lib/ui/useable-components/custom-skel
 // Hooks
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantStatesTable({
   dateFilter,
 }: IDashboardRestaurantStatesTableComponentsProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { CURRENCY_CODE } = useConfiguration();
 
   // Context
@@ -79,7 +81,9 @@ export default function RestaurantStatesTable({
         return (
           <>
             <div className="flex flex-col space-y-2">
-              <HeaderText text={t(DASHBOARD_PAYMENT_METHOD[key])} />
+              <HeaderText
+                text={getTranslation(DASHBOARD_PAYMENT_METHOD[key])}
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
                 {salesDetailsLoading ? (
                   <div className="flex justify-center items-center">

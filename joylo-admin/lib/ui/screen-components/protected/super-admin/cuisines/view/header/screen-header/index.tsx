@@ -1,4 +1,5 @@
 // Components
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import HeaderText from '@/lib/ui/useable-components/header-text';
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
@@ -14,16 +15,17 @@ export default function CuisineScreenHeader({
 }: ICuisineScreenHeaderProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   return (
     <div className="sticky top-0 z-10 w-full flex-shrink-0 bg-white p-3 shadow-sm">
       <div className="flex w-full justify-between">
-        <HeaderText text={t('Cuisines')} />
+        <HeaderText text={getTranslation('cuisines')} />
         <TextIconClickable
           icon={faAdd}
           iconStyles={{ color: 'white' }}
           onClick={handleButtonClick}
-          title={t('Add Cuisines')}
+          title={getTranslation('add_cuisines')}
           className="rounded border-gray-300 bg-black text-white sm:w-auto"
         />
       </div>

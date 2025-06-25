@@ -16,6 +16,7 @@ import {
 // Icons
 import {
   faCog,
+  faGlobe,
   faHome,
   faSliders,
   faUpRightFromSquare,
@@ -29,6 +30,7 @@ import useCheckAllowedRoutes from '@/lib/hooks/useCheckAllowedRoutes';
 import SidebarItem from './side-bar-item';
 import { useTranslations } from 'next-intl';
 import { faHeadset } from '@fortawesome/free-solid-svg-icons/faHeadset';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 function SuperAdminSidebar({ children }: IGlobalComponentProps) {
   // Contexts
@@ -54,6 +56,7 @@ function SuperAdminSidebar({ children }: IGlobalComponentProps) {
 export default function MakeSidebar() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Contexts
   const { isSuperAdminSidebarVisible } =
@@ -61,8 +64,8 @@ export default function MakeSidebar() {
 
   const navBarItems: ISidebarMenuItem[] = [
     {
-      text: 'My Website',
-      label: t('My Website'),
+      text: getTranslation('my_website'),
+      label: getTranslation('my_website'),
       route: 'https://joylo.app/',
       isParent: true,
       icon: faUpRightFromSquare,
@@ -70,47 +73,47 @@ export default function MakeSidebar() {
       shouldOpenInNewTab: true,
     },
     {
-      text: 'Home',
-      label: t('Home'),
+      text: getTranslation('home'),
+      label: getTranslation('home'),
       route: '/home',
       isParent: true,
       icon: faHome,
       isClickable: true,
     },
     {
-      text: 'General',
-      label: t('General'),
+      text: getTranslation('general'),
+      label: getTranslation('general'),
       route: '/general',
       isParent: true,
       icon: faCog,
       subMenu: useCheckAllowedRoutes([
         {
-          text: 'Vendors',
-          label: t('Vendors'),
+          text: getTranslation('vendors'),
+          label: getTranslation('vendors'),
           route: '/general/vendors',
           isParent: false,
         },
         {
-          text: 'Stores',
-          label: t('Stores'),
+          text: getTranslation('stores'),
+          label: getTranslation('stores'),
           route: '/general/stores',
           isParent: false,
         },
         {
-          text: 'Riders',
-          label: t('Riders'),
+          text: getTranslation('riders'),
+          label: getTranslation('riders'),
           route: '/general/riders',
           isParent: false,
         },
         {
-          text: 'Users',
-          label: t('Users'),
+          text: getTranslation('users'),
+          label: getTranslation('users'),
           route: '/general/users',
           isParent: false,
         },
         {
-          text: 'Staff',
-          label: t('Staff'),
+          text: getTranslation('staff'),
+          label: getTranslation('staff'),
           route: '/general/staff',
           isParent: false,
         },
@@ -120,64 +123,63 @@ export default function MakeSidebar() {
       },
     },
     {
-      text: 'Management',
-      label: t('Management'),
+      text: getTranslation('management'),
+      label: getTranslation('management'),
       route: '/management',
       isParent: true,
       icon: faSliders,
       subMenu: useCheckAllowedRoutes([
         {
-          text: 'Configuration',
-          label: t('Configuration'),
+          text: getTranslation('configuration'),
+          label: getTranslation('configuration'),
           route: '/management/configurations',
           isParent: false,
         },
         {
-          text: 'Orders',
-          label: t('Orders'),
+          text: getTranslation('orders'),
+          label: getTranslation('orders'),
           route: '/management/orders',
           isParent: false,
         },
         {
-          text: 'Coupons',
-          label: t('Coupons'),
+          text: getTranslation('coupons'),
+          label: getTranslation('coupons'),
           route: '/management/coupons',
           isParent: false,
         },
         {
-          text: 'Cuisine',
-          label: t('Cuisine'),
+          text: getTranslation('cuisine'),
+          label: getTranslation('cuisine'),
           route: '/management/cuisines',
           isParent: false,
         },
         {
-          text: 'Shop Type',
-          label: t('ShopType'),
+          text: getTranslation('shop_type'),
+          label: getTranslation('shop_type'),
           route: '/management/shop-types',
           isParent: false,
         },
         {
-          text: 'Banners',
-          label: t('Banners'),
+          text: getTranslation('banners'),
+          label: getTranslation('banners'),
           route: '/management/banners',
           isParent: false,
         },
         {
-          text: 'Tipping',
-          label: t('Tipping'),
+          text: getTranslation('tipping'),
+          label: getTranslation('tipping'),
           route: '/management/tippings',
           isParent: false,
         },
         {
-          text: 'Commission Rate',
-          label: t('Commission Rate'),
+          text: getTranslation('commission_rate'),
+          label: getTranslation('commission_rate'),
           route: '/management/commission-rates',
           isParent: false,
         },
-
         {
-          text: 'Notification',
-          label: t('Notification'),
+          text: getTranslation('notification'),
+          label: getTranslation('notification'),
           route: '/management/notifications',
           isParent: false,
         },
@@ -187,23 +189,27 @@ export default function MakeSidebar() {
       },
     },
     {
-      text: t('Wallet'),
+      text: getTranslation('wallet'),
+      label: getTranslation('wallet'),
       route: '/wallet',
       isParent: true,
       icon: faWallet,
       subMenu: useCheckAllowedRoutes([
         {
-          text: t('Transaction History'),
+          text: getTranslation('transaction_history'),
+          label: getTranslation('transaction_history'),
           route: '/wallet/transaction-history',
           isParent: false,
         },
         {
-          text: 'Withdrawal Request',
+          text: getTranslation('withdrawal_request'),
+          label: getTranslation('withdrawal_request'),
           route: '/wallet/withdraw-requests',
           isParent: false,
         },
         {
-          text: t('Earnings'),
+          text: getTranslation('earnings'),
+          label: getTranslation('earnings'),
           route: '/wallet/earnings',
           isParent: false,
         },
@@ -213,8 +219,16 @@ export default function MakeSidebar() {
       },
     },
     {
-      text: 'CustomerSupport',
-      label: t('CustomerSupport'),
+      label: getTranslation('language_managment'),
+      text: getTranslation('language_managment'),
+      route: '/language-management',
+      isParent: true,
+      icon: faGlobe,
+      isClickable: true,
+    },
+    {
+      text: getTranslation('customer_support'),
+      label: getTranslation('customer_support'),
       route: '/customerSupport',
       icon: faHeadset,
       isClickable: true,

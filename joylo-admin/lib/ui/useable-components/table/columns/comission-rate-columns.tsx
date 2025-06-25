@@ -12,6 +12,7 @@ import {
   IRestaurantResponse,
 } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const COMMISSION_RATE_COLUMNS = ({
   handleSave,
@@ -20,16 +21,17 @@ export const COMMISSION_RATE_COLUMNS = ({
 }: ICommissionColumnProps & { loadingRestaurant: string | null }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   return [
     {
-      headerName: t('Name'),
+      headerName: getTranslation('name'),
       propertyName: 'name',
       body: (restaurant: IRestaurantResponse) => (
         <span style={{ fontWeight: 'bold' }}>{restaurant.name}</span>
       ),
     },
     {
-      headerName: t('Set Commission Rate'),
+      headerName: getTranslation('set_commission_rate'),
       propertyName: 'commissionRate',
       body: (restaurant: IRestaurantResponse) => (
         <Formik
@@ -66,7 +68,7 @@ export const COMMISSION_RATE_COLUMNS = ({
       ),
     },
     {
-      headerName: t('Actions'),
+      headerName: getTranslation('actions'),
       propertyName: 'action',
       body: (restaurant: IRestaurantResponse) => (
         <Formik initialValues={{}} onSubmit={() => handleSave(restaurant._id)}>
@@ -75,7 +77,7 @@ export const COMMISSION_RATE_COLUMNS = ({
               <CustomButton
                 type="submit"
                 className="mt-2 flex h-10 w-24 rounded-md border border-gray-500 bg-white px-4 text-black transition-colors duration-200 hover:bg-black hover:text-white"
-                label={t('Save')}
+                label={getTranslation('save')}
                 rounded={false}
                 loading={loadingRestaurant === restaurant._id || isSubmitting}
                 disabled={loadingRestaurant === restaurant._id || isSubmitting}

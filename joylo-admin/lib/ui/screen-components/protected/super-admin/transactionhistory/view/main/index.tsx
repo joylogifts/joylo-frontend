@@ -27,10 +27,12 @@ import { generateSkeletonTransactionHistory } from '@/lib/utils/dummy';
 import TransactionDetailModal from '@/lib/ui/useable-components/popup-menu/transaction-history-modal.module';
 import { useTranslations } from 'next-intl';
 import useDebounce from '@/lib/hooks/useDebounce';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function TransactionHistoryMain() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // State
   const [selectedTransactions, setSelectedTransactions] = useState<
@@ -91,7 +93,7 @@ export default function TransactionHistoryMain() {
   // Action menu items
   const menuItems: IActionMenuItem<ITransactionHistory>[] = [
     {
-      label: t('View Details'),
+      label: getTranslation('view_details'),
       command: (data?: ITransactionHistory) => {
         if (data) {
           setSelectedTransaction(data);

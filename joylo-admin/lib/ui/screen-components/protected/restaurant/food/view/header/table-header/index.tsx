@@ -1,4 +1,5 @@
 // Custom Components
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
@@ -11,6 +12,7 @@ export default function FoodsTableHeader({
 }: IFoodTableHeaderProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   return (
     <div className="mb-4 flex flex-col gap-6">
@@ -23,7 +25,7 @@ export default function FoodsTableHeader({
             showLabel={false}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
           />
         </div>
       </div>

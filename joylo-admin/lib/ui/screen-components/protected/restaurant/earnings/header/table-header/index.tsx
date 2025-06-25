@@ -8,6 +8,7 @@ import {
   PaymentMethodEnum,
 } from '@/lib/utils/interfaces/earnings.interface';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function EarningRestaurantTableHeader({
   globalFilterValue,
@@ -17,21 +18,22 @@ export default function EarningRestaurantTableHeader({
 }: IEarningTableHeaderProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [errors, setErrors] = useState({ startDate: '', endDate: '' });
 
   const orderTypes = [
-    { label: t('All'), value: OrderTypeEnum.ALL },
-    { label: t('Delivery'), value: OrderTypeEnum.RIDER },
-    { label: t('Pickup'), value: OrderTypeEnum.STORE },
+    { label: getTranslation('all'), value: OrderTypeEnum.ALL },
+    { label: getTranslation('delivery'), value: OrderTypeEnum.RIDER },
+    { label: getTranslation('pickup'), value: OrderTypeEnum.STORE },
   ];
 
   const paymentTypes = [
-    { label: t('All'), value: PaymentMethodEnum.ALL },
-    { label: t('COD'), value: PaymentMethodEnum.COD },
-    { label: t('PayPal'), value: PaymentMethodEnum.PAYPAL },
-    { label: t('Stripe'), value: PaymentMethodEnum.STRIPE },
+    { label: getTranslation('all'), value: PaymentMethodEnum.ALL },
+    { label: getTranslation('cod'), value: PaymentMethodEnum.COD },
+    { label: getTranslation('paypal'), value: PaymentMethodEnum.PAYPAL },
+    { label: getTranslation('stripe'), value: PaymentMethodEnum.STRIPE },
   ];
 
   const handleStartDateChange = (e: { value: Date | null }) => {
@@ -42,7 +44,7 @@ export default function EarningRestaurantTableHeader({
     ) {
       setErrors((prev) => ({
         ...prev,
-        startDate: `${t('Start date cannot be after the end date')}.`,
+        startDate: `${getTranslation('start_date_cannot_be_after_the_end_date')}.`,
       }));
       return;
     }
@@ -58,7 +60,7 @@ export default function EarningRestaurantTableHeader({
     ) {
       setErrors((prev) => ({
         ...prev,
-        endDate: `${t('End date cannot be before the start date')}.`,
+        endDate: `${getTranslation('end_date_cannot_be_before_the_start_date')}.`,
       }));
       return;
     }
@@ -75,13 +77,13 @@ export default function EarningRestaurantTableHeader({
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Search')}
+            placeholder={getTranslation('search')}
           />
         </span>
         <div className="flex flex-col">
           <Calendar
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-sm"
-            placeholder={t('Start Date')}
+            placeholder={getTranslation('start_date')}
             value={
               dateFilters.startingDate
                 ? new Date(dateFilters.startingDate)
@@ -100,7 +102,7 @@ export default function EarningRestaurantTableHeader({
         <div className="flex flex-col">
           <Calendar
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-sm"
-            placeholder={t('End Date')}
+            placeholder={getTranslation('end_date')}
             value={
               dateFilters.endingDate ? new Date(dateFilters.endingDate) : null
             }
@@ -121,7 +123,7 @@ export default function EarningRestaurantTableHeader({
           onChange={(e) =>
             setDateFilters((prev) => ({ ...prev, orderType: e.value }))
           }
-          placeholder={`${t('Select')} ${t('Order')} ${t('Type')}`}
+          placeholder={`${getTranslation('select')} ${getTranslation('order')} ${getTranslation('type')}`}
         />
         <Dropdown
           className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3 text-sm"
@@ -130,7 +132,7 @@ export default function EarningRestaurantTableHeader({
           onChange={(e) =>
             setDateFilters((prev) => ({ ...prev, paymentMethod: e.value }))
           }
-          placeholder={`${t('Select')} ${t('Payment Method')})`}
+          placeholder={`${getTranslation('select')} ${getTranslation('payment_method')})`}
         />
       </div>
     </div>

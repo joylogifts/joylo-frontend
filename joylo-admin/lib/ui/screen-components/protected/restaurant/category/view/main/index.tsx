@@ -37,6 +37,7 @@ import CategoryTableHeader from '../header/table-header';
 import { GET_SUBCATEGORIES } from '@/lib/api/graphql/queries/sub-categories';
 import SubCategoriesPreiwModal from '../modal';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryMain({
   setIsAddCategoryVisible,
@@ -57,11 +58,12 @@ export default function CategoryMain({
   } = useContext(RestaurantLayoutContext);
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
   const shopType = restaurantLayoutContextData?.shopType || '';
-  console.log("🚀 ~ shopType:", shopType)
+  console.log('🚀 ~ shopType:', shopType);
   // console.log("🚀 ~ restaurantLayoutContextData:", restaurantLayoutContextData)
 
   // Hooks
   const { showToast } = useToast();
+  const { getTranslation } = useLangTranslation();
 
   // State - Table
   const [deleteId, setDeleteId] = useState('');
@@ -89,11 +91,13 @@ export default function CategoryMain({
       onError: (error) => {
         showToast({
           type: 'error',
-          title: t('Sub-Categories'),
+          title: getTranslation('sub-categories'),
           message:
             error.clientErrors[0].message ||
             error.graphQLErrors[0].message ||
-            t('An error occured while fetching the sub-categories'),
+            getTranslation(
+              'an_error_occured_while_fetching_the_sub_categories'
+            ),
         });
       },
     }) as IQueryResult<ISubCategoryResponse | undefined, undefined>;
@@ -134,8 +138,8 @@ export default function CategoryMain({
   function onErrorFetchCategoriesByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Category Fetch'),
-      message: t('Categories fetch failed'),
+      title: getTranslation('category_fetch'),
+      message: getTranslation('categories_fetch_failed'),
       duration: 2500,
     });
   }
@@ -143,7 +147,7 @@ export default function CategoryMain({
   // Constants
   const menuItems: IActionMenuItem<ICategory>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: ICategory) => {
         if (data) {
           setIsAddCategoryVisible(true);
@@ -159,7 +163,7 @@ export default function CategoryMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: ICategory) => {
         if (data) {
           setDeleteId(data._id);
@@ -169,16 +173,16 @@ export default function CategoryMain({
     ...(shopType === 'grocery'
       ? [
           {
-            label: t('View Sub-Categories'),
+            label: getTranslation('view_sub_categories'),
             command: (data?: ICategory) => {
               if (data && data._id) {
                 handleCategoryRowClick(data?._id);
               } else {
                 showToast({
                   type: 'error',
-                  title: t('View Sub-Categories'),
-                  message: t(
-                    'An error occured while previewing the related sub-categories'
+                  title: getTranslation('view_sub_categories'),
+                  message: getTranslation(
+                    'an_error_occured_while_previewing_the_related_sub_categories'
                   ),
                 });
               }
@@ -228,8 +232,8 @@ export default function CategoryMain({
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Delete Category'),
-                message: `${t('Category has been deleted successfully')}.`,
+                title: getTranslation('delete_category'),
+                message: `${getTranslation('category_has_been_deleted_successfully')}.`,
                 duration: 3000,
               });
               setDeleteId('');
@@ -237,19 +241,21 @@ export default function CategoryMain({
             onError: (err) => {
               showToast({
                 type: 'error',
-                title: t('Delete Category'),
+                title: getTranslation('delete_category'),
                 message:
                   err.message ||
                   err.clientErrors[0].message ||
                   err.networkError?.message ||
-                  t(
-                    'An error occured while deleteing the category, please try again later'
+                  getTranslation(
+                    'an_error_occured_while_deleteing_the_category_please_try_again_later'
                   ),
               });
             },
           });
         }}
-        message={t('Are you sure you want to delete this category?')}
+        message={getTranslation(
+          'are_you_sure_you_want_to_delete_this_category'
+        )}
       />
     </div>
   );

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Rating } from 'primereact/rating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface ITransactionDetailModalProps {
   visible: boolean;
@@ -19,6 +20,7 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   if (!transaction) return null;
 
@@ -33,15 +35,15 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         {/* Basic Transaction Info */}
         <div className="rounded-lg bg-gray-50 p-4">
           <h3 className="mb-3 text-lg font-semibold">
-            {t('Transaction Information')}
+            {getTranslation('transaction_information')}
           </h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-gray-600">{t('Amount')}</p>
+              <p className="text-gray-600">{getTranslation('amount')}</p>
               <p className="font-medium">{`${transaction?.amountCurrency} ${transaction.amountTransferred.toFixed(2)}`}</p>
             </div>
             <div>
-              <p className="text-gray-600">{t('Status')}</p>
+              <p className="text-gray-600">{getTranslation('status')}</p>
               <span
                 className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium ${
                   transaction.status === 'COMPLETED'
@@ -55,13 +57,13 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
               </span>
             </div>
             <div>
-              <p className="text-gray-600">{t('Date')}</p>
+              <p className="text-gray-600">{getTranslation('date')}</p>
               <p className="font-medium">
                 {new Date(transaction?.createdAt).toLocaleDateString()}
               </p>
             </div>
             <div>
-              <p className="text-gray-600">{t('User Type')}</p>
+              <p className="text-gray-600">{getTranslation('user_type')}</p>
               <p className="font-medium">{transaction?.userType}</p>
             </div>
           </div>
@@ -70,26 +72,34 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         {/* Bank Transfer Details */}
         {transaction.toBank && (
           <div className="rounded-lg bg-gray-50 p-4">
-            <h3 className="mb-3 text-lg font-semibold">{t('Bank Details')}</h3>
+            <h3 className="mb-3 text-lg font-semibold">
+              {getTranslation('bank_details')}
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-gray-600">{t('Account Name')}</p>
+                <p className="text-gray-600">
+                  {getTranslation('account_name')}
+                </p>
                 <p className="font-medium">
                   {transaction?.toBank?.accountName}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Bank Name')}</p>
+                <p className="text-gray-600">{getTranslation('bank_name')}</p>
                 <p className="font-medium">{transaction?.toBank?.bankName}</p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Account Number')}</p>
+                <p className="text-gray-600">
+                  {getTranslation('account_number')}
+                </p>
                 <p className="font-medium">
                   {transaction?.toBank?.accountNumber}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Account Code')}</p>
+                <p className="text-gray-600">
+                  {getTranslation('account_code')}
+                </p>
                 <p className="font-medium">
                   {transaction?.toBank?.accountCode}
                 </p>
@@ -101,18 +111,20 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         {/* Rider Details */}
         {transaction.rider && (
           <div className="rounded-lg bg-gray-50 p-4">
-            <h3 className="mb-3 text-lg font-semibold">{t('Rider Details')}</h3>
+            <h3 className="mb-3 text-lg font-semibold">
+              {getTranslation('rider_details')}
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-gray-600">{t('Name')}</p>
+                <p className="text-gray-600">{getTranslation('name')}</p>
                 <p className="font-medium">{transaction?.rider?.name}</p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Username')}</p>
+                <p className="text-gray-600">{getTranslation('username')}</p>
                 <p className="font-medium">{transaction?.rider?.username}</p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Phone')}</p>
+                <p className="text-gray-600">{getTranslation('phone')}</p>
                 <p className="font-medium">{transaction?.rider?.phone}</p>
               </div>
               {/* <div>
@@ -122,13 +134,17 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
                 </p>
               </div> */}
               <div>
-                <p className="text-gray-600">{t('Current Wallet Amount')}</p>
+                <p className="text-gray-600">
+                  {getTranslation('current_wallet_amount')}
+                </p>
                 <p className="font-medium">
                   ${transaction?.rider?.currentWalletAmount.toFixed(2)}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Total Earnings')}</p>
+                <p className="text-gray-600">
+                  {getTranslation('total_earnings')}
+                </p>
                 <p className="font-medium">
                   ${transaction?.rider?.totalWalletAmount.toFixed(2)}
                 </p>
@@ -140,20 +156,22 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
         {/* Store Details */}
         {transaction.store && (
           <div className="rounded-lg bg-gray-50 p-4">
-            <h3 className="mb-3 text-lg font-semibold">{t('Store Details')}</h3>
+            <h3 className="mb-3 text-lg font-semibold">
+              {getTranslation('store_details')}
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-gray-600">{t('Store Name')}</p>
+                <p className="text-gray-600">{getTranslation('store_name')}</p>
                 <p className="font-medium">{transaction?.store?.name}</p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Store ID')}</p>
+                <p className="text-gray-600">{getTranslation('store_id')}</p>
                 <p className="font-medium">
                   {transaction?.store?.unique_restaurant_id}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Rating')}</p>
+                <p className="text-gray-600">{getTranslation('rating')}</p>
                 <p className="font-medium">
                   <Rating
                     value={transaction?.store?.reviewAverage}
@@ -175,15 +193,15 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Phone')}</p>
+                <p className="text-gray-600">{getTranslation('phone')}</p>
                 <p className="font-medium">{transaction?.store?.phone}</p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Location')}</p>
+                <p className="text-gray-600">{getTranslation('location')}</p>
                 <p className="font-medium">{transaction?.store?.address}</p>
               </div>
               <div>
-                <p className="text-gray-600">{t('Status')}</p>
+                <p className="text-gray-600">{getTranslation('status')}</p>
                 <div className="space-x-2">
                   <span
                     className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -192,7 +210,9 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
                         : 'bg-red-100 text-red-800'
                     }`}
                   >
-                    {transaction?.store?.isActive ? t('Active') : t('Inactive')}
+                    {transaction?.store?.isActive
+                      ? getTranslation('active')
+                      : getTranslation('in_active')}
                   </span>
                   <span
                     className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -202,8 +222,8 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
                     }`}
                   >
                     {transaction?.store?.isAvailable
-                      ? t('Available')
-                      : t('Unavailable')}
+                      ? getTranslation('available')
+                      : getTranslation('unavailable')}
                   </span>
                 </div>
               </div>

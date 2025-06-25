@@ -18,6 +18,7 @@ import { EDIT_RESTAURANT_COUPON } from '@/lib/api/graphql/mutations/coupons-rest
 import { GET_RESTAURANT_COUPONS } from '@/lib/api/graphql/queries/coupons-restaurant';
 import { useTranslations } from 'next-intl';
 import moment from 'moment';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const COUPONS_RESTAURANT_TABLE_COLUMNS = ({
   menuItems,
@@ -26,6 +27,7 @@ export const COUPONS_RESTAURANT_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
@@ -66,12 +68,12 @@ export const COUPONS_RESTAURANT_TABLE_COLUMNS = ({
   };
 
   return [
-    { headerName: t('Name'), propertyName: '__typename' },
-    { headerName: t('Code'), propertyName: 'title' },
-    { headerName: t('Discount'), propertyName: 'discount' },
+    { headerName: getTranslation('name'), propertyName: '__typename' },
+    { headerName: getTranslation('code'), propertyName: 'title' },
+    { headerName: getTranslation('discount'), propertyName: 'discount' },
     // add column for endDate and lifeTimeActive
     {
-      headerName: t('End Date'),
+      headerName: getTranslation('end_date'),
       propertyName: 'endDate',
       body: (coupon: ICouponRestaurantResponse) => (
         <span>
@@ -80,14 +82,16 @@ export const COUPONS_RESTAURANT_TABLE_COLUMNS = ({
       ),
     },
     {
-      headerName: t('Lifetime Active'),
+      headerName: getTranslation('lifetime_active'),
       propertyName: 'lifeTimeActive',
       body: (coupon: ICouponRestaurantResponse) => (
-        <span>{coupon.lifeTimeActive ? t('Yes') : t('No')}</span>
+        <span>
+          {coupon.lifeTimeActive ? getTranslation('yes') : getTranslation('no')}
+        </span>
       ),
     },
     {
-      headerName: t('Enabled'),
+      headerName: getTranslation('enabled'),
       propertyName: 'enabled',
       body: (coupon: ICouponRestaurantResponse) => (
         <CustomInputSwitch

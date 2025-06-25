@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IExtendedOrder } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
 const dateOptions: Intl.DateTimeFormatOptions = {
@@ -13,25 +14,26 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 export const ORDER_SUPER_ADMIN_COLUMNS = () => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   return [
     {
-      headerName: t('Order ID'),
+      headerName: getTranslation('order_id'),
       propertyName: 'orderId',
     },
     {
-      headerName: t('Items'),
+      headerName: getTranslation('items'),
       propertyName: 'itemsTitle',
     },
     {
-      headerName: t('Payment'),
+      headerName: getTranslation('payment'),
       propertyName: 'paymentMethod',
     },
     {
-      headerName: t('Order Status'),
+      headerName: getTranslation('order_status'),
       propertyName: 'orderStatus',
     },
     {
-      headerName: t('Reason'),
+      headerName: getTranslation('reason'),
       propertyName: 'reason',
       body: (rowData: IExtendedOrder) => {
         if (!rowData.reason) {
@@ -41,7 +43,7 @@ export const ORDER_SUPER_ADMIN_COLUMNS = () => {
       },
     },
     {
-      headerName: t('Created At'),
+      headerName: getTranslation('created_at'),
       propertyName: 'DateCreated',
       body: (rowData: IExtendedOrder) => {
         let date: string | number | Date = Number(rowData?.createdAt || null);
@@ -55,7 +57,7 @@ export const ORDER_SUPER_ADMIN_COLUMNS = () => {
       },
     },
     {
-      headerName: t('Delivery Address'),
+      headerName: getTranslation('delivery_address'),
       propertyName: 'OrderdeliveryAddress',
     },
   ];

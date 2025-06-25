@@ -7,6 +7,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import classes from './ratings.header.module.css';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface MenuItem {
   label: string;
@@ -20,6 +21,7 @@ const RatingsHeaderDataView: React.FC<ICommissionRateHeaderProps> = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [searchValue, setSearchValue] = useState<string>('');
@@ -36,9 +38,9 @@ const RatingsHeaderDataView: React.FC<ICommissionRateHeaderProps> = ({
   };
 
   const menuItems: MenuItem[] = [
-    { label: t('1-2 stars'), value: '1-2 stars' },
-    { label: t('3-4 stars'), value: '3-4 stars' },
-    { label: t('5 stars'), value: '5 stars' },
+    { label: getTranslation('1_2_stars'), value: '1-2 stars' },
+    { label: getTranslation('3_4_stars'), value: '3-4 stars' },
+    { label: getTranslation('5_stars'), value: '5 stars' },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +68,7 @@ const RatingsHeaderDataView: React.FC<ICommissionRateHeaderProps> = ({
             maxLength={35}
             className="w-64"
             showLabel={false}
-            placeholder={t('Keyword search')}
+            placeholder={getTranslation('keyword_search')}
             value={searchValue}
             onChange={handleSearch}
           />
@@ -77,7 +79,7 @@ const RatingsHeaderDataView: React.FC<ICommissionRateHeaderProps> = ({
             className="w-44 rounded border border-dotted border-[#E4E4E7] text-black bg-white"
             icon={faAdd}
             iconStyles={{ color: 'black' }}
-            title={t('Filter Ratings')}
+            title={getTranslation('filter_ratings')}
             onClick={(e) => overlayPanelRef.current?.toggle(e)}
           />
         </div>
@@ -115,7 +117,7 @@ const RatingsHeaderDataView: React.FC<ICommissionRateHeaderProps> = ({
               className="mt-3 cursor-pointer text-center text-sm"
               onClick={() => setSelectedActions([])}
             >
-              {t('Clear filters')}
+              {getTranslation('clear_filters')}
             </p>
           </div>
         </OverlayPanel>
