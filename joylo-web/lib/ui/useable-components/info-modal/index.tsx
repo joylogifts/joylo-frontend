@@ -146,7 +146,7 @@ const InfoModal = ({ visible, onHide, restaurantInfo }: IInfoModalProps) => {
           <div className="flex items-center mb-4">
             <FontAwesomeIcon
               icon={faCircle}
-              className={`text-[10px] md:text-xs font-normal md:text-[16px] mr-2 ${restaurantInfo.isAvailable && getCurrentDayHours() !== "Closed" ? "text-green-500" : "text-red-500"}`}
+              className={`text-[10px] md:text-xs font-normal md:text-[16px] mr-2 ${restaurantInfo.isAvailable && getCurrentDayHours() !== "Closed" ? "text-primary-color" : "text-red-500"}`}
             />
             <span>
               {getCurrentDay(currentDay)} {getCurrentDayHours()}

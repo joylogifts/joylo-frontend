@@ -266,7 +266,7 @@ const pollingIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
                     key={msg._id}
                     className={`rounded-lg p-3 max-w-[80%] ${
                       isUserMessage
-                        ? "bg-green-500 text-white ml-auto" 
+                        ? "bg-primary-color text-white ml-auto" 
                         : "bg-gray-100 text-gray-800 mr-auto"
                     }`}
                   >
@@ -308,10 +308,10 @@ const pollingIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
               <button
                 onClick={handleSendMessage}
                 disabled={!message.trim() || isSending}
-                className={`bg-green-500 rounded-r-md p-2 text-white flex items-center justify-center ${
+                className={`bg-primary-color rounded-r-md p-2 text-white flex items-center justify-center ${
                   !message.trim() || isSending
                     ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-green-600"
+                    : "hover:bg-gree"
                 }`}
               >
                 {isSending ? (
