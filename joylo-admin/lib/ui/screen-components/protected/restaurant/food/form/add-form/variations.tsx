@@ -189,6 +189,7 @@ export default function VariationAddForm({
         category: foodContextData?.food?.data.category?.code,
         subCategory: foodContextData?.food?.data.subCategory?.code,
         variations: _variations,
+        isReturnAble: foodContextData?.food?.data.isReturnAble
       };
       delete foodInput.__typename;
       await createFood({

@@ -53,6 +53,7 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons';
 // Components
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
+import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 
 const initialValues: IFoodDetailsForm = {
   _id: null,
@@ -61,6 +62,7 @@ const initialValues: IFoodDetailsForm = {
   image: '',
   category: null,
   subCategory: null,
+  isReturnAble: false 
 };
 export default function FoodDetails({
   stepperProps,
@@ -165,6 +167,7 @@ export default function FoodDetails({
         (foodContextData?.food?.variations ?? []).length > 0
           ? (foodContextData?.food?.variations ?? [])
           : [],
+      isReturnAble: values.isReturnAble
     };
 
     onSetFoodContextData({
@@ -370,6 +373,17 @@ export default function FoodDetails({
                               ? 'red'
                               : '',
                           }}
+                        />
+                      </div>
+
+                      <div>
+                        <CustomInputSwitch
+                        label='Return Able'
+                        isActive={values.isReturnAble}
+                        loading={false}
+                        onChange={(e) => {
+                          setFieldValue('isReturnAble' , e.target.checked)
+                        }}
                         />
                       </div>
 

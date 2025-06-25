@@ -90,6 +90,8 @@ export default function FoodsMain() {
     }
   ) as IQueryResult<IFoodByRestaurantResponse | undefined, undefined>;
 
+
+
   const { data } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
     { id: restaurantId },
@@ -178,6 +180,7 @@ export default function FoodsMain() {
           },
           title: fd.title,
           variations: fd.variations,
+          isReturnAble: fd.isReturnAble
         });
       })
     );

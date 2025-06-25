@@ -16,4 +16,5 @@ export interface IFoodDetailsForm {
   image: string;
   category: IDropdownSelectItem | null;
   subCategory: IDropdownSelectItem | null;
+  isReturnAble: boolean
 }

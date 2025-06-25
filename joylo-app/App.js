@@ -129,7 +129,6 @@ export default function App() {
     requestTrackingPermissions()
   }, [])
 
-  // For Sentry
   useEffect(() => {
     if (SENTRY_DSN) {
       Sentry.init({
@@ -141,6 +140,7 @@ export default function App() {
       });
     }
   }, [SENTRY_DSN]);
+  // For Sentry
   
 
   // For App Update
