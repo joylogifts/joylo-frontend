@@ -20,8 +20,8 @@ const getEnvVars = (env = Updates.channel) => {
     };
   }
   return {
-    // GRAPHQL_URL: "http://10.97.4.84:8001/graphql",
-    // WS_GRAPHQL_URL: "ws://10.97.4.84:8001/graphql",
+    // GRAPHQL_URL: "http://localhost:8001/graphql",
+    // WS_GRAPHQL_URL: "ws://localhost:8001/graphql",
     GRAPHQL_URL: "https://base.clobit.com/graphql",
     WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
 

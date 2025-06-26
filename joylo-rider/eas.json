@@ -13,8 +13,7 @@
       "channel": "staging",
       "distribution": "internal",
       "android": {
-        "buildType": "apk",
-        "resourceClass": "large"
+        "buildType": "apk"
       },
       "env": {
         "SENTRY_AUTH_TOKEN": "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"
