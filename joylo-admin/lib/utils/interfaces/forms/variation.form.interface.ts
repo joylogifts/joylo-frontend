@@ -1,4 +1,3 @@
-import { IDropdownSelectItem } from '../global.interface';
 
 export interface IVariationForm {
   _id?: string;
