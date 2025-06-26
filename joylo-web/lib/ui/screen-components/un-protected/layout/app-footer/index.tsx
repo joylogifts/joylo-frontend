@@ -5,7 +5,7 @@ import FooterLinks from "@/lib/ui/useable-components/Footer/FooterLinks";
 import { usePathname } from "next/navigation";
 
 const partnerWithEnatega = {
-  title: "Partner with Enatega",
+  title: "Partner with Joylo",
   links: [
      { label: "Home", link: "/",internal:true },
     { label: "For Riders", link: "/rider",internal:true },
@@ -17,8 +17,8 @@ const partnerWithEnatega = {
 const products = {
   title: "Products",
   links: [
-    { label: "Enatega Rider", link: "https://play.google.com/store/apps/details?id=com.enatega.multirider&hl=en" , internal:false},
-    { label: "Enatega Restaurant", link: "https://play.google.com/store/apps/details?id=multivendor.enatega.restaurant&hl=en" , internal:false },
+    { label: "Joylo Rider", link: "https://play.google.com/store/apps/details?id=com.enatega.multirider&hl=en" , internal:false},
+    { label: "Joylo Restaurant", link: "https://play.google.com/store/apps/details?id=multivendor.enatega.restaurant&hl=en" , internal:false },
   ],
 };
 

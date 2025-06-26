@@ -6,7 +6,7 @@ import MoveableCard from '@/lib/ui/useable-components/Moveable-Card'
 import TranparentButton from '@/lib/ui/useable-components/Home-Buttons/TranparentButton'
 
 //images 
-import Banner3 from '@/public/assets/images/png/Banner3.png'
+import Banner3 from '@/public/assets/images/png/Banner3.webp'
 
 const GrowBussiness:React.FC = () => {
   const growButon=<TranparentButton text={"Get Started"} link='restaurantInfo'/>

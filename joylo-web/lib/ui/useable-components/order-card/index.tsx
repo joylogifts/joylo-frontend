@@ -110,7 +110,7 @@ const OrderCard: FC<IOrderCardProps> = ({
                 )
               }
               iconColor="black"
-              classNames="bg-[#5AC12F] w-[content] px-4 gap-x-0 text-[12px] font-medium m-0"
+              classNames="bg-[#FFA500] w-[content] px-4 gap-x-0 text-[12px] font-medium m-0"
               handleClick={
                 type === "active" ?
                   () => handleTrackOrder(order)

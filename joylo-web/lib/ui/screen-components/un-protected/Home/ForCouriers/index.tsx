@@ -46,7 +46,7 @@ const Couriers:React.FC = () => {
         image={
           "https://images.ctfassets.net/23u853certza/QScF4OasY8MBTmzrKJfv1/9afd4f8a826825cc097fb36606a81963/3DCourier.webp?w=200&q=90&fm=webp"
         }
-        heading={"Become a Enatega rider"}
+        heading={"Become a Joylo rider"}
         buttonText={"For riders"}
         backColor={"#eaf7fc"}
         link={"/rider"}

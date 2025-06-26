@@ -136,7 +136,7 @@ const VerificationEmailForChangePassword = ({
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onPaste={index === 0 ? handlePaste : undefined}
-              className="w-12 h-12 sm:w-14 sm:h-16 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:border-[#5AC12F] focus:ring-2 focus:ring-[#5AC12F] focus:ring-opacity-20"
+              className="w-12 h-12 sm:w-14 sm:h-16 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:border-[#FFA500] focus:ring-2 focus:ring-[#FFA500] focus:ring-opacity-20"
               autoFocus={index === 0}
             />
           ))}
@@ -147,7 +147,7 @@ const VerificationEmailForChangePassword = ({
 
       <CustomButton
         label={"Continue"}
-        className="bg-[#5AC12F] text-white flex items-center justify-center rounded-full p-3 w-full mb-4 h-14 text-lg font-medium"
+        className="bg-[#FFA500] text-white flex items-center justify-center rounded-full p-3 w-full mb-4 h-14 text-lg font-medium"
         onClick={handleSubmit}
       />
 

@@ -675,7 +675,7 @@ export default function RestaurantDetailsScreen() {
                                                 >
                                                     <button
                                                         type="button"
-                                                        className={`bg-${selectedCategory === _slug ? "[#F3FFEE]" : "gray-100"} text-${selectedCategory === _slug ? "[#5AC12F]" : "gray-600"} rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
+                                                        className={`bg-${selectedCategory === _slug ? "[#FFDBBB]" : "gray-100"} text-${selectedCategory === _slug ? "[#FFA500]" : "gray-600"} rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
                                                         onClick={() =>
                                                             handleScroll(
                                                                 toSlug(

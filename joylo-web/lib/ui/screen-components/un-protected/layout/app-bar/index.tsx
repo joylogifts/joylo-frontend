@@ -309,7 +309,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                   </div>
 
                   {/* Show on medium and up */}
-                  <span className="hidden md:inline text-xs sm:text-sm md:text-base text-[#94e469] font-inter font-normal leading-6 tracking-normal mr-2 truncate">
+                  <span className="hidden md:inline text-xs sm:text-sm md:text-base text-[#FFA500] font-inter font-normal leading-6 tracking-normal mr-2 truncate">
                     {/* {userAddress?.deliveryAddress} */}
                     {fittedAddress(userAddress?.deliveryAddress)}
                   </span>
@@ -319,7 +319,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                       icon={faChevronDown}
                       width={12}
                       hanging={12}
-                      color="#94e469"
+                      color="#FFA500"
                     />
                   </div> 
                 </div>
@@ -351,7 +351,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                     value={filter}
                     onChange={handleSearchInputChange}
                     onFocus={() => setIsSearchFocused(true)}
-                    placeholder="Search in enatega"
+                    placeholder="Search in joylo"
                     className={`
       w-full px-4 py-2 pr-10 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sky-500
       ${!isSearchFocused ? "hidden" : "block"} sm:block
@@ -389,7 +389,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                   )}
                 {!authToken && !isSearchFocused ?
                   <button
-                    className="md:w-20 w-16 h-fit py-3 text-gray-900 md:py-3  px-3 bg-[#5AC12F] rounded text-sm lg:text-[16px] md:text-md "
+                    className="md:w-20 w-16 h-fit py-3 text-gray-900 md:py-3  px-3 bg-[#FFA500] rounded text-sm lg:text-[16px] md:text-md "
                     onClick={handleModalToggle}
                   >
                     <span className="text-white font-semibold text-[16px]">
@@ -404,7 +404,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                   >
                     <div
                       className="h-6 w-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-white font-semibold select-none uppercase"
-                      style={{ backgroundColor: "#94e469" }}
+                      style={{ backgroundColor: "#FFA500" }}
                     >
                       {profile?.name
                         ?.trim()
@@ -462,11 +462,11 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                     <div>
                       {cartCount > 0 && !isSearchFocused && (
                         <div
-                          className="hidden lg:flex items-center justify-between bg-[#5AC12F] rounded-lg px-4 py-3 w-64 cursor-pointer"
+                          className="hidden lg:flex items-center justify-between bg-[#FFA500] rounded-lg px-4 py-3 w-64 cursor-pointer"
                           onClick={() => setIsCartOpen(true)}
                         >
                           <div className="flex items-center gap-2">
-                            <div className="bg-white text-[#5AC12F] rounded-full w-5 h-5 flex items-center justify-center text-[10px] sm:text-[12px]">
+                            <div className="bg-white text-[#FFA500] rounded-full w-5 h-5 flex items-center justify-center text-[10px] sm:text-[12px]">
                               {cartCount}
                             </div>
                             <span className="ml-2 text-white text-[14px] font-semibold sm:text-[14px]">
@@ -506,7 +506,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                         <CartSvg color="black" width={22} height={22} />
                       </div>
                       {cartCount > 0 && authToken && (
-                        <div className="absolute -top-1 -right-1 bg-black text-[#5AC12F] text-[10px] w-5 h-5 rounded-full flex items-center justify-center">
+                        <div className="absolute -top-1 -right-1 bg-black text-[#FFA500] text-[10px] w-5 h-5 rounded-full flex items-center justify-center">
                           {cartCount}
                         </div>
                       )}
@@ -541,7 +541,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
               >
                 <div className="flex gap-4">
                   <LocationSvg width={22} height={22} />
-                  <p className="text-[14px] text-[#94e469]">
+                  <p className="text-[14px] text-[#FFA500]">
                     {userAddress?.deliveryAddress}
                   </p>
                   <div className="sm:flex items-center">
@@ -549,7 +549,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                       icon={faChevronDown}
                       width={12}
                       hanging={12}
-                      color="#94e469"
+                      color="#FFA500"
                     />
                   </div>
                 </div>

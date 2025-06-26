@@ -129,7 +129,7 @@ const InfoModal = ({ visible, onHide, restaurantInfo }: IInfoModalProps) => {
             visible={visible && !!GOOGLE_MAPS_KEY}
           />
           {visible && !GOOGLE_MAPS_KEY && (
-            <div className="w-full h-[360px] flex items-center justify-center bg-gray-100">
+            <div className="w-full h-[360px] flex items-center justify-center FFA500gray-100">
               <p>Map not available</p>
             </div>
           )}
