@@ -5,6 +5,7 @@ import {
   IGlobalTableHeaderProps,
 } from './global.interface';
 import { IOptions } from './options.interface';
+import { ICategory, ISubCategory } from './category.interface';
 
 export interface IAddonHeaderProps extends IGlobalComponentProps {
   setIsAddAddonVisible: (visible: boolean) => void;
@@ -16,10 +17,10 @@ export interface IAddonAddFormComponentProps extends IGlobalComponentProps {
   isAddAddonVisible: boolean;
   onHide: () => void;
   addon: IAddon | null;
-  isAddOptionsVisible?:boolean;
-  setIsAddOptionsVisible?:Dispatch<SetStateAction<boolean>>;
-  option?:IOptions | null;
-  setOption?:Dispatch<SetStateAction<IOptions | null>>;
+  isAddOptionsVisible?: boolean;
+  setIsAddOptionsVisible?: Dispatch<SetStateAction<boolean>>;
+  option?: IOptions | null;
+  setOption?: Dispatch<SetStateAction<IOptions | null>>;
 }
 
 export interface IAddonMainComponentsProps extends IGlobalComponentProps {
@@ -28,6 +29,7 @@ export interface IAddonMainComponentsProps extends IGlobalComponentProps {
 }
 
 /*  */
+
 export interface IAddon {
   _id: string;
   options: string[];
@@ -35,6 +37,11 @@ export interface IAddon {
   description: string;
   quantityMinimum: number;
   quantityMaximum: number;
+  // categoryId?: string;
+  // subCategoryId?: string | null;
+  categoryId?: ICategory | null;
+  subCategoryId?: ISubCategory | null;
+  isActive: boolean;
   __typename: string;
 }
 export interface IAddonByRestaurantResponse {

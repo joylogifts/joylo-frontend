@@ -27,6 +27,8 @@ import { IconButton } from 'react-native-paper'
 import { Text } from 'react-native'
 import { scale } from '../../utils/scaling'
 import { TextField } from 'react-native-material-textfield'
+import { useQuery } from '@apollo/client'
+import { GET_ADDONS_BY_CATEGORY } from '../../apollo/queries'
 
 const { height } = Dimensions.get('window')
 const TOP_BAR_HEIGHT = Math.round(height * 0.08)
@@ -35,23 +37,12 @@ const HEADER_MIN_HEIGHT = TOP_BAR_HEIGHT
 const SCROLL_RANGE = HEADER_MAX_HEIGHT
 
 function ItemDetail(props) {
-  const { food, addons, options, restaurant } = props?.route?.params
+  const { food, addons, restaurant, categoryId, subCategoryId } = props?.route?.params
 
   // States
   const [listZindex, setListZindex] = useState(0)
-  const [isDescriptionVisible, setIsDescriptionVisible] = useState(false)
   const [selectedVariation, setSelectedVariation] = useState({
-    ...food?.variations[0],
-    addons: food?.variations[0].addons?.map((fa) => {
-      const addon = addons?.find((a) => a._id === fa)
-      const addonOptions = addon.options?.map((ao) => {
-        return options?.find((o) => o._id === ao)
-      })
-      return {
-        ...addon,
-        options: addonOptions
-      }
-    })
+    ...food?.variations[0]
   })
   const [selectedAddons, setSelectedAddons] = useState([])
   const [specialInstructions, setSpecialInstructions] = useState('')
@@ -87,6 +78,16 @@ function ItemDetail(props) {
     isRTL: i18n.dir() === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
+
+  // API
+  const { data: addonsByCategory, loading: isAddonsLoading } = useQuery(GET_ADDONS_BY_CATEGORY, {
+    variables: {
+      restaurantId: restaurant,
+      categoryId,
+      subCategoryId
+    },
+    fetchPolicy: 'cache-and-network'
+  })
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
@@ -153,20 +154,25 @@ function ItemDetail(props) {
   }
   function validateButton() {
     if (!selectedVariation) return false
-    const validatedAddons = []
-    selectedVariation?.addons?.forEach((addon) => {
-      const selected = selectedAddons?.find((ad) => ad._id === addon._id)
-      if (!selected && addon?.quantityMinimum === 0) {
-        validatedAddons.push(false)
-      } else if (selected && selected?.options?.length >= addon?.quantityMinimum && selected?.options?.length <= addon?.quantityMaximum) {
-        validatedAddons.push(false)
-      } else validatedAddons.push(true)
-    })
+
+    const validatedAddons =
+      addonsByCategory?.getAddonsByCategory?.map((addon) => {
+        const selected = selectedAddons?.find((ad) => ad._id === addon._id)
+        const isSelected = !!selected
+        const optionCount = selected?.options?.length ?? 0
+        const min = addon?.quantityMinimum ?? 0
+        const max = addon?.quantityMaximum ?? Infinity
+        const isValid = (!isSelected && min === 0) || (isSelected && optionCount >= min && optionCount <= max)
+
+        return !isValid // true means validation failed
+      }) || []
+
     return validatedAddons.every((val) => val === false)
   }
 
   async function onPressAddToCart(quantity) {
     const isValidOrder = validateOrderItem()
+    console.log({ isValidOrder })
     if (isValidOrder) {
       Analytics.track(Analytics.events.ADD_TO_CART, {
         title: food?.title,
@@ -245,17 +251,7 @@ function ItemDetail(props) {
   const onSelectVariation = (variation) => {
     if (variation?._id) {
       setSelectedVariation({
-        ...variation,
-        addons: variation?.addons?.map((fa) => {
-          const addon = addons?.find((a) => a._id === fa)
-          const addonOptions = addon?.options?.map((ao) => {
-            return options?.find((o) => o._id === ao)
-          })
-          return {
-            ...addon,
-            options: addonOptions
-          }
-        })
+        ...variation
       })
     }
   }
@@ -291,36 +287,41 @@ function ItemDetail(props) {
       }, 0)
     })
     return (variation + addons).toFixed(2)
-  }, [selectedVariation, addons])
+  }, [selectedVariation, selectedAddons, addons])
 
   function validateOrderItem() {
     let hasError = false
-    const validatedAddons = selectedVariation?.addons?.map((addon) => {
+    const validatedAddons = addonsByCategory?.getAddonsByCategory?.map((addon) => {
       const selected = selectedAddons?.find((ad) => ad._id === addon._id)
 
-      if (!selected && addon?.quantityMinimum === 0) {
-        addon.error = false
-      } else if (selected && selected?.options?.length >= addon?.quantityMinimum && selected?.options?.length <= addon?.quantityMaximum) {
-        addon.error = false
+      const modifiableAddon = { ...addon } // clone to avoid mutating a frozen object
+      const optionCount = selected?.options?.length ?? 0
+      const min = addon?.quantityMinimum ?? 0
+      const max = addon?.quantityMaximum ?? Infinity
+      const isSelected = !!selected
+
+      if (!isSelected && min === 0) {
+        modifiableAddon.error = false
+      } else if (isSelected && optionCount >= min && optionCount <= max) {
+        modifiableAddon.error = false
       } else {
-        addon.error = true
+        modifiableAddon.error = true
         if (!hasError) {
           hasError = true
-          scrollToError(addon._id, selectedVariation?.addons?.length)
+          scrollToError(addon._id, addonsByCategory?.getAddonsByCategory?.length ?? 0)
         }
       }
-      return addon
+
+      return modifiableAddon
     })
+
     setSelectedVariation({ ...selectedVariation, addons: validatedAddons })
     return !hasError
   }
 
   if (!connect) return <ErrorView />
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <View style={[styles().flex, styles(currentTheme).mainContainer]}>
         <Animated.ScrollView
           ref={scrollViewRef}
@@ -384,18 +385,20 @@ function ItemDetail(props) {
                   />
                 </View>
               )}
-              {selectedVariation?.addons?.map((addon) => (
-                <View key={addon?._id}>
-                  <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
-                  <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
-                </View>
-              ))}
+              {addonsByCategory?.getAddonsByCategory?.map((addon) => {
+                return (
+                  <View key={addon?._id}>
+                    <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
+                    <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
+                  </View>
+                )
+              })}
             </View>
 
             <View style={styles(currentTheme).line}></View>
             <View style={styles(currentTheme).inputContainer}>
               <TitleComponent title={t('specialInstructions')} subTitle={t('anySpecificPreferences')} status={t('optional')} />
-              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} />
+              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} />
             </View>
             {/** frequently bought together */}
             <FrequentlyBoughtTogether itemId={food?._id} restaurantId={restaurant} />
@@ -406,7 +409,7 @@ function ItemDetail(props) {
           <HeadingComponent title={food?.title} price={calculatePrice()} />
         </Animated.View>
         <View style={{ backgroundColor: currentTheme.themeBackground, zIndex: 10 }}>
-          <CartComponent onPress={onPressAddToCart} disabled={validateButton()} />
+          <CartComponent onPress={onPressAddToCart} disabled={!validateButton()} />
         </View>
         <View
           style={{

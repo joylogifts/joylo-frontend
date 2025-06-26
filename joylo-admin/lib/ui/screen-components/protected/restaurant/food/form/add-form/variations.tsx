@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 import { Fieldset } from 'primereact/fieldset';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Context
 import { FoodsContext } from '@/lib/context/restaurant/foods.context';
@@ -11,11 +11,8 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 // Interface and Types
 import {
   IAddon,
-  IAddonByRestaurantResponse,
-  IDropdownSelectItem,
   IFoodNew,
   IFoodVariationsAddRestaurantComponentProps,
-  IQueryResult,
   IVariationForm,
 } from '@/lib/utils/interfaces';
 
@@ -25,8 +22,6 @@ import { onErrorMessageMatcher } from '@/lib/utils/methods';
 import { VariationSchema } from '@/lib/utils/schema';
 
 // Components
-import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
-import CustomMultiSelectComponent from '@/lib/ui/useable-components/custom-multi-select';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
 import AddonAddForm from '../../../add-on/add-form';
@@ -40,7 +35,6 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 import {
   CREATE_FOOD,
   EDIT_FOOD,
-  GET_ADDONS_BY_RESTAURANT_ID,
   GET_FOODS_BY_RESTAURANT_ID,
 } from '@/lib/api/graphql';
 
@@ -48,7 +42,6 @@ import {
 import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Apollo
-import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { useMutation } from '@apollo/client';
 import { useTranslations } from 'next-intl';
 
@@ -56,7 +49,6 @@ const initialFormValuesTemplate: IVariationForm = {
   title: '',
   price: 0,
   discounted: 0,
-  addons: [],
   isOutOfStock: false,
 };
 
@@ -100,7 +92,7 @@ export default function VariationAddForm({
   };
 
   // Query
-  const { data, loading } = useQueryGQL(
+/*   const { data, loading } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
     { id: restaurantId },
     {
@@ -109,7 +101,7 @@ export default function VariationAddForm({
       onCompleted: onFetchAddonsByRestaurantCompleted,
       onError: onErrorFetchAddonsByRestaurant,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>; */
 
   const [createFood] = useMutation(
     foodContextData?.isEditing ? EDIT_FOOD : CREATE_FOOD,
@@ -146,24 +138,24 @@ export default function VariationAddForm({
   );
 
   // Memoized Data
-  const addonsDropdown = useMemo(
+/*   const addonsDropdown = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
         return { label: addon.title, code: addon._id };
       }),
     [data?.restaurant?.addons]
-  );
+  ); */
 
   // API Handlers
-  function onFetchAddonsByRestaurantCompleted() {}
-  function onErrorFetchAddonsByRestaurant() {
-    showToast({
-      type: 'error',
-      title: t('Addons Fetch'),
-      message: t('Addons fetch failed'),
-      duration: 2500,
-    });
-  }
+  // function onFetchAddonsByRestaurantCompleted() {}
+  // function onErrorFetchAddonsByRestaurant() {
+  //   showToast({
+  //     type: 'error',
+  //     title: t('Addons Fetch'),
+  //     message: t('Addons fetch failed'),
+  //     duration: 2500,
+  //   });
+  // }
 
   // Handlers
   const onHandleSubmit = async ({
@@ -171,14 +163,16 @@ export default function VariationAddForm({
   }: {
     variations: IVariationForm[];
   }) => {
+    
     try {
       const _variations = variations.map(
         ({ discounted, ...item }: IVariationForm) => {
           delete item.__typename;
+         
           return {
             ...item,
             discounted: discounted,
-            addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
+            // addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
           };
         }
       );
@@ -204,6 +198,7 @@ export default function VariationAddForm({
         },
       });
     } catch (err) {
+      console.log(err)
       showToast({
         type: 'error',
         title: `${foodContextData?.isEditing ? t('Edit') : t('New')} ${t('Food')}`,
@@ -382,7 +377,7 @@ export default function VariationAddForm({
                                               />
                                             </div>
 
-                                            <div className="col-span-12 sm:col-span-12">
+                                          {/*   <div className="col-span-12 sm:col-span-12">
                                               <CustomMultiSelectComponent
                                                 name={`variations[${index}].addons`}
                                                 placeholder={t('Addons')}
@@ -426,7 +421,7 @@ export default function VariationAddForm({
                                                   }}
                                                 />
                                               </div>
-                                            </div>
+                                            </div> */}
                                           </div>
                                         </Fieldset>
                                       </div>

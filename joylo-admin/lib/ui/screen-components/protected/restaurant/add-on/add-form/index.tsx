@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Core
-import { FieldArray, Form, Formik, FormikErrors } from 'formik';
+import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 
 // Prime React
 import { Sidebar } from 'primereact/sidebar';
@@ -27,16 +29,21 @@ import {
   CREATE_ADDONS,
   EDIT_ADDON,
   GET_ADDONS_BY_RESTAURANT_ID,
+  GET_CATEGORY_BY_RESTAURANT_ID,
   GET_OPTIONS_BY_RESTAURANT_ID,
 } from '@/lib/api/graphql';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import {
   IAddonAddFormComponentProps,
+  ICategory,
+  ICategoryByRestaurantResponse,
   IDropdownSelectItem,
   IOptions,
   IOptionsByRestaurantResponse,
   IQueryResult,
+  ISubCategory,
+  ISubCategoryByParentIdResponse,
 } from '@/lib/utils/interfaces';
 import {
   omitExtraAttributes,
@@ -48,8 +55,12 @@ import { useMutation } from '@apollo/client';
 import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
+import CustomDropdownComponent from '@/lib/ui/useable-components/custom-dropdown';
 
 // State
 const initialFormValuesTemplate: IAddonForm = {
@@ -58,6 +69,8 @@ const initialFormValuesTemplate: IAddonForm = {
   quantityMinimum: 1,
   quantityMaximum: 1,
   options: null,
+  categoryId: null,
+  subCategoryId: null,
 };
 const initialEditFormValuesTemplate: IAddonForm = {
   _id: '',
@@ -66,6 +79,8 @@ const initialEditFormValuesTemplate: IAddonForm = {
   quantityMinimum: 1,
   quantityMaximum: 1,
   options: null,
+  categoryId: null,
+  subCategoryId: null,
 };
 
 export default function AddonAddForm({
@@ -73,19 +88,25 @@ export default function AddonAddForm({
   addon,
   position = 'right',
   isAddAddonVisible,
-
 }: IAddonAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
   const { showToast } = useToast();
   // Context
 
-  const { restaurantLayoutContextData ,   setIsAddOptionsVisible,
+  const {
+    restaurantLayoutContextData,
+    setIsAddOptionsVisible,
     option,
     setOption,
-    isAddOptionsVisible,} = useContext(RestaurantLayoutContext);
+    isAddOptionsVisible,
+  } = useContext(RestaurantLayoutContext);
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
+  const shopType = restaurantLayoutContextData?.shopType || '';
 
+  const formikRef = useRef<FormikProps<any>>(null);
+
+  // States
   const [initialValues, setInitialValues] = useState({
     addons: [
       {
@@ -93,6 +114,8 @@ export default function AddonAddForm({
       },
     ],
   });
+  const [categoryDropDown, setCategoryDropDown] =
+    useState<IDropdownSelectItem>();
 
   // Query
   const { data } = useQueryGQL(
@@ -105,6 +128,55 @@ export default function AddonAddForm({
       onError: onErrorFetchAddonsByRestaurant,
     }
   ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
+
+  // Queries
+  const {
+    data: categoriesData,
+    loading: categoriesLoading
+  } = useQueryGQL(
+    GET_CATEGORY_BY_RESTAURANT_ID,
+    { id: restaurantId ?? '' },
+    {
+      fetchPolicy: 'no-cache',
+      enabled: !!restaurantId,
+    }
+  ) as IQueryResult<ICategoryByRestaurantResponse | undefined, undefined>;
+
+  const {
+    data: subCategoriesData,
+    loading: subCategoriesLoading,
+  } = useQueryGQL(
+    GET_SUBCATEGORIES_BY_PARENT_ID,
+    {
+      parentCategoryId: categoryDropDown?.code,
+    },
+    {
+      enabled: !!categoryDropDown?.code,
+      fetchPolicy: 'cache-and-network',
+    }
+  ) as IQueryResult<
+    ISubCategoryByParentIdResponse | undefined,
+    { parentCategoryId: string }
+  >;
+
+  // Memoized Data
+  const categoriesDropdown = useMemo(
+    () =>
+      categoriesData?.restaurant?.categories.map((category: ICategory) => {
+        return { label: category.title, code: category._id };
+      }),
+    [categoriesData?.restaurant?.categories]
+  );
+
+  const subCategoriesDropdown = useMemo(
+    () =>
+      subCategoriesData?.subCategoriesByParentId.map(
+        (sub_category: ISubCategory) => {
+          return { label: sub_category.title, code: sub_category._id };
+        }
+      ),
+    [categoryDropDown?.code, subCategoriesData]
+  );
 
   // Memoized Constants
   const optionsDropdown = useMemo(
@@ -165,6 +237,8 @@ export default function AddonAddForm({
   function mapOptions(addons: IAddonForm[]) {
     return addons.map((addon) => ({
       ...addon,
+      categoryId: addon.categoryId?.code,
+      subCategoryId: addon.subCategoryId?.code,
       options: addon?.options?.map(
         (option: IDropdownSelectItem) => option.code
       ),
@@ -202,11 +276,22 @@ export default function AddonAddForm({
       : ({} as IAddonForm);
     delete updated_addon.options;
 
+    // Categories/Sub-Catgories
+    const editing_category = categoriesDropdown?.find(
+      (_category) => _category.code === addon.categoryId?._id
+    );
+    setCategoryDropDown(editing_category);
+    const editing_subCategory = subCategoriesDropdown?.find(
+      (_category) => _category.code === addon.subCategoryId?._id
+    );
+
     setInitialValues({
       addons: [
         {
           ...initialFormValuesTemplate,
           ...updated_addon,
+          categoryId: editing_category,
+          subCategoryId: editing_subCategory,
           options: matched_options,
         },
       ],
@@ -236,6 +321,7 @@ export default function AddonAddForm({
 
             <div className="mb-2">
               <Formik
+                innerRef={formikRef}
                 initialValues={initialValues}
                 validationSchema={AddonSchema}
                 onSubmit={handleSubmit}
@@ -309,6 +395,92 @@ export default function AddonAddForm({
                                                   }}
                                                 />
                                               </div>
+
+                                              <div className="col-span-12 sm:col-span-12">
+                                                <label
+                                                  htmlFor="category"
+                                                  className="text-sm font-[500]"
+                                                >
+                                                  {t('Category')}
+                                                </label>
+                                                <Dropdown
+                                                  name={`addons[${index}].categoryId`}
+                                                  value={value.categoryId}
+                                                  placeholder={t(
+                                                    'Select Category'
+                                                  )}
+                                                  className="md:w-20rem p-dropdown-no-box-shadow m-0 h-10 w-full border border-gray-300 p-0 align-middle text-sm focus:shadow-none focus:outline-none"
+                                                  panelClassName="border-gray-200 border-2"
+                                                  onChange={(
+                                                    e: DropdownChangeEvent
+                                                  ) => {
+                                                    handleChange(e);
+                                                    setCategoryDropDown(
+                                                      e.value
+                                                    );
+                                                  }}
+                                                  options={
+                                                    categoriesDropdown ?? []
+                                                  }
+                                                  loading={categoriesLoading}
+                                                  style={{
+                                                    borderColor:
+                                                      onErrorMessageMatcher(
+                                                        'categoryId',
+                                                        _errors[index]
+                                                          ?.categoryId,
+                                                        AddonsErrors
+                                                      )
+                                                        ? 'red'
+                                                        : '',
+                                                  }}
+                                                />
+                                              </div>
+
+                                              {shopType == 'grocery' && (
+                                                <div className="col-span-12 sm:col-span-12">
+                                                  {!subCategoriesLoading ? (
+                                                    <CustomDropdownComponent
+                                                      name={`addons[${index}].subCategoryId`}
+                                                      placeholder={t(
+                                                        'Select Sub-Category'
+                                                      )}
+                                                      showLabel={true}
+                                                      selectedItem={
+                                                        value.subCategoryId ??
+                                                        null
+                                                      }
+                                                      setSelectedItem={
+                                                        setFieldValue
+                                                      }
+                                                      options={
+                                                        subCategoriesDropdown ??
+                                                        []
+                                                      }
+                                                      isLoading={
+                                                        subCategoriesLoading
+                                                      }
+                                                      style={{
+                                                        borderColor:
+                                                          onErrorMessageMatcher(
+                                                            'subCategoryId',
+                                                            _errors[index]
+                                                              ?.subCategoryId
+                                                              ? _errors[index]
+                                                                  ?.subCategoryId
+                                                              : [],
+                                                            AddonsErrors
+                                                          )
+                                                            ? 'red'
+                                                            : '',
+                                                      }}
+                                                    />
+                                                  ) : (
+                                                    <InputSkeleton />
+                                                  )}
+                                                </div>
+                                              )}
+
                                               <div className="col-span-6 sm:col-span-6">
                                                 <CustomNumberField
                                                   name={`addons[${index}].quantityMinimum`}

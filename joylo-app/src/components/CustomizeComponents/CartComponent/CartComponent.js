@@ -56,13 +56,14 @@ function CartComponent(props) {
       </View>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={props?.onPress.bind(this, quantity)}
+          disabled={props?.disabled}
+          onPress={props?.disabled ? null : props?.onPress.bind(this, quantity)}
           style={
             !props?.disabled
               ? styles(currentTheme).btnContainer
               : {
                 ...styles().btnContainer,
-                backgroundColor: currentTheme.main
+                backgroundColor: currentTheme.color2
               }
           }>
           <TextDefault textColor={currentTheme.black} H5 bolder center>

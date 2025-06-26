@@ -12,7 +12,7 @@ export const OptionSchema = Yup.object({
           .matches(/\S/, 'Name cannot be only spaces')
           .required('Required'),
         description: Yup.string()
-          .max(50)
+          .max(500)
           .trim()
           .matches(/\S/, 'Name cannot be only spaces')
           .optional(),

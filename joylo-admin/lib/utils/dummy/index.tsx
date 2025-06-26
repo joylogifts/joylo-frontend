@@ -289,6 +289,7 @@ export const generateDummyAddons = (count: number = 10): IAddon[] => {
       quantityMaximum: 1,
       __typename: 'Addon',
       options: [],
+      isActive: false
     });
   }
 
@@ -509,7 +510,6 @@ export const generateDummyFoods = (count: number = 10): IFoodNew[] => {
       variations: [
         {
           _id: `food_${i + 1}`,
-          addons: [] as IDropdownSelectItem[],
           discounted: 0,
           isOutOfStock: false,
           price: i + 23,

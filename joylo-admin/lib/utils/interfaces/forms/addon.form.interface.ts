@@ -7,6 +7,8 @@ export interface IAddonForm {
   quantityMinimum: number;
   quantityMaximum: number;
   options: IDropdownSelectItem[] | null;
+  categoryId: IDropdownSelectItem | null;
+  subCategoryId?: IDropdownSelectItem | null;
 }
 
 export interface IAddonsErrors {
@@ -16,4 +18,6 @@ export interface IAddonsErrors {
   quantityMinimum: string[];
   quantityMaximum: string[];
   options: string[];
+  categoryId: string[];
+  subCategoryId: string[];
 }

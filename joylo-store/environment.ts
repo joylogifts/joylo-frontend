@@ -20,10 +20,10 @@ const getEnvVars = (env = Updates.channel) => {
     };
   }
   return {
-    // GRAPHQL_URL: "http://localhost:8001/graphql",
-    // WS_GRAPHQL_URL: "ws://localhost:8001/graphql",
-    GRAPHQL_URL: "https://base.clobit.com/graphql",
-    WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
+    GRAPHQL_URL: "http://192.168.100.70:8001/graphql",
+    WS_GRAPHQL_URL: "ws://192.168.100.70:8001/graphql",
+    // GRAPHQL_URL: "https://base.clobit.com/graphql",
+    // WS_GRAPHQL_URL: "wss://base.clobit.com/graphql",
 
     SENTRY_DSN:
       configuration?.restaurantAppSentryUrl ??
