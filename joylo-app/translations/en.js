@@ -645,7 +645,7 @@ export const en = {
   close: 'Close',
   isRTL: false,
   'Instruction for the courier': 'Instruction for the courier',
-  'Instructions': 'Instructions',
+  'Instructions': 'Gift Message',
   Popular: 'Popular',
   Reloading: 'Reloading...',
   "Sorry! we can't deliver to your address.": "Sorry! we can't deliver to your address.",
