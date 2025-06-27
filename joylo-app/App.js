@@ -92,7 +92,6 @@ export default function App() {
       })
       // await permissionForPushNotificationsAsync()
       await getActiveLocation()
-      BackHandler.addEventListener('hardwareBackPress', exitAlert)
       // get stored theme
       // await getStoredTheme()
       setAppIsReady(true)
@@ -100,8 +99,11 @@ export default function App() {
 
     loadAppData()
 
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAlert)
+
+
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', exitAlert)
+      backHandler.remove();
     }
   }, [])
 
@@ -148,22 +150,22 @@ export default function App() {
   useEffect(() => {
     // eslint-disable-next-line no-undef
     if (__DEV__) return
-    ;(async () => {
-      const { isAvailable } = await Updates.checkForUpdateAsync()
-      if (isAvailable) {
-        try {
-          setIsUpdating(true)
-          const { isNew } = await Updates.fetchUpdateAsync()
-          if (isNew) {
-            await Updates.reloadAsync()
+      ; (async () => {
+        const { isAvailable } = await Updates.checkForUpdateAsync()
+        if (isAvailable) {
+          try {
+            setIsUpdating(true)
+            const { isNew } = await Updates.fetchUpdateAsync()
+            if (isNew) {
+              await Updates.reloadAsync()
+            }
+          } catch (error) {
+            console.log('error while updating app', JSON.stringify(error))
+          } finally {
+            setIsUpdating(false)
           }
-        } catch (error) {
-          console.log('error while updating app', JSON.stringify(error))
-        } finally {
-          setIsUpdating(false)
         }
-      }
-    })()
+      })()
   }, [])
 
   // For Push Notification
@@ -255,14 +257,14 @@ export default function App() {
         <ThemeContext.Provider
           // use default theme
           value={{ ThemeValue: theme, dispatch: themeSetter }}
-          // use stored theme
-          // value={{
-          //   ThemeValue: theme,
-          //   dispatch: (action) => {
-          //     themeSetter(action)
-          //     setStoredTheme(action.type) // Save the theme in AsyncStorage when it changes
-          //   }
-          // }}
+        // use stored theme
+        // value={{
+        //   ThemeValue: theme,
+        //   dispatch: (action) => {
+        //     themeSetter(action)
+        //     setStoredTheme(action.type) // Save the theme in AsyncStorage when it changes
+        //   }
+        // }}
         >
           <StatusBar backgroundColor={Theme[theme].menuBar} barStyle={theme === 'Dark' ? 'light-content' : 'dark-content'} />
           <LocationProvider>

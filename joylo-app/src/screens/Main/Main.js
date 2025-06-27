@@ -53,24 +53,19 @@ const GET_CUISINES = gql`
 `
 
 function Main(props) {
-  const Analytics = analytics()
+  const { t, i18n } = useTranslation();
+  const [busy, setBusy] = useState(false);
+  const { isLoggedIn, profile } = useContext(UserContext);
+  const { location, setLocation } = useContext(LocationContext);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const modalRef = useRef(null);
+  const navigation = useNavigation();
+  const themeContext = useContext(ThemeContext);
+  const { getCurrentLocation } = useLocation();
+  const { getAddress } = useGeocoding();
+  const [hasActiveOrders, setHasActiveOrders] = useState(false);
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
-  const { t, i18n } = useTranslation()
-  const [busy, setBusy] = useState(false)
-  const { isLoggedIn, profile } = useContext(UserContext)
-  const { location, setLocation } = useContext(LocationContext)
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const modalRef = useRef(null)
-  const navigation = useNavigation()
-  const themeContext = useContext(ThemeContext)
-  const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
-    ...theme[themeContext.ThemeValue]
-  }
-  const { getCurrentLocation } = useLocation()
-  const { getAddress } = useGeocoding()
-  const locationData = location
-  const [hasActiveOrders, setHasActiveOrders] = useState(false)
   const {
     data,
     loading,
@@ -84,16 +79,20 @@ function Main(props) {
       ip: null
     },
     fetchPolicy: 'network-only'
-  })
-
-  let filteredCuisines
+  });
   const { data: banners, refetch: refetchBanners } = useQuery(GET_BANNERS, {
     fetchPolicy: 'network-only'
-  })
-  const { data: allCuisines } = useQuery(GET_CUISINES)
+  });
+  const { data: allCuisines } = useQuery(GET_CUISINES);
+  const { orderLoading, orderError, orderData } = useHomeRestaurants();
 
-  const cus = new Set()
-  const { orderLoading, orderError, orderData } = useHomeRestaurants()
+  const currentTheme = {
+    isRTL: i18n.dir() === 'rtl',
+    ...theme[themeContext.ThemeValue]
+  };
+  const locationData = location;
+  let filteredCuisines;
+  const cus = new Set();
 
   function onError(error) {
     console.log(error)
@@ -123,7 +122,8 @@ function Main(props) {
   )
   useEffect(() => {
     async function Track() {
-      await Analytics.track(Analytics.events.NAVIGATE_TO_MAIN)
+      const AnalyticsInstance = Analytics();
+      await AnalyticsInstance.track(AnalyticsInstance.events.NAVIGATE_TO_MAIN);
     }
     Track()
   }, [])
@@ -291,107 +291,109 @@ function Main(props) {
     }
   }
 
-  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+
+  // Call hooks outside the conditional rendering block
+
   return (
     <>
       {!connect ? (
         <ErrorView refetchFunctions={[refetchRestaurants, refetchBanners]} />
       ) : (
-      <SafeAreaView edges={['bottom', 'left', 'right']} style={styles().flex}>
-        <View style={[styles().flex, styles(currentTheme).screenBackground]}>
-          <View style={styles().flex}>
-            <View style={styles().mainContentContainer}>
-              <View style={[styles().flex, styles().subContainer]}>
-                <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
-                  <Banner banners={banners?.banners} />
-                  <View style={{ gap: 16 }}>
-                    <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={'Order it again'} queryType='orderAgain' />}</>}</View>
+        <SafeAreaView edges={['bottom', 'left', 'right']} style={styles().flex}>
+          <View style={[styles().flex, styles(currentTheme).screenBackground]}>
+            <View style={styles().flex}>
+              <View style={styles().mainContentContainer}>
+                <View style={[styles().flex, styles().subContainer]}>
+                  <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
+                    <Banner banners={banners?.banners} />
+                    <View style={{ gap: 16 }}>
+                      <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={'Order it again'} queryType='orderAgain' />}</>}</View>
 
-                    <View>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' />}</View>
-                    <View style={{ padding: 15, gap: scale(8) }}>
-                      <TextDefault bolder H4 isRTL>
-                        {t('I feel like eating...')}
-                      </TextDefault>
-                      <FlatList
-                        data={filterCusinies()?.filter((cuisine) => cuisine.shopType === 'Restaurant') ?? []}
-                        renderItem={({ item }) => {
-                          return (
-                            <CollectionCard
-                              onPress={() => {
-                                navigation.navigate('Restaurants', {
-                                  collection: item.name
-                                })
-                              }}
-                              image={item?.image ? item?.image : IMAGE_LINK}
-                              name={item.name}
-                            />
-                          )
-                        }}
-                        keyExtractor={(item) => item?._id}
-                        contentContainerStyle={{
-                          flexGrow: 1,
-                          gap: 8,
-                          paddingBottom: 5
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                        inverted={currentTheme?.isRTL ? true : false}
-                        maintainVisibleContentPosition={{
-                          minIndexForVisible: 0
-                        }}
-                      />
-                    </View>
-                    <View>{loading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(restaurantorders || [])} loading={orderLoading} error={orderError} title={t('Restaurants near you')} queryType='restaurant' icon='restaurant' />}</View>
-                    <View style={{ padding: 15, gap: scale(8) }}>
-                      <TextDefault bolder H4 isRTL>
-                        {t('Fresh finds await...')}
-                      </TextDefault>
-                      <FlatList
-                        data={filterCusinies()?.filter((cuisine) => cuisine?.shopType.toLowerCase() === 'grocery') ?? []}
-                        renderItem={({ item }) => {
-                          return (
-                            <CollectionCard
-                              onPress={() => {
-                                navigation.navigate('Store', {
-                                  collection: item.name
-                                })
-                              }}
-                              image={item?.image}
-                              name={item.name}
-                            />
-                          )
-                        }}
-                        keyExtractor={(item) => item?._id}
-                        contentContainerStyle={{
-                          flexGrow: 1,
-                          gap: 8,
-                          paddingBottom: 5
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                        inverted={currentTheme?.isRTL ? true : false}
-                      />
-                    </View>
-                    <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
+                      <View>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' />}</View>
+                      <View style={{ padding: 15, gap: scale(8) }}>
+                        <TextDefault bolder H4 isRTL>
+                          {t('I feel like eating...')}
+                        </TextDefault>
+                        <FlatList
+                          data={filterCusinies()?.filter((cuisine) => cuisine.shopType === 'Restaurant') ?? []}
+                          renderItem={({ item }) => {
+                            return (
+                              <CollectionCard
+                                onPress={() => {
+                                  navigation.navigate('Restaurants', {
+                                    collection: item.name
+                                  })
+                                }}
+                                image={item?.image ? item?.image : IMAGE_LINK}
+                                name={item.name}
+                              />
+                            )
+                          }}
+                          keyExtractor={(item) => item?._id}
+                          contentContainerStyle={{
+                            flexGrow: 1,
+                            gap: 8,
+                            paddingBottom: 5
+                          }}
+                          showsVerticalScrollIndicator={false}
+                          showsHorizontalScrollIndicator={false}
+                          horizontal={true}
+                          inverted={currentTheme?.isRTL ? true : false}
+                          maintainVisibleContentPosition={{
+                            minIndexForVisible: 0
+                          }}
+                        />
+                      </View>
+                      <View>{loading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(restaurantorders || [])} loading={orderLoading} error={orderError} title={t('Restaurants near you')} queryType='restaurant' icon='restaurant' />}</View>
+                      <View style={{ padding: 15, gap: scale(8) }}>
+                        <TextDefault bolder H4 isRTL>
+                          {t('Fresh finds await...')}
+                        </TextDefault>
+                        <FlatList
+                          data={filterCusinies()?.filter((cuisine) => cuisine?.shopType.toLowerCase() === 'grocery') ?? []}
+                          renderItem={({ item }) => {
+                            return (
+                              <CollectionCard
+                                onPress={() => {
+                                  navigation.navigate('Store', {
+                                    collection: item.name
+                                  })
+                                }}
+                                image={item?.image}
+                                name={item.name}
+                              />
+                            )
+                          }}
+                          keyExtractor={(item) => item?._id}
+                          contentContainerStyle={{
+                            flexGrow: 1,
+                            gap: 8,
+                            paddingBottom: 5
+                          }}
+                          showsVerticalScrollIndicator={false}
+                          showsHorizontalScrollIndicator={false}
+                          horizontal={true}
+                          inverted={currentTheme?.isRTL ? true : false}
+                        />
+                      </View>
+                      <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
 
-                    <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
-                  </View>
-                  <View style={styles(currentTheme, hasActiveOrders).topBrandsMargin}>{orderLoading ? <TopBrandsLoadingUI /> : <TopBrands />}</View>
-                </ScrollView>
+                      <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
+                    </View>
+                    <View style={styles(currentTheme, hasActiveOrders).topBrandsMargin}>{orderLoading ? <TopBrandsLoadingUI /> : <TopBrands />}</View>
+                  </ScrollView>
+                </View>
+                <ForceUpdate />
               </View>
-              <ForceUpdate />
             </View>
-          </View>
-          <ActiveOrders onActiveOrdersChange={handleActiveOrdersChange} />
+            <ActiveOrders onActiveOrdersChange={handleActiveOrdersChange} />
 
-          <MainModalize modalRef={modalRef} currentTheme={currentTheme} isLoggedIn={isLoggedIn} addressIcons={addressIcons} modalHeader={modalHeader} modalFooter={modalFooter} setAddressLocation={setAddressLocation} profile={profile} location={location} />
-        </View>
-      </SafeAreaView>
-          )}
+            <MainModalize modalRef={modalRef} currentTheme={currentTheme} isLoggedIn={isLoggedIn} addressIcons={addressIcons} modalHeader={modalHeader} modalFooter={modalFooter} setAddressLocation={setAddressLocation} profile={profile} location={location} />
+          </View>
+        </SafeAreaView>
+      )}
     </>
-  )
+  );
 }
 
-export default Main
+export default Main;
