@@ -258,7 +258,7 @@ function OrderDetail(props) {
             </View>
           )}
         </View>
-        <Instructions title={'Instructions'} theme={currentTheme} message={order?.instructions} />
+        <Instructions title={'Gift Message'} theme={currentTheme} message={order?.instructions} />
         <Detail navigation={props?.navigation} currencySymbol={configuration.currencySymbol} items={items} from={restaurant?.name} orderNo={order?.orderId} deliveryAddress={deliveryAddress?.deliveryAddress} subTotal={subTotal} tip={tip} tax={tax} deliveryCharges={deliveryCharges} total={total} theme={currentTheme} id={id} rider={order?.rider} orderStatus={order?.orderStatus} />
         <Taxes tax={tax} deliveryCharges={deliveryCharges} currency={configuration.currencySymbol} />
       </ScrollView>

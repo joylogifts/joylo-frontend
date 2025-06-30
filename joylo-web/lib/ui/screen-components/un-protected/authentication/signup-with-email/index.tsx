@@ -155,7 +155,7 @@ export default function SignUpWithEmail({
           onChange={(e) => handleFormChange("password", e.target.value)}
         />
         <span
-          className="self-end font-semibold text-sm underline cursor-pointer text-[#5AC12F]"
+          className="self-end font-semibold text-sm underline cursor-pointer text-[#FFA500]"
           onClick={() => handleChangePanel(0)}
         >
           {t("Continue with google instead")}
@@ -163,7 +163,7 @@ export default function SignUpWithEmail({
       </div>
       <CustomButton
         label={t("Continue")}
-        className={`bg-[#5AC12F] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72`}
+        className={`bg-[#FFA500] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72`}
         onClick={handleSubmit}
         loading={isLoading}
       />

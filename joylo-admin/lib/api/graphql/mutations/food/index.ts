@@ -17,7 +17,7 @@ export const CREATE_FOOD = gql`
             title
             price
             discounted
-            addons
+            # addons
             isOutOfStock
           }
           image

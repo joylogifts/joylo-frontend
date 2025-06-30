@@ -11,6 +11,9 @@ export const GET_ADDONS_BY_RESTAURANT_ID = gql`
         quantityMinimum
         quantityMaximum
         options
+        categoryId
+        subCategoryId
+        isActive
       }
     }
   }

@@ -133,8 +133,8 @@ const Card: React.FC<ICardProps> = ({
                         </p>
                     </div>
                     {/* Delivery Time */}
-                    <div className="bg-[#F3FFEE] rounded-md flex items-center justify-center px-2 py-2 h-[40px]">
-                        <p className="text-xs text-[#5AC12F] font-light lg:font-normal text-center flex justify-center items-center">
+                    <div className="bg-[#FFDBBB] rounded-md flex items-center justify-center px-2 py-2 h-[40px]">
+                        <p className="text-xs text-[#FFA500] font-light lg:font-normal text-center flex justify-center items-center">
                             {`${item?.deliveryTime}`} min
                             {/* {`${item?.deliveryTime > 5 ? item?.deliveryTime - 5 : item?.deliveryTime} - ${item?.deliveryTime + 5}`}{" "} */}
                             {/* <br /> min */}
@@ -193,7 +193,7 @@ const Card: React.FC<ICardProps> = ({
                                 )
                             }
                             label="See Menu"
-                            className="w-1/2 bg-[#94e469] text-base font-normal text-black rounded-md min-h-10"
+                            className="w-1/2 bg-[#FFA500] text-base font-normal text-black rounded-md min-h-10"
                         />
                     </div>
                 </div>

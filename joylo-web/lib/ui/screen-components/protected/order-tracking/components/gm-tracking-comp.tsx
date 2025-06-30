@@ -106,7 +106,7 @@ function GoogleMapTrackingComponent({
                 directions,
                 suppressMarkers: true, // Hide default markers
                 polylineOptions: {
-                  strokeColor: "#5AC12F",
+                  strokeColor: "#FFA500",
                   strokeOpacity: 0.8,
                   strokeWeight: 3,
                   zIndex: 10,
@@ -123,7 +123,7 @@ function GoogleMapTrackingComponent({
             src="https://storage.googleapis.com/a1aa/image/jt1AynRJJVtM9j1LRb30CodA1xsK2R23pWTOmRv3nsM.jpg"
             width="1200"
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5AC12F] text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#FFA500] text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold">
             H
           </div>{" "}
         </>

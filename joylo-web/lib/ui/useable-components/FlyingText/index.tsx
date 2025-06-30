@@ -78,6 +78,7 @@ const AnimatedText = () => {
             {currentText.split("").map((char, i) => (
               <motion.span
                 key={i}
+                // @ts-ignore
                 variants={letterVariants}
                 className='text-[40px] md:text-[80px] font-extrabold text-white inline-block'
               >

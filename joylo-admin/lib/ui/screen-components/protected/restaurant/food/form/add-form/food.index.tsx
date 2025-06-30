@@ -213,13 +213,20 @@ export default function FoodDetails({
         (_category) =>
           _category.code === foodContextData?.food?.data.category?.code
       );
+
+      const editing_subCategory = subCategoriesDropdown?.find(
+        (_sub_category) =>
+          _sub_category.code === foodContextData?.food?.data.subCategory?.code
+      );
+
       setFoodInitialValues({
         ...JSON.parse(JSON.stringify(foodInitialValues)),
         category: editing_category,
+        subCategory: editing_subCategory
       });
       setCategoryDropDown(editing_category ?? ({} as IDropdownSelectItem));
     }
-  }, [categoriesDropdown]);
+  }, [categoriesDropdown, subCategoriesDropdown]);
 
   return (
     <div className="w-full h-full flex items-center justify-start">

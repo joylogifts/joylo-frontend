@@ -15,7 +15,7 @@ const Privacy = () => {
         />
         <div className="absolute inset-0 flex items-center justify-center bg-black/40">
           <h1 className="text-white text-3xl md:text-5xl font-bold text-center">
-            Enatega Privacy Policy
+          Joylo Privacy Policy
           </h1>
         </div>
       </div>
@@ -23,7 +23,7 @@ const Privacy = () => {
       <div className="w-[90%] mx-auto my-12">
         <Paragraph
           paragraph={
-            "This policy explains how we, Enatega, a brand of https://enatega.com/, use your personal information which you provide to us when using our service, including but not limited to our website and mobile applications (apps)."
+            "This policy explains how we, Joylo, a brand of https://enatega.com/, use your personal information which you provide to us when using our service, including but not limited to our website and mobile applications (apps)."
           }
         />
         <Heading heading={"What information we collect about you?"} />

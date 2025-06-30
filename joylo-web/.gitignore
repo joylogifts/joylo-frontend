@@ -8,6 +8,8 @@
 .vscode
 # testing
 /coverage
+/public/sw.js
+sw.js
 
 .env
 

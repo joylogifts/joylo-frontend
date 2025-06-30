@@ -40,7 +40,7 @@ const PhoneEntry = ({ handleChange, handleSubmit, user, handleUpdatePhoneModal }
 
         <CustomButton
           label={"Save"}
-          className="bg-[#5AC12F] text-white flex items-center justify-center rounded-full p-2 sm:p-3  w-full md:w-[268px] mb-4 text-sm sm:text-lg font-medium"
+          className="bg-[#FFA500] text-white flex items-center justify-center rounded-full p-2 sm:p-3  w-full md:w-[268px] mb-4 text-sm sm:text-lg font-medium"
           onClick={handleSubmit}
         />
       </div>

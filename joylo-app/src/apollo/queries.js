@@ -1157,3 +1157,26 @@ export const GET_SUB_CATEGORIES_BY_PARENT_ID = gql`
     }
   }
 `
+
+export const GET_ADDONS_BY_CATEGORY = gql`
+  query GetAddonsByCategory($restaurantId: String!, $categoryId: String!, $subCategoryId: String) {
+    getAddonsByCategory(restaurantId: $restaurantId, categoryId: $categoryId, subCategoryId: $subCategoryId) {
+      _id
+      options {
+        _id
+        title
+        description
+        price
+        isOutOfStock
+      }
+      title
+      description
+      quantityMinimum
+      quantityMaximum
+      categoryId
+      subCategoryId
+      isActive
+      isOutOfStock
+    }
+  }
+`

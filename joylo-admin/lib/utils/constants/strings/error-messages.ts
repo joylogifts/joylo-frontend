@@ -151,6 +151,8 @@ export const AddonsErrors: IAddonsErrors = {
     'Maximum price is 99999',
   ],
   options: ['Required', 'Option field must have at least 1 items'],
+  categoryId: ['Required', 'Category field must have at least 1 items'],
+  subCategoryId: [],
 };
 
 export const ZoneErrors: IZoneErrors = {
@@ -183,10 +185,8 @@ export const ShopTypeErrors: IShopTypeErrors = {
     'Title is a required field',
   ],
   image: [],
-  isActive: []
+  isActive: [],
 };
-
-
 
 export const CouponErrors: ICouponErrors = {
   title: [
@@ -206,8 +206,6 @@ export const CouponErrors: ICouponErrors = {
   endDate: ['Required', 'End Date is required when LifeTime is not active'],
 };
 
-
-
 export const NotificationErrors: INoticiationErrors = {
   title: ['Required'],
   body: ['Required'],
@@ -225,7 +223,6 @@ export const VariationErrors: IVariationErrors = {
   title: ['Required', 'Name cannot be only spaces'],
   discounted: ['Required'],
   price: ['Required', 'Minimum value must be greater than 0'],
-  addons: ['Required', 'Addons field must have at least 1 items'],
   isOutOfStock: ['Required'],
 };
 
