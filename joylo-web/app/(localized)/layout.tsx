@@ -30,7 +30,8 @@ import { UserAddressProvider } from "@/lib/context/address/address.context";
 import { SearchUIProvider } from "@/lib/context/search/search.context";
 import NotificationInitializer from "../NotificationInitialzer";
 import FirebaseForegroundHandler from "@/lib/config/FirebaseForegroundHandler";
-import { useEffect,useRef } from "react";
+import { useEffect, useRef } from "react";
+import { TranslationsProvider } from "@/lib/context/global/translation.context";
 
 export default function RootLayout({
   children,
@@ -59,7 +60,7 @@ export default function RootLayout({
   //   });
   // }
   //  },[])
-   
+
   // useEffect(() => {
   //   if ("serviceWorker" in navigator) {
   //     navigator.serviceWorker
@@ -92,7 +93,7 @@ export default function RootLayout({
           .register("/sw.js")
           .then((registration) => {
             console.log("✅ Service Worker registered:", registration.scope);
-            return registration.update()
+            return registration.update();
           })
           .catch((error) => {
             console.error("❌ SW registration failed:", error);
@@ -125,17 +126,19 @@ export default function RootLayout({
               <ToastProvider>
                 <AuthProvider>
                   <UserProvider>
-                    <LocationProvider>
-                      <UserAddressProvider>
-                        <SearchUIProvider>
-                          <AppLayout>
-                            <NotificationInitializer/>
-                            <FirebaseForegroundHandler/>
-                            {children}
+                    <TranslationsProvider>
+                      <LocationProvider>
+                        <UserAddressProvider>
+                          <SearchUIProvider>
+                            <AppLayout>
+                              <NotificationInitializer />
+                              <FirebaseForegroundHandler />
+                              {children}
                             </AppLayout>
-                        </SearchUIProvider>
-                      </UserAddressProvider>
-                    </LocationProvider>
+                          </SearchUIProvider>
+                        </UserAddressProvider>
+                      </LocationProvider>
+                    </TranslationsProvider>
                   </UserProvider>
                 </AuthProvider>
               </ToastProvider>
