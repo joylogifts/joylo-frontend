@@ -6,3 +6,4 @@ export * from "./vendors";
 export * from "./orders";
 export * from "./profile";
 export * from "./zone";
+export * from './translations'
