@@ -30,7 +30,8 @@ import { UserAddressProvider } from "@/lib/context/address/address.context";
 import { SearchUIProvider } from "@/lib/context/search/search.context";
 import NotificationInitializer from "../NotificationInitialzer";
 import FirebaseForegroundHandler from "@/lib/config/FirebaseForegroundHandler";
-import { useEffect,useRef } from "react";
+import { useEffect, useRef } from "react";
+import { LangTranslationProvider } from "@/lib/context/global/language.context";
 
 export default function RootLayout({
   children,
@@ -59,7 +60,7 @@ export default function RootLayout({
   //   });
   // }
   //  },[])
-   
+
   // useEffect(() => {
   //   if ("serviceWorker" in navigator) {
   //     navigator.serviceWorker
@@ -127,13 +128,15 @@ export default function RootLayout({
                   <UserProvider>
                     <LocationProvider>
                       <UserAddressProvider>
-                        <SearchUIProvider>
-                          <AppLayout>
-                            <NotificationInitializer/>
-                            <FirebaseForegroundHandler/>
-                            {children}
+                        <LangTranslationProvider>
+                          <SearchUIProvider>
+                            <AppLayout>
+                              <NotificationInitializer />
+                              <FirebaseForegroundHandler />
+                              {children}
                             </AppLayout>
-                        </SearchUIProvider>
+                          </SearchUIProvider>
+                        </LangTranslationProvider>
                       </UserAddressProvider>
                     </LocationProvider>
                   </UserProvider>
