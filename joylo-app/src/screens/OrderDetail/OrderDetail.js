@@ -27,7 +27,7 @@ import { ORDER_STATUS_ENUM } from '../../utils/enums'
 import { CancelModal } from '../../components/OrderDetail/CancelModal'
 import Button from '../../components/Button/Button'
 import { gql, useMutation } from '@apollo/client'
-import { cancelOrder as cancelOrderMutation } from '../../apollo/mutations'
+import { cancelOrderByCustomer as cancelOrderMutation } from '../../apollo/mutations'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { calulateRemainingTime } from '../../utils/customFunctions'
 import { Instructions } from '../../components/Checkout/Instructions'
@@ -67,9 +67,10 @@ function OrderDetail(props) {
   const [cancelOrder, { loading: loadingCancel }] = useMutation(CANCEL_ORDER, {
     onError,
     onCompleted: (data) => {
+      console.log({ data })
       navigation.navigate('Main')
     },
-    variables: { abortOrderId: id }
+    variables: { orderId : id }
   })
   // useEffect(() => {
   //   /* async function Track() {
@@ -84,6 +85,7 @@ function OrderDetail(props) {
     setCancelModalVisible(!cancelModalVisible)
   }
   function onError(error) {
+    console.log({ error })
     FlashMessage({
       message: error.message
     })
@@ -137,8 +139,11 @@ function OrderDetail(props) {
 
   const subTotal = total - tip - tax - deliveryCharges
   
-  const isOrderPending = order?.orderStatus === ORDER_STATUS_ENUM.PENDING
-  const isOrderCancelable = isOrderPending
+  const isOrderCancelable = order?.orderStatus === ORDER_STATUS_ENUM.PENDING 
+    || order?.orderStatus === ORDER_STATUS_ENUM.ACCEPTED 
+    || order?.orderStatus === ORDER_STATUS_ENUM.ASSIGNED;
+
+
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
   if (!connect) return <ErrorView refetchFunctions={[]} />
 
@@ -259,13 +264,39 @@ function OrderDetail(props) {
       </ScrollView>
       <View style={styles().bottomContainer(currentTheme)}>
         <PriceRow theme={currentTheme} title={t('total')} currency={configuration.currencySymbol} price={total.toFixed(2)} />
-        
-          <View style={{ margin: scale(20) }}>
-            <Button disabled={isOrderCancelable ? false : true} text={t('cancelOrder')} buttonProps={{ onPress: cancelModalToggle }} buttonStyles={styles().cancelButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.red600 }} textStyles={{ ...alignment.Pmedium }} />
-          </View>
+          
+          {
+            (
+              order.orderStatus === ORDER_STATUS_ENUM.PENDING 
+              ||
+              order?.orderStatus === ORDER_STATUS_ENUM.ACCEPTED
+              ||
+              order?.orderStatus === ORDER_STATUS_ENUM.ASSIGNED
+            ) 
+              
+            && (
+              <View style={{ margin: scale(20) }}>
+                <Button 
+                disabled={!isOrderCancelable} 
+                text={t('cancelOrder')} 
+                buttonProps={{ onPress: cancelModalToggle }} 
+                buttonStyles={styles().cancelButtonContainer(currentTheme)} 
+                textProps={{ textColor: currentTheme.red600 }} 
+                textStyles={{ ...alignment.Pmedium }} 
+                />
+              </View>
+            )
+          }
         
       </View>
-      <CancelModal theme={currentTheme} modalVisible={cancelModalVisible} setModalVisible={cancelModalToggle} cancelOrder={cancelOrder} loading={loadingCancel} orderStatus={order?.orderStatus} />
+      <CancelModal 
+      theme={currentTheme}
+      modalVisible={cancelModalVisible} 
+      setModalVisible={cancelModalToggle} 
+      cancelOrder={cancelOrder} 
+      loading={loadingCancel} 
+      orderStatus={order?.orderStatus} 
+      />
     </View>
   )
 }

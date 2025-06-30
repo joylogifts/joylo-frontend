@@ -19,6 +19,15 @@ export const CANCEL_ORDER = gql`
   }
 `;
 
+export const CANCEL_ORDER_BY_STORE = gql`
+  mutation CancelOrderByStore($orderId: String!, $reason: String!) {
+    cancelOrderByStore(orderId: $orderId, reason: $reason) {
+      _id
+      orderStatus
+    }
+  }
+`;
+
 export const MUTATE_ORDER_RING = gql`
   mutation muteRing($orderId: String) {
     muteRing(orderId: $orderId)

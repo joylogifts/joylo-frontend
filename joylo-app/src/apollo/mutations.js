@@ -389,7 +389,16 @@ export const cancelOrder = `
               _id
               orderStatus
             }
-          }`
+          }`    
+          
+export const cancelOrderByCustomer = `
+  mutation($orderId: String) {
+    cancelOrderByCustomer(orderId: $orderId) {
+        _id,
+        orderStatus
+      }
+    }
+  ` 
 
 export const createActivity = `
    mutation createActivity(

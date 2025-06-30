@@ -23,6 +23,14 @@ export const UPDATE_ORDER_STATUS_RIDER = gql`
   }
 `;
 
+export const UPDATE_ORDER_STATUS_BY_RIDER = gql`
+  mutation UpdateOrderStatusByRider($id: String!, $status: String!, $reason: String) {
+    updateOrderStatusByRider(id: $id, status: $status, reason: $reason) {
+      _id
+      orderStatus
+    }
+}`
+
 export const cancelOrder = `#graphql
           mutation($abortOrderId: String!){
             abortOrder(id: $abortOrderId) {
