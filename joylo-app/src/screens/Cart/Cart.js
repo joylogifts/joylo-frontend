@@ -330,25 +330,25 @@ function Cart(props) {
   function populateFood(cartItem) {
     const food = foods?.find((food) => food?._id === cartItem?._id)
     if (!food) return null
-    const variation = food.variations.find((variation) => variation?._id === cartItem.variation?._id)
+    const variation = food?.variations.find((variation) => variation?._id === cartItem?.variation?._id)
     if (!variation) return null
 
     const title = `${food.title}${variation.title ? `(${variation.title})` : ''}`
-    let price = variation.price
+    let price = variation?.price
     const optionsTitle = []
     if (cartItem.addons) {
       cartItem.addons.forEach((addon) => {
-        const cartAddon = addons.find((add) => add?._id === addon?._id)
+        const cartAddon = addons?.find((add) => add?._id === addon?._id)
         if (!cartAddon) return null
         addon.options.forEach((option) => {
-          const cartOption = options.find((opt) => opt?._id === option?._id)
+          const cartOption = options?.find((opt) => opt?._id === option?._id)
           if (!cartOption) return null
-          price += cartOption.price
-          optionsTitle.push(cartOption.title)
+          price += cartOption?.price
+          optionsTitle.push(cartOption?.title)
         })
       })
     }
-    const populateAddons = addons.filter((addon) => food?.variations[0]?.addons?.includes(addon?._id))
+    const populateAddons = addons?.filter((addon) => food?.variations[0]?.addons?.includes(addon?._id))
     return {
       ...cartItem,
       optionsTitle,
