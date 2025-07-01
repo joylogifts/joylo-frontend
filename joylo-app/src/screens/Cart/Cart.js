@@ -328,9 +328,9 @@ function Cart(props) {
   const foods = restaurant?.categories?.map((c) => c.foods.flat()).flat()
 
   function populateFood(cartItem) {
-    const food = foods?.find((food) => food._id === cartItem._id)
+    const food = foods?.find((food) => food?._id === cartItem?._id)
     if (!food) return null
-    const variation = food.variations.find((variation) => variation._id === cartItem.variation._id)
+    const variation = food.variations.find((variation) => variation?._id === cartItem.variation?._id)
     if (!variation) return null
 
     const title = `${food.title}${variation.title ? `(${variation.title})` : ''}`
@@ -338,17 +338,17 @@ function Cart(props) {
     const optionsTitle = []
     if (cartItem.addons) {
       cartItem.addons.forEach((addon) => {
-        const cartAddon = addons.find((add) => add._id === addon._id)
+        const cartAddon = addons.find((add) => add?._id === addon?._id)
         if (!cartAddon) return null
         addon.options.forEach((option) => {
-          const cartOption = options.find((opt) => opt._id === option._id)
+          const cartOption = options.find((opt) => opt?._id === option?._id)
           if (!cartOption) return null
           price += cartOption.price
           optionsTitle.push(cartOption.title)
         })
       })
     }
-    const populateAddons = addons.filter((addon) => food?.variations[0]?.addons?.includes(addon._id))
+    const populateAddons = addons.filter((addon) => food?.variations[0]?.addons?.includes(addon?._id))
     return {
       ...cartItem,
       optionsTitle,
@@ -393,7 +393,7 @@ function Cart(props) {
                     const food = populateFood(cartItem)
                     if (!food) return null
                     return (
-                      <View key={cartItem._id + index} style={[styles(currentTheme).itemContainer]}>
+                      <View key={cartItem?._id + index} style={[styles(currentTheme).itemContainer]}>
                         <CartItem
                           quantity={food.quantity}
                           dealName={food.title}
@@ -414,7 +414,7 @@ function Cart(props) {
                 </View>
               </View>
               <View style={styles().suggestedItems}>
-                <WouldYouLikeToAddThese itemId={foods[0]._id} restaurantId={restaurant?._id} />
+                <WouldYouLikeToAddThese itemId={foods[0]?._id} restaurantId={restaurant?._id} />
               </View>
             </ScrollView>
 
