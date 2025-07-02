@@ -122,13 +122,14 @@ export default function RootLayout({
       <body className={"flex flex-col flex-wrap"}>
         <PrimeReactProvider value={value}>
           <ApolloProvider client={client}>
+            <LangTranslationProvider>
             <ConfigurationProvider>
               <ToastProvider>
                 <AuthProvider>
                   <UserProvider>
                     <LocationProvider>
                       <UserAddressProvider>
-                        <LangTranslationProvider>
+                        
                           <SearchUIProvider>
                             <AppLayout>
                               <NotificationInitializer />
@@ -136,13 +137,14 @@ export default function RootLayout({
                               {children}
                             </AppLayout>
                           </SearchUIProvider>
-                        </LangTranslationProvider>
+                        
                       </UserAddressProvider>
                     </LocationProvider>
                   </UserProvider>
                 </AuthProvider>
               </ToastProvider>
             </ConfigurationProvider>
+            </LangTranslationProvider>
           </ApolloProvider>
         </PrimeReactProvider>
       </body>
