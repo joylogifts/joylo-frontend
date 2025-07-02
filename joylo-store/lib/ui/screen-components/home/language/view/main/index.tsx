@@ -16,18 +16,18 @@ import { changeLanguage } from "i18next";
 // Hooks
 import { useApptheme } from "@/lib/context/theme.context";
 import { useContext, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 // Core
 import { AuthContext } from "@/lib/context/global/auth.context";
 import { Image, Text, View } from "react-native";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function LanguageMain() {
   const [isChangingLang, setIsChangingLang] = useState(false);
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { isSelected, setIsSelected } = useContext(AuthContext);
 
   // Handlers
@@ -83,7 +83,11 @@ export default function LanguageMain() {
       })}
       <View>
         <CustomContinueButton
-          title={isChangingLang ? t("Please wait") : t("Update Language")}
+          title={
+            isChangingLang
+              ? getTranslation("please_wait")
+              : getTranslation("update_language")
+          }
           onPress={() => handleSubmission()}
         />
       </View>

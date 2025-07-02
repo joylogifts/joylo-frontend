@@ -1,19 +1,19 @@
 import { UPDATE_AVAILABILITY } from "@/lib/apollo/mutations/rider.mutation";
 import { STORE_PROFILE } from "@/lib/apollo/queries";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 import CustomSwitch from "@/lib/ui/useable-components/switch-button";
 import { IStoreProfile } from "@/lib/utils/interfaces";
 import { MutationTuple, useMutation } from "@apollo/client";
-import { useTranslation } from "react-i18next";
 import { Image, Text, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
 const CustomDrawerHeader = () => {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { dataProfile, userId } = useUserContext();
 
   // Queries
@@ -27,7 +27,7 @@ const CustomDrawerHeader = () => {
           error?.graphQLErrors[0]?.message ||
           error?.networkError?.message ||
           error?.networkError?.message ||
-          t("Unable to update availability"),
+          getTranslation("unable_to_update_availability"),
       });
     },
   }) as MutationTuple<IStoreProfile | undefined, { restaurantId: string }>;
@@ -87,7 +87,7 @@ const CustomDrawerHeader = () => {
               color: appTheme.black,
             }}
           >
-            {dataProfile?.name ?? t("store name")}
+            {dataProfile?.name ?? getTranslation("store_name")}
           </Text>
           <Text
             className="font-medium"
@@ -95,7 +95,7 @@ const CustomDrawerHeader = () => {
               color: appTheme.secondaryTextColor,
             }}
           >
-            {dataProfile?._id?.substring(0, 9)?.toUpperCase() ?? t("store id")}
+            {dataProfile?._id?.substring(0, 9)?.toUpperCase() ?? getTranslation("store_id")}
           </Text>
         </View>
       </View>
@@ -105,7 +105,7 @@ const CustomDrawerHeader = () => {
           className="text-md"
           style={{ color: appTheme.secondaryTextColor }}
         >
-          {t("Availability")}
+          {getTranslation("availability")}
         </Text>
         {loading ? (
           <SpinnerComponent color={appTheme.secondaryTextColor} height={10} />
@@ -120,7 +120,9 @@ const CustomDrawerHeader = () => {
           className="text-xs font-medium"
           style={{ color: appTheme.secondaryTextColor }}
         >
-          {dataProfile?.isAvailable ? t("available") : t("notAvailable")}
+          {dataProfile?.isAvailable
+            ? getTranslation("available")
+            : getTranslation("not_available")}
         </Text>
       </View>
     </View>

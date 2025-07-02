@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 import { useApptheme } from "@/lib/context/theme.context";
 import { ICustomTabProps } from "@/lib/utils/interfaces";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const CustomTab = ({
   options,
@@ -13,7 +13,7 @@ const CustomTab = ({
 }: ICustomTabProps) => {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   return (
     <View
@@ -47,7 +47,7 @@ const CustomTab = ({
                     : appTheme.fontSecondColor,
               }}
             >
-              {t(option)}
+              {getTranslation(option)}
             </Text>
             {option === "Delivery Orders" && (
               <View

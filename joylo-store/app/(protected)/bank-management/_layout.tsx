@@ -1,11 +1,11 @@
 import { useApptheme } from "@/lib/context/theme.context";
 import { Stack } from "expo-router";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function Layout() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   return (
     <Stack
       screenOptions={{
@@ -20,7 +20,7 @@ export default function Layout() {
       <Stack.Screen
         name="index" // This is the name of the page and must match the url from root
         options={{
-          title: t("Bank Management"),
+          title: getTranslation("bank_management"),
         }}
       />
     </Stack>

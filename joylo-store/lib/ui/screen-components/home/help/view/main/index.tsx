@@ -1,9 +1,9 @@
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import { FAQs } from "@/lib/utils/constants";
 import { FontAwesome } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useFocusEffect } from "expo-router";
-import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Platform,
@@ -17,7 +17,7 @@ import HelpAccordian from "../../accordian";
 export default function HelpMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+    const { getTranslation } = useLanguage();
 
   const openWhatsAppStore = () => {
     const appStoreUrl =
@@ -86,9 +86,9 @@ export default function HelpMain() {
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View className="h-4" />}
           renderItem={({ item }) => (
-            <HelpAccordian heading={t(item.heading)}>
+            <HelpAccordian heading={item.heading}>
               <Text style={{ color: appTheme.fontSecondColor }}>
-                {t(item.description)}
+                {getTranslation(item.description)}
               </Text>
             </HelpAccordian>
           )}
@@ -103,7 +103,7 @@ export default function HelpMain() {
         >
           <FontAwesome name="whatsapp" size={24} color="white" />
           <Text className="text-white font-semibold text-lg">
-            {t("whatsAppText")}
+            {getTranslation("whats_app_text")}
           </Text>
         </TouchableOpacity>
       </View>
