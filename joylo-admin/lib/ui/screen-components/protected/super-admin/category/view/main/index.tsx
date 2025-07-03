@@ -8,7 +8,7 @@ import { FilterMatchMode } from 'primereact/api';
 
 // Components
 import Table from '@/lib/ui/useable-components/table';
-import { CATEGORY_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/category-columns';
+import { CATEGORY_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/super-admin-category-columns';
 
 // Utilities and Data
 import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
@@ -30,7 +30,7 @@ import {
   DELETE_CATEGORY,
   GET_CATEGORY_BY_RESTAURANT_ID,
 } from '@/lib/api/graphql';
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
+import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { generateDummyCategories } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
@@ -142,50 +142,50 @@ export default function CategoryMain({
 
   // Constants
   const menuItems: IActionMenuItem<ICategory>[] = [
-    // {
-    //   label: t('Edit'),
-    //   command: (data?: ICategory) => {
-    //     if (data) {
-    //       setIsAddCategoryVisible(true);
-    //       setCategory(data);
-    //       if (subCategoriesData && !loadingSubCategories) {
-    //         setSubCategories(
-    //           subCategoriesData?.subCategories.filter(
-    //             (sub_category) => sub_category.parentCategoryId === data._id
-    //           )
-    //         );
-    //       }
-    //     }
-    //   },
-    // },
-    // {
-    //   label: t('Delete'),
-    //   command: (data?: ICategory) => {
-    //     if (data) {
-    //       setDeleteId(data._id);
-    //     }
-    //   },
-    // },
-    // ...(shopType === 'grocery'
-    //   ? [
-    //       {
-    //         label: t('View Sub-Categories'),
-    //         command: (data?: ICategory) => {
-    //           if (data && data._id) {
-    //             handleCategoryRowClick(data?._id);
-    //           } else {
-    //             showToast({
-    //               type: 'error',
-    //               title: t('View Sub-Categories'),
-    //               message: t(
-    //                 'An error occured while previewing the related sub-categories'
-    //               ),
-    //             });
-    //           }
-    //         },
-    //       },
-    //     ]
-    //   : []),
+    {
+      label: t('Edit'),
+      command: (data?: ICategory) => {
+        if (data) {
+          setIsAddCategoryVisible(true);
+          setCategory(data);
+          if (subCategoriesData && !loadingSubCategories) {
+            setSubCategories(
+              subCategoriesData?.subCategories.filter(
+                (sub_category) => sub_category.parentCategoryId === data._id
+              )
+            );
+          }
+        }
+      },
+    },
+    {
+      label: t('Delete'),
+      command: (data?: ICategory) => {
+        if (data) {
+          setDeleteId(data._id);
+        }
+      },
+    },
+    ...(shopType === 'grocery'
+      ? [
+          {
+            label: t('View Sub-Categories'),
+            command: (data?: ICategory) => {
+              if (data && data._id) {
+                handleCategoryRowClick(data?._id);
+              } else {
+                showToast({
+                  type: 'error',
+                  title: t('View Sub-Categories'),
+                  message: t(
+                    'An error occured while previewing the related sub-categories'
+                  ),
+                });
+              }
+            },
+          },
+        ]
+      : []),
   ];
   return (
     <div className="p-3">

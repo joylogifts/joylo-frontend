@@ -1,46 +1,44 @@
 // Core
-import { useMutation } from '@apollo/client';
 import { useContext, useState } from 'react';
 
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
 
 // Interface and Types
-import {
-  IActionMenuItem,
-  IAddon,
-  IAddonByRestaurantResponse,
-  IAddonMainComponentsProps,
-  IQueryResult,
-} from '@/lib/utils/interfaces';
 
 // Components
 import Table from '@/lib/ui/useable-components/table';
-import { ADDON_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/addon-columns';
-import CategoryTableHeader from '../header/table-header';
+import { OPTION_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/super-admin-option-columns';
 
 // Utilities and Data
 import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
-import { generateDummyAddons } from '@/lib/utils/dummy';
+import { IActionMenuItem } from '@/lib/utils/interfaces/action-menu.interface';
 
-// Context
+//Toast
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
+import {
+  IOptions,
+  IOptionsByRestaurantResponse,
+  IOptionsMainComponentsProps,
+  IQueryResult,
+} from '@/lib/utils/interfaces';
 
 // GraphQL
-import { DELETE_ADDON, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
-import { GET_ADDONS_BY_RESTAURANT_ID } from '@/lib/api/graphql/queries/addon';
-
-// Context
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
+import { DELETE_OPTION, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
+import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
+import { generateDummyOptions } from '@/lib/utils/dummy';
+import { useMutation } from '@apollo/client';
+import CategoryTableHeader from '../header/table-header';
 import { useTranslations } from 'next-intl';
 
 export default function OptionMain({
-  setIsAddAddonVisible,
-  setAddon,
-}: IAddonMainComponentsProps) {
+  setIsAddOptionsVisible,
+  setOption,
+}: IOptionsMainComponentsProps) {
   // Context
-  const { restaurantLayoutContextData : { restaurantId } } = useContext(RestaurantLayoutContext);
+  const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
+  const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
   const t = useTranslations();
@@ -48,7 +46,7 @@ export default function OptionMain({
 
   // State - Table
   const [deleteId, setDeleteId] = useState('');
-  const [selectedProducts, setSelectedProducts] = useState<IAddon[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<IOptions[]>([]);
   const [globalFilterValue, setGlobalFilterValue] = useState('');
   const [filters, setFilters] = useState({
     global: { value: '' as string | null, matchMode: FilterMatchMode.CONTAINS },
@@ -56,19 +54,19 @@ export default function OptionMain({
 
   // Query
   const { data, loading } = useQueryGQL(
-    GET_ADDONS_BY_RESTAURANT_ID,
+    GET_OPTIONS_BY_RESTAURANT_ID,
     { id: restaurantId },
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
-      onCompleted: onFetchAddonsByRestaurantCompleted,
-      onError: onErrorFetchAddonsByRestaurant,
+      onCompleted: onFetchCategoriesByRestaurantCompleted,
+      onError: onErrorFetchCategoriesByRestaurant,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
 
   //Mutation
   const [deleteCategory, { loading: mutationLoading }] = useMutation(
-    DELETE_ADDON,
+    DELETE_OPTION,
     {
       variables: {
         id: deleteId,
@@ -92,33 +90,31 @@ export default function OptionMain({
     setGlobalFilterValue(value);
   };
 
-  // Restaurant Profile Complete
-  function onFetchAddonsByRestaurantCompleted() {}
-  // Restaurant Zone Info Error
-  function onErrorFetchAddonsByRestaurant() {
+  // Complete and Error
+  function onFetchCategoriesByRestaurantCompleted() {}
+  function onErrorFetchCategoriesByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Addons Fetch'),
-      message: t('Addons fetch failed'),
+      title: t('Option Fetch'),
+      message: t('Categories fetch failed'),
       duration: 2500,
     });
   }
 
   // Constants
-  const menuItems: IActionMenuItem<IAddon>[] = [
+  const menuItems: IActionMenuItem<IOptions>[] = [
     {
       label: t('Edit'),
-      command: (data?: IAddon) => {
+      command: (data?: IOptions) => {
         if (data) {
-          setIsAddAddonVisible(true);
-
-          setAddon(data);
+          setIsAddOptionsVisible(true);
+          setOption(data);
         }
       },
     },
     {
       label: t('Delete'),
-      command: (data?: IAddon) => {
+      command: (data?: IOptions) => {
         if (data) {
           setDeleteId(data._id);
         }
@@ -136,14 +132,14 @@ export default function OptionMain({
           />
         }
         data={
-          data?.restaurant?.addons.slice().reverse() ||
-          (loading ? generateDummyAddons() : [])
+          data?.restaurant?.options.slice().reverse() ||
+          (loading ? generateDummyOptions() : [])
         }
         filters={filters}
         setSelectedData={setSelectedProducts}
         selectedData={selectedProducts}
         loading={loading}
-        columns={ADDON_TABLE_COLUMNS({ menuItems })}
+        columns={OPTION_TABLE_COLUMNS({ menuItems })}
       />
       <CustomDialog
         loading={mutationLoading}
@@ -151,21 +147,21 @@ export default function OptionMain({
         onHide={() => {
           setDeleteId('');
         }}
-        onConfirm={async () => {
-          await deleteCategory({
+        onConfirm={() => {
+          deleteCategory({
             variables: { id: deleteId },
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Delete Add-on'),
-                message: t('Add-on has been deleted successfully'),
+                title: t('Delete Option'),
+                message: t('Option has been deleted successfully'),
                 duration: 3000,
               });
               setDeleteId('');
             },
           });
         }}
-        message={t('Are you sure you want to delete this Add-on?')}
+        message={t('Are you sure you want to delete this option?')}
       />
     </div>
   );

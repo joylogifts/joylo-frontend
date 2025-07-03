@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
-import CustomInputSwitch from '../../custom-input-switch';
 
 
 
@@ -64,16 +63,13 @@ export const CATEGORY_TABLE_COLUMNS = ({
   // Hooks
   const t = useTranslations();
 
-  const [isActive , setIsActive] = useState(false);
-  const [selectedItem , setSelectedItem] = useState<string | null>(null);
-
 
 
   // Define base columns
   const columns: ColumnDefinition[] = [];
   
   columns.push({ headerName: t('Title'), propertyName: 'title' })
-  
+
   if (shopType === 'grocery') {
     console.log("🚀 ~ shopType:", shopType)
     columns.push({
@@ -97,52 +93,20 @@ export const CATEGORY_TABLE_COLUMNS = ({
   //     body: (category: ICategory) => <SubcategoryCell categoryId={category._id} />
   //   });
   // }
-
-  columns.push({
-    headerName : 'Status',
-    propertyName: 'status',
-    body : (item) =>  {
-      return (
-          <CustomInputSwitch
-            loading={false}
-            isActive={isActive}
-            onChange={() => {
-              setSelectedItem(item._id)
-              setIsActive(prev => !prev)
-            }}
-          />
-      )
-    }
-  })
   
   // Add actions column
   
-  // columns.push({
-  //   propertyName: 'actions',
-  //   headerName: '',
-  //   body: (rider: ICategory) => {
-  //     return (
-  //       <div className="flex justify-between items-center">
-  //         {shopType === 'grocery' && (
-  //           <div>
-  //             <TextIconClickable
-  //               icon={faAdd}
-  //               onClick={() =>
-  //                 setIsAddSubCategoriesVisible({
-  //                   bool: true,
-  //                   parentCategoryId: rider._id,
-  //                 })
-  //               }
-  //               title={t('Add Sub-Category')}
-  //               className="border border-gray-400 border-dashed"
-  //             />
-  //           </div>
-  //         )}
-  //         <ActionMenu items={menuItems} data={rider} />
-  //       </div>
-  //     );
-  //   },
-  // });
+  columns.push({
+    propertyName: 'actions',
+    headerName: '',
+    body: (rider: ICategory) => {
+      return (
+        <div className="flex justify-between items-center">
+          <ActionMenu items={menuItems} data={rider} />
+        </div>
+      );
+    },
+  });
 
   return columns;
 };

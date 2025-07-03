@@ -16,7 +16,7 @@ import {
 
 // Components
 import Table from '@/lib/ui/useable-components/table';
-import { ADDON_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/addon-columns';
+import { ADDON_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/super-admin-addon-columns';
 import CategoryTableHeader from '../header/table-header';
 
 // Utilities and Data
@@ -32,7 +32,7 @@ import { DELETE_ADDON, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
 import { GET_ADDONS_BY_RESTAURANT_ID } from '@/lib/api/graphql/queries/addon';
 
 // Context
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
+import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { useTranslations } from 'next-intl';
 
 export default function OptionMain({
@@ -96,6 +96,7 @@ export default function OptionMain({
   function onFetchAddonsByRestaurantCompleted() {}
   // Restaurant Zone Info Error
   function onErrorFetchAddonsByRestaurant() {
+
     showToast({
       type: 'error',
       title: t('Addons Fetch'),

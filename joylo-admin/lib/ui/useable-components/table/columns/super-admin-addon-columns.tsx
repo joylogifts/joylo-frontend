@@ -7,7 +7,7 @@ import {
   GET_ADDONS_BY_RESTAURANT_ID,
   TOGGLE_ADDON_STATUS,
 } from '@/lib/api/graphql';
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
+import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { ApolloError, useMutation } from '@apollo/client';
 import useToast from '@/lib/hooks/useToast';
 
@@ -99,11 +99,11 @@ export const ADDON_TABLE_COLUMNS = ({
         );
       },
     },
-    // {
-    //   propertyName: 'actions',
-    //   body: (option: IAddon) => (
-    //     <ActionMenu items={menuItems} data={option} onToggle={() => {}} />
-    //   ),
-    // },
+    {
+      propertyName: 'actions',
+      body: (option: IAddon) => (
+        <ActionMenu items={menuItems} data={option} onToggle={() => {}} />
+      ),
+    },
   ];
 };
