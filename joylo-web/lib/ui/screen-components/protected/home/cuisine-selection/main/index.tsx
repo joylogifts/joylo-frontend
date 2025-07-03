@@ -18,10 +18,12 @@ function CuisineSelectionSection() {
   const params = useParams();
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   const [isModalOpen, setIsModalOpen] = useState({value: false, id: ""});
-  const {getTranslation:t} = useLangTranslation();
+  const { getTranslation } = useLangTranslation();
   let slugWithSpaces = slug.replaceAll("-", " ");
   let title =
-    slugWithSpaces?.replace(/^./, (str) => str.toUpperCase()) + " near you";
+    slugWithSpaces?.replace(/^./, (str) => str.toUpperCase()) +
+    " " +
+    getTranslation("near_you");
 
   const { queryData, loading, error } = useNearByRestaurantsPreview();
 
@@ -43,7 +45,7 @@ function CuisineSelectionSection() {
     return;
   }
 
-  if (!queryData?.length) return <div>{t("no_items_found")}</div>;
+  if (!queryData?.length) return <div>{getTranslation("no_items_found")}</div>;
 
   return (
     <>
