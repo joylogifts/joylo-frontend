@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +17,7 @@ interface CartProps {
 }
 
 export default function Cart({ onClose }: CartProps) {
+    const { getTranslation } = useLangTranslation();
     // Access user context for cart functionality
     const {
         cart,
@@ -77,10 +79,10 @@ export default function Cart({ onClose }: CartProps) {
             <div className="h-full flex flex-col items-center justify-center p-6">
                 <div className="text-center">
                     <h2 className="font-inter font-semibold text-xl text-gray-900 mb-2">
-                        Your cart is empty
+                        {getTranslation("your_cart_is_empty")}
                     </h2>
                     <p className="text-gray-500 mb-6">
-                        Add items to your cart to continue
+                        {getTranslation("add_items_to_cart_to_continue")}
                     </p>
                     <button
                         onClick={async () => {
@@ -97,7 +99,7 @@ export default function Cart({ onClose }: CartProps) {
                         className="bg-[#FFA500] text-black px-6 py-2 rounded-full font-medium"
                         type="button"
                     >
-                        Browse Restaurant
+                        {getTranslation("browse_restaurant")}
                     </button>
                 </div>
             </div>
@@ -115,10 +117,13 @@ export default function Cart({ onClose }: CartProps) {
             {/* Header */}
             <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="font-inter font-semibold text-xl text-gray-900">
-                    Your order
+                    {getTranslation("your_order_label")}
                 </h2>
                 <span className="text-gray-500 text-sm">
-                    {cartCount} {cartCount === 1 ? "item" : "items"}
+                    {cartCount}{" "}
+                    {cartCount === 1
+                        ? getTranslation("item_label")
+                        : getTranslation("items_label")}
                 </span>
             </div>
 
@@ -142,7 +147,9 @@ export default function Cart({ onClose }: CartProps) {
                                         <h3 className="font-inter font-semibold text-sm text-gray-700">
                                             {item.foodTitle ||
                                                 item.title ||
-                                                "Food Item"}
+                                                getTranslation(
+                                                    "food_item_label"
+                                                )}
                                         </h3>
                                         <p className="text-[#0EA5E9] font-semibold text-sm">
                                             {CURRENCY_SYMBOL}
@@ -205,7 +212,7 @@ export default function Cart({ onClose }: CartProps) {
                 {slicedRelatedItems.length > 0 && (
                     <div className="p-4 bg-gray-50">
                         <h2 className="font-inter font-semibold text-base text-gray-900 mb-3">
-                            Recommended for you
+                            {getTranslation("recommended_for_you_label")}
                         </h2>
                         <div className="flex flex-wrap gap-3">
                             {slicedRelatedItems.map((id: string) => {
@@ -251,12 +258,14 @@ export default function Cart({ onClose }: CartProps) {
                 <div className="p-4 bg-white">
                     <div className="bg-gray-50 rounded-lg p-3">
                         <h2 className="font-inter font-semibold text-base text-gray-900 mb-2">
-                            Add comment for Restaurant
+                            {getTranslation("add_comment_for_restaurant_label")}
                         </h2>
                         <textarea
                             id="instructions"
                             className="w-full h-20 p-2 bg-white border border-gray-300 rounded-md resize-none focus:border-[#0EA5E9] focus:outline-none text-sm"
-                            placeholder="Special requests, allergies, dietary restrictions..."
+                            placeholder={getTranslation(
+                                "special_requests_placeholder"
+                            )}
                             onChange={({ target: { value } }) => {
                                 if (value?.length > 500) return;
                                 localStorage.setItem(
@@ -270,7 +279,9 @@ export default function Cart({ onClose }: CartProps) {
                         <div className="flex items-end justify-between mt-2">
                             <span className="text-red-500 text-xs">
                                 {instructions?.length >= 500 &&
-                                    "Maximum limit reached"}
+                                    getTranslation(
+                                        "maximum_limit_reached_label"
+                                    )}
                             </span>
                             <span className="text-xs text-gray-500">
                                 {instructions.length}/500
@@ -295,7 +306,7 @@ export default function Cart({ onClose }: CartProps) {
                             {cartCount}
                         </span>
                         <span className="text-black text-base font-medium">
-                            Go to Checkout
+                            {getTranslation("go_to_checkout_label")}
                         </span>
                     </div>
                     <span className="text-black text-base font-medium">

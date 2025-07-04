@@ -1,5 +1,5 @@
+"use client";
 import { useLangTranslation } from "@/lib/context/global/language.context";
-("use client");
 
 import { useCallback, useEffect, useRef, useState } from "react";
 // Queries- Mutations

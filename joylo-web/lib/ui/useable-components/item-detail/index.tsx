@@ -1,3 +1,4 @@
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import { useEffect, useState } from "react";
 import useUser from "@/lib/hooks/useUser";
 
@@ -19,6 +20,7 @@ import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 import { useConfig } from "@/lib/context/configuration/configuration.context";
 
 export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
+    const { getTranslation } = useLangTranslation();
     const { foodItem, addons, options, onClose, restaurant } = props;
     const { CURRENCY_SYMBOL } = useConfig();
 
@@ -274,12 +276,12 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                     {foodItem?.variations && foodItem.variations.length > 1 && (
                         <ItemDetailSection
                             key="variations"
-                            title="Select Variation"
-                            name="variation" // This is a string literal, no undefined issue
+                            title={getTranslation("select_variation")}
+                            name="variation"
                             singleSelected={selectedVariation}
                             onSingleSelect={setSelectedVariation}
                             options={foodItem?.variations || []}
-                            requiredTag="1 Required"
+                            requiredTag={`1 ${getTranslation("required")}`}
                             showTag={true}
                         />
                     )}
@@ -296,13 +298,13 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                         // Determine required/optional tag text
                         const requiredTagText =
                             (addon.quantityMinimum ?? 0) > 0
-                                ? `${addon.quantityMinimum} Required`
-                                : "Optional";
+                                ? `${addon.quantityMinimum} ${getTranslation("required")}`
+                                : getTranslation("optional");
 
                         return (
                             <ItemDetailSection
                                 key={addon._id ?? "addon-" + Math.random()}
-                                title={addon.title ?? "Unknown"}
+                                title={addon.title ?? getTranslation("unknown")}
                                 name={addon._id ?? "addon"}
                                 multiple={!isSingleSelect}
                                 singleSelected={
@@ -389,7 +391,7 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                         disabled={!isFormValid()}
                         type="button"
                     >
-                        Add to order
+                        {getTranslation("add_to_order")}
                         <span className="ml-2 text-gray-900 text-[500] font-[14px]">
                             {CURRENCY_SYMBOL}
                             {calculateTotalPrice()}

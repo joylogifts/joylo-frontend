@@ -1,54 +1,95 @@
 // library imports
-import React from 'react'
+import React from "react";
 
 // components imports
-import EmailForm from '@/lib/ui/useable-components/RiderandRestaurantsInfos/Form'
-import Heading from '@/lib/ui/useable-components/RiderandRestaurantsInfos/Heading/Heading'
-import SideContainers from '@/lib/ui/useable-components/RiderandRestaurantsInfos/SideContainers/SideCard'
-import WhyCardsList from '@/lib/ui/useable-components/RiderandRestaurantsInfos/WhyCards/WhyCardsList'
-import WhyChoose from '@/lib/ui/useable-components/RiderandRestaurantsInfos/WhyChoose'
-import StartingImage from '@/lib/ui/useable-components/RiderandRestaurantsInfos/StartingImage/StartingImage'
-
+import EmailForm from "@/lib/ui/useable-components/RiderandRestaurantsInfos/Form";
+import Heading from "@/lib/ui/useable-components/RiderandRestaurantsInfos/Heading/Heading";
+import SideContainers from "@/lib/ui/useable-components/RiderandRestaurantsInfos/SideContainers/SideCard";
+import WhyCardsList from "@/lib/ui/useable-components/RiderandRestaurantsInfos/WhyCards/WhyCardsList";
+import WhyChoose from "@/lib/ui/useable-components/RiderandRestaurantsInfos/WhyChoose";
+import StartingImage from "@/lib/ui/useable-components/RiderandRestaurantsInfos/StartingImage/StartingImage";
 
 // image imports
-import WorldClassCustomers from "@/public/assets/images/png/WorldClassCustomer.webp"
-import enategaApp from "@/public/assets/images/png/enategaApp.png"
-import growth from "@/public/assets/images/png/Growth.png"
-import getMoreOrders from "@/public/assets/images/png/GetMoreOrders.png"
-import deliverMoreCustomers from "@/public/assets/images/png/deliverToCustomer.png"
-import restaurantBanner from "@/public/assets/images/png/restaurant-banner.png"
+import WorldClassCustomers from "@/public/assets/images/png/WorldClassCustomer.webp";
+import enategaApp from "@/public/assets/images/png/enategaApp.png";
+import growth from "@/public/assets/images/png/Growth.png";
+import getMoreOrders from "@/public/assets/images/png/GetMoreOrders.png";
+import deliverMoreCustomers from "@/public/assets/images/png/deliverToCustomer.png";
+import restaurantBanner from "@/public/assets/images/png/restaurant-banner.png";
 
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
+// cards data will be filled in component with translation
 
-// cards data
-const cards=[
-    {heading:"Grow with Joylo",text:"Access our active customer base by offering pickup and delivery on the Joylo app.",image:growth,color:"#f7fbfe"},
-    {heading:"Get more orders",text:"With Joylo, you can increase your orders by reaching our active customers. Joining is free and pricing is commission based.",image:getMoreOrders,color:"#faf7fc"},
-    {heading:"Deliver to more customers",text:"After an order is placed, Joylo rider partners deliver to your customers in about 30 minutes. ",image:deliverMoreCustomers,color:"#fbfbfb"}
-    ]
-
-// Side Card Componet Data
-const sideCards=[
-{image:enategaApp,heading:"How Joylo works",subHeading:"A customer browses the Joylo app and places an order from your store. The order appears in the Merchant App for you to complete. Once packed and ready, a courier partner will arrive to pick up the order and deliver the goods to the customer. In total, it takes about 30 minutes for the customer to receive and enjoy their order.",right:false },
-{image:WorldClassCustomers,heading:"World-class Customer Support for your success",subHeading:"Our 24/7 Customer Support replies in your local language in a matter of minutes. We’re available to you and your customers until the last order of the day is delivered. ",right:true}
-]
-
+// sideCards data will be filled in component with translation
 
 // Restaurant Info Page
 const RestInfo = () => {
-  return (
-    <div className='w-screen  h-auto'>
-    <Heading heading={"Reach more customers and grow your business with Joylo"} subHeading={"Partner with Joylo to create more sales on the app and through your own website"}/>
-    <StartingImage image={restaurantBanner}/>
-    <WhyChoose heading='Why Deliver with Joylo' subHeading="As an Joylo Rider Partner, you can earn money by delivering orders to local customers. You can have a flexible schedule, so you deliver in the place or at the time that suits you the most. It's easy to start earning - no previous delivery experience is required!" />
-    <WhyCardsList cards={cards}/>
-    <SideContainers sideCards={sideCards} />
-    <hr  className='w-[30%] ml-12 border-4 border-primary-color my-12 rounded'/>
-    <EmailForm heading={"Become a Restaurant"} role={"Vendor Registration"}/>
-    
-  
-  </div>
-  )
-}
+    const { getTranslation } = useLangTranslation();
 
-export default RestInfo
+    // Fill translation values for cards
+    const cards = [
+        {
+            heading: getTranslation("grow_with_joylo"),
+            text: getTranslation("access_active_customer_base"),
+            image: growth,
+            color: "#f7fbfe",
+        },
+        {
+            heading: getTranslation("get_more_orders"),
+            text: getTranslation("increase_orders_reaching_customers"),
+            image: getMoreOrders,
+            color: "#faf7fc",
+        },
+        {
+            heading: getTranslation("deliver_to_more_customers"),
+            text: getTranslation("rider_partners_deliver_in_30_minutes"),
+            image: deliverMoreCustomers,
+            color: "#fbfbfb",
+        },
+    ];
+
+    const sideCards = [
+        {
+            image: enategaApp,
+            heading: getTranslation("how_joylo_works"),
+            subHeading: getTranslation("how_joylo_works_desc"),
+            right: false,
+        },
+        {
+            image: WorldClassCustomers,
+            heading: getTranslation("world_class_customer_support"),
+            subHeading: getTranslation("world_class_customer_support_desc"),
+            right: true,
+        },
+    ];
+
+    return (
+        <div className="w-screen  h-auto">
+            <Heading
+                heading={getTranslation(
+                    "reach_more_customers_and_grow_your_business_with_joylo"
+                )}
+                subHeading={getTranslation(
+                    "partner_with_joylo_to_create_more_sales"
+                )}
+            />
+            <StartingImage image={restaurantBanner} />
+            <WhyChoose
+                heading={getTranslation("why_deliver_with_joylo")}
+                subHeading={getTranslation(
+                    "rider_partner_earn_money_flexible_schedule"
+                )}
+            />
+            <WhyCardsList cards={cards} />
+            <SideContainers sideCards={sideCards} />
+            <hr className="w-[30%] ml-12 border-4 border-primary-color my-12 rounded" />
+            <EmailForm
+                heading={getTranslation("become_a_restaurant")}
+                role={getTranslation("vendor_registration")}
+            />
+        </div>
+    );
+};
+
+export default RestInfo;

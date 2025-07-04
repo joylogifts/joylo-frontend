@@ -46,7 +46,10 @@ import { motion } from "framer-motion";
 import CustomDialog from "@/lib/ui/useable-components/custom-dialog";
 import Image from "next/image";
 
+import { useLangTranslation } from "@/lib/context/global/language.context";
+
 export default function RestaurantDetailsScreen() {
+    const { getTranslation } = useLangTranslation();
     // Access the UserContext via our custom hook
     const {
         cart,
@@ -610,7 +613,7 @@ export default function RestaurantDetailsScreen() {
                             {loading ? (
                                 <Skeleton width="10rem" height="1.5rem" />
                             ) : (
-                                "See more information"
+                                getTranslation("see_more_information")
                             )}
                         </a>
 
@@ -627,7 +630,7 @@ export default function RestaurantDetailsScreen() {
                             {loading ? (
                                 <Skeleton width="10rem" height="1.5rem" />
                             ) : (
-                                "See reviews"
+                                getTranslation("see_reviews")
                             )}
                         </a>
                     </div>
@@ -701,7 +704,9 @@ export default function RestaurantDetailsScreen() {
                                                         setShowAll(true)
                                                     }
                                                 >
-                                                    More
+                                                    {getTranslation(
+                                                        "more_button"
+                                                    )}
                                                 </button>
                                             </li>
                                         )}
@@ -720,7 +725,9 @@ export default function RestaurantDetailsScreen() {
                                         position: "left",
                                         style: { marginTop: "-10px" },
                                     }}
-                                    placeholder="Search for food items"
+                                    placeholder={getTranslation(
+                                        "search_for_food_items_placeholder"
+                                    )}
                                     type="text"
                                     name="search"
                                     showLabel={false}
@@ -775,7 +782,9 @@ export default function RestaurantDetailsScreen() {
                                                         </h3>
                                                         {meal.isOutOfStock && (
                                                             <span className="text-red-500">
-                                                                (Out of stock)
+                                                                {getTranslation(
+                                                                    "out_of_stock_label"
+                                                                )}
                                                             </span>
                                                         )}
                                                     </div>
@@ -843,13 +852,18 @@ export default function RestaurantDetailsScreen() {
                                                 >
                                                     <div className="text-center pb-10 pt-10">
                                                         <p className="text-lg font-bold pb-3">
-                                                            Restaurant is closed
+                                                            {getTranslation(
+                                                                "restaurant_is_closed"
+                                                            )}
                                                         </p>
                                                         <p className="text-sm">
-                                                            You can&apos;t order
-                                                            this food item right
-                                                            now.<br></br> Please
-                                                            try again later.
+                                                            {getTranslation(
+                                                                "cannot_order_food_item_now"
+                                                            )}
+                                                            <br></br>{" "}
+                                                            {getTranslation(
+                                                                "please_try_again_later"
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </CustomDialog>

@@ -7,7 +7,6 @@ import CuisinesSection from "@/lib/ui/useable-components/cuisines-section";
 import MainSection from "@/lib/ui/useable-components/restaurant-main-section";
 import FilterModal from "@/lib/ui/useable-components/filter-modal";
 import { useLocationContext } from "@/lib/context/Location/Location.context";
-import { useLangTranslation } from "@/lib/context/global/language.context";
 import { getDistanceFromLatLonInKm } from "@/lib/utils/methods";
 import { ICuisinesData, IRestaurant } from "@/lib/utils/interfaces";
 
@@ -30,7 +29,7 @@ export default function GenericListingComponent({
     loading,
     error,
 }: GenericListingProps) {
-    const { getTranslation } = useLangTranslation();
+   
     const [cuisineData, setcuisineData] = useState<ICuisinesData[]>([]);
     const [restaurantData, setrestaurantData] = useState<IRestaurant[]>([]);
     const [showDialog, setshowDialog] = useState(false);

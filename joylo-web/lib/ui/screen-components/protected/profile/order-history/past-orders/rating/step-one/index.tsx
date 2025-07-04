@@ -13,7 +13,7 @@ const RatingOption = ({
     selected,
     onSelect,
 }: IRatingOption) => {
-    const { getTranslation } = useLangTranslation();
+    
     return (
         <span
             onClick={() => onSelect(value)}
