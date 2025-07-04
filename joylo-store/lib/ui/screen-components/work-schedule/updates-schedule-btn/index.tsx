@@ -2,7 +2,7 @@
 import { CustomContinueButton } from "@/lib/ui/useable-components";
 
 // Hooks
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function UpdateScheduleBtn({
   onHandlerSubmit,
@@ -13,11 +13,11 @@ export default function UpdateScheduleBtn({
   width: number;
 }) {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   return (
     <CustomContinueButton
-      title={t("Update Schedule")}
+      title={getTranslation("update_schedule")}
       onPress={onHandlerSubmit}
       isLoading={isUpatingSchedule}
     />

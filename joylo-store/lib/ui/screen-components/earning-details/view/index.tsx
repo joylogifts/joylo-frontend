@@ -9,10 +9,10 @@ import {
 } from "@/lib/utils/interfaces/rider-earnings.interface";
 
 // Hooks
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { QueryResult, useQuery } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 // GraphQL
 import { STORE_EARNINGS_GRAPH } from "@/lib/apollo/queries/earnings.query";
@@ -33,7 +33,7 @@ export default function EarningDetailsMain({
   setDateFilter,
 }: IEarningDetailsMainProps) {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   // States
   const [isFiltering, setIsFiltering] = useState(false);
@@ -81,21 +81,21 @@ export default function EarningDetailsMain({
     if (!dateFilter.startDate) {
       setIsFiltering(false);
       return showMessage({
-        message: t("Please select a start date"),
+        message: getTranslation("please_select_a_start_date"),
         type: "danger",
         duration: 1000,
       });
     } else if (!dateFilter.endDate) {
       setIsFiltering(false);
       return showMessage({
-        message: t("Please select an end date"),
+        message: getTranslation("please_select_an_end_date"),
         type: "danger",
         duration: 1000,
       });
     } else if (new Date(dateFilter.startDate) > new Date(dateFilter.endDate)) {
       setIsFiltering(false);
       return showMessage({
-        message: t("Start date cannot be after end date"),
+        message: getTranslation("start_date_cannot_be_after_end_date"),
         type: "danger",
         duration: 1000,
       });
@@ -103,7 +103,7 @@ export default function EarningDetailsMain({
     if (!userId) {
       setIsFiltering(false);
       return showMessage({
-        message: t("Please log in to view your earnings"),
+        message: getTranslation("please_log_in_to_view_your_earnings"),
         type: "danger",
         duration: 1000,
       });

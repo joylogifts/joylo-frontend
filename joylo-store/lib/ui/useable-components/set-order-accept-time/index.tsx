@@ -17,7 +17,7 @@ import { ISetOrderTimeComponentProps } from "@/lib/utils/interfaces";
 
 // Icons
 import { useApptheme } from "@/lib/context/theme.context";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 import CustomContinueButton from "../custom-continue-button";
 import { CircleCrossIcon } from "../svg";
 
@@ -28,7 +28,7 @@ const SetTimeScreenAndAcceptOrder = ({
 }: ISetOrderTimeComponentProps) => {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   // States
   const [selectedTime, setSelectedTime] = useState(TIMES[0]);
@@ -59,7 +59,7 @@ const SetTimeScreenAndAcceptOrder = ({
           className="flex-1 text-center text-[16px] font-[600]"
           style={{ color: appTheme.fontMainColor }}
         >
-          {t("Set Preparation Time")}
+          {getTranslation("set_preparation_time")}
         </Text>
         <TouchableOpacity onPress={handleDismissModal}>
           <CircleCrossIcon width={24} height={24} />
@@ -97,7 +97,7 @@ const SetTimeScreenAndAcceptOrder = ({
           isLoading={loadingAcceptOrder || loadingRing}
           style={{ backgroundColor: appTheme.primary }}
           onPress={onAcceptOrderHandler}
-          title={t("Done")}
+          title={getTranslation("done")}
         />
       </View>
     </View>

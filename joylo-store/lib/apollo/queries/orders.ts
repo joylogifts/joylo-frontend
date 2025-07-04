@@ -8,7 +8,6 @@ export const GET_ORDERS = gql`
       id
       restaurant {
         _id
-
         name
         image
         address

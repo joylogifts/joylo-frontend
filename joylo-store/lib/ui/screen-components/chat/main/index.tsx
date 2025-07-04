@@ -1,15 +1,15 @@
+import { useLanguage } from "@/lib/context/global/language.context";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
 import { useApptheme } from "@/lib/context/theme.context";
 import { useChatScreen } from "@/lib/hooks/useChat";
 import { SendIcon } from "@/lib/ui/useable-components/svg";
 import { FontAwesome } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
 
 export default function ChatMain() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
   const { messages, onSend, inputMessage, setInputMessage, profile } =
     useChatScreen();
@@ -32,7 +32,7 @@ export default function ChatMain() {
     return (
       <View className="flex-1 justify-center items-center">
         <Text className="font-[Inter] text-2xl text-gray-900 mt-[300px]">
-          {t("No New Chats")}
+          {getTranslation("no_new_chats")}
         </Text>
       </View>
     );
@@ -135,7 +135,7 @@ export default function ChatMain() {
           left: { color: "blue" },
           right: { color: "green" },
         }}
-        placeholder={t("Type your message")}
+        placeholder={getTranslation("type_your_message")}
         // textInputStyle={{ paddingTop: 10 }}
         // renderAccessory={image.length > 0 ? renderAccessory : <></>}
         text={inputMessage ?? ""}

@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 
 // Interface
 import { IWellDoneComponentProps } from "@/lib/utils/interfaces";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function WelldoneComponent({
   orderId,
@@ -12,7 +12,7 @@ export default function WelldoneComponent({
   setOrderId,
 }: IWellDoneComponentProps) {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
 
   return (
@@ -33,7 +33,7 @@ export default function WelldoneComponent({
         >
           <View>
             <Text style={{ color: appTheme.fontMainColor }}>
-              {t("Icon Here")}
+              {getTranslation("icon_here")}
             </Text>
           </View>
           <View className="items-center">
@@ -41,13 +41,13 @@ export default function WelldoneComponent({
               className="font-inter text-lg font-bold text-center"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Well Done Store")}
+              {getTranslation("well_done_store")}
             </Text>
             <Text
               className="font-inter text-sm font-normal leading-[22px] text-center"
               style={{ color: appTheme.fontSecondColor }}
             >
-              {t("Order Number")} #{orderId} {status}
+              {getTranslation("order_number")} #{orderId} {status}
             </Text>
           </View>
         </View>

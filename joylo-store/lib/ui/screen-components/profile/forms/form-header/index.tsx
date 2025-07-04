@@ -1,10 +1,10 @@
 import { useApptheme } from "@/lib/context/theme.context";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { Text, View } from "react-native";
 
 export default function FormHeader({ title }: { title: string }) {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
 
   return (
@@ -16,7 +16,7 @@ export default function FormHeader({ title }: { title: string }) {
       }}
     >
       <Text style={{ fontSize: 18, color: appTheme.fontSecondColor }}>
-        {t(title)}
+        {getTranslation(title)}
       </Text>
     </View>
   );

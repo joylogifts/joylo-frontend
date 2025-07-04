@@ -3,11 +3,10 @@ import { IEarningStackProps } from "@/lib/utils/interfaces/earning.interface";
 // SVG
 import { RightArrowIcon } from "@/lib/ui/useable-components/svg";
 
-import { useTranslation } from "react-i18next";
-
 // Core
 import { useApptheme } from "@/lib/context/theme.context";
 import { Text, TouchableOpacity, View } from "react-native";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function EarningStack({
   date,
@@ -21,7 +20,7 @@ export default function EarningStack({
 }: IEarningStackProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   // Handlers
   function handleForwardPress() {
@@ -48,7 +47,7 @@ export default function EarningStack({
       <View className="flex flex-row gap-2 items-center flex-2">
         <Text style={{ color: appTheme.fontMainColor }}>{date}</Text>
         <Text className="font-bold" style={{ color: appTheme.fontMainColor }}>
-          {t("Total Earnings")}
+          {getTranslation("total_earnings")}
         </Text>
       </View>
       <TouchableOpacity

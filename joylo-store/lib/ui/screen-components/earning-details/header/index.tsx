@@ -2,6 +2,7 @@
 import { STORE_EARNINGS_GRAPH } from "@/lib/apollo/queries/earnings.query";
 
 // Hooks
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { QueryResult, useQuery } from "@apollo/client";
 
@@ -14,7 +15,6 @@ import { IStoreEarningsResponse } from "@/lib/utils/interfaces/rider-earnings.in
 // Core
 import { useApptheme } from "@/lib/context/theme.context";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 export default function EarningDetailsHeader() {
@@ -26,7 +26,7 @@ export default function EarningDetailsHeader() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { userId } = useUserContext();
 
   // Queries
@@ -72,16 +72,16 @@ export default function EarningDetailsHeader() {
         className="left-5 text-xl font-semibold"
         style={{ color: appTheme.fontMainColor }}
       >
-        {t("Summary").length > 15
-          ? t("Summary").substring(0, 15)
-          : t("Summary")}
+        {getTranslation("summary").length > 15
+          ? getTranslation("summary").substring(0, 15)
+          : getTranslation("summary")}
       </Text>
       <View className="flex flex-row justify-between items-center p-5">
         <View className="flex gap-2 items-center">
           <Text className="text-lg" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Earnings").length > 15
-              ? t("Total Earnings")
-              : t("Total Earnings")}
+            {getTranslation("total_earnings").length > 15
+              ? getTranslation("total_earnings")
+              : getTranslation("total_earnings")}
           </Text>
           <Text
             className="font-semibold text-lg text-start self-start"
@@ -98,9 +98,9 @@ export default function EarningDetailsHeader() {
           }}
         >
           <Text className="text-lg" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Deliveries").length > 15
-              ? t("Total Deliveries")
-              : t("Total Deliveries")}
+            {getTranslation("total_deliveries").length > 15
+              ? getTranslation("total_deliveries")
+              : getTranslation("total_deliveries")}
           </Text>
           <Text
             className="font-semibold text-lg text-start self-start"

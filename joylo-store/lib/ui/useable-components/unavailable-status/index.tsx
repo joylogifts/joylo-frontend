@@ -1,13 +1,13 @@
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import { usePathname } from "expo-router";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function UnavailableStatus() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
   const pathName = usePathname();
   const { dataProfile } = useUserContext();
@@ -41,7 +41,7 @@ export default function UnavailableStatus() {
       }}
     >
       <Text style={{ color: "white", textAlign: "center", fontWeight: "bold" }}>
-        {t("You are currently unavailable")}.
+        {getTranslation("you_are_currently_unavailable")}.
       </Text>
     </View>
   );

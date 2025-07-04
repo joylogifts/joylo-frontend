@@ -16,6 +16,7 @@ import WithdrawModal from "../form";
 import RecentTransaction from "../recent-transactions";
 
 // Hooks
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useLazyQueryQL } from "@/lib/hooks/useLazyQueryQL";
 import { useMutation } from "@apollo/client";
@@ -41,13 +42,12 @@ import { Alert, FlatList, Text, View } from "react-native";
 // Skeletons
 import { useApptheme } from "@/lib/context/theme.context";
 import { WalletScreenMainLoading } from "@/lib/ui/skeletons";
-import { useTranslation } from "react-i18next";
 import { showMessage } from "react-native-flash-message";
 
 export default function WalletMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { userId } = useUserContext();
 
   // States
@@ -114,7 +114,7 @@ export default function WalletMain() {
       onCompleted: () => {
         setIsBottomModalOpen(false);
         showMessage({
-          message: t("Successfully created the withdraw request"),
+          message: getTranslation("successfully_created_the_withdraw_request"),
         });
         router.push({
           pathname: "/(protected)/(tabs)/wallet/(routes)/success",
@@ -122,10 +122,10 @@ export default function WalletMain() {
       },
       onError: (error) => {
         setIsBottomModalOpen(false);
-        Alert.alert(t("Warning"), error.message, [
+        Alert.alert(getTranslation("warning"), error.message, [
           {
             onPress: () => setIsBottomModalOpen(false),
-            text: t("Okay"),
+            text: getTranslation("okay"),
           },
         ]);
         return showMessage({
@@ -133,7 +133,7 @@ export default function WalletMain() {
             error.message ||
             error.graphQLErrors[0].message ||
             JSON.stringify(error) ||
-            t("Something went wrong"),
+            getTranslation("something_went_wrong"),
         });
       },
       refetchQueries: [
@@ -166,14 +166,14 @@ export default function WalletMain() {
       storeProfileData?.restaurant?.currentWalletAmount || 0;
     if (withdrawAmount > (currentAmount || 0)) {
       return setAmountErrMsg(
-        `${t("Please enter a valid amount")}. ${t("You have")} $${currentAmount} ${"available"}.`,
+        `${getTranslation("please_enter_a_valid_amount")}. ${getTranslation("you_have")} $${currentAmount} ${getTranslation("available")}.`,
       );
     } else if (withdrawAmount < 10) {
       return setAmountErrMsg(
-        t("The withdraw amount must be atleast 10 or greater"),
+        getTranslation("the_withdraw_amount_must_be_atleast_10_or_greater"),
       );
     } else if (typeof withdrawAmount !== "number") {
-      return setAmountErrMsg(t("Please enter a valid number"));
+      return setAmountErrMsg(getTranslation("please_enter_a_valid_number"));
     }
     try {
       await createWithDrawRequest({
@@ -233,7 +233,7 @@ export default function WalletMain() {
                 color: appTheme.fontSecondColor,
               }}
             >
-              {t("Current Balance")}
+              {getTranslation("current_balance")}
             </Text>
             <Text
               className="font-semibold text-[32px]"
@@ -243,12 +243,12 @@ export default function WalletMain() {
               {String(storeProfileData?.restaurant?.currentWalletAmount ?? "0")}
             </Text>
             <CustomContinueButton
-              title={t("Withdraw Now")}
+              title={getTranslation("withdraw_now")}
               onPress={() => setIsBottomModalOpen((prev) => !prev)}
             />
           </View>
         ) : (
-          <NoRecordFound msg={t("Your wallet is currently empty")} />
+          <NoRecordFound msg={getTranslation("your_wallet_is_currently_empty")} />
         )}
         {storeCurrentWithdrawRequestData?.storeCurrentWithdrawRequest && (
           <View className="w-full h-40 -top-8">
@@ -259,7 +259,7 @@ export default function WalletMain() {
                 color: appTheme.fontMainColor,
               }}
             >
-              {t("Pending Request")}
+              {getTranslation("pending_request")}
             </Text>
             <RecentTransaction
               transaction={{
@@ -294,7 +294,7 @@ export default function WalletMain() {
                     backgroundColor: appTheme.themeBackground,
                   }}
                 >
-                  {t("Recent Transactions")}
+                  {getTranslation("recent_transactions")}
                 </Text>
               );
             }}

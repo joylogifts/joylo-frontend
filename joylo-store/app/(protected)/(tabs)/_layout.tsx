@@ -1,4 +1,5 @@
 import { useApptheme } from "@/lib/context/theme.context";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { HapticTab } from "@/lib/ui/useable-components/HapticTab";
 import {
   CurrencyIcon,
@@ -8,13 +9,12 @@ import {
 } from "@/lib/ui/useable-components/svg";
 import { Tabs, usePathname } from "expo-router";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Platform } from "react-native";
 
 const RootLayout = () => {
   const [tabKey, setTabKey] = useState(0);
   const pathName = usePathname();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const RootLayout = () => {
         name="home"
         options={{
           href: "/(protected)/(tabs)/home/orders",
-          title: t("Home"),
+          title: getTranslation("home"),
           tabBarIcon: ({ color }) => (
             <HomeIcon
               color={color}
@@ -73,7 +73,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="wallet"
         options={{
-          title: t("Wallet"),
+          title: getTranslation("wallet"),
           tabBarIcon: ({ color }) => (
             <WalletIcon
               color={color}
@@ -86,7 +86,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="earnings"
         options={{
-          title: t("Earnings"),
+          title: getTranslation("earnings"),
           tabBarIcon: ({ color }) => (
             <CurrencyIcon
               color={color}
@@ -100,11 +100,11 @@ const RootLayout = () => {
         name="profile"
         options={{
           headerShown: true,
-          headerTitle: t("Profile"),
+          headerTitle: getTranslation("profile"),
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: appTheme.themeBackground },
           headerTitleStyle: { color: appTheme.fontMainColor },
-          title: t("Profile"),
+          title: getTranslation("profile"),
           tabBarIcon: ({ color }) => (
             <PersonIcon
               color={color}

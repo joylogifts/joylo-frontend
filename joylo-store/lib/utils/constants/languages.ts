@@ -41,4 +41,46 @@ export const LANGUAGES = [
     value: "Combodian",
     code: "km",
   },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/indonesian-flag.png"),
+    value: "Indonesian",
+    code: "id",
+  },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/japanese-flag.png"),
+    value: "Japanese",
+    code: "ja",
+  },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/korean-flag.png"),
+    value: "Korean",
+    code: "ko",
+  },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/malaysian-flag.png"),
+    value: "Malaysian",
+    code: "ms",
+  },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/portuguese-flag.png"),
+    value: "Portuguese",
+    code: "pt",
+  },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/russian-flag.png"),
+    value: "Russian",
+    code: "ru",
+  },
+  {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    icon: require("@/lib/assets/images/romanian-flag.png"),
+    value: "Romanian",
+    code: "ro",
+  },
 ];

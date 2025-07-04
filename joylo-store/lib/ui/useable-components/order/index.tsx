@@ -1,4 +1,5 @@
 import { ConfigurationContext } from "@/lib/context/global/configuration.context";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { MAX_TIME } from "@/lib/utils/constants";
 import { IOrder } from "@/lib/utils/interfaces/order.interface";
 import { orderSubTotal } from "@/lib/utils/methods";
@@ -15,7 +16,6 @@ import { TimeLeftIcon } from "../svg";
 import { useApptheme } from "@/lib/context/theme.context";
 import useCancelOrder from "@/lib/hooks/useCancelOrder";
 import useOrderPickedUp from "@/lib/hooks/useOrderPickedUp";
-import { useTranslation } from "react-i18next";
 
 const Order = ({
   order,
@@ -30,7 +30,7 @@ const Order = ({
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation, selectedLanguage } = useLanguage();
   const { appTheme } = useApptheme();
   const { cancelOrder, loading: loadingCancelOrder } = useCancelOrder();
   const { pickedUp, loading: loadingPicked } = useOrderPickedUp();
@@ -96,6 +96,14 @@ const Order = ({
     };
   }, []);
 
+  // Helper function to get text based on language
+  const getLocalizedText = (textObject: Record<string, string> | JSON | undefined | null, fallback: string = "") => {
+    if (!textObject || typeof textObject !== "object") return fallback;
+    return (textObject as Record<string, string>)[selectedLanguage ?? "en"] ?? 
+           (textObject as Record<string, string>)["en"] ?? 
+           fallback;
+  };
+
   return (
     <View className="w-full">
       <View
@@ -115,7 +123,7 @@ const Order = ({
               fontWeight: "bold",
             }}
           >
-            {t("Status")}
+            {getTranslation("status")}
           </Text>
           <View
             className={`ps-3 pe-3 bg-green-100 border border-1 rounded-[12px] ${
@@ -138,7 +146,7 @@ const Order = ({
                 fontWeight: "600",
               }}
             >
-              {t(order?.orderStatus ?? "")}
+              {getTranslation(order?.orderStatus?.toLowerCase() ?? "")}
             </Text>
           </View>
         </View>
@@ -152,7 +160,7 @@ const Order = ({
               fontWeight: "bold",
             }}
           >
-            {t("Order ID")}
+            {getTranslation("order_id")}
           </Text>
           <Text
             style={{
@@ -175,7 +183,7 @@ const Order = ({
               fontWeight: "bold",
             }}
           >
-            {t("ORDER")}
+            {getTranslation("order")}
           </Text>
           <Text
             style={{
@@ -184,7 +192,7 @@ const Order = ({
               fontWeight: "bold",
             }}
           >
-            {t("PRICE")}
+            {getTranslation("price")}
           </Text>
         </View>
 
@@ -221,7 +229,7 @@ const Order = ({
                             fontWeight: "600",
                           }}
                         >
-                          {item?.title}
+                          {getLocalizedText(item?.title, "")}
                         </Text>
                         <Text
                           style={{
@@ -229,7 +237,7 @@ const Order = ({
                             fontSize: 12,
                           }}
                         >
-                          {item?.description}
+                          {getLocalizedText(item?.description, "")}
                         </Text>
                       </View>
                       <View>
@@ -273,7 +281,7 @@ const Order = ({
               fontWeight: "600",
             }}
           >
-            {t("Sub Total")}
+            {getTranslation("sub_total")}
           </Text>
           <Text
             style={{
@@ -296,7 +304,7 @@ const Order = ({
               fontWeight: "600",
             }}
           >
-            {t("Tip")}
+            {getTranslation("tip")}
           </Text>
           <Text
             style={{
@@ -319,7 +327,7 @@ const Order = ({
               fontWeight: "600",
             }}
           >
-            {t("Tax")}
+            {getTranslation("tax")}
           </Text>
           <Text
             style={{
@@ -342,7 +350,7 @@ const Order = ({
               fontWeight: "600",
             }}
           >
-            {t("Delivery Charges")}
+            {getTranslation("delivery_charges")}
           </Text>
           <Text
             style={{
@@ -365,7 +373,7 @@ const Order = ({
               fontWeight: "600",
             }}
           >
-            {t("Total")}
+            {getTranslation("total")}
           </Text>
           <Text
             style={{
@@ -392,7 +400,7 @@ const Order = ({
                 fontWeight: "600",
               }}
             >
-              {t("Comment")}
+              {getTranslation("comment")}
             </Text>
             <Text
               style={{
@@ -427,7 +435,7 @@ const Order = ({
                       fontWeight: "500",
                     }}
                   >
-                    {t("Decline")}
+                    {getTranslation("decline")}
                   </Text>
                 )}
               </TouchableOpacity>
@@ -450,7 +458,7 @@ const Order = ({
                       fontWeight: "500",
                     }}
                   >
-                    {t("Accept")}
+                    {getTranslation("accept")}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -474,7 +482,7 @@ const Order = ({
                       fontWeight: "500",
                     }}
                   >
-                    {t("Time Left")}
+                    {getTranslation("time_left")}
                   </Text>
 
                   <CountdownTimer duration={totalPrep} />
@@ -504,7 +512,7 @@ const Order = ({
                         fontWeight: "500",
                       }}
                     >
-                      {t("Hand Order to Rider")}
+                      {getTranslation("hand_order_to_rider")}
                     </Text>
                   )}
                 </TouchableOpacity> */}
@@ -532,7 +540,7 @@ const Order = ({
                         fontWeight: "500",
                       }}
                     >
-                      {t("Deliver Order to Customer")}
+                      {getTranslation("deliver_order_to_customer")}
                     </Text>
                   )}
                 </TouchableOpacity>

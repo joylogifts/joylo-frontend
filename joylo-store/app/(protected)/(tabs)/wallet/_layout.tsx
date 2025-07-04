@@ -1,10 +1,10 @@
 import { useApptheme } from "@/lib/context/theme.context";
 import { Stack } from "expo-router";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function StackLayout() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
   return (
     <Stack
@@ -20,7 +20,7 @@ export default function StackLayout() {
     >
       <Stack.Screen
         name="index"
-        options={{ headerShown: true, headerTitle: t("Wallet") }}
+        options={{ headerShown: true, headerTitle: getTranslation("wallet") }}
       />
       <Stack.Screen
         name="(routes)/success"

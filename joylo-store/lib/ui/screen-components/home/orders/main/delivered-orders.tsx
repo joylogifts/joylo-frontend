@@ -23,16 +23,16 @@ import useOrders from "@/lib/hooks/useOrders";
 import Order from "@/lib/ui/useable-components/order";
 import { WalletIcon } from "@/lib/ui/useable-components/svg";
 import { ORDER_TYPE } from "@/lib/utils/types";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const { height } = Dimensions.get("window");
 
 function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
   // Props
-  const { route } = props;
+  const { route } = props; 
 
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
   const {
     loading,
@@ -136,11 +136,11 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
                     className="font-[Inter] text-[18px] text-base font-[500]"
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {t(NO_ORDER_PROMPT[route.key])}
+                    {getTranslation(NO_ORDER_PROMPT[route.key])}
                   </Text>
                 ) : (
                   <Text style={{ color: appTheme.fontMainColor }}>
-                    {t("Pull down to refresh")}
+                    {getTranslation("pull_down_to_refresh")}
                   </Text>
                 )}
               </View>
@@ -163,11 +163,11 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
               className="font-[Inter] text-[18px] text-base font-[500]"
               style={{ color: appTheme.fontSecondColor }}
             >
-              {t(NO_ORDER_PROMPT[route.key])}
+              {getTranslation(NO_ORDER_PROMPT[route.key])}
             </Text>
           ) : (
             <Text style={{ color: appTheme.fontMainColor }}>
-              {t("Pull down to refresh")}
+              {getTranslation("pull_down_to_refresh")}
             </Text>
           )}
         </View>

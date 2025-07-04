@@ -1,6 +1,7 @@
 // Components
 import { UPDATE_BUSINESS_DETAILS } from "@/lib/apollo/mutations/rider.mutation";
 import { STORE_PROFILE } from "@/lib/apollo/queries/store.query";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
@@ -8,7 +9,6 @@ import { CustomContinueButton } from "@/lib/ui/useable-components";
 // Hooks
 import { useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Alert, FlatList, KeyboardAvoidingView } from "react-native";
 
 // Core
@@ -24,7 +24,7 @@ import { showMessage } from "react-native-flash-message";
 export default function BankManagementMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   // Contexts
   const { userId, dataProfile } = useUserContext();
@@ -67,7 +67,7 @@ export default function BankManagementMain() {
     {
       onError: (error) => {
         showMessage({
-          message: t("Failed to update bank details"),
+          message: getTranslation("failed_to_update_bank_details"),
           type: "danger",
         });
         console.error("Failed to update bank details", error);
@@ -99,37 +99,37 @@ export default function BankManagementMain() {
       if (!formData.bankName) {
         setIsError({
           field: "bankName",
-          message: t("Bank Name is required"),
+          message: getTranslation("bank_name_is_required"),
         });
         return showMessage({
-          message: t("Bank Name is required"),
+          message: getTranslation("bank_name_is_required"),
           type: "danger",
         });
       } else if (!formData.accountName) {
         setIsError({
           field: "accountName",
-          message: t("Account Name is required"),
+          message: getTranslation("account_name_is_required"),
         });
         return showMessage({
-          message: t("Account Name is required"),
+          message: getTranslation("account_name_is_required"),
           type: "danger",
         });
       } else if (!formData.accountNumber) {
         setIsError({
           field: "accountNumber",
-          message: t("Account Number is required"),
+          message: getTranslation("account_number_is_required"),
         });
         return showMessage({
-          message: t("Account Number is required"),
+          message: getTranslation("account_number_is_required"),
           type: "danger",
         });
       } else if (!formData.accountCode) {
         setIsError({
           field: "accountCode",
-          message: t("Account Code is required"),
+          message: getTranslation("account_code_is_required"),
         });
         return showMessage({
-          message: t("Account Code is required"),
+          message: getTranslation("account_code_is_required"),
           type: "danger",
         });
       }
@@ -145,8 +145,8 @@ export default function BankManagementMain() {
         },
       });
       Alert.alert(
-        t("Bank Details Updated"),
-        t("Your bank details have been updated successfully"),
+        getTranslation("bank_details_updated"),
+        getTranslation("your_bank_details_have_been_updated_successfully"),
       );
     } catch (error) {
       console.log(error);
@@ -192,12 +192,12 @@ export default function BankManagementMain() {
                     color: appTheme.fontMainColor,
                   }}
                 >
-                  {t("Bank Name")}
+                  {getTranslation("bank_name")}
                 </Text>
                 <TextInput
                   className={`min-w-[100%] rounded-md border ${isError.field === "bankName" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2 `}
                   value={formData.bankName}
-                  placeholder={t("Swiss Bank")}
+                  placeholder={getTranslation("swiss_bank")}
                   style={{
                     color: appTheme.fontSecondColor,
                   }}
@@ -213,12 +213,12 @@ export default function BankManagementMain() {
                   className="text-lg font-normal"
                   style={{ color: appTheme.fontMainColor }}
                 >
-                  {t("Account Name")}
+                  {getTranslation("account_name")}
                 </Text>
                 <TextInput
                   className={`min-w-[100%] rounded-md border ${isError.field === "accountName" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
                   value={formData.accountName}
-                  placeholder={t("Account_Name_Placeholder")}
+                  placeholder={getTranslation("account_name_placeholder")}
                   style={{ color: appTheme.fontSecondColor }}
                   placeholderTextColor={appTheme.fontSecondColor}
                   onChangeText={(val) => {
@@ -232,12 +232,12 @@ export default function BankManagementMain() {
                   className="text-lg font-normal"
                   style={{ color: appTheme.fontMainColor }}
                 >
-                  {t("IBAN_SWIFT_BSB")}
+                  {getTranslation("iban_swift_bsb")}
                 </Text>
                 <TextInput
                   className={`min-w-[100%] rounded-md border ${isError.field === "accountCode" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
                   value={formData.accountCode}
-                  placeholder={t("IBAN_Placeholder")}
+                  placeholder={getTranslation("iban_placeholder")}
                   style={{ color: appTheme.fontSecondColor }}
                   placeholderTextColor={appTheme.fontSecondColor}
                   onChangeText={(val) => {
@@ -251,7 +251,7 @@ export default function BankManagementMain() {
                   className="text-lg font-normal"
                   style={{ color: appTheme.fontMainColor }}
                 >
-                  {t("Account Number")}
+                  {getTranslation("account_number")}
                 </Text>
                 <TextInput
                   className={`min-w-[100%] rounded-md border ${isError.field === "accountNumber" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
@@ -270,7 +270,9 @@ export default function BankManagementMain() {
               <View>
                 <CustomContinueButton
                   title={
-                    areBankDetailsLoading ? t("Please wait") : t("Confirm")
+                    areBankDetailsLoading
+                      ? getTranslation("please_wait")
+                      : getTranslation("confirm")
                   }
                   onPress={handleSubmit}
                 />

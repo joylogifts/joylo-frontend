@@ -8,6 +8,7 @@ import { Linking, Text, TouchableOpacity, View } from "react-native";
 
 // Context
 import { AuthContext } from "@/lib/context/global/auth.context";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 // Drawer
 import CustomDrawerHeader from "@/lib/ui/screen-components/home/drawer/drawer-header";
@@ -23,7 +24,6 @@ import {
   UserIcon,
 } from "@/lib/ui/useable-components/svg";
 import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function CustomDrawerContent(
@@ -31,7 +31,7 @@ export default function CustomDrawerContent(
 ) {
   // Hooks
   const { appTheme, currentTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { logout } = useContext(AuthContext);
 
   return (
@@ -91,7 +91,7 @@ export default function CustomDrawerContent(
                       color: appTheme.buttonText,
                     }}
                   >
-                    {t("Profile")}
+                    {getTranslation("profile")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -171,7 +171,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("About Us")}
+              {getTranslation("about_us")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -195,7 +195,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("Privacy Policy")}
+              {getTranslation("privacy_policy")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -219,7 +219,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("Product Page")}
+              {getTranslation("product_page")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -245,7 +245,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("Logout")}
+              {getTranslation("logout")}
             </Text>
           </View>
         </TouchableOpacity>

@@ -1,13 +1,12 @@
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import { Tabs } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { Platform, Pressable, Text, View } from "react-native";
 
 export default function Layout() {
   // Hooks
-  const { t } = useTranslation();
   const { appTheme } = useApptheme();
-
+  const { getTranslation } = useLanguage();
   return (
     <Tabs
       screenOptions={{
@@ -87,27 +86,27 @@ export default function Layout() {
         name="index"
         options={{
           title:
-            t("New Orders").length > 13
-              ? t("New Orders").substring(0, 13).concat("..")
-              : t("New Orders"),
+              getTranslation("new_orders").length > 13
+              ? getTranslation("new_orders").substring(0, 13).concat("..")
+              : getTranslation("new_orders"),
         }}
       />
       <Tabs.Screen
         name="processing"
         options={{
           title:
-            t("Processing").length > 13
-              ? t("Processing").substring(0, 13).concat("..")
-              : t("Processing"),
+            getTranslation("processing").length > 13
+              ? getTranslation("processing").substring(0, 13).concat("..")
+              : getTranslation("processing"),
         }}
       />
       <Tabs.Screen
         name="delivered"
         options={{
           title:
-            t("Delivered").length > 13
-              ? t("Delivered").substring(0, 13).concat("..")
-              : t("Delivered"),
+            getTranslation("delivered").length > 13
+              ? getTranslation("delivered").substring(0, 13).concat("..")
+              : getTranslation("delivered"),
         }}
       />
     </Tabs>
