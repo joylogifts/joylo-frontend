@@ -20,7 +20,7 @@ export default function LanguageMain() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { getTranslation, selectedLanguage, setSelectedLanguage } = useLanguage();
+  const { getTranslation, selectedLanguage, setSelectedLanguage, languages } = useLanguage();
 
   // Initialize tempSelectedLang with current language
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function LanguageMain() {
       className="h-[85%] w-[90%] items-center justify-between mx-auto p-4"
       style={{ backgroundColor: appTheme.screenBackground }}
     >
-      {LANGUAGES.map((lng, index) => {
+      {languages.map((lng, index) => {
         return (
           <View
             key={`lng-${index}`}
@@ -60,13 +60,13 @@ export default function LanguageMain() {
             <View className="flex flex-row gap-3 items-center justify-center px-3">
               <View className="overflow-hidden items-center justify-start w-8 h-6">
                 <Image
-                  source={lng.icon}
+                  source={LANGUAGES.find((l) => l.code === lng.code)?.icon}
                   width={100}
                   height={100}
                   className="max-w-8 max-h-8"
                 />
               </View>
-              <Text style={{ color: appTheme.fontMainColor }}>{lng.value}</Text>
+              <Text style={{ color: appTheme.fontMainColor }}>{lng.label}</Text>
             </View>
             <View>
               <CustomRadioButton
