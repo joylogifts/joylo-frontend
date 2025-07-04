@@ -178,7 +178,7 @@ export const en_snake_case = {
     no_new_orders_yet: "No new orders yet!",
     vehicle_plate: "Vehicle Plate",
     language: "Language",
-    you_don_t_have_any_orders_yet: "You don't have any orders yet!",
+    you_do_not_have_any_orders_yet: "You do not have any orders yet!",
     no_delivered_orders_yet: "No delivered orders yet!",
     map_not_loaded: "Map not loaded.",
     please_check_for_permissions: "Please check for permissions.",
@@ -229,7 +229,6 @@ export const en_snake_case = {
     delivery_orders: "Delivery Orders",
     pick_up_orders: "Pick up Orders",
     no_new_orders_yet_key: "No new orders yet!", 
-    you_don_t_have_any_orders_yet_key: "You don't have any orders yet!", 
     no_delivered_key: "No delivered ", 
     type_your_message: "Type your message",
     theme: "Theme",
@@ -274,4 +273,5 @@ export const en_snake_case = {
     tax_key: "Tax",
     delivery_charges_key: "Delivery Charges",
     comment_key: "Comment",
+    pickup_orders: "Pickup Orders",
   };

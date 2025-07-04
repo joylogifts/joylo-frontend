@@ -30,7 +30,7 @@ const Order = ({
   const configuration = useContext(ConfigurationContext);
 
   // Hooks
-  const { getTranslation } = useLanguage();
+  const { getTranslation, selectedLanguage } = useLanguage();
   const { appTheme } = useApptheme();
   const { cancelOrder, loading: loadingCancelOrder } = useCancelOrder();
   const { pickedUp, loading: loadingPicked } = useOrderPickedUp();
@@ -95,6 +95,14 @@ const Order = ({
       isSubscribed = false;
     };
   }, []);
+
+  // Helper function to get text based on language
+  const getLocalizedText = (textObject: Record<string, string> | JSON | undefined | null, fallback: string = "") => {
+    if (!textObject || typeof textObject !== "object") return fallback;
+    return (textObject as Record<string, string>)[selectedLanguage ?? "en"] ?? 
+           (textObject as Record<string, string>)["en"] ?? 
+           fallback;
+  };
 
   return (
     <View className="w-full">
@@ -221,7 +229,7 @@ const Order = ({
                             fontWeight: "600",
                           }}
                         >
-                          {item?.title}
+                          {getLocalizedText(item?.title, "")}
                         </Text>
                         <Text
                           style={{
@@ -229,7 +237,7 @@ const Order = ({
                             fontSize: 12,
                           }}
                         >
-                          {item?.description}
+                          {getLocalizedText(item?.description, "")}
                         </Text>
                       </View>
                       <View>

@@ -3,6 +3,7 @@ import { useQuery, ApolloError } from '@apollo/client'
 import { GET_LANGUAGES, GET_TRANSLATIONS_BY_LANGUAGE_CODE } from '../../apollo/queries/language.query'
 import { useTranslation } from 'react-i18next'
 import { i18n } from 'i18next'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface Language {
   _id: string
@@ -53,14 +54,36 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [translations, setTranslations] = useState<Record<string, string>>({})
   const [translationsLoading, setTranslationsLoading] = useState(false)
 
+  // Initialize language from AsyncStorage
   useEffect(() => {
-    if (!languagesLoading && languagesData?.languages) {
-      const defaultLang = languagesData.languages.find((l: Language) => l.isDefault)?.code
-      if (defaultLang) {
-        setSelectedLanguage((prev) => prev || defaultLang)
+    const initLanguage = async () => {
+      try {
+        const storedLang = await AsyncStorage.getItem('lang')
+        if (storedLang) {
+          setSelectedLanguage(storedLang)
+          await i18n.changeLanguage(storedLang)
+        } else if (!languagesLoading && languagesData?.languages) {
+          const defaultLang = languagesData.languages.find((l: Language) => l.isDefault)?.code
+          if (defaultLang) {
+            setSelectedLanguage(defaultLang)
+            await i18n.changeLanguage(defaultLang)
+            await AsyncStorage.setItem('lang', defaultLang)
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing language:', error)
       }
     }
+    initLanguage()
   }, [languagesData, languagesLoading])
+
+  // Update translations when language changes
+  useEffect(() => {
+    if (selectedLanguage) {
+      i18n.changeLanguage(selectedLanguage)
+      AsyncStorage.setItem('lang', selectedLanguage)
+    }
+  }, [selectedLanguage])
 
   const { data: translationsData, loading: translationsQueryLoading } = useQuery<TranslationsData>(
     GET_TRANSLATIONS_BY_LANGUAGE_CODE,

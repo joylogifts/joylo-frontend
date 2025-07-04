@@ -49,7 +49,7 @@ const CustomTab = ({
             >
               {getTranslation(option)}
             </Text>
-            {option === "Delivery Orders" && (
+            {option === "delivery_orders" && (
               <View
                 style={{
                   backgroundColor: appTheme.error,
@@ -74,7 +74,7 @@ const CustomTab = ({
                 </Text>
               </View>
             )}
-            {option === "Pick up Orders" && (
+            {option === "pickup_orders" && (
               <View
                 style={{
                   backgroundColor: appTheme.error,
