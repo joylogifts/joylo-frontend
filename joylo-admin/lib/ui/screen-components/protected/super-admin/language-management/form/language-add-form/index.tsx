@@ -14,6 +14,7 @@ import { LanguageManagementContext } from '@/lib/context/super-admin/language-ma
 import CustomButton from '@/lib/ui/useable-components/button';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import { Sidebar } from 'primereact/sidebar';
+import CustomUploadImageComponent from '@/lib/ui/useable-components/upload/upload-image';
 
 // Interface
 import { ILanguageForm } from '@/lib/utils/interfaces';
@@ -21,10 +22,13 @@ import { ILanguageForm } from '@/lib/utils/interfaces';
 // Schema
 import { LanguageSchema } from '@/lib/utils/schema';
 import { useLangTranslation } from '@/lib/context/global/language.context';
+import { MAX_LANSDCAPE_FILE_SIZE } from '@/lib/utils/constants';
+import { onErrorMessageMatcher } from '@/lib/utils/methods';
 
 const initialValues: ILanguageForm = {
   label: '',
   code: '',
+  flag: '',
 };
 
 export default function VendorAddForm() {
@@ -62,6 +66,7 @@ export default function VendorAddForm() {
           input: {
             label: data.label,
             code: data.code,
+            flag: data?.flag ?? '',
           },
         },
       });
@@ -115,7 +120,7 @@ export default function VendorAddForm() {
               >
                 {({
                   values,
-
+                  setFieldValue,
                   handleChange,
                   handleSubmit,
                   isSubmitting,
@@ -132,6 +137,7 @@ export default function VendorAddForm() {
                           onChange={handleChange}
                           showLabel={true}
                         />
+
                         <CustomTextField
                           type="text"
                           name="code"
@@ -142,14 +148,25 @@ export default function VendorAddForm() {
                           showLabel={true}
                         />
 
-                        <div className="mt-4 flex justify-end">
-                          <CustomButton
-                            className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label="Add"
-                            type="submit"
-                            loading={isSubmitting}
-                          />
-                        </div>
+                        <CustomUploadImageComponent
+                          key="flag"
+                          name="flag"
+                          title={getTranslation('upload_image')}
+                          fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
+                          maxFileHeight={841}
+                          maxFileWidth={1980}
+                          maxFileSize={MAX_LANSDCAPE_FILE_SIZE}
+                          orientation="LANDSCAPE"
+                          onSetImageUrl={setFieldValue}
+                          existingImageUrl={values.flag}
+                        />
+
+                        <CustomButton
+                          className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
+                          label="Add"
+                          type="submit"
+                          loading={isSubmitting}
+                        />
                       </div>
                     </Form>
                   );

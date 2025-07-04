@@ -31,6 +31,7 @@ export interface ILanguageManagementMainComponentsProps
 export interface ILanguageForm {
   label: string;
   code: string;
+  flag: string;
 }
 
 // Language Card
@@ -44,6 +45,7 @@ export interface ILanguageReponse {
   _id: string;
   label: string;
   code: string;
+  flag?: string | null;
   processed: boolean;
   processedAt: string;
   isDefault: boolean;
