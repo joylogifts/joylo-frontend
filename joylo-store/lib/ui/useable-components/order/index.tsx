@@ -146,7 +146,7 @@ const Order = ({
                 fontWeight: "600",
               }}
             >
-              {order?.orderStatus ?? ""}
+              {getTranslation(order?.orderStatus?.toLowerCase() ?? "")}
             </Text>
           </View>
         </View>
