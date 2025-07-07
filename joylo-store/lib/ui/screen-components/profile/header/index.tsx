@@ -1,6 +1,6 @@
 // Hooks
 import { useUserContext } from "@/lib/context/global/user.context";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 // Constants
 
@@ -11,7 +11,7 @@ import { Image, ImageBackground, Text, View } from "react-native";
 export default function ProfileHeader() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { dataProfile } = useUserContext();
 
   return (
@@ -78,7 +78,7 @@ export default function ProfileHeader() {
               backgroundColor: appTheme.themeBackground,
             }}
           >
-            {dataProfile?.name ?? t("store name")}
+            {dataProfile?.name ?? getTranslation("store_name")}
           </Text>
           <Text
             className="font-medium my-1"
@@ -90,7 +90,7 @@ export default function ProfileHeader() {
               backgroundColor: appTheme.themeBackground,
             }}
           >
-            {dataProfile?._id.substring(0, 9).toUpperCase() ?? t("store id")}
+            {dataProfile?._id.substring(0, 9).toUpperCase() ?? getTranslation("store_id")}
           </Text>
         </View>
       </View>

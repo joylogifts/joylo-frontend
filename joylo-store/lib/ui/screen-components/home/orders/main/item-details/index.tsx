@@ -1,10 +1,10 @@
 // Hooks
 import { useApptheme } from "@/lib/context/theme.context";
 import { useContext, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 // Contexts
 import { ConfigurationContext } from "@/lib/context/global/configuration.context";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 // Core
 import { Text, View } from "react-native";
@@ -18,7 +18,7 @@ interface ItemDetailsProps {
 const ItemDetails = ({ orderData: order }: ItemDetailsProps) => {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const configuration = useContext(ConfigurationContext);
 
   if (!order) return null;
@@ -33,10 +33,10 @@ const ItemDetails = ({ orderData: order }: ItemDetailsProps) => {
     <View className="pb-4">
       <View className="flex-1 flex-row justify-between items-center">
         <Text className="font-[Inter] text-[11px] text-base font-[500] text-gray-600">
-          {t("ITEMS AND QUANTITY")}
+          {getTranslation("items_and_quantity")}
         </Text>
         <Text className="font-[Inter] text-[11px] text-base font-[500] text-gray-600">
-          {t("PRICE")}
+          {getTranslation("price")}
         </Text>
       </View>
 
@@ -106,7 +106,7 @@ const ItemDetails = ({ orderData: order }: ItemDetailsProps) => {
           className="font-[Inter] text-[16px] text-base font-[500]"
           style={{ color: appTheme.fontSecondColor }}
         >
-          {t("Total")}
+          {getTranslation("total")}
         </Text>
         <View className="flex-row gap-x-1">
           <Text

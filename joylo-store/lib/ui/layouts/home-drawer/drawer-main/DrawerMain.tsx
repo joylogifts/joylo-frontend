@@ -1,4 +1,5 @@
 import { useApptheme } from "@/lib/context/theme.context";
+import { useLanguage } from "@/lib/context/global/language.context";
 import CustomDrawerContent from "@/lib/ui/screen-components/home/drawer/drawer-content";
 import {
   CardIcon,
@@ -11,13 +12,12 @@ import { Colors } from "@/lib/utils/constants";
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerActions } from "@react-navigation/native";
 import { Drawer } from "expo-router/drawer";
-import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 
 export default function DrawerMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   return (
     <Drawer
       drawerContent={CustomDrawerContent}
@@ -59,8 +59,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="orders"
         options={{
-          drawerLabel: t("Home"),
-          title: t("Orders"),
+          drawerLabel: getTranslation("home"),
+          title: getTranslation("orders"),
           drawerIcon: ({ color, size }) => (
             <HomeIcon color={color} height={size} width={size} />
           ),
@@ -69,8 +69,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="work-schedule"
         options={{
-          drawerLabel: t("Work Schedule"),
-          title: t("Work Schedule"),
+          drawerLabel: getTranslation("work_schedule"),
+          title: getTranslation("work_schedule"),
           drawerIcon: ({ color, size }) => (
             <ScheduleIcon color={color} height={size + 20} width={size + 20} />
           ),
@@ -79,8 +79,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="language"
         options={{
-          drawerLabel: t("Language"),
-          title: t("Language"),
+          drawerLabel: getTranslation("language"),
+          title: getTranslation("language"),
           drawerIcon: ({ color, size }) => (
             <LanguageIcon color={color} height={size} width={size} />
           ),
@@ -89,8 +89,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="bank-management"
         options={{
-          drawerLabel: t("Bank Management"),
-          title: t("Bank Management"),
+          drawerLabel: getTranslation("bank_management"),
+          title: getTranslation("bank_management"),
           drawerIcon: ({ color, size }) => (
             <CardIcon color={color} height={size} width={size} />
           ),
@@ -99,8 +99,8 @@ export default function DrawerMain() {
       <Drawer.Screen
         name="help"
         options={{
-          drawerLabel: t("Help"),
-          title: t("Help"),
+          drawerLabel: getTranslation("help"),
+          title: getTranslation("help"),
           drawerIcon: ({ color, size }) => (
             <HelpIcon color={color} height={size} width={size} />
           ),
