@@ -24,6 +24,7 @@ export const GET_FOODS_BY_RESTAURANT_ID = gql`
           image
           isActive
           subCategory
+          isReturnAble
         }
       }
     }

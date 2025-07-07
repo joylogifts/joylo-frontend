@@ -88,6 +88,7 @@ export interface IFood {
   isActive: boolean;
   __typename: string;
   isOutOfStock: boolean;
+  isReturnAble: boolean
 }
 
 export interface IFoodNew {
@@ -101,6 +102,7 @@ export interface IFoodNew {
   isActive: boolean;
   __typename: string;
   isOutOfStock: boolean;
+  isReturnAble: boolean
 }
 
 export interface IFoodCategory {

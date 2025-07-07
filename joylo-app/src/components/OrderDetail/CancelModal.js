@@ -24,7 +24,7 @@ export const CancelModal = ({
     if (orderStatus === ORDER_STATUS_ENUM.CANCELLED) {
       setIsCancelling(false)
     }
-  }, [orderStatus])
+  }, [orderStatus]);
 
   const handleCancelOrder = async () => {
     setIsCancelling(true)
