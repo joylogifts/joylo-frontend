@@ -37,7 +37,7 @@ const HEADER_MIN_HEIGHT = TOP_BAR_HEIGHT
 const SCROLL_RANGE = HEADER_MAX_HEIGHT
 
 function ItemDetail(props) {
-  const { food, addons, restaurant, categoryId, subCategoryId } = props?.route?.params
+  const { food, addons, restaurant, categoryId } = props?.route?.params
 
   // States
   const [listZindex, setListZindex] = useState(0)
@@ -80,11 +80,10 @@ function ItemDetail(props) {
   }
 
   // API
-  const { data: addonsByCategory, loading: isAddonsLoading } = useQuery(GET_ADDONS_BY_CATEGORY, {
+  const { data: addonsByCategory } = useQuery(GET_ADDONS_BY_CATEGORY, {
     variables: {
-      restaurantId: restaurant,
-      categoryId,
-      subCategoryId
+      storeId: restaurant,
+      categoryId
     },
     fetchPolicy: 'cache-and-network'
   })
