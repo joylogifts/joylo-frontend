@@ -2,14 +2,11 @@
 
 // Components
 import HeaderText from '@/lib/ui/useable-components/header-text';
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Icons
-import { IAddonHeaderProps } from '@/lib/utils/interfaces';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { useTranslations } from 'next-intl';
 
-const AddonHeader = ({ setIsAddAddonVisible }: IAddonHeaderProps) => {
+const AddonHeader = () => {
   // Hooks
   const t = useTranslations();
   return (

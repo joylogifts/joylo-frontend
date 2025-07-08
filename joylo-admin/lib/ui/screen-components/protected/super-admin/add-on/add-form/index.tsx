@@ -12,9 +12,8 @@ import CustomButton from '@/lib/ui/useable-components/button';
 import CustomMultiSelectComponent from '@/lib/ui/useable-components/custom-multi-select';
 import CustomTextAreaField from '@/lib/ui/useable-components/custom-text-area-field';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
-import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
-import OptionsAddForm from '@/lib/ui/screen-components/protected/restaurant/options/add-form';
+import OptionsAddForm from '@/lib/ui/screen-components/protected/super-admin/options/add-form';
 
 // Utilities and Constants
 import { AddonsErrors, OptionErrors } from '@/lib/utils/constants';
@@ -26,16 +25,19 @@ import useToast from '@/lib/hooks/useToast';
 import {
   CREATE_ADDONS,
   EDIT_ADDON,
-  GET_ADDONS_BY_RESTAURANT_ID,
-  GET_OPTIONS_BY_RESTAURANT_ID,
+  GET_ADDONS,
+  GET_CATEGORIES,
+  GET_OPTIONS
 } from '@/lib/api/graphql';
 import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import {
   IAddonAddFormComponentProps,
+  ICategoriesResponse,
+  ICategory,
   IDropdownSelectItem,
   IOptions,
-  IOptionsByRestaurantResponse,
+  IOptionsResponse,
   IQueryResult,
 } from '@/lib/utils/interfaces';
 import {
@@ -55,17 +57,16 @@ import { useTranslations } from 'next-intl';
 const initialFormValuesTemplate: IAddonForm = {
   title: '',
   description: '',
-  quantityMinimum: 1,
-  quantityMaximum: 1,
   options: null,
+  categoryIds: null
 };
+
 const initialEditFormValuesTemplate: IAddonForm = {
   _id: '',
   title: '',
   description: '',
-  quantityMinimum: 1,
-  quantityMaximum: 1,
   options: null,
+  categoryIds: null
 };
 
 export default function AddonAddForm({
@@ -80,11 +81,12 @@ export default function AddonAddForm({
   const { showToast } = useToast();
   // Context
 
-  const { restaurantLayoutContextData ,   setIsAddOptionsVisible,
+  const { 
+    setIsAddOptionsVisible,
     option,
     setOption,
-    isAddOptionsVisible,} = useContext(RestaurantLayoutContext);
-  const restaurantId = restaurantLayoutContextData?.restaurantId || '';
+    isAddOptionsVisible 
+  } = useContext(RestaurantLayoutContext);
 
   const [initialValues, setInitialValues] = useState({
     addons: [
@@ -96,23 +98,41 @@ export default function AddonAddForm({
 
   // Query
   const { data } = useQueryGQL(
-    GET_OPTIONS_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    GET_OPTIONS,
+    {},
     {
       fetchPolicy: 'network-only',
-      enabled: !!restaurantId,
       onCompleted: onFetchAddonsByRestaurantCompleted,
       onError: onErrorFetchAddonsByRestaurant,
     }
-  ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IOptionsResponse | undefined, undefined>;
+
+  // Categories
+  const { data: categoryData } = useQueryGQL(
+    GET_CATEGORIES,
+    {},
+    {
+      fetchPolicy: 'network-only',
+      onError: onErrorFetchAddonsByRestaurant,
+    }
+  ) as IQueryResult<ICategoriesResponse | undefined, undefined>;
+
+  const categoriesDropdown = useMemo(
+    () =>
+      categoryData?.categories.map((category: ICategory) => {
+        return { label: toTextCase(category.title, 'title'), code: category._id };
+      }),
+    [categoryData?.categories]
+  );
+
 
   // Memoized Constants
   const optionsDropdown = useMemo(
     () =>
-      data?.restaurant?.options.map((option: IOptions) => {
+      data?.options.map((option: IOptions) => {
         return { label: toTextCase(option.title, 'title'), code: option._id };
       }),
-    [data?.restaurant?.options]
+    [data?.options]
   );
 
   // Mutation
@@ -121,8 +141,8 @@ export default function AddonAddForm({
     {
       refetchQueries: [
         {
-          query: GET_ADDONS_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
+          query: GET_ADDONS,
+          variables: {},
         },
       ],
       onCompleted: () => {
@@ -152,7 +172,7 @@ export default function AddonAddForm({
 
   // Handlers
   // Complete and Error
-  function onFetchAddonsByRestaurantCompleted() {}
+  function onFetchAddonsByRestaurantCompleted() { }
   function onErrorFetchAddonsByRestaurant() {
     showToast({
       type: 'error',
@@ -168,27 +188,28 @@ export default function AddonAddForm({
       options: addon?.options?.map(
         (option: IDropdownSelectItem) => option.code
       ),
+      categoryIds: addon.categoryIds?.map((category: IDropdownSelectItem) => category.code)
     }));
   }
   // Form Submission
   const handleSubmit = ({ addons }: { addons: IAddonForm[] }) => {
+    console.log({ addons, formatValues: mapOptions(addons) })
     createAddons({
       variables: {
-        addonInput: {
-          restaurant: restaurantId,
-          addons: addon
-            ? mapOptions([
-                omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
-              ])[0]
-            : mapOptions(addons),
-        },
+        addonInput: addon
+          ? mapOptions([
+            omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
+          ])[0]
+          : mapOptions(addons),
       },
     });
   };
 
-  const mapOptionIds = (
+  const mapOptionAndCategoryIds = (
     optionIds: string[],
-    optionsData: { label: string; code: string }[]
+    optionsData: { label: string; code: string }[],
+    categoryIds: string[],
+    categoriesData: { label: string; code: string }[]
   ) => {
     if (!addon) return;
 
@@ -197,10 +218,16 @@ export default function AddonAddForm({
       return { label: matchedOption?.label, code: matchedOption?.code };
     });
 
+    const matched_categories = categoryIds.map((id) => {
+      const matchedCategory = categoriesData.find((cat) => cat.code === id);
+      return { label: matchedCategory?.label, code: matchedCategory?.code };
+    });
+
     const updated_addon = addon
       ? JSON.parse(JSON.stringify(addon))
       : ({} as IAddonForm);
     delete updated_addon.options;
+    delete updated_addon.categoryIds;
 
     setInitialValues({
       addons: [
@@ -208,6 +235,7 @@ export default function AddonAddForm({
           ...initialFormValuesTemplate,
           ...updated_addon,
           options: matched_options,
+          categoryIds: matched_categories,
         },
       ],
     });
@@ -215,8 +243,13 @@ export default function AddonAddForm({
 
   // UseEffects
   useEffect(() => {
-    mapOptionIds((addon?.options as string[]) ?? [], optionsDropdown ?? []);
-  }, [addon, optionsDropdown]);
+    mapOptionAndCategoryIds(
+      (addon?.options as string[]) ?? [],
+      optionsDropdown ?? [],
+      (addon?.categoryIds as string[]) ?? [],
+      categoriesDropdown ?? []
+    );
+  }, [addon, optionsDropdown, categoriesDropdown]);
 
   return (
     <Sidebar
@@ -245,14 +278,13 @@ export default function AddonAddForm({
                   values,
                   errors,
                   handleChange,
-                  setFieldValue,
-                  handleSubmit,
+                  setFieldValue
                 }) => {
                   const _errors: FormikErrors<IAddonForm>[] =
                     (errors?.addons as FormikErrors<IAddonForm>[]) ?? [];
 
                   return (
-                    <Form onSubmit={handleSubmit}>
+                    <Form>
                       <div>
                         <FieldArray name="addons">
                           {({ remove, push }) => (
@@ -309,62 +341,6 @@ export default function AddonAddForm({
                                                   }}
                                                 />
                                               </div>
-                                              <div className="col-span-6 sm:col-span-6">
-                                                <CustomNumberField
-                                                  name={`addons[${index}].quantityMinimum`}
-                                                  min={1}
-                                                  max={99999}
-                                                  minFractionDigits={0}
-                                                  maxFractionDigits={0}
-                                                  placeholder={t(
-                                                    'Minimum Quantity'
-                                                  )}
-                                                  showLabel={true}
-                                                  value={value.quantityMinimum}
-                                                  onChangeFieldValue={
-                                                    setFieldValue
-                                                  }
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'quantityMinimum',
-                                                        _errors[index]
-                                                          ?.quantityMinimum,
-                                                        AddonsErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
-                                              <div className="col-span-6 sm:col-span-6">
-                                                <CustomNumberField
-                                                  name={`addons[${index}].quantityMaximum`}
-                                                  min={1}
-                                                  max={99999}
-                                                  minFractionDigits={0}
-                                                  maxFractionDigits={0}
-                                                  placeholder={t(
-                                                    'Maximum Quantity'
-                                                  )}
-                                                  showLabel={true}
-                                                  value={value.quantityMaximum}
-                                                  onChangeFieldValue={
-                                                    setFieldValue
-                                                  }
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'quantityMaximum',
-                                                        _errors[index]
-                                                          ?.quantityMaximum,
-                                                        AddonsErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
 
                                               <div className="col-span-12 sm:col-span-12">
                                                 <CustomTextAreaField
@@ -407,6 +383,33 @@ export default function AddonAddForm({
                                                     },
                                                     title: 'Add Options',
                                                   }}
+                                                  showLabel={true}
+                                                  style={{
+                                                    borderColor:
+                                                      onErrorMessageMatcher(
+                                                        'options',
+                                                        _errors[index]
+                                                          ?.options as string,
+                                                        AddonsErrors
+                                                      )
+                                                        ? 'red'
+                                                        : '',
+                                                  }}
+                                                />
+                                              </div>
+
+                                              {/* CATEGORIES */}
+                                              <div className="col-span-12 sm:col-span-12">
+                                                <CustomMultiSelectComponent
+                                                  name={`addons[${index}].categoryIds`}
+                                                  placeholder={t('Categories')}
+                                                  options={
+                                                    categoriesDropdown ?? []
+                                                  }
+                                                  selectedItems={value.categoryIds}
+                                                  setSelectedItems={
+                                                    setFieldValue
+                                                  }
                                                   showLabel={true}
                                                   style={{
                                                     borderColor:

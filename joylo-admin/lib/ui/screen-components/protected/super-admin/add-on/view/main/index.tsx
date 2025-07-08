@@ -1,6 +1,6 @@
 // Core
 import { useMutation } from '@apollo/client';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
@@ -9,8 +9,8 @@ import { FilterMatchMode } from 'primereact/api';
 import {
   IActionMenuItem,
   IAddon,
-  IAddonByRestaurantResponse,
   IAddonMainComponentsProps,
+  IGetAddonsResponse,
   IQueryResult,
 } from '@/lib/utils/interfaces';
 
@@ -28,11 +28,10 @@ import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 
 // GraphQL
-import { DELETE_ADDON, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
-import { GET_ADDONS_BY_RESTAURANT_ID } from '@/lib/api/graphql/queries/addon';
+import { DELETE_ADDON } from '@/lib/api/graphql';
+import { GET_ADDONS } from '@/lib/api/graphql/queries/addon';
 
 // Context
-import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { useTranslations } from 'next-intl';
 
 export default function OptionMain({
@@ -40,7 +39,6 @@ export default function OptionMain({
   setAddon,
 }: IAddonMainComponentsProps) {
   // Context
-  const { restaurantLayoutContextData : { restaurantId } } = useContext(RestaurantLayoutContext);
 
   // Hooks
   const t = useTranslations();
@@ -56,28 +54,25 @@ export default function OptionMain({
 
   // Query
   const { data, loading } = useQueryGQL(
-    GET_ADDONS_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    GET_ADDONS,
+    {},
     {
       fetchPolicy: 'network-only',
-      enabled: !!restaurantId,
       onCompleted: onFetchAddonsByRestaurantCompleted,
       onError: onErrorFetchAddonsByRestaurant,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IGetAddonsResponse | undefined, undefined>;
 
   //Mutation
-  const [deleteCategory, { loading: mutationLoading }] = useMutation(
+  const [deleteAddon, { loading: mutationLoading }] = useMutation(
     DELETE_ADDON,
     {
       variables: {
         id: deleteId,
-        restaurant: restaurantId,
       },
       refetchQueries: [
         {
-          query: GET_OPTIONS_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
+          query: GET_ADDONS,
         },
       ],
     }
@@ -137,7 +132,7 @@ export default function OptionMain({
           />
         }
         data={
-          data?.restaurant?.addons.slice().reverse() ||
+          data?.addons.slice().reverse() ||
           (loading ? generateDummyAddons() : [])
         }
         filters={filters}
@@ -153,7 +148,7 @@ export default function OptionMain({
           setDeleteId('');
         }}
         onConfirm={async () => {
-          await deleteCategory({
+          await deleteAddon({
             variables: { id: deleteId },
             onCompleted: () => {
               showToast({

@@ -1,5 +1,5 @@
 // Core
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
@@ -18,47 +18,29 @@ import { IActionMenuItem } from '@/lib/utils/interfaces/action-menu.interface';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 import {
+  ICategoriesResponse,
   ICategory,
-  ICategoryByRestaurantResponse,
   ICategoryMainComponentsProps,
   IQueryResult,
-  ISubCategoryResponse,
 } from '@/lib/utils/interfaces';
 
 // GraphQL
 import {
   DELETE_CATEGORY,
-  GET_CATEGORY_BY_RESTAURANT_ID,
+  GET_CATEGORIES,
 } from '@/lib/api/graphql';
-import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { generateDummyCategories } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
-import { GET_SUBCATEGORIES } from '@/lib/api/graphql/queries/sub-categories';
-import SubCategoriesPreiwModal from '../modal';
 import { useTranslations } from 'next-intl';
 
 export default function CategoryMain({
   setIsAddCategoryVisible,
-  setSubCategories,
   setCategory,
-  setIsAddSubCategoriesVisible,
 }: ICategoryMainComponentsProps) {
   // Hooks
   const t = useTranslations();
 
-  // Context
-  const {
-    restaurantLayoutContextData,
-    subCategoryParentId,
-    isSubCategoryModalOpen,
-    setIsSubCategoryModalOpen,
-    setSubCategoryParentId,
-  } = useContext(RestaurantLayoutContext);
-  const restaurantId = restaurantLayoutContextData?.restaurantId || '';
-  const shopType = restaurantLayoutContextData?.shopType || '';
-  console.log("🚀 ~ shopType:", shopType)
-  // console.log("🚀 ~ restaurantLayoutContextData:", restaurantLayoutContextData)
 
   // Hooks
   const { showToast } = useToast();
@@ -73,30 +55,15 @@ export default function CategoryMain({
 
   // Queries
   const { data, loading } = useQueryGQL(
-    GET_CATEGORY_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    GET_CATEGORIES,
+    {},
     {
       fetchPolicy: 'network-only',
-      enabled: !!restaurantId,
       onCompleted: onFetchCategoriesByRestaurantCompleted,
       onError: onErrorFetchCategoriesByRestaurant,
     }
-  ) as IQueryResult<ICategoryByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<ICategoriesResponse | undefined, undefined>;
 
-  const { data: subCategoriesData, loading: loadingSubCategories } =
-    useQueryGQL(GET_SUBCATEGORIES, {
-      fetchPolicy: 'network-only',
-      onError: (error) => {
-        showToast({
-          type: 'error',
-          title: t('Sub-Categories'),
-          message:
-            error.clientErrors[0].message ||
-            error.graphQLErrors[0].message ||
-            t('An error occured while fetching the sub-categories'),
-        });
-      },
-    }) as IQueryResult<ISubCategoryResponse | undefined, undefined>;
 
   //Mutation
   const [deleteCategory, { loading: mutationLoading }] = useMutation(
@@ -104,12 +71,10 @@ export default function CategoryMain({
     {
       variables: {
         id: deleteId,
-        restaurant: restaurantId,
       },
       refetchQueries: [
         {
-          query: GET_CATEGORY_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
+          query: GET_CATEGORIES,
         },
       ],
     }
@@ -124,12 +89,10 @@ export default function CategoryMain({
     setGlobalFilterValue(value);
   };
 
-  const handleCategoryRowClick = (id: string) => {
-    setSubCategoryParentId(id);
-    setIsSubCategoryModalOpen((prev) => !prev);
-  };
+  
   // Restaurant Profile Complete
   function onFetchCategoriesByRestaurantCompleted() {}
+
   // Restaurant Zone Info Error
   function onErrorFetchCategoriesByRestaurant() {
     showToast({
@@ -145,16 +108,10 @@ export default function CategoryMain({
     {
       label: t('Edit'),
       command: (data?: ICategory) => {
+        console.log({ data })
         if (data) {
           setIsAddCategoryVisible(true);
           setCategory(data);
-          if (subCategoriesData && !loadingSubCategories) {
-            setSubCategories(
-              subCategoriesData?.subCategories.filter(
-                (sub_category) => sub_category.parentCategoryId === data._id
-              )
-            );
-          }
         }
       },
     },
@@ -166,35 +123,11 @@ export default function CategoryMain({
         }
       },
     },
-    ...(shopType === 'grocery'
-      ? [
-          {
-            label: t('View Sub-Categories'),
-            command: (data?: ICategory) => {
-              if (data && data._id) {
-                handleCategoryRowClick(data?._id);
-              } else {
-                showToast({
-                  type: 'error',
-                  title: t('View Sub-Categories'),
-                  message: t(
-                    'An error occured while previewing the related sub-categories'
-                  ),
-                });
-              }
-            },
-          },
-        ]
-      : []),
   ];
+
+
   return (
     <div className="p-3">
-      {/* Sub-CTG Preview Modal  */}
-      <SubCategoriesPreiwModal
-        isSubCategoryModalOpen={isSubCategoryModalOpen}
-        setIsSubCategoryModalOpen={setIsSubCategoryModalOpen}
-        subCategoryParentId={subCategoryParentId}
-      />
       <Table
         header={
           <CategoryTableHeader
@@ -203,17 +136,15 @@ export default function CategoryMain({
           />
         }
         data={
-          data?.restaurant?.categories.slice().reverse() ||
+          data?.categories.slice().reverse() ||
           (loading ? generateDummyCategories() : [])
         }
         filters={filters}
         setSelectedData={setSelectedProducts}
         selectedData={selectedProducts}
-        loading={loading && loadingSubCategories}
+        loading={loading}
         columns={CATEGORY_TABLE_COLUMNS({
           menuItems,
-          setIsAddSubCategoriesVisible,
-          shopType: shopType,
         })}
       />
       <CustomDialog

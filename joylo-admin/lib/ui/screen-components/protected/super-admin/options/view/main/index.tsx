@@ -1,5 +1,5 @@
 // Core
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
@@ -19,14 +19,13 @@ import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 import {
   IOptions,
-  IOptionsByRestaurantResponse,
   IOptionsMainComponentsProps,
+  IOptionsResponse,
   IQueryResult,
 } from '@/lib/utils/interfaces';
 
 // GraphQL
-import { DELETE_OPTION, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
-import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
+import { DELETE_OPTION, GET_OPTIONS } from '@/lib/api/graphql';
 import { generateDummyOptions } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
@@ -37,8 +36,6 @@ export default function OptionMain({
   setOption,
 }: IOptionsMainComponentsProps) {
   // Context
-  const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
-  const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
   const t = useTranslations();
@@ -54,15 +51,15 @@ export default function OptionMain({
 
   // Query
   const { data, loading } = useQueryGQL(
-    GET_OPTIONS_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    GET_OPTIONS,
+    {},
     {
       fetchPolicy: 'network-only',
-      enabled: !!restaurantId,
       onCompleted: onFetchCategoriesByRestaurantCompleted,
       onError: onErrorFetchCategoriesByRestaurant,
     }
-  ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IOptionsResponse | undefined, undefined>;
+
 
   //Mutation
   const [deleteCategory, { loading: mutationLoading }] = useMutation(
@@ -70,12 +67,10 @@ export default function OptionMain({
     {
       variables: {
         id: deleteId,
-        restaurant: restaurantId,
       },
       refetchQueries: [
         {
-          query: GET_OPTIONS_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
+          query: GET_OPTIONS,
         },
       ],
     }
@@ -132,7 +127,7 @@ export default function OptionMain({
           />
         }
         data={
-          data?.restaurant?.options.slice().reverse() ||
+          data?.options.slice().reverse() ||
           (loading ? generateDummyOptions() : [])
         }
         filters={filters}

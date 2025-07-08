@@ -2,14 +2,11 @@
 
 // Components
 import HeaderText from '@/lib/ui/useable-components/header-text';
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Icons
-import { IOptionsHeaderProps } from '@/lib/utils/interfaces';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { useTranslations } from 'next-intl';
 
-const OptionHeader = ({ setIsAddOptionsVisible }: IOptionsHeaderProps) => {
+const OptionHeader = () => {
   // Hooks
   const t = useTranslations();
 

@@ -5,7 +5,6 @@ import { useContext, useState } from 'react';
 import CategoryAddForm from '@/lib/ui/screen-components/protected/super-admin/category/add-form';
 import CategoryHeader from '@/lib/ui/screen-components/protected/super-admin/category/view/header/screen-header';
 import CategoryMain from '@/lib/ui/screen-components/protected/super-admin/category/view/main';
-import SubCategoriesAddForm from '@/lib/ui/screen-components/protected/super-admin/category/add-subcategories';
 
 // Contexts
 import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
@@ -13,7 +12,6 @@ import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restau
 export default function CategoryScreen() {
   // Contexts
   const {
-    isAddSubCategoriesVisible,
     setIsAddSubCategoriesVisible,
     category,
     setCategory,
@@ -34,19 +32,7 @@ export default function CategoryScreen() {
         setCategory={setCategory}
         setSubCategories={setSubCategories}
       />
-      {/* Sub Categories Form  */}
-      <SubCategoriesAddForm
-        onHide={() => {
-          setIsAddSubCategoriesVisible({
-            bool: false,
-            parentCategoryId: '',
-          });
-          setCategory(null);
-          setSubCategories([]);
-        }}
-        isAddSubCategoriesVisible={isAddSubCategoriesVisible}
-        category={category}
-      />
+
       {/* Parent Categories Forms  */}
       <CategoryAddForm
         category={category}

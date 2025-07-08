@@ -18,7 +18,7 @@ import useToast from '@/lib/hooks/useToast';
 import {
   CREATE_OPTIONS,
   EDIT_OPTION,
-  GET_OPTIONS_BY_RESTAURANT_ID,
+  GET_OPTIONS,
 } from '@/lib/api/graphql';
 import { RestaurantLayoutContext } from '@/lib/context/super-admin/layout-restaurant.context';
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
@@ -85,7 +85,7 @@ export default function OptionAddForm({
     {
       refetchQueries: [
         {
-          query: GET_OPTIONS_BY_RESTAURANT_ID,
+          query: GET_OPTIONS,
           variables: { id: restaurantId },
         },
       ],
@@ -116,14 +116,12 @@ export default function OptionAddForm({
 
   // Form Submission
   const handleSubmit = ({ options }: { options: IOptionForm[] }) => {
+    console.log({ options })
     createOption({
       variables: {
-        optionInput: {
-          restaurant: restaurantId,
-          options: option
-            ? omitExtraAttributes(options[0], initialEditFormValuesTemplate)
-            : options,
-        },
+        optionInput: option
+          ? omitExtraAttributes(options[0], initialEditFormValuesTemplate)
+          : options,
       },
     });
   };
@@ -293,7 +291,7 @@ export default function OptionAddForm({
                         <div className="mt-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={option ? t('Update') : t('Add')}
+                            label={option ? t('Update') : t('Add sdfsdf')}
                             type="submit"
                             loading={mutationLoading}
                           />

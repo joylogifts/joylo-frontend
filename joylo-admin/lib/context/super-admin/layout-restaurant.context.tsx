@@ -14,7 +14,7 @@ import {
 } from '@/lib/utils/interfaces';
 
 // Utils
-import { SELECTED_RESTAURANT, SELECTED_SHOPTYPE } from '../../utils/constants';
+import { SELECTED_SHOPTYPE } from '../../utils/constants';
 import { onUseLocalStorage } from '../../utils/methods';
 
 // Types

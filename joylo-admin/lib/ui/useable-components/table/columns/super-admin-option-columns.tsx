@@ -12,7 +12,13 @@ export const OPTION_TABLE_COLUMNS = ({
   return [
     { headerName: t('Title'), propertyName: 'title' },
     { headerName: t('Price'), propertyName: 'price' },
-    { headerName: t('Description'), propertyName: 'description' },
+    { 
+      headerName: t('Description'), 
+      propertyName: 'description', 
+      body: (option: IOptions) => (
+        <span>{option.description ?? '---'}</span>
+      )
+    },
     {
       propertyName: 'actions',
       body: (option: IOptions) => (

@@ -2,14 +2,11 @@
 
 // Components
 import HeaderText from '@/lib/ui/useable-components/header-text';
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Icons
-import { ICategoryHeaderProps } from '@/lib/utils/interfaces';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { useTranslations } from 'next-intl';
 
-const CategoryHeader = ({ setIsAddCategoryVisible }: ICategoryHeaderProps) => {
+const CategoryHeader = () => {
   // Hooks
   const t = useTranslations();
   return (

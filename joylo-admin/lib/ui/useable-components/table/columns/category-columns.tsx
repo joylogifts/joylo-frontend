@@ -1,12 +1,6 @@
-import { IActionMenuProps, ICategory, ISubCategory, IQueryResult, ISubCategoryByParentIdResponse } from '@/lib/utils/interfaces';
-import ActionMenu from '../../action-menu';
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import TextIconClickable from '../../text-icon-clickable';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import {  ICategory} from '@/lib/utils/interfaces';
+import {  ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
 import CustomInputSwitch from '../../custom-input-switch';
 
 
@@ -17,55 +11,10 @@ interface ColumnDefinition {
   body?: (data: ICategory) => ReactNode;
 }
 
-// Component for the subcategory column
-const SubcategoryCell = ({ categoryId }: { categoryId: string }) => {
-  const [subcategories, setSubcategories] = useState<ISubCategory[]>([]);
-  const { data, loading } = useQueryGQL(
-    GET_SUBCATEGORIES_BY_PARENT_ID,
-    { parentCategoryId: categoryId },
-    { enabled: !!categoryId }
-  ) as IQueryResult<ISubCategoryByParentIdResponse | undefined, { parentCategoryId: string }>;
 
-  useEffect(() => {
-    if (data?.subCategoriesByParentId) {
-      setSubcategories(data.subCategoriesByParentId);
-    }
-  }, [data]);
-
-  if (loading) return <div className="text-gray-400 text-sm">Loading...</div>;
-  if (!subcategories.length) return <div className="text-gray-400 text-sm italic">None</div>;
-
-  return (
-    <div className="space-y-1">
-      {subcategories.map((sub) => (
-        <div key={sub._id} className="flex items-center">
-          <span className="w-1.5 h-1.5 rounded-full bg-gray-500 mr-1.5"></span>
-          <span>{sub.title}</span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export const CATEGORY_TABLE_COLUMNS = ({
-  menuItems,
-  shopType,
-  setIsAddSubCategoriesVisible,
-}: {
-  menuItems: IActionMenuProps<ICategory>['items'];
-  shopType: string;
-  setIsAddSubCategoriesVisible: Dispatch<
-    SetStateAction<{
-      bool: boolean;
-      parentCategoryId: string;
-    }>
-  >;
-}) => {
+export const CATEGORY_TABLE_COLUMNS = () => {
   // Hooks
   const t = useTranslations();
-
-  const [isActive , setIsActive] = useState(false);
-  const [selectedItem , setSelectedItem] = useState<string | null>(null);
 
 
 
@@ -73,20 +22,6 @@ export const CATEGORY_TABLE_COLUMNS = ({
   const columns: ColumnDefinition[] = [];
   
   columns.push({ headerName: t('Title'), propertyName: 'title' })
-  
-  if (shopType === 'grocery') {
-    console.log("🚀 ~ shopType:", shopType)
-    columns.push({
-      headerName: t('Image'),
-      propertyName: 'image',
-      body: (item: ICategory) =>
-        item.image ? (
-          <Image src={item.image} width={40} height={40} alt="item.png" />
-        ) : (
-          <></>
-        ),
-    })
-  }
   
   
   // Add subcategories column if shop type is grocery
@@ -101,14 +36,14 @@ export const CATEGORY_TABLE_COLUMNS = ({
   columns.push({
     headerName : 'Status',
     propertyName: 'status',
-    body : (item) =>  {
+    body : () =>  {
       return (
           <CustomInputSwitch
             loading={false}
-            isActive={isActive}
+            isActive={false}
             onChange={() => {
-              setSelectedItem(item._id)
-              setIsActive(prev => !prev)
+              // setSelectedItem(item._id)
+              // setIsActive(prev => !prev)
             }}
           />
       )
