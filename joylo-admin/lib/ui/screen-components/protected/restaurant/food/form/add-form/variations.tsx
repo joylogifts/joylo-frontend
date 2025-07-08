@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 import { Fieldset } from 'primereact/fieldset';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 // Context
 import { FoodsContext } from '@/lib/context/restaurant/foods.context';
@@ -10,7 +10,6 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 
 // Interface and Types
 import {
-  IAddon,
   IFoodNew,
   IFoodVariationsAddRestaurantComponentProps,
   IVariationForm,
@@ -24,7 +23,6 @@ import { VariationSchema } from '@/lib/utils/schema';
 // Components
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
-import AddonAddForm from '../../../add-on/add-form';
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import CustomButton from '@/lib/ui/useable-components/button';
 
@@ -64,18 +62,12 @@ export default function VariationAddForm({
   // Hooks
   const t = useTranslations();
 
-  // State
-  const [isAddAddonVisible, setIsAddAddonVisible] = useState(false);
-  const [addon, setAddon] = useState<IAddon | null>(null);
-
   // Context
   const { showToast } = useContext(ToastContext);
   const { onSetFoodContextData, foodContextData, onClearFoodData } =
     useContext(FoodsContext);
   const {
     restaurantLayoutContextData: { restaurantId },
-    option,
-    setOption
   } = useContext(RestaurantLayoutContext);
 
   // Constants
@@ -470,19 +462,6 @@ export default function VariationAddForm({
         </div>
       </div>
       <div>
-        <AddonAddForm
-        className='z-[999]'
-          isAddOptionsVisible={isAddAddonVisible}
-          setIsAddOptionsVisible={setIsAddAddonVisible}
-          option={option}
-          setOption={setOption}
-          addon={addon}
-          onHide={() => {
-            setIsAddAddonVisible(false);
-            setAddon(null);
-          }}
-          isAddAddonVisible={isAddAddonVisible}
-        />
       </div>
     </div>
   );

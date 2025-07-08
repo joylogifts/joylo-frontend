@@ -140,19 +140,8 @@ export const AddonsErrors: IAddonsErrors = {
   _id: [],
   title: ['Required', 'Name cannot be only spaces'],
   description: [],
-  quantityMinimum: [
-    'Required',
-    'Minimum value must be greater than 0',
-    'Maximum price is 99999',
-  ],
-  quantityMaximum: [
-    'Required',
-    'Minimum value must be greater than 0',
-    'Maximum price is 99999',
-  ],
   options: ['Required', 'Option field must have at least 1 items'],
-  categoryId: ['Required', 'Category field must have at least 1 items'],
-  subCategoryId: [],
+  categoryIds: ['Required', 'Category field must have at least 1 items'],
 };
 
 export const ZoneErrors: IZoneErrors = {

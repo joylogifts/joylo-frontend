@@ -1,4 +1,5 @@
 'use client';
+import { RestaurantLayoutProvider } from '@/lib/context/super-admin/layout-restaurant.context';
 import SUPER_ADMIN_GUARD from '@/lib/hoc/SUPER_ADMIN_GUARD';
 // Layout
 import SuperAdminLayout from '@/lib/ui/layouts/protected/super-admin';
@@ -10,7 +11,11 @@ export default function RootLayout({
 }>) {
   const ProtectedLayout = SUPER_ADMIN_GUARD(
     ({ children }: { children: React.ReactNode }) => {
-      return <SuperAdminLayout>{children}</SuperAdminLayout>;
+      return <SuperAdminLayout>
+          <RestaurantLayoutProvider>
+            {children}
+          </RestaurantLayoutProvider>
+        </SuperAdminLayout>;
     }
   );
 

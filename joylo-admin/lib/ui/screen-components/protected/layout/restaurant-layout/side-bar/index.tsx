@@ -113,11 +113,11 @@ export default function MakeSidebar() {
           route: '/admin/store/product-management/food',
           isParent: false,
         },
-        {
-          text: t('Categories'),
-          route: '/admin/store/product-management/category',
-          isParent: false,
-        },
+        // {
+        //   text: t('Categories'),
+        //   route: '/admin/store/product-management/category',
+        //   isParent: false,
+        // },
         {
           text: t('Options'),
           route: '/admin/store/product-management/options',

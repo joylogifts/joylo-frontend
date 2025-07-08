@@ -213,6 +213,29 @@ export default function MakeSidebar() {
       },
     },
     {
+      text: t('Store Settings'),
+      route: '/store-settings',
+      isParent: true,
+      icon: faCog,
+      subMenu: [
+        {
+          text: t('Categories'),
+          route: '/store-settings/category',
+          isParent: false,
+        },
+        {
+          text: t('Options'),
+          route: '/store-settings/options',
+          isParent: false,
+        },
+        {
+          text: t('Addons'),
+          route: '/store-settings/add-ons',
+          isParent: false,
+        },
+      ],
+    },
+    {
       text: 'CustomerSupport',
       label: t('CustomerSupport'),
       route: '/customerSupport',
