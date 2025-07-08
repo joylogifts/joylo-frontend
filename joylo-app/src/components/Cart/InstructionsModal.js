@@ -25,8 +25,8 @@ export const InstructionsModal = ({ theme, isVisible, hideModal, onSubmit, value
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TextDefault H2 bolder textColor={theme.fontThirdColor} isRTL>{t('addMessage')}</TextDefault>
-                    <TextDefault H5 bold textColor={theme.fontThirdColor} isRTL style={styles.secondaryText}>{t('specialRequest')}</TextDefault>
+                    <TextDefault H2 bolder textColor={theme.fontThirdColor} isRTL>Add Gift Message</TextDefault>
+                    <TextDefault H5 bold textColor={theme.fontThirdColor} isRTL style={styles.secondaryText}>A little something special</TextDefault>
                     <TextDefault numberOfLines={3} H5 smaller isRTL textColor={theme.secondaryText} style={styles.ternaryText}>{t('kindlyBeAdvisedText')}</TextDefault>
                 </View>
                 <View style={styles.inputContainer}>

@@ -134,7 +134,11 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $Joylo Multivendor to use your location."
         }
-      ]
+      ],
+      "react-native-video",
+      "expo-font",
+      "expo-localization",
+      "expo-web-browser"
     ],
     "extra": {
       "eas": {

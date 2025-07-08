@@ -37,22 +37,12 @@ const HEADER_MIN_HEIGHT = TOP_BAR_HEIGHT
 const SCROLL_RANGE = HEADER_MAX_HEIGHT
 
 function ItemDetail(props) {
-  const { food, addons, options, restaurant, categoryId, subCategoryId } = props?.route?.params
+  const { food, addons, restaurant, categoryId } = props?.route?.params
 
   // States
   const [listZindex, setListZindex] = useState(0)
   const [selectedVariation, setSelectedVariation] = useState({
     ...food?.variations[0]
-    // addons: food?.variations[0].addons?.map((fa) => {
-    //   const addon = addons?.find((a) => a._id === fa)
-    //   const addonOptions = addon.options?.map((ao) => {
-    //     return options?.find((o) => o._id === ao)
-    //   })
-    //   return {
-    //     ...addon,
-    //     options: addonOptions
-    //   }
-    // })
   })
   const [selectedAddons, setSelectedAddons] = useState([])
   const [specialInstructions, setSpecialInstructions] = useState('')
@@ -90,11 +80,10 @@ function ItemDetail(props) {
   }
 
   // API
-  const { data: addonsByCategory, loading: isAddonsLoading } = useQuery(GET_ADDONS_BY_CATEGORY, {
+  const { data: addonsByCategory } = useQuery(GET_ADDONS_BY_CATEGORY, {
     variables: {
-      restaurantId: restaurant,
-      categoryId,
-      subCategoryId
+      storeId: restaurant,
+      categoryId
     },
     fetchPolicy: 'cache-and-network'
   })
@@ -164,20 +153,25 @@ function ItemDetail(props) {
   }
   function validateButton() {
     if (!selectedVariation) return false
-    const validatedAddons = []
-    selectedVariation?.addons?.forEach((addon) => {
-      const selected = selectedAddons?.find((ad) => ad._id === addon._id)
-      if (!selected && addon?.quantityMinimum === 0) {
-        validatedAddons.push(false)
-      } else if (selected && selected?.options?.length >= addon?.quantityMinimum && selected?.options?.length <= addon?.quantityMaximum) {
-        validatedAddons.push(false)
-      } else validatedAddons.push(true)
-    })
+
+    const validatedAddons =
+      addonsByCategory?.getAddonsByCategory?.map((addon) => {
+        const selected = selectedAddons?.find((ad) => ad._id === addon._id)
+        const isSelected = !!selected
+        const optionCount = selected?.options?.length ?? 0
+        const min = addon?.quantityMinimum ?? 0
+        const max = addon?.quantityMaximum ?? Infinity
+        const isValid = (!isSelected && min === 0) || (isSelected && optionCount >= min && optionCount <= max)
+
+        return !isValid // true means validation failed
+      }) || []
+
     return validatedAddons.every((val) => val === false)
   }
 
   async function onPressAddToCart(quantity) {
     const isValidOrder = validateOrderItem()
+    console.log({ isValidOrder })
     if (isValidOrder) {
       Analytics.track(Analytics.events.ADD_TO_CART, {
         title: food?.title,
@@ -256,17 +250,7 @@ function ItemDetail(props) {
   const onSelectVariation = (variation) => {
     if (variation?._id) {
       setSelectedVariation({
-        ...variation,
-        addons: variation?.addons?.map((fa) => {
-          const addon = addons?.find((a) => a._id === fa)
-          const addonOptions = addon?.options?.map((ao) => {
-            return options?.find((o) => o._id === ao)
-          })
-          return {
-            ...addon,
-            options: addonOptions
-          }
-        })
+        ...variation
       })
     }
   }
@@ -302,26 +286,34 @@ function ItemDetail(props) {
       }, 0)
     })
     return (variation + addons).toFixed(2)
-  }, [selectedVariation, addons])
+  }, [selectedVariation, selectedAddons, addons])
 
   function validateOrderItem() {
     let hasError = false
-    const validatedAddons = selectedVariation?.addons?.map((addon) => {
+    const validatedAddons = addonsByCategory?.getAddonsByCategory?.map((addon) => {
       const selected = selectedAddons?.find((ad) => ad._id === addon._id)
 
-      if (!selected && addon?.quantityMinimum === 0) {
-        addon.error = false
-      } else if (selected && selected?.options?.length >= addon?.quantityMinimum && selected?.options?.length <= addon?.quantityMaximum) {
-        addon.error = false
+      const modifiableAddon = { ...addon } // clone to avoid mutating a frozen object
+      const optionCount = selected?.options?.length ?? 0
+      const min = addon?.quantityMinimum ?? 0
+      const max = addon?.quantityMaximum ?? Infinity
+      const isSelected = !!selected
+
+      if (!isSelected && min === 0) {
+        modifiableAddon.error = false
+      } else if (isSelected && optionCount >= min && optionCount <= max) {
+        modifiableAddon.error = false
       } else {
-        addon.error = true
+        modifiableAddon.error = true
         if (!hasError) {
           hasError = true
-          scrollToError(addon._id, selectedVariation?.addons?.length)
+          scrollToError(addon._id, addonsByCategory?.getAddonsByCategory?.length ?? 0)
         }
       }
-      return addon
+
+      return modifiableAddon
     })
+
     setSelectedVariation({ ...selectedVariation, addons: validatedAddons })
     return !hasError
   }
@@ -392,18 +384,14 @@ function ItemDetail(props) {
                   />
                 </View>
               )}
-              {addonsByCategory?.getAddonsByCategory?.map((addon) => (
-                <View key={addon?._id}>
-                  <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
-                  <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
-                </View>
-              ))}
-              {/*  {selectedVariation?.addons?.map((addon) => (
-                <View key={addon?._id}>
-                  <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
-                  <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
-                </View>
-              ))} */}
+              {addonsByCategory?.getAddonsByCategory?.map((addon) => {
+                return (
+                  <View key={addon?._id}>
+                    <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
+                    <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
+                  </View>
+                )
+              })}
             </View>
 
             <View style={styles(currentTheme).line}></View>
@@ -420,7 +408,7 @@ function ItemDetail(props) {
           <HeadingComponent title={food?.title} price={calculatePrice()} />
         </Animated.View>
         <View style={{ backgroundColor: currentTheme.themeBackground, zIndex: 10 }}>
-          <CartComponent onPress={onPressAddToCart} disabled={validateButton()} />
+          <CartComponent onPress={onPressAddToCart} disabled={!validateButton()} />
         </View>
         <View
           style={{

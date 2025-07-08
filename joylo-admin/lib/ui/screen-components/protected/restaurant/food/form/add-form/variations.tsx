@@ -47,7 +47,6 @@ const initialFormValuesTemplate: IVariationForm = {
   title: '',
   price: 0,
   discounted: 0,
-  addons: [],
   isOutOfStock: false,
 };
 
@@ -156,6 +155,7 @@ export default function VariationAddForm({
   }: {
     variations: IVariationForm[];
   }) => {
+    
     try {
       const _variations = variations.map(
         ({ discounted, ...item }: IVariationForm) => {
@@ -190,6 +190,7 @@ export default function VariationAddForm({
         },
       });
     } catch (err) {
+      console.log(err)
       showToast({
         type: 'error',
         title: `${foodContextData?.isEditing ? t('Edit') : t('New')} ${t('Food')}`,

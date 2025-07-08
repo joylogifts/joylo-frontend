@@ -212,7 +212,6 @@ export const VariationErrors: IVariationErrors = {
   title: ['Required', 'Name cannot be only spaces'],
   discounted: ['Required'],
   price: ['Required', 'Minimum value must be greater than 0'],
-  addons: ['Required', 'Addons field must have at least 1 items'],
   isOutOfStock: ['Required'],
 };
 

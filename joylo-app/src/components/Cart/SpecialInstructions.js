@@ -29,8 +29,8 @@ export const SpecialInstructions = ({ theme, instructions, onSubmitInstructions,
             <InstructionMessageIcon stroke={theme.iconStroke}/>
         </View>
         <TouchableOpacity middle style={{ flex: 6, justifyContent: 'center' }} onPress={showModal}>
-            <TextDefault H5 bolder isRTL>{t('AddMessageforRestaurant')}</TextDefault>
-            <TextDefault numberOfLines={3} textColor={theme.fontNewColor} isRTL style={{ lineHeight: scale(18) }}>{instructions || t('specialRequest')}</TextDefault>
+            <TextDefault H5 bolder isRTL>Add a gift message</TextDefault>
+            <TextDefault numberOfLines={3} textColor={theme.fontNewColor} isRTL style={{ lineHeight: scale(18) }}>{instructions || "Write something beautiful for your loved one"}</TextDefault>
         </TouchableOpacity>
         <TouchableOpacity right style={styles.iconContainer} onPress={showModal}>
             <ArrowForwardIcon stroke={theme.iconStroke}/>

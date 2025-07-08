@@ -4,6 +4,9 @@
       "developmentClient": true,
       "distribution": "internal",
       "channel": "development",
+      "ios": {
+        "simulator": true
+      },
       "android": {
         "buildType": "apk"
       }
