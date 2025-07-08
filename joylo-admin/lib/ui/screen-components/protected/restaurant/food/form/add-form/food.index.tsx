@@ -42,12 +42,6 @@ import { FoodSchema } from '@/lib/utils/schema';
 // Prime React
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
-// Icons
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
-
-// Components
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
-import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 
 const initialValues: IFoodDetailsForm = {

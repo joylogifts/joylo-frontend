@@ -506,6 +506,7 @@ export const generateDummyFoods = (count: number = 10): IFoodNew[] => {
         code: `sub-category-${i + 1}`,
         label: `sub-category-${i + 2}`,
       },
+      isReturnAble: false ,
       variations: [
         {
           _id: `food_${i + 1}`,
