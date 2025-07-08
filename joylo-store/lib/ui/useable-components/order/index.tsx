@@ -16,6 +16,7 @@ import { useApptheme } from "@/lib/context/theme.context";
 import useCancelOrder from "@/lib/hooks/useCancelOrder";
 import useOrderPickedUp from "@/lib/hooks/useOrderPickedUp";
 import { useTranslation } from "react-i18next";
+import CancelOrderButton from "./CancelOrderButton";
 
 const Order = ({
   order,
@@ -190,6 +191,19 @@ const Order = ({
           </Text>
         </View>
 
+
+<!--          <View className="pb-4 ">
+<!--           {order?.items?.map((item) => { -->
+<!--             return ( -->
+<!--               <View -->
+<!--                 key={item._id} -->
+<!--                 className="flex-1 flex-row justify-between items-center mb-6" -->
+<!--               > -->
+<!--                 <View className="w-full flex-row justify-between"> -->
+                
+<!--                   <View className="flex-row gap-x-2 w-[90%]"> -->
+                   
+ 
         <View>
             {order?.items?.map((item, itemIndex) => {
               return (
@@ -203,6 +217,7 @@ const Order = ({
                   
                   >
                     {/* Left */}
+
                     <View
                       className="flex-row gap-x-2 w-[90%]"
                     
@@ -566,8 +581,8 @@ const Order = ({
             <View className="flex-row gap-x-4 w-full mt-10">
               {/* Decline */}
               <TouchableOpacity
-                className="flex-1 h-16 items-center justify-center rounded-[30px]"
-                style={{ borderWidth: 1, borderColor: "#ef4444" }}
+                className="flex-1 h-16 items-center justify-center rounded-[30px]"style={{ borderWidth: 1, borderColor: "#ef4444" }}
+                
                 onPress={() => onCancelOrderHandler()}
               >
                 {loadingCancelOrder ? (
@@ -634,6 +649,7 @@ const Order = ({
                 </View>
               </View>
             </View>
+            
 
             {order.orderStatus === "ASSIGNED" && (
               <View className="flex-row gap-x-4 w-full mt-10">
@@ -691,9 +707,19 @@ const Order = ({
                 </TouchableOpacity>
               </View>
             )}
+
+            {
+              order?.orderStatus === 'ACCEPTED' && (
+                <View className="mt-4">
+                  <CancelOrderButton orderId={order._id} />
+                </View>
+              )
+            }
+            
           </>
         )}
       </View>
+      
     </View>
   );
 };
