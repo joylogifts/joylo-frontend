@@ -1,17 +1,5 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useContext,
-  useLayoutEffect
-} from 'react'
-import {
-  View,
-  TouchableOpacity,
-  Platform,
-  KeyboardAvoidingView,
-  ScrollView
-} from 'react-native'
+import React, { useState, useRef, useEffect, useContext, useLayoutEffect } from 'react'
+import { View, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styles from './styles'
 import { OutlinedTextField } from 'react-native-material-textfield'
@@ -31,7 +19,7 @@ import Analytics from '../../utils/analytics'
 import { MaterialIcons, Entypo, Foundation } from '@expo/vector-icons'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
@@ -44,17 +32,17 @@ const labelValues = [
   {
     title: 'Home',
     value: 'Home',
-    icon: <Entypo name="home" size={24} />
+    icon: <Entypo name='home' size={24} />
   },
   {
     title: 'Work',
     value: 'Work',
-    icon: <MaterialIcons name="work" size={24} />
+    icon: <MaterialIcons name='work' size={24} />
   },
   {
     title: 'Other',
     value: 'Other',
-    icon: <Foundation name="heart" size={24} />
+    icon: <Foundation name='heart' size={24} />
   }
 ]
 
@@ -64,29 +52,19 @@ const LONGITUDE_DELTA = 0.0021
 function EditAddress(props) {
   const analytics = Analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation, dir } = useLanguage()
   const addressRef = useRef(null)
   const { location, setLocation } = useContext(LocationContext)
   const [_id] = useState(props?.route.params._id ?? null)
-  const [selectedLabel, setSelectedLabel] = useState(
-    props?.route.params.label ?? labelValues[0].value
-  )
+  const [selectedLabel, setSelectedLabel] = useState(props?.route.params.label ?? labelValues[0].value)
   const [region, setRegion] = useState({
-    latitude: props?.route.params.location
-      ? parseFloat(props?.route.params.location.coordinates[1] ?? null)
-      : props?.route.params.regionChange.latitude,
+    latitude: props?.route.params.location ? parseFloat(props?.route.params.location.coordinates[1] ?? null) : props?.route.params.regionChange.latitude,
     latitudeDelta: LATITUDE_DELTA,
-    longitude: props?.route.params.location
-      ? parseFloat(props?.route.params.location.coordinates[0] ?? '')
-      : props?.route.params.regionChange.longitude,
+    longitude: props?.route.params.location ? parseFloat(props?.route.params.location.coordinates[0] ?? '') : props?.route.params.regionChange.longitude,
     longitudeDelta: LONGITUDE_DELTA
   })
-  const [deliveryAddress, setDeliveryAddress] = useState(
-    props?.route.params.deliveryAddress ?? ''
-  )
-  const [deliveryDetails, setDeliveryDetails] = useState(
-    props?.route.params.details ?? ''
-  )
+  const [deliveryAddress, setDeliveryAddress] = useState(props?.route.params.deliveryAddress ?? '')
+  const [deliveryDetails, setDeliveryDetails] = useState(props?.route.params.details ?? '')
   const [deliveryAddressError, setDeliveryAddressError] = useState('')
   const [deliveryDetailsError, setDeliveryDetailsError] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
@@ -104,7 +82,7 @@ function EditAddress(props) {
   useLayoutEffect(() => {
     props?.navigation.setOptions({
       headerRight: null,
-      title: t('editAddress'),
+      title: getTranslation('edit_address'),
       headerTitleStyle: {
         color: '#000',
         fontWeight: 'bold'
@@ -123,10 +101,10 @@ function EditAddress(props) {
       headerTitleAlign: 'center',
       headerLeft: () => (
         <HeaderBackButton
-          truncatedLabel=""
+          truncatedLabel=''
           backImage={() => (
             <View>
-              <MaterialIcons name="arrow-back" size={30} color="black" />
+              <MaterialIcons name='arrow-back' size={30} color='black' />
             </View>
           )}
           onPress={() => {
@@ -147,17 +125,17 @@ function EditAddress(props) {
   }, [])
   function regionChange(region) {
     Location.reverseGeocodeAsync({ ...region })
-      .then(data => {
+      .then((data) => {
         if (data.length) {
           const location = data[0]
           const deliveryAddress = Object.keys(location)
-            .map(key => location[key])
+            .map((key) => location[key])
             .join(' ')
           setDeliveryAddress(deliveryAddress)
           addressRef.current.setValue(deliveryAddress)
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
       })
     setRegion(region)
@@ -172,7 +150,7 @@ function EditAddress(props) {
       })
     }
     FlashMessage({
-      message: t('addressUpdated')
+      message: getTranslation('addressUpdated')
     })
     // show message here
     props?.navigation.goBack()
@@ -180,7 +158,7 @@ function EditAddress(props) {
 
   function onError(error) {
     FlashMessage({
-      message: `${t('errorOccured')} ${error}`
+      message: `${getTranslation('errorOccured')} ${error}`
     })
   }
 
@@ -202,46 +180,35 @@ function EditAddress(props) {
     setModalVisible(false)
   }
 
-  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
   if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
     <>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'android' ? 20 : 0}
-        style={styles(currentTheme).flex}
-        enabled={!modalVisible}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'android' ? 20 : 0} style={styles(currentTheme).flex} enabled={!modalVisible}>
         <View style={styles(currentTheme).flex}>
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{ flexGrow: 1 }}
-            showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <View style={styles(currentTheme).subContainer}>
               <View style={styles().upperContainer}>
                 <View style={styles().addressContainer}>
                   <View style={styles(currentTheme).addressTag}>
                     <TextDefault H4 bold>
-                      {t('address')}
+                      {getTranslation('address')}
                     </TextDefault>
                   </View>
                   <View style={styles(currentTheme).geoLocation}>
                     <View style={{ width: '100%' }}>
                       <OutlinedTextField
-                        placeholder={t('deliveryAddress')}
+                        placeholder={getTranslation('delivery_address')}
                         error={deliveryAddressError}
                         ref={addressRef}
                         value={deliveryAddress}
-                        label={t('fullDeliveryAddress')}
+                        label={getTranslation('full_delivery_address')}
                         labelFontSize={scale(12)}
                         fontSize={scale(12)}
                         renderRightAccessory={() => (
                           <TouchableOpacity onPress={onOpen}>
-                            <MaterialIcons
-                              name="edit"
-                              size={18}
-                              color={currentTheme.darkBgFont}
-                            />
+                            <MaterialIcons name='edit' size={18} color={currentTheme.darkBgFont} />
                           </TouchableOpacity>
                         )}
                         maxLength={100}
@@ -249,58 +216,46 @@ function EditAddress(props) {
                         textColor={currentTheme.fontMainColor}
                         baseColor={currentTheme.darkBgFont}
                         errorColor={currentTheme.textErrorColor}
-                        tintColor={
-                          !deliveryAddressError ? currentTheme.tagColor : 'red'
-                        }
+                        tintColor={!deliveryAddressError ? currentTheme.tagColor : 'red'}
                         labelOffset={{ y1: -5 }}
                         labelTextStyle={{
                           fontSize: scale(12),
                           paddingTop: scale(1)
                         }}
-                        onChangeText={text => {
+                        onChangeText={(text) => {
                           setDeliveryAddress(text)
                         }}
                         onBlur={() => {
-                          setDeliveryAddressError(
-                            !deliveryAddress.trim().length
-                              ? t('DeliveryAddressIsRequired')
-                              : null
-                          )
+                          setDeliveryAddressError(!deliveryAddress.trim().length ? getTranslation('delivery_address_is_required') : null)
                         }}
                       />
                     </View>
                   </View>
                   <View style={{ ...alignment.MTlarge }}></View>
                   <OutlinedTextField
-                    placeholder={t('aptFloor')}
+                    placeholder={getTranslation('apt_floor')}
                     error={deliveryDetailsError}
-                    label={t('deliveryDetails')}
+                    label={getTranslation('delivery_details')}
                     labelFontSize={scale(12)}
                     fontSize={scale(12)}
-                    textAlignVertical="top"
+                    textAlignVertical='top'
                     multiline={false}
                     maxLength={30}
                     textColor={currentTheme.fontMainColor}
                     baseColor={currentTheme.darkBgFont}
                     errorColor={currentTheme.textErrorColor}
-                    tintColor={
-                      !deliveryDetailsError ? currentTheme.tagColor : 'red'
-                    }
+                    tintColor={!deliveryDetailsError ? currentTheme.tagColor : 'red'}
                     labelOffset={{ y1: -5 }}
                     labelTextStyle={{
                       fontSize: scale(12),
                       paddingTop: scale(1)
                     }}
                     value={deliveryDetails}
-                    onChangeText={text => {
+                    onChangeText={(text) => {
                       setDeliveryDetails(text)
                     }}
                     onBlur={() => {
-                      setDeliveryDetailsError(
-                        !deliveryDetails.trim().length
-                          ? t('DeliveryAddressIsRequired')
-                          : null
-                      )
+                      setDeliveryDetailsError(!deliveryDetails.trim().length ? getTranslation('delivery_address_is_required') : null)
                     }}
                   />
                 </View>
@@ -308,11 +263,8 @@ function EditAddress(props) {
                 <View style={styles().labelButtonContainer}>
                   <View style={styles().labelTitleContainer}>
                     <View style={styles().horizontalLine} />
-                    <TextDefault
-                      textColor={currentTheme.fontMainColor}
-                      H5
-                      bolder>
-                      {t('addLabel')}
+                    <TextDefault textColor={currentTheme.fontMainColor} H5 bolder>
+                      {getTranslation('add_label')}
                     </TextDefault>
                   </View>
                   <View style={styles().buttonInline}>
@@ -321,22 +273,12 @@ function EditAddress(props) {
                         <TouchableOpacity
                           activeOpacity={0.5}
                           key={index}
-                          style={
-                            selectedLabel === label.value
-                              ? styles(currentTheme).activeLabel
-                              : styles(currentTheme).labelButton
-                          }
+                          style={selectedLabel === label.value ? styles(currentTheme).activeLabel : styles(currentTheme).labelButton}
                           onPress={() => {
                             setSelectedLabel(label.value)
-                          }}>
-                          <TextDefault
-                            textColor={
-                              selectedLabel === label.value
-                                ? currentTheme.iconColorPink
-                                : currentTheme.fontMainColor
-                            }
-                            bold
-                            center>
+                          }}
+                        >
+                          <TextDefault textColor={selectedLabel === label.value ? currentTheme.iconColorPink : currentTheme.fontMainColor} bold center>
                             {label.icon}
                           </TextDefault>
                         </TouchableOpacity>
@@ -347,12 +289,8 @@ function EditAddress(props) {
                   <View style={styles().textbuttonInline}>
                     {labelValues.map((label, index) => (
                       <>
-                        <TextDefault
-                          style={styles().titlebuttonInline}
-                          textColor={currentTheme.black}
-                          bold
-                          center>
-                          {t(label.title)}
+                        <TextDefault style={styles().titlebuttonInline} textColor={currentTheme.black} bold center>
+                          {getTranslation(label.title)}
                         </TextDefault>
                       </>
                     ))}
@@ -364,20 +302,13 @@ function EditAddress(props) {
               <TouchableOpacity
                 disabled={loading}
                 onPress={() => {
-                  const deliveryAddressError = !deliveryAddress.trim().length
-                    ? t('DeliveryAddressIsRequired')
-                    : null
-                  const deliveryDetailsError = !deliveryDetails.trim().length
-                    ? t('DeliveryAddressIsRequired')
-                    : null
+                  const deliveryAddressError = !deliveryAddress.trim().length ? getTranslation('delivery_address_is_required') : null
+                  const deliveryDetailsError = !deliveryDetails.trim().length ? getTranslation('delivery_address_is_required') : null
 
                   setDeliveryAddressError(deliveryAddressError)
                   setDeliveryDetailsError(deliveryDetailsError)
 
-                  if (
-                    deliveryAddressError === null &&
-                    deliveryDetailsError === null
-                  ) {
+                  if (deliveryAddressError === null && deliveryDetailsError === null) {
                     mutate({
                       variables: {
                         addressInput: {
@@ -393,9 +324,10 @@ function EditAddress(props) {
                   }
                 }}
                 activeOpacity={0.5}
-                style={styles(currentTheme).saveBtnContainer}>
+                style={styles(currentTheme).saveBtnContainer}
+              >
                 <TextDefault textColor={currentTheme.black} H5 bold>
-                  {t('saveContBtn')}
+                  {getTranslation('save_cont_btn')}
                 </TextDefault>
               </TouchableOpacity>
             </View>
@@ -407,13 +339,7 @@ function EditAddress(props) {
         onClose={onClose}
         onSubmit={onSubmit}
       /> */}
-      {modalVisible ? (
-        <SearchModal
-          visible={modalVisible}
-          onClose={onClose}
-          onSubmit={onSubmit}
-        />
-      ) : null}
+      {modalVisible ? <SearchModal visible={modalVisible} onClose={onClose} onSubmit={onSubmit} /> : null}
       <View
         style={{
           paddingBottom: inset.bottom,

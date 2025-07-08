@@ -77,7 +77,7 @@ export default function AddonAddForm({
 }: IAddonAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
   // Context
 
@@ -114,7 +114,15 @@ export default function AddonAddForm({
   const optionsDropdown = useMemo(
     () =>
       data?.restaurant?.options.map((option: IOptions) => {
-        return { label: toTextCase(option.title, 'title'), code: option._id };
+        return {
+          label: toTextCase(
+            typeof option.title === 'object'
+              ? option?.title[selectedLanguage] || ''
+              : option?.title || '',
+            'title'
+          ),
+          code: option._id,
+        };
       }),
     [data?.restaurant?.options]
   );
@@ -284,7 +292,7 @@ export default function AddonAddForm({
                                             </button>
                                           )}
                                           <Fieldset
-                                            legend={`${getTranslation('addons')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                            legend={`${getTranslation('addons')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
                                             toggleable
                                           >
                                             <div className="grid grid-cols-12 gap-4">
@@ -296,7 +304,14 @@ export default function AddonAddForm({
                                                     'title'
                                                   )}
                                                   maxLength={35}
-                                                  value={value.title}
+                                                  value={
+                                                    typeof value.title ===
+                                                    'object'
+                                                      ? value.title[
+                                                          selectedLanguage
+                                                        ] || ''
+                                                      : value.title || ''
+                                                  }
                                                   onChange={(e) =>
                                                     setFieldValue(
                                                       `addons[${index}].title`,
@@ -379,7 +394,14 @@ export default function AddonAddForm({
                                                   placeholder={getTranslation(
                                                     'description'
                                                   )}
-                                                  value={value.description}
+                                                  value={
+                                                    typeof value.description ===
+                                                    'object'
+                                                      ? value.description[
+                                                          selectedLanguage
+                                                        ] || ''
+                                                      : value.description || ''
+                                                  }
                                                   onChange={handleChange}
                                                   showLabel={true}
                                                   maxLength={40}

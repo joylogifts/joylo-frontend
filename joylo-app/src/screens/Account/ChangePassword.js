@@ -10,17 +10,15 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { alignment } from '../../utils/alignment'
 import TextDefault from '../../components/Text/TextDefault/TextDefault'
-import {useTranslation} from 'react-i18next'
 import { Feather } from '@expo/vector-icons'
-
+import { useLanguage } from '@/src/context/Language'
 
 const CHANGE_PASSWORD = gql`
   ${changePassword}
 `
 
 function ChangePassword(props) {
-
-  const {t} = useTranslation()
+  const { getTranslation } = useLanguage()
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [oldPasswordError, setOldPasswordError] = useState('')
@@ -55,48 +53,35 @@ function ChangePassword(props) {
     if (data.changePassword) {
       clearFields()
       FlashMessage({
-        message: t('updatePassword')
+        message: getTranslation('update_password')
       })
       props.hideModal()
     } else {
-      Alert.alert('Error', t('invalidPassword'))
+      Alert.alert('Error', getTranslation('invalid_password'))
     }
   }
 
   return (
-    <Modal
-      onBackButtonPress={props.hideModal}
-      onBackdropPress={props.hideModal}
-      isVisible={props.modalVisible}
-      animationType='slide'
-      onModalHide={clearFields}
-    >
+    <Modal onBackButtonPress={props.hideModal} onBackdropPress={props.hideModal} isVisible={props.modalVisible} animationType='slide' onModalHide={clearFields}>
       <View style={styles(currentTheme).modalContainer}>
         <View style={styles().modalHeader}>
           <View activeOpacity={0.7} style={styles().modalheading}>
             <TextDefault H4 bolder textColor={currentTheme.newFontcolor} center>
-              {t('changePassword')}
+              {getTranslation('change_password')}
             </TextDefault>
           </View>
-          <Feather
-            name='x-circle'
-            size={24}
-            color={currentTheme.newIconColor}
-            onPress={() => props.hideModal()}
-          />
+          <Feather name='x-circle' size={24} color={currentTheme.newIconColor} onPress={() => props.hideModal()} />
         </View>
 
         <View style={{ ...alignment.MTsmall, gap: 8 }}>
           <TextDefault uppercase bold textColor={currentTheme.gray500}>
-            {t('currentPassword')}
+            {getTranslation('current_password')}
           </TextDefault>
           <TextInput
             style={[
               styles(currentTheme).modalInput,
               {
-                borderBottomColor: oldPasswordError
-                  ? currentTheme.textErrorColor
-                  : currentTheme.tagColor,
+                borderBottomColor: oldPasswordError ? currentTheme.textErrorColor : currentTheme.tagColor,
                 borderBottomWidth: 1
               }
             ]}
@@ -105,10 +90,10 @@ function ChangePassword(props) {
             value={oldPassword}
             onChangeText={(text) => {
               setOldPassword(text)
-              setOldPasswordError(text ? '' : t('passErr1'))
+              setOldPasswordError(text ? '' : getTranslation('pass_err_1'))
             }}
             onBlur={() => {
-              setOldPasswordError(!oldPassword ? t('passErr1') : '')
+              setOldPasswordError(!oldPassword ? getTranslation('pass_err_1') : '')
             }}
           />
           {oldPasswordError ? (
@@ -120,15 +105,13 @@ function ChangePassword(props) {
 
         <View style={{ ...alignment.MTmedium, gap: 8 }}>
           <TextDefault uppercase bold textColor={currentTheme.gray500}>
-            {t('newPassword')}
+            {getTranslation('new_password')}
           </TextDefault>
           <TextInput
             style={[
               styles(currentTheme).modalInput,
               {
-                borderBottomColor: newPasswordError
-                  ? currentTheme.textErrorColor
-                  : currentTheme.tagColor,
+                borderBottomColor: newPasswordError ? currentTheme.textErrorColor : currentTheme.tagColor,
                 borderBottomWidth: 1
               }
             ]}
@@ -137,10 +120,10 @@ function ChangePassword(props) {
             value={newPassword}
             onChangeText={(text) => {
               setNewPassword(text)
-              setNewPasswordError(text ? '' : t('passErr1'))
+              setNewPasswordError(text ? '' : getTranslation('pass_err_1'))
             }}
             onBlur={() => {
-              setNewPasswordError(!newPassword ? t('passErr1') : '')
+              setNewPasswordError(!newPassword ? getTranslation('pass_err_1') : '')
             }}
           />
           {newPasswordError ? (
@@ -156,29 +139,19 @@ function ChangePassword(props) {
             if (newPassword === '' || oldPassword === '') {
               props.hideModal()
             }
-            const newPasswordError = newPassword === '' ? t('passErr1') : ''
-            const oldPasswordError = oldPassword === '' ? t('passErr1') : ''
+            const newPasswordError = newPassword === '' ? getTranslation('pass_err_1') : ''
+            const oldPasswordError = oldPassword === '' ? getTranslation('pass_err_1') : ''
             setNewPasswordError(newPasswordError)
             setOldPasswordError(oldPasswordError)
 
-            if (
-              oldPasswordError.length === 0 &&
-              newPasswordError.length === 0
-            ) {
+            if (oldPasswordError.length === 0 && newPasswordError.length === 0) {
               mutate({ variables: { oldPassword, newPassword } })
             }
           }}
           style={[styles(currentTheme).btnContainer]}
         >
-          <TextDefault
-            textColor={currentTheme.newFontcolor}
-            style={styles().checkoutBtn}
-            bold
-            H4
-          >
-            {newPassword !== '' && oldPassword !== ''
-              ? t('apply')
-              : t('Cancel')}
+          <TextDefault textColor={currentTheme.newFontcolor} style={styles().checkoutBtn} bold H4>
+            {newPassword !== '' && oldPassword !== '' ? getTranslation('apply') : getTranslation('cancel')}
           </TextDefault>
         </TouchableOpacity>
       </View>

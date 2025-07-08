@@ -60,7 +60,7 @@ export default function CategoryAddForm({
 }: ICategoryAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
   // Queries
   const {
     data: subCategories,
@@ -234,7 +234,11 @@ export default function CategoryAddForm({
                               name="title"
                               placeholder={getTranslation('title')}
                               maxLength={30}
-                              value={values.title}
+                              value={
+                                typeof values.title === 'object'
+                                  ? values.title[selectedLanguage] || ''
+                                  : values.title || ''
+                              }
                               onChange={handleChange}
                               showLabel={true}
                               style={{

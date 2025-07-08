@@ -1,12 +1,5 @@
 import React, { useState, useContext, useLayoutEffect, useEffect } from 'react'
-import {
-  View,
-  ScrollView,
-  Alert,
-  StatusBar,
-  Platform,
-  KeyboardAvoidingView
-} from 'react-native'
+import { View, ScrollView, Alert, StatusBar, Platform, KeyboardAvoidingView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styles from './styles'
 import RadioComponent from '../../components/CustomizeComponents/RadioComponent/RadioComponent'
@@ -36,10 +29,10 @@ function ItemDetail(props) {
 
   const [selectedVariation, setSelectedVariation] = useState({
     ...food.variations[0],
-    addons: food.variations[0].addons.map(fa => {
-      const addon = addons.find(a => a._id === fa)
-      const addonOptions = addon.options.map(ao => {
-        return options.find(o => o._id === ao)
+    addons: food.variations[0].addons.map((fa) => {
+      const addon = addons.find((a) => a._id === fa)
+      const addonOptions = addon.options.map((ao) => {
+        return options.find((o) => o._id === ao)
       })
       return {
         ...addon,
@@ -50,13 +43,7 @@ function ItemDetail(props) {
 
   const [selectedAddons, setSelectedAddons] = useState([])
   const [specialInstructions, setSpecialInstructions] = useState('')
-  const {
-    restaurant: restaurantCart,
-    setCartRestaurant,
-    cart,
-    addQuantity,
-    addCartItem
-  } = useContext(UserContext)
+  const { restaurant: restaurantCart, setCartRestaurant, cart, addQuantity, addCartItem } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const inset = useSafeAreaInsets()
@@ -97,10 +84,10 @@ function ItemDetail(props) {
 
       headerLeft: () => (
         <HeaderBackButton
-          truncatedLabel=""
+          truncatedLabel=''
           backImage={() => (
             <View style={styles(currentTheme).backBtnContainer}>
-              <MaterialIcons name="arrow-back" size={30} color="black" />
+              <MaterialIcons name='arrow-back' size={30} color='black' />
             </View>
           )}
           onPress={() => {
@@ -114,19 +101,15 @@ function ItemDetail(props) {
   function validateButton() {
     if (!selectedVariation) return false
     const validatedAddons = []
-    selectedVariation.addons.forEach(addon => {
-      const selected = selectedAddons.find(ad => ad._id === addon._id)
+    selectedVariation.addons.forEach((addon) => {
+      const selected = selectedAddons.find((ad) => ad._id === addon._id)
       if (!selected && addon.quantityMinimum === 0) {
         validatedAddons.push(false)
-      } else if (
-        selected &&
-        selected.options.length >= addon.quantityMinimum &&
-        selected.options.length <= addon.quantityMaximum
-      ) {
+      } else if (selected && selected.options.length >= addon.quantityMinimum && selected.options.length <= addon.quantityMaximum) {
         validatedAddons.push(false)
       } else validatedAddons.push(true)
     })
-    return validatedAddons.every(val => val === false)
+    return validatedAddons.every((val) => val === false)
   }
 
   async function onPressAddToCart(quantity) {
@@ -162,7 +145,7 @@ function ItemDetail(props) {
   }
 
   const addToCart = async (quantity, clearFlag) => {
-    const addons = selectedAddons.map(addon => ({
+    const addons = selectedAddons.map((addon) => ({
       ...addon,
       options: addon.options.map(({ _id }) => ({
         _id
@@ -171,23 +154,16 @@ function ItemDetail(props) {
 
     const cartItem = clearFlag
       ? null
-      : cart.find(cartItem => {
-          if (
-            cartItem._id === food._id &&
-            cartItem.variation._id === selectedVariation._id
-          ) {
+      : cart.find((cartItem) => {
+          if (cartItem._id === food._id && cartItem.variation._id === selectedVariation._id) {
             if (cartItem.addons.length === addons.length) {
               if (addons.length === 0) return true
-              const addonsResult = addons.every(newAddon => {
-                const cartAddon = cartItem.addons.find(
-                  ad => ad._id === newAddon._id
-                )
+              const addonsResult = addons.every((newAddon) => {
+                const cartAddon = cartItem.addons.find((ad) => ad._id === newAddon._id)
 
                 if (!cartAddon) return false
-                const optionsResult = newAddon.options.every(newOption => {
-                  const cartOption = cartAddon.options.find(
-                    op => op._id === newOption._id
-                  )
+                const optionsResult = newAddon.options.every((newOption) => {
+                  const cartOption = cartAddon.options.find((op) => op._id === newOption._id)
 
                   if (!cartOption) return false
                   return true
@@ -204,14 +180,7 @@ function ItemDetail(props) {
 
     if (!cartItem) {
       await setCartRestaurant(restaurant)
-      await addCartItem(
-        food._id,
-        selectedVariation._id,
-        quantity,
-        addons,
-        clearFlag,
-        specialInstructions
-      )
+      await addCartItem(food._id, selectedVariation._id, quantity, addons, clearFlag, specialInstructions)
     } else {
       await addQuantity(cartItem.key, quantity)
     }
@@ -221,10 +190,10 @@ function ItemDetail(props) {
   function onSelectVariation(variation) {
     setSelectedVariation({
       ...variation,
-      addons: variation.addons.map(fa => {
-        const addon = addons.find(a => a._id === fa)
-        const addonOptions = addon.options.map(ao => {
-          return options.find(o => o._id === ao)
+      addons: variation.addons.map((fa) => {
+        const addon = addons.find((a) => a._id === fa)
+        const addonOptions = addon.options.map((ao) => {
+          return options.find((o) => o._id === ao)
         })
         return {
           ...addon,
@@ -235,18 +204,14 @@ function ItemDetail(props) {
   }
 
   async function onSelectOption(addon, option) {
-    const index = selectedAddons.findIndex(ad => ad._id === addon._id)
+    const index = selectedAddons.findIndex((ad) => ad._id === addon._id)
     if (index > -1) {
       if (addon.quantityMinimum === 1 && addon.quantityMaximum === 1) {
         selectedAddons[index].options = [option]
       } else {
-        const optionIndex = selectedAddons[index].options.findIndex(
-          opt => opt._id === option._id
-        )
+        const optionIndex = selectedAddons[index].options.findIndex((opt) => opt._id === option._id)
         if (optionIndex > -1) {
-          selectedAddons[index].options = selectedAddons[index].options.filter(
-            opt => opt._id !== option._id
-          )
+          selectedAddons[index].options = selectedAddons[index].options.filter((opt) => opt._id !== option._id)
         } else {
           selectedAddons[index].options.push(option)
         }
@@ -263,7 +228,7 @@ function ItemDetail(props) {
   function calculatePrice() {
     const variation = selectedVariation.price
     let addons = 0
-    selectedAddons.forEach(addon => {
+    selectedAddons.forEach((addon) => {
       addons += addon.options.reduce((acc, option) => {
         return acc + option.price
       }, 0)
@@ -272,106 +237,56 @@ function ItemDetail(props) {
   }
 
   function validateOrderItem() {
-    const validatedAddons = selectedVariation.addons.map(addon => {
-      const selected = selectedAddons.find(ad => ad._id === addon._id)
+    const validatedAddons = selectedVariation.addons.map((addon) => {
+      const selected = selectedAddons.find((ad) => ad._id === addon._id)
 
       if (!selected && addon.quantityMinimum === 0) {
         addon.error = false
-      } else if (
-        selected &&
-        selected.options.length >= addon.quantityMinimum &&
-        selected.options.length <= addon.quantityMaximum
-      ) {
+      } else if (selected && selected.options.length >= addon.quantityMinimum && selected.options.length <= addon.quantityMaximum) {
         addon.error = false
       } else addon.error = true
       return addon
     })
     setSelectedVariation({ ...selectedVariation, addons: validatedAddons })
-    return validatedAddons.every(addon => addon.error === false)
+    return validatedAddons.every((addon) => addon.error === false)
   }
 
   function renderOption(addon) {
     if (addon.quantityMinimum === 1 && addon.quantityMaximum === 1) {
-      return (
-        <RadioComponent
-          options={addon.options}
-          onPress={onSelectOption.bind(this, addon)}
-        />
-      )
+      return <RadioComponent options={addon.options} onPress={onSelectOption.bind(this, addon)} />
     } else {
-      return (
-        <CheckComponent
-          options={addon.options}
-          onPress={onSelectOption.bind(this, addon)}
-        />
-      )
+      return <CheckComponent options={addon.options} onPress={onSelectOption.bind(this, addon)} />
     }
   }
 
   return (
     <>
       <View style={[styles().flex, styles(currentTheme).mainContainer]}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? `${0}` : `${100}`}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? `${0}` : `${100}`}>
           {!!food.image && <ImageHeader image={food.image} />}
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles().scrollViewContainer}>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles().scrollViewContainer}>
             <View style={styles().subContainer}>
               <HeadingComponent title={food.title} price={calculatePrice()} />
 
               {food.variations.length > 1 && (
                 <>
                   <View>
-                    <TitleComponent
-                      title={t('SelectVariation')}
-                      subTitle={t('SelectOne')}
-                      status={t('Required')}
-                    />
-                    <RadioComponent
-                      options={food.variations}
-                      selected={selectedVariation}
-                      onPress={onSelectVariation}
-                    />
+                    <TitleComponent title={t('SelectVariation')} subTitle={t('SelectOne')} status={t('Required')} />
+                    <RadioComponent options={food.variations} selected={selectedVariation} onPress={onSelectVariation} />
                   </View>
                 </>
               )}
-              {selectedVariation.addons.map(addon => (
+              {selectedVariation.addons.map((addon) => (
                 <View key={addon._id}>
-                  <TitleComponent
-                    title={addon.title}
-                    subTitle={addon.description}
-                    error={addon.error}
-                    status={
-                      addon.quantityMinimum === 0
-                        ? 'OPTIONAL'
-                        : `${addon.quantityMinimum} REQUIRED`
-                    }
-                  />
+                  <TitleComponent title={addon.title} subTitle={addon.description} error={addon.error} status={addon.quantityMinimum === 0 ? 'OPTIONAL' : `${addon.quantityMinimum} REQUIRED`} />
                   {renderOption(addon)}
                 </View>
               ))}
             </View>
             <View style={styles(currentTheme).line}></View>
             <View style={styles(currentTheme).inputContainer}>
-              <TitleComponent
-                title={t('specialInstructions')}
-                subTitle={t('anySpecificPreferences')}
-                status={t('optional')}
-              />
-              <TextField
-                style={styles(currentTheme).input}
-                placeholder={t('noMayo')}
-                textAlignVertical="center"
-                value={specialInstructions}
-                onChangeText={setSpecialInstructions}
-                maxLength={144}
-                textColor={currentTheme.fontMainColor}
-                baseColor={currentTheme.lightHorizontalLine}
-                errorColor={currentTheme.textErrorColor}
-                tintColor={currentTheme.themeBackground}
-              />
+              <TitleComponent title={t('specialInstructions')} subTitle={t('anySpecificPreferences')} status={t('optional')} />
+              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={currentTheme.themeBackground} />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>

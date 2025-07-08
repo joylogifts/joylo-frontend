@@ -63,7 +63,7 @@ export default function OptionAddForm({
 }: IOptionsAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
 
   // Context
@@ -192,7 +192,7 @@ export default function OptionAddForm({
                                             </button>
                                           )}
                                           <Fieldset
-                                            legend={`${getTranslation('option')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                            legend={`${getTranslation('option')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
                                             toggleable
                                           >
                                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -204,7 +204,14 @@ export default function OptionAddForm({
                                                     'title'
                                                   )}
                                                   maxLength={35}
-                                                  value={value.title}
+                                                  value={
+                                                    typeof value.title ===
+                                                    'object'
+                                                      ? value.title[
+                                                          selectedLanguage
+                                                        ] || ''
+                                                      : value.title || ''
+                                                  }
                                                   onChange={(e) =>
                                                     setFieldValue(
                                                       `options[${index}].title`,
@@ -258,7 +265,14 @@ export default function OptionAddForm({
                                                   placeholder={getTranslation(
                                                     'description'
                                                   )}
-                                                  value={value.description}
+                                                  value={
+                                                    typeof value.description ===
+                                                    'object'
+                                                      ? value.description[
+                                                          selectedLanguage
+                                                        ] || ''
+                                                      : value.description || ''
+                                                  }
                                                   onChange={handleChange}
                                                   showLabel={true}
                                                   className={''}

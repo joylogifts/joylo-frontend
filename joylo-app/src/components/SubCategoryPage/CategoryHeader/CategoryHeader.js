@@ -8,18 +8,14 @@ import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
 import { useTranslation } from 'react-i18next'
 import styles from './styles'
+import { useLanguage } from '@/src/context/Language'
 
-const CategoryPageHeader = ({
-  navigation,
-  restaurantName,
-  deliveryTime,
-  onOpenSearch
-}) => {
+const CategoryPageHeader = ({ navigation, restaurantName, deliveryTime, onOpenSearch }) => {
   const themeContext = useContext(ThemeContext)
-  const { i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
@@ -28,16 +24,8 @@ const CategoryPageHeader = ({
       <View style={styles(currentTheme).headerContainer}>
         {/* Left Section - Back Button */}
         <View style={styles(currentTheme).leftSection}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles(currentTheme).iconButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons
-              name='arrow-back'
-              color={currentTheme.fontMainColor}
-              size={scale(17)}
-            />
+          <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).iconButton} onPress={() => navigation.goBack()}>
+            <Ionicons name='arrow-back' color={currentTheme.fontMainColor} size={scale(17)} />
           </TouchableOpacity>
         </View>
 
@@ -52,23 +40,13 @@ const CategoryPageHeader = ({
           >
             {restaurantName}
           </TextDefault>
-          <TextDefault textColor={currentTheme.plusIcon}>
-            Delivery in {deliveryTime} mins
-          </TextDefault>
+          <TextDefault textColor={currentTheme.plusIcon}>Delivery in {deliveryTime} mins</TextDefault>
         </View>
 
         {/* Right Section - Search Icon */}
         <View style={styles(currentTheme).rightSection}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles(currentTheme).iconButton}
-            onPress={onOpenSearch}
-          >
-            <Ionicons
-              name='search'
-              size={scale(17)}
-              color={currentTheme.fontMainColor}
-            />
+          <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).iconButton} onPress={onOpenSearch}>
+            <Ionicons name='search' size={scale(17)} color={currentTheme.fontMainColor} />
           </TouchableOpacity>
         </View>
       </View>

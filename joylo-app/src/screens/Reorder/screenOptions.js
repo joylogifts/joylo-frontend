@@ -1,19 +1,18 @@
 import { BackButton } from '../../components/Header/HeaderIcons/HeaderIcons'
 import { scale } from '../../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
-const navigationOptions = headerText => {
-  const { t } = useTranslation()
+const navigationOptions = (headerText) => {
+  const { getTranslation: t } = useLanguage()
 
   return {
-    headerTitle: t('titleReorder'),
+    headerTitle: t('title_reorder'),
     headerTitleAlign: 'left',
     headerRight: null,
     headerTitleContainerStyle: {
       marginLeft: scale(0)
     },
-    headerBackImage: () =>
-      BackButton({ iconColor: headerText, icon: 'leftArrow' })
+    headerBackImage: () => BackButton({ iconColor: headerText, icon: 'leftArrow' })
   }
 }
 

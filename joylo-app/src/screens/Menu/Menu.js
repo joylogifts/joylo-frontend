@@ -40,7 +40,7 @@ import useNetworkStatus from '../../utils/useNetworkStatus'
 import { isOpen, sortRestaurantsByOpenStatus } from '../../utils/customFunctions'
 import Ripple from 'react-native-material-ripple'
 import useGeocoding from '../../ui/hooks/useGeocoding'
-
+import { useLanguage } from '@/src/context/Language'
 
 const SELECT_ADDRESS = gql`
   ${selectAddress}
@@ -52,18 +52,18 @@ const GET_CUISINES = gql`
 export const FILTER_VALUES = {
   Sort: {
     type: FILTER_TYPE.CHECKBOX,
-    values: ['Relevance (Default)', 'Fast Delivery', 'Distance'],
+    values: ['relevance', 'fast_delivery', 'distance'],
     selected: []
   },
   Offers: {
     selected: [],
     type: FILTER_TYPE.CHECKBOX,
-    values: ['Free Delivery', 'Accept Vouchers', 'Deal']
+    values: ['free_delivery', 'accept_vouchers', 'deal']
   },
   Rating: {
     selected: [],
     type: FILTER_TYPE.CHECKBOX,
-    values: ['3+ Rating', '4+ Rating', '5 star Rating']
+    values: ['3_rating', '4_Rating', '5_star_rating']
   }
 }
 const { height: HEIGHT } = Dimensions.get('window')
@@ -72,7 +72,7 @@ function Menu({ route, props }) {
   const selectedType = route.params?.selectedType
   const queryType = route.params?.queryType
   const collection = route.params?.collection
-  const { t, i18n } = useTranslation()
+
   const { getAddress } = useGeocoding()
   const [busy, setBusy] = useState(false)
   const { loadingOrders, isLoggedIn, profile } = useContext(UserContext)
@@ -90,6 +90,7 @@ function Menu({ route, props }) {
   const navigation = useNavigation()
   const routeData = useRoute()
   const themeContext = useContext(ThemeContext)
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -105,7 +106,7 @@ function Menu({ route, props }) {
   }, [])
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const { getCurrentLocation } = useLocation()
@@ -122,7 +123,7 @@ function Menu({ route, props }) {
 
   const { onScroll /* Event handler */, containerPaddingTop /* number */, scrollIndicatorInsetTop /* number */ } = useCollapsibleSubHeader()
 
-  const emptyViewDesc = selectedType === 'restaurant' ? t('noRestaurant') : t('noGrocery')
+  const emptyViewDesc = selectedType === 'restaurant' ? t('no_restaurant') : t('no_grocery')
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
@@ -163,7 +164,7 @@ function Menu({ route, props }) {
       Cuisines: {
         selected: [],
         type: FILTER_TYPE.CHECKBOX,
-        values: allCuisines?.cuisines?.map((item) => item.name)
+        values: allCuisines?.cuisines?.map((item) => typeof item.name === 'object' ? item.name[selectedLanguage] : item.name) || ""
       }
     }))
   }, [allCuisines])
@@ -220,7 +221,7 @@ function Menu({ route, props }) {
         }
       }
       let allfilter = allCuisines?.cuisines?.filter((cuisine) => {
-        return cus.has(cuisine.name)
+        return cus.has(typeof cuisine.name === 'object' ? cuisine.name[selectedLanguage] : cuisine.name)
       })
       return allfilter
     }
@@ -354,10 +355,10 @@ function Menu({ route, props }) {
         <View style={styles().emptyViewContainer}>
           <View style={styles(currentTheme).emptyViewBox}>
             <TextDefault bold H4 center textColor={currentTheme.fontMainColor}>
-              {!filterApplied ? t('notAvailableinYourArea') : t('noMatchingResults')}
+              {!filterApplied ? t('not_available_in_your_area') : t('no_matching_results')}
             </TextDefault>
             <TextDefault textColor={currentTheme.fontMainColor} center>
-              {!filterApplied ? emptyViewDesc : t('noMatchingResultsDesc')}
+              {!filterApplied ? emptyViewDesc : t('no_matching_results_desc')}
             </TextDefault>
           </View>
         </View>
@@ -385,7 +386,7 @@ function Menu({ route, props }) {
             <AntDesign name='pluscircleo' size={scale(20)} color={currentTheme.black} />
             <View style={styles().mL5p} />
             <TextDefault bold textColor={currentTheme.black}>
-              {t('addAddress')}
+              {t('add_address')}
             </TextDefault>
           </View>
         </TouchableOpacity>
@@ -551,10 +552,10 @@ function Menu({ route, props }) {
         <View style={[styles(currentTheme).header, { paddingHorizontal: 10, paddingVertical: 6 }]}>
           <View>
             <TextDefault bolder H2 isRTL>
-              {t(routeData?.name === 'Restaurants' ? 'Restaurants' : 'Stores')}
+              {t(routeData?.name === 'Restaurants' ? 'restaurants' : 'stores')}
             </TextDefault>
             <TextDefault bold H5 isRTL>
-              {t('BrowseCategories')}
+              {t('browse_categories')}
             </TextDefault>
           </View>
           <Ripple
@@ -568,7 +569,7 @@ function Menu({ route, props }) {
             }}
           >
             <TextDefault H5 bolder textColor={currentTheme.main}>
-              {t('SeeAll')}
+              {t('see_all')}
             </TextDefault>
           </Ripple>
         </View>
@@ -577,6 +578,7 @@ function Menu({ route, props }) {
             ref={flatListRef}
             data={collectionData ?? []}
             renderItem={({ item, index }) => {
+              let cuisineName = typeof item.name === 'object' ? item.name[selectedLanguage] : item.name
               setCurrentIndex(index)
               return (
                 <Ripple
@@ -584,7 +586,7 @@ function Menu({ route, props }) {
                   onPress={() => onPressCollection(item, index)}
                   style={[
                     styles(currentTheme).collectionCard,
-                    activeCollection === item.name && {
+                    activeCollection === cuisineName && {
                       backgroundColor: currentTheme.newButtonBackground
                     }
                   ]}
@@ -593,8 +595,8 @@ function Menu({ route, props }) {
                     <View>
                       <Image source={{ uri: item?.image }} style={styles().collectionImage} resizeMode='cover' />
                     </View>
-                    <TextDefault Normal bolder style={{ padding: 4 }} textColor={activeCollection === item.name ? currentTheme.main : currentTheme.gray700} isRTL>
-                      {item.name}
+                    <TextDefault Normal bolder style={{ padding: 4 }} textColor={activeCollection === cuisineName ? currentTheme.main : currentTheme.gray700} isRTL>
+                      {cuisineName}
                     </TextDefault>
                   </View>
                 </Ripple>
@@ -618,9 +620,9 @@ function Menu({ route, props }) {
           contentInset={{ top: containerPaddingTop }}
           contentContainerStyle={{
             paddingTop: Platform.OS === 'ios' ? 0 : containerPaddingTop,
-            paddingBottom: HEIGHT*0.34,
+            paddingBottom: HEIGHT * 0.34,
             padding: 15,
-            gap: 16,
+            gap: 16
           }}
           contentOffset={{ y: -containerPaddingTop }}
           onScroll={onScroll}

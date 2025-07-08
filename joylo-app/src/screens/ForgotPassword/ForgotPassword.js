@@ -53,7 +53,7 @@ function ForgotPassword(props) {
     )
   }, [props?.navigation])
 
-  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus();
   if (!connect) return <ErrorView refetchFunctions={[]} />
 
   return (
@@ -138,7 +138,7 @@ function ForgotPassword(props) {
                       size='small'
                     />
                   ) : (
-                    t('continueBtn')
+                    t('continue_btn')
                   )}
                 </TextDefault>
               </TouchableOpacity>

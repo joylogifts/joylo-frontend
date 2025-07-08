@@ -48,14 +48,22 @@ export default function CuisineForm({
 
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   // Initial values
   const initialValues = {
     _id: isEditing.bool ? isEditing?.data?._id : '',
-    name: isEditing.bool ? isEditing?.data?.name : '',
-    description: isEditing.bool ? isEditing?.data?.description : '',
+    name: isEditing.bool
+      ? typeof isEditing?.data?.name === 'object'
+        ? isEditing?.data?.name[selectedLanguage]
+        : isEditing?.data?.name
+      : '',
+    description: isEditing.bool
+      ? typeof isEditing?.data?.description === 'object'
+        ? isEditing?.data?.description[selectedLanguage]
+        : isEditing?.data?.description
+      : '',
     shopType: {
       label: capitalizeFirstWord(isEditing?.data?.shopType ?? ''),
       code: isEditing?.data?.shopType.toLocaleLowerCase() ?? '',

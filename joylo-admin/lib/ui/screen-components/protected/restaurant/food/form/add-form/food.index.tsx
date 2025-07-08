@@ -68,7 +68,7 @@ export default function FoodDetails({
 }: IFoodDetailsComponentProps) {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
@@ -136,7 +136,13 @@ export default function FoodDetails({
   const categoriesDropdown = useMemo(
     () =>
       data?.restaurant?.categories.map((category: ICategory) => {
-        return { label: category.title, code: category._id };
+        return {
+          label:
+            typeof category.title === 'object'
+              ? category.title[selectedLanguage]
+              : category.title,
+          code: category._id,
+        };
       }),
     [data?.restaurant?.categories]
   );
@@ -145,7 +151,13 @@ export default function FoodDetails({
     () =>
       subCategoriesData?.subCategoriesByParentId.map(
         (sub_category: ISubCategory) => {
-          return { label: sub_category.title, code: sub_category._id };
+          return {
+            label:
+              typeof sub_category.title === 'object'
+                ? sub_category.title[selectedLanguage]
+                : sub_category.title,
+            code: sub_category._id,
+          };
         }
       ),
     [categoryDropDown?.code, subCategoriesData]
@@ -153,10 +165,18 @@ export default function FoodDetails({
 
   // Handlers
   const onFoodSubmitHandler = (values: IFoodDetailsForm) => {
+    console.log('onFoodSubmitHandler', values);
     const foodData: IFoodNew = {
       _id: foodContextData?.food?.data?._id ?? '',
-      title: values.title,
-      description: values.description,
+      title:
+        typeof values.title === 'object'
+          ? values.title[selectedLanguage] || ''
+          : values.title || '',
+      description:
+        typeof values.description === 'object'
+          ? values.description[selectedLanguage] || ''
+          : values.description || '',
+
       category: values.category,
       subCategory: values.subCategory,
       image: values.image,
@@ -168,6 +188,8 @@ export default function FoodDetails({
           ? (foodContextData?.food?.variations ?? [])
           : [],
     };
+
+    console.log('foodData on submit', foodData);
 
     onSetFoodContextData({
       food: {
@@ -189,8 +211,13 @@ export default function FoodDetails({
           .filter((sub_ctg) => sub_ctg.parentCategoryId)
           .map((sub_ctg_: ISubCategory) => ({
             code: sub_ctg_?._id || '',
-            label: sub_ctg_?.title || '',
+            label:
+              typeof sub_ctg_?.title === 'object'
+                ? sub_ctg_?.title[selectedLanguage]
+                : sub_ctg_?.title,
           })) || [];
+
+      console.log('selectedSubCategory', selectedSubCategory);
       setSelectedSubCategories(selectedSubCategory);
     }
     // setFoodInitialValues((prev)=>({...prev, subCategory:foodContextData?.food?.data.subCategory||null}))
@@ -230,6 +257,7 @@ export default function FoodDetails({
               validationSchema={FoodSchema}
               enableReinitialize={true}
               onSubmit={async (values) => {
+                console.log('onSubmit values', values);
                 onFoodSubmitHandler(values);
               }}
               validateOnChange={false}
@@ -340,7 +368,11 @@ export default function FoodDetails({
                           name="title"
                           placeholder={getTranslation('title')}
                           maxLength={35}
-                          value={values.title}
+                          value={
+                            typeof values.title === 'object'
+                              ? values.title[selectedLanguage] || ''
+                              : values.title || ''
+                          }
                           onChange={handleChange}
                           showLabel={true}
                           style={{
@@ -359,7 +391,11 @@ export default function FoodDetails({
                           name="description"
                           label={getTranslation('description')}
                           placeholder={getTranslation('description')}
-                          value={values.description}
+                          value={
+                            typeof values.description === 'object'
+                              ? values.description[selectedLanguage] || ''
+                              : values.description || ''
+                          }
                           onChange={handleChange}
                           showLabel={true}
                           className={''}

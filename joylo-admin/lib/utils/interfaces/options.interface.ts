@@ -24,8 +24,8 @@ export interface IOptionsMainComponentsProps extends IGlobalComponentProps {
 /*  */
 export interface IOptions {
   _id: string;
-  title: string;
-  description: string;
+  title: JSON | string;
+  description: JSON | string;
   price: number;
   __typename: string;
 }

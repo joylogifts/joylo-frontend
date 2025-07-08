@@ -15,7 +15,7 @@ export const BANNERS_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   return [
     {
@@ -49,8 +49,28 @@ export const BANNERS_TABLE_COLUMNS = ({
         }
       },
     },
-    { headerName: getTranslation('title'), propertyName: 'title' },
-    { headerName: getTranslation('description'), propertyName: 'description' },
+    {
+      headerName: getTranslation('title'),
+      propertyName: 'title',
+      body: (banner: IBannersResponse) => (
+        <span className="text-sm">
+          {typeof banner.description === 'object'
+            ? banner.description[selectedLanguage] || ''
+            : banner.description || ''}
+        </span>
+      ),
+    },
+    {
+      headerName: getTranslation('description'),
+      propertyName: 'description',
+      body: (banner: IBannersResponse) => (
+        <span className="text-sm">
+          {typeof banner.description === 'object'
+            ? banner.description[selectedLanguage] || ''
+            : banner.description || ''}
+        </span>
+      ),
+    },
     { headerName: getTranslation('screen'), propertyName: 'screen' },
     { headerName: getTranslation('actions'), propertyName: 'action' },
     {

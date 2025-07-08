@@ -1,20 +1,7 @@
 import React, { useContext, useEffect } from 'react'
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  Keyboard,
-  Dimensions
-} from 'react-native'
+import { Modal, View, TouchableOpacity, Keyboard, Dimensions } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import Animated, {
-  Easing as EasingNode,
-  Extrapolation,
-  interpolate,
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle
-} from 'react-native-reanimated'
+import Animated, { Easing as EasingNode, Extrapolation, interpolate, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated'
 import useEnvVars from '../../../environment'
 import CloseIcon from '../../assets/SVG/imageComponents/CloseIcon'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
@@ -25,16 +12,13 @@ import TextDefault from '../Text/TextDefault/TextDefault'
 import styles from './styles'
 
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 
 const { height } = Dimensions.get('screen')
 
-export default function SearchModal({
-  visible = false,
-  onClose = () => {},
-  onSubmit = () => {}
-}) {
-  const { t } = useTranslation()
+export default function SearchModal({ visible = false, onClose = () => { }, onSubmit = () => { } }) {
+  const { getTranslation: t } = useLanguage()
   const animation = useSharedValue(0)
   const { GOOGLE_MAPS_KEY } = useEnvVars()
 
@@ -43,34 +27,19 @@ export default function SearchModal({
 
   const marginTop = useAnimatedStyle(() => {
     return {
-      marginTop: interpolate(
-        animation.value,
-        [0, 1],
-        [height * 0.4, height * 0.06],
-        Extrapolation.CLAMP
-      )
+      marginTop: interpolate(animation.value, [0, 1], [height * 0.4, height * 0.06], Extrapolation.CLAMP)
     }
   })
 
   const borderTopLeftRadius = useAnimatedStyle(() => {
     return {
-      borderTopLeftRadius: interpolate(
-        animation.value,
-        [0, 1],
-        [30, 0],
-        Extrapolation.CLAMP
-      )
+      borderTopLeftRadius: interpolate(animation.value, [0, 1], [30, 0], Extrapolation.CLAMP)
     }
   })
 
   const borderTopRightRadius = useAnimatedStyle(() => {
     return {
-      borderTopRightRadius: interpolate(
-        animation.value,
-        [0, 1],
-        [30, 0],
-        Extrapolation.CLAMP
-      )
+      borderTopRightRadius: interpolate(animation.value, [0, 1], [30, 0], Extrapolation.CLAMP)
     }
   })
 
@@ -95,11 +64,7 @@ export default function SearchModal({
   }
 
   const animate = (hide = false) => {
-    withTiming(
-      (animation.value = hide ? 0 : 1),
-      { duration: 300 },
-      { easing: EasingNode.inOut(EasingNode.ease) }
-    )
+    withTiming((animation.value = hide ? 0 : 1), { duration: 300 }, { easing: EasingNode.inOut(EasingNode.ease) })
   }
 
   function close() {
@@ -108,28 +73,11 @@ export default function SearchModal({
   }
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType={'slide'}
-      onRequestClose={onClose}
-    >
-      <Animated.View
-        style={[
-          styles(currentTheme).modalContainer,
-          marginTop,
-          borderTopLeftRadius,
-          borderTopRightRadius,
-
-        ]}
-      >
+    <Modal visible={visible} transparent animationType={'slide'} onRequestClose={onClose}>
+      <Animated.View style={[styles(currentTheme).modalContainer, marginTop, borderTopLeftRadius, borderTopRightRadius]}>
         <View style={[styles(currentTheme).flex, alignment.MTsmall]}>
           <TouchableOpacity style={styles().modalTextBtn} onPress={close}>
-            <AntDesign
-              name='arrowleft'
-              size={24}
-              color={currentTheme.newIconColor}
-            />
+            <AntDesign name='arrowleft' size={24} color={currentTheme.newIconColor} />
           </TouchableOpacity>
           <GooglePlacesAutocomplete
             placeholder={t('search')}
@@ -139,15 +87,14 @@ export default function SearchModal({
             listViewDisplayed='auto' // true/false/undefined
             fetchDetails={true}
             renderDescription={(row) => row.description} // custom description render
-            renderRow={(data) =>(
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                    <View style={styles(currentTheme).locationIcon} >
-                      <Ionicons name="location-outline" size={16} color={currentTheme.newIconColor} />
-                    </View>
-                    <TextDefault>{data?.description}</TextDefault>
-                  </View>
-              )
-            } //
+            renderRow={(data) => (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <View style={styles(currentTheme).locationIcon}>
+                  <Ionicons name='location-outline' size={16} color={currentTheme.newIconColor} />
+                </View>
+                <TextDefault>{data?.description}</TextDefault>
+              </View>
+            )} //
             onPress={(data, details = null) => {
               onSubmit(data.description, details.geometry.location)
             }}
@@ -164,11 +111,11 @@ export default function SearchModal({
             }}
             styles={{
               listView: {
-                marginLeft: -50,
+                marginLeft: -50
               },
               description: {
                 fontWeight: 'bold',
-                color: currentTheme.newFontcolor,
+                color: currentTheme.newFontcolor
               },
               predefinedPlacesDescription: {
                 color: '#1faadb'
@@ -186,11 +133,11 @@ export default function SearchModal({
                 height: 38
               },
               row: {
-                backgroundColor: currentTheme.cardBackground,
+                backgroundColor: currentTheme.cardBackground
               },
               poweredContainer: {
                 backgroundColor: 'transparent'
-              },
+              }
             }}
             nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
             GoogleReverseGeocodingQuery={

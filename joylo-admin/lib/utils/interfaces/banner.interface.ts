@@ -26,8 +26,8 @@ export interface IBannersAddFormComponentProps extends IGlobalComponentProps {
 
 export type IBannersResponse = {
   _id: string;
-  title: string;
-  description: string;
+  title: JSON | string;
+  description: JSON | string;
   action:
     | 'navigate'
     | 'openModal'

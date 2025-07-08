@@ -36,7 +36,7 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     error: languagesError,
   } = useQuery(GET_LANGUAGES);
 
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [translationsLoading, setTranslationsLoading] = useState(false);
 

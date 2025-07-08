@@ -30,6 +30,7 @@ interface ColumnDefinition {
 // Component for the subcategory column
 const SubcategoryCell = ({ categoryId }: { categoryId: string }) => {
   const [subcategories, setSubcategories] = useState<ISubCategory[]>([]);
+  const { selectedLanguage } = useLangTranslation();
   const { data, loading } = useQueryGQL(
     GET_SUBCATEGORIES_BY_PARENT_ID,
     { parentCategoryId: categoryId },
@@ -54,7 +55,11 @@ const SubcategoryCell = ({ categoryId }: { categoryId: string }) => {
       {subcategories.map((sub) => (
         <div key={sub._id} className="flex items-center">
           <span className="w-1.5 h-1.5 rounded-full bg-gray-500 mr-1.5"></span>
-          <span>{sub.title}</span>
+          <span>
+            {typeof sub.title === 'object'
+              ? sub.title[selectedLanguage]
+              : sub.title}
+          </span>
         </div>
       ))}
     </div>
@@ -77,7 +82,7 @@ export const CATEGORY_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Define base columns
   const columns: ColumnDefinition[] = [];
@@ -95,7 +100,19 @@ export const CATEGORY_TABLE_COLUMNS = ({
         ),
     });
   }
-  columns.push({ headerName: getTranslation('title'), propertyName: 'title' });
+  columns.push({
+    headerName: getTranslation('title'),
+    propertyName: 'title',
+    body: (item: ICategory) => {
+      return (
+        <span className="text-sm">
+          {typeof item.title === 'object'
+            ? item.title[selectedLanguage] || ''
+            : item.title || ''}
+        </span>
+      );
+    },
+  });
 
   // Add subcategories column if shop type is grocery
   if (shopType === 'grocery') {

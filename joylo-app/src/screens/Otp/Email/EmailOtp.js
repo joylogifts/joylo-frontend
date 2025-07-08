@@ -1,11 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  StatusBar,
-  Image,
-  ScrollView
-} from 'react-native'
+import { View, TouchableOpacity, StatusBar, Image, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from '../styles'
 import Spinner from '../../../components/Spinner/Spinner'
@@ -21,23 +15,11 @@ import { scale } from '../../../utils/scaling'
 import SignUpSvg from '../../../assets/SVG/imageComponents/SignUpSvg'
 
 function EmailOtp(props) {
-  const {
-    otp,
-    setOtp,
-    otpError,
-    seconds,
-    loading,
-    updateUserLoading,
-    onCodeFilled,
-    resendOtp,
-    currentTheme,
-    themeContext
-  } = useEmailOtp()
+  const { otp, setOtp, otpError, seconds, loading, updateUserLoading, onCodeFilled, resendOtp, currentTheme, themeContext } = useEmailOtp()
 
   const route = useRoute()
   const userData = route.params?.user
 
-  const { t, i18n } = useTranslation()
   useLayoutEffect(() => {
     props?.navigation.setOptions(
       screenOptions({
@@ -51,18 +33,8 @@ function EmailOtp(props) {
 
   return (
     <SafeAreaView style={styles(currentTheme).safeAreaViewStyles}>
-      <StatusBar
-        backgroundColor={currentTheme.themeBackground}
-        barStyle={
-          themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content'
-        }
-      />
-      <ScrollView
-        style={styles().flex}
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-        alwaysBounceVertical={false}
-      >
+      <StatusBar backgroundColor={currentTheme.themeBackground} barStyle={themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content'} />
+      <ScrollView style={styles().flex} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
         <View style={styles(currentTheme).mainContainer}>
           <View style={styles().subContainer}>
             <View>
@@ -100,10 +72,7 @@ function EmailOtp(props) {
               <OTPInputView
                 pinCount={6}
                 style={styles().otpInput}
-                codeInputFieldStyle={[
-                  styles(currentTheme).otpBox,
-                  otpError && styles(currentTheme).errorInput
-                ]}
+                codeInputFieldStyle={[styles(currentTheme).otpBox, otpError && styles(currentTheme).errorInput]}
                 codeInputHighlightStyle={{
                   borderColor: currentTheme.main
                 }}
@@ -116,26 +85,13 @@ function EmailOtp(props) {
                 editable
               />
               {otpError && (
-                <TextDefault
-                  style={styles(currentTheme).error}
-                  bold
-                  textColor={currentTheme.textErrorColor}
-                >
+                <TextDefault style={styles(currentTheme).error} bold textColor={currentTheme.textErrorColor}>
                   {t('wrongOtp')}
                 </TextDefault>
               )}
             </View>
           </View>
-          <View>
-            {loading ||
-              (updateUserLoading && (
-                <Spinner
-                  backColor={currentTheme.themeBackground}
-                  spinnerColor={currentTheme.main}
-                  size='large'
-                />
-              ))}
-          </View>
+          <View>{loading || (updateUserLoading && <Spinner backColor={currentTheme.themeBackground} spinnerColor={currentTheme.main} size='large' />)}</View>
           <View
             style={{
               ...alignment.MTlarge,
@@ -145,32 +101,14 @@ function EmailOtp(props) {
             }}
           >
             <View style={alignment.MBxSmall}>
-              <TextDefault
-                center
-                H4
-                bold
-                style={alignment.MTsmall}
-                textColor={currentTheme.fontNewColor}
-              >
+              <TextDefault center H4 bold style={alignment.MTsmall} textColor={currentTheme.fontNewColor}>
                 {seconds === 0 ? '' : `${t('retry')} ${seconds}s`}
               </TextDefault>
             </View>
             {loading || updateUserLoading ? (
-              <Spinner
-                backColor={currentTheme.color3}
-                spinnerColor={currentTheme.color3}
-                size='small'
-              />
+              <Spinner backColor={currentTheme.color3} spinnerColor={currentTheme.color3} size='small' />
             ) : (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={[
-                  styles(currentTheme).btn,
-                  seconds !== 0 && styles(currentTheme).disabledBtn
-                ]}
-                disabled={seconds !== 0}
-                onPress={() => resendOtp()}
-              >
+              <TouchableOpacity activeOpacity={0.7} style={[styles(currentTheme).btn, seconds !== 0 && styles(currentTheme).disabledBtn]} disabled={seconds !== 0} onPress={() => resendOtp()}>
                 <TextDefault H4 textColor={currentTheme.black} bold>
                   {t('resendOtpBtn')}
                 </TextDefault>

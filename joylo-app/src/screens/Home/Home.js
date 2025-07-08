@@ -202,7 +202,6 @@ function Main(props) {
         <View style={styles().addressSubContainer}>
           <MaterialCommunityIcons name='target' size={scale(25)} color={currentTheme.black} />
           <View style={styles().mL5p} />
-          <TextDefault bold>{t('currentLocation')}</TextDefault>
         </View>
       </TouchableOpacity>
       <View style={styles().addressTick}>
@@ -241,7 +240,7 @@ function Main(props) {
           <View style={styles().addressSubContainer}>
             <AntDesign name='pluscircleo' size={scale(12)} color={currentTheme.black} />
             <View style={styles().mL5p} />
-            <TextDefault bold>{t('addAddress')}</TextDefault>
+            <TextDefault bold>{t('add_address')}</TextDefault>
           </View>
         </TouchableOpacity>
       </View>
@@ -252,7 +251,7 @@ function Main(props) {
   function loadingScreen() {
     return (
       <View style={styles(currentTheme).screenBackground}>
-        <Search search={''} setSearch={() => {}} placeHolder={t('searchRestaurant')} />
+        <Search search={''} setSearch={() => { }} placeHolder={t('search_restaurant')} />
         <Placeholder Animation={(props) => <Fade {...props} style={styles(currentTheme).placeHolderFadeColor} duration={600} />} style={styles(currentTheme).placeHolderContainer}>
           <PlaceholderLine style={styles().height200} />
           <PlaceholderLine />
@@ -327,7 +326,7 @@ function Main(props) {
             <View style={styles().mainContentContainer}>
               <View style={[styles().flex, styles().subContainer]}>
                 <View style={styles().searchbar}>
-                  <Search setSearch={setSearch} search={search} placeHolder={t('searchRestaurant')} />
+                  <Search setSearch={setSearch} search={search} placeHolder={t('search_restaurant')} />
                 </View>
                 <ScrollView>
                   <View style={styles().mainItemsContainer}>

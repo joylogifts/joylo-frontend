@@ -10,11 +10,36 @@ export const ADDON_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   return [
-    { headerName: getTranslation('title'), propertyName: 'title' },
-    { headerName: getTranslation('description'), propertyName: 'description' },
+    {
+      headerName: getTranslation('title'),
+      propertyName: 'title',
+      body: (addon: IAddon) => (
+        <span className="text-sm">
+          {typeof addon?.title === 'object'
+            ? addon?.title[selectedLanguage] || ''
+            : addon?.title || ''}
+        </span>
+      ),
+    },
+    {
+      headerName: getTranslation('image'),
+      propertyName: 'image',
+    },
+    { headerName: getTranslation('price'), propertyName: 'price' },
+    {
+      headerName: getTranslation('description'),
+      propertyName: 'description',
+      body: (addon: IAddon) => (
+        <span className="text-sm">
+          {typeof addon?.description === 'object'
+            ? addon?.description[selectedLanguage] || ''
+            : addon?.description || ''}
+        </span>
+      ),
+    },
     { headerName: getTranslation('minimum'), propertyName: 'quantityMinimum' },
     { headerName: getTranslation('maximum'), propertyName: 'quantityMaximum' },
     {

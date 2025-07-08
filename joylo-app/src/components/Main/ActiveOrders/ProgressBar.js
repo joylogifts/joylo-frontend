@@ -11,42 +11,42 @@ export const orderStatuses = [
   {
     key: 'PENDING',
     status: 1,
-    statusText: 'pendingOrder'
+    statusText: 'pending'
   },
   {
     key: 'ACCEPTED',
     status: 2,
-    statusText: 'acceptedOrder'
+    statusText: 'accepted'
   },
   {
     key: 'ASSIGNED',
     status: 3,
-    statusText: 'assignedOrder'
+    statusText: 'assigned'
   },
   {
     key: 'PICKED',
     status: 4,
-    statusText: 'pickedOrder'
+    statusText: 'picked'
   },
   {
     key: 'DELIVERED',
     status: 5,
-    statusText: 'deliveredOrder'
+    statusText: 'delivered'
   },
   {
     key: 'COMPLETED',
     status: 6,
-    statusText: 'completedOrder'
+    statusText: 'completed'
   },
   {
     key: 'CANCELLED',
     status: 6,
-    statusText: 'cancelledOrder'
+    statusText: 'cancelled'
   },
   {
-    key:'CANCELLEDBYREST',
-    status:7,
-    statusText:'cancelledOrder'
+    key: 'CANCELLEDBYREST',
+    status: 7,
+    statusText: 'cancelled'
   }
 ]
 

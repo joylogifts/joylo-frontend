@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native'
 import { styles } from './styles'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { scale } from '../../utils/scaling'
 import { HeaderBackButton } from '@react-navigation/elements'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -18,18 +18,14 @@ import { useQuery, gql } from '@apollo/client'
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
 
-import {
-  calculateDaysAgo,
-  groupAndCount,
-  sortReviews
-} from '../../utils/customFunctions'
+import { calculateDaysAgo, groupAndCount, sortReviews } from '../../utils/customFunctions'
 
 const Review = gql`
   ${GET_REVIEWS_BY_RESTAURANT}
 `
 
 const Reviews = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
 
   const restaurant = route.params.restaurantObject
   const { restaurantId } = restaurant
@@ -45,20 +41,17 @@ const Reviews = ({ navigation, route }) => {
   const rating = reviewsdata?.reviewsByRestaurant.ratings
   const total = reviewsdata?.reviewsByRestaurant.total
   const reviews = reviewsdata?.reviewsByRestaurant.reviews
-  const reviewGroups = groupAndCount(
-    reviewsdata?.reviewsByRestaurant.reviews,
-    'rating'
-  )
+  const reviewGroups = groupAndCount(reviewsdata?.reviewsByRestaurant.reviews, 'rating')
   // console.log("reviewGroups",reviewGroups)
   const [sortBy, setSortBy] = useState('newest')
   const sortingParams = {
-    newest: t('Newest'),
-    highest: t('HighestRating'),
-    lowest: t('LowestRating')
+    newest: t('newest'),
+    highest: t('highest_rating'),
+    lowest: t('lowest_rating')
   }
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   useLayoutEffect(() => {
@@ -66,13 +59,9 @@ const Reviews = ({ navigation, route }) => {
       headerTitle: () => (
         <View style={styles.headerContainer}>
           <TextDefault H4 bold textColor={currentTheme.newFontcolor}>
-            {t('ratingAndreviews')}
+            {t('rating_and_reviews')}
           </TextDefault>
-          <TextDefault
-            H5
-            style={{ ...alignment.MTxSmall }}
-            textColor={currentTheme.newFontcolor}
-          >
+          <TextDefault H5 style={{ ...alignment.MTxSmall }} textColor={currentTheme.newFontcolor}>
             {restaurant.restaurantName}
           </TextDefault>
         </View>
@@ -86,11 +75,7 @@ const Reviews = ({ navigation, route }) => {
           truncatedLabel=''
           backImage={() => (
             <View style={styles.backImageContainer}>
-              <MaterialIcons
-                name='arrow-back'
-                size={30}
-                color={currentTheme.newIconColor}
-              />
+              <MaterialIcons name='arrow-back' size={30} color={currentTheme.newIconColor} />
             </View>
           )}
           onPress={() => {
@@ -101,7 +86,6 @@ const Reviews = ({ navigation, route }) => {
     })
   }, [navigation])
   const sorted = reviews && reviews?.length ? sortReviews([...reviews], sortBy) : []
-
 
   const calculatePercentages = (groups, total) => {
     // Calculate raw percentages
@@ -123,9 +107,7 @@ const Reviews = ({ navigation, route }) => {
     const remaining = 100 - totalInteger
 
     // Sort keys by remainder in descending order to allocate extra points
-    const sortedKeys = Object.keys(rawPercentages).sort(
-      (a, b) => rawPercentages[b].remainder - rawPercentages[a].remainder
-    )
+    const sortedKeys = Object.keys(rawPercentages).sort((a, b) => rawPercentages[b].remainder - rawPercentages[a].remainder)
 
     // Distribute the remaining points to items with largest remainders
     for (let i = 0; i < remaining; i++) {
@@ -146,8 +128,8 @@ const Reviews = ({ navigation, route }) => {
   // Calculate percentages once before rendering
   const percentages = calculatePercentages(reviewGroups, total)
 
-  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
-  if (!connect) return <ErrorView refetchFunctions={[refetch]}/>
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
+  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
   return (
     <View style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}>
       <ScrollView style={[styles.container]}>
@@ -161,7 +143,7 @@ const Reviews = ({ navigation, route }) => {
             }}
           >
             <TextDefault bold H3 textColor={currentTheme.newFontcolor}>
-              {t('allRatings')} ({total ?? '0 Reviews'})
+              {t('all_ratings')} ({total ?? '0 Reviews'})
             </TextDefault>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <StarRating />
@@ -180,9 +162,7 @@ const Reviews = ({ navigation, route }) => {
                   <View
                     key={`${index}-rate`}
                     style={{
-                      flexDirection: currentTheme?.isRTL
-                        ? 'row-reverse'
-                        : 'row',
+                      flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row',
                       justifyContent: 'space-evenly',
                       alignItems: 'center',
                       marginVertical: scale(5)
@@ -190,12 +170,8 @@ const Reviews = ({ navigation, route }) => {
                   >
                     <View
                       style={{
-                        flexDirection: currentTheme?.isRTL
-                          ? 'row-reverse'
-                          : 'row',
-                        alignItems: currentTheme?.isRTL
-                          ? 'flex-start'
-                          : 'flex-end'
+                        flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row',
+                        alignItems: currentTheme?.isRTL ? 'flex-start' : 'flex-end'
                       }}
                     >
                       <TextDefault> {i} </TextDefault>
@@ -204,9 +180,7 @@ const Reviews = ({ navigation, route }) => {
                     <View
                       style={{
                         flex: 1,
-                        flexDirection: currentTheme?.isRTL
-                          ? 'row-reverse'
-                          : 'row',
+                        flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row',
                         marginHorizontal: scale(10)
                       }}
                     >
@@ -228,9 +202,7 @@ const Reviews = ({ navigation, route }) => {
                     <View
                       style={{
                         width: '10%',
-                        alignItems: currentTheme?.isRTL
-                          ? 'flex-start'
-                          : 'flex-end'
+                        alignItems: currentTheme?.isRTL ? 'flex-start' : 'flex-end'
                       }}
                     >
                       <TextDefault bolder textColor={currentTheme.gray700}>
@@ -244,7 +216,7 @@ const Reviews = ({ navigation, route }) => {
         </View>
         <View style={{ ...alignment.MTsmall }}>
           <TextDefault textColor={currentTheme.gray900} H3 bold isRTL>
-            {t('titleReviews')}
+            {t('title_reviews')}
           </TextDefault>
           <View
             style={{
@@ -260,10 +232,7 @@ const Reviews = ({ navigation, route }) => {
                 text={sortingParams[key]}
                 textStyles={styles.text}
                 buttonStyles={{
-                  backgroundColor:
-                    sortBy === key
-                      ? currentTheme.primary
-                      : currentTheme.gray200,
+                  backgroundColor: sortBy === key ? currentTheme.primary : currentTheme.gray200,
                   margin: scale(10),
                   borderRadius: scale(10)
                 }}
@@ -272,20 +241,13 @@ const Reviews = ({ navigation, route }) => {
           </View>
           <View style={{ ...alignment.MBlarge }}>
             {sorted.map((review) => (
-              <ReviewCard
-                key={review._id}
-                name={review.order.user.name}
-                description={review.description}
-                rating={review.rating}
-                date={calculateDaysAgo(review.createdAt)}
-                theme={currentTheme}
-              />
+              <ReviewCard key={review._id} name={review.order.user.name} description={review.description} rating={review.rating} date={calculateDaysAgo(review.createdAt)} theme={currentTheme} />
             ))}
           </View>
           <View style={{ ...alignment.MTlarge }}>
             {sorted.length === 0 ? (
               <TextDefault center H4 bold>
-                {t('unReadReviews')}
+                {t('unread_reviews')}
               </TextDefault>
             ) : null}
           </View>

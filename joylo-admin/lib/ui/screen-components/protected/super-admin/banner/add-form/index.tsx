@@ -43,7 +43,7 @@ const BannersAddForm = ({
 
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   const RESTAURANT_NAMES =
     data?.restaurants?.map((v) => {
@@ -52,8 +52,14 @@ const BannersAddForm = ({
 
   //State
   const initialValues: IBannersForm = {
-    title: banner?.title || '',
-    description: banner?.description || '',
+    title:
+      typeof banner?.title === 'object'
+        ? banner?.title[selectedLanguage]
+        : banner?.title || '',
+    description:
+      typeof banner?.description === 'object'
+        ? banner?.description[selectedLanguage]
+        : banner?.description || '',
     action: banner
       ? {
           label: getLabelByCode(ACTION_TYPES, banner.action),

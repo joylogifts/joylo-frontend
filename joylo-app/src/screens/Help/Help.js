@@ -11,7 +11,7 @@ import { HeaderBackButton } from '@react-navigation/elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import navigationService from '../../routes/navigationService'
 import { scale } from '../../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import Accordion from '../../components/Accordion/Accordion'
 import { FontAwesome } from '@expo/vector-icons'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
@@ -59,9 +59,9 @@ const FAQs = [
 ]
 
 const Help = (props) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const [isModalVisible, setisModalVisible] = useState(false)
 
   const handleNavigation = () => {
@@ -122,7 +122,7 @@ const Help = (props) => {
 
   useEffect(() => {
     props?.navigation.setOptions({
-      headerTitle: t('titleFAQ'),
+      headerTitle: t('title_faq'),
       headerTitleAlign: 'center',
       headerRight: null,
       headerTitleStyle: {
@@ -182,7 +182,7 @@ const Help = (props) => {
               <View style={styles(currentTheme).contentContainer}>
                 <FontAwesome name='whatsapp' size={24} color={currentTheme.black} />
                 <TextDefault textColor={currentTheme.black} bold H5 style={styles(currentTheme).whatsAppText}>
-                  {t('whatsAppText')}
+                  {t('whatsapp_text')}
                 </TextDefault>
               </View>
             </TouchableOpacity>

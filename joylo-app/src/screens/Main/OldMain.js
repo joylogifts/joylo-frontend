@@ -28,6 +28,7 @@ import Spinner from '../../components/Spinner/Spinner'
 import analytics from '../../utils/analytics'
 import MapSection from '../MapSection/index'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const RESTAURANTS = gql`
   ${restaurantList}
@@ -39,7 +40,7 @@ const SELECT_ADDRESS = gql`
 function Main(props) {
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const [busy, setBusy] = useState(false)
   const { loadingOrders, isLoggedIn, profile } = useContext(UserContext)
   const { location, setLocation } = useContext(LocationContext)
@@ -197,7 +198,7 @@ function Main(props) {
           <View style={styles().addressSubContainer}>
             <AntDesign name='pluscircleo' size={scale(12)} color={currentTheme.black} />
             <View style={styles().mL5p} />
-            <TextDefault bold>{t('addAddress')}</TextDefault>
+            <TextDefault bold>{t('add_address')}</TextDefault>
           </View>
         </TouchableOpacity>
       </View>

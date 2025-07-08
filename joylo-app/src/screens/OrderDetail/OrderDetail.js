@@ -41,6 +41,7 @@ const { height: HEIGHT, width: WIDTH } = Dimensions.get('screen')
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
+import { useLanguage } from '@/src/context/Language'
 
 const CANCEL_ORDER = gql`
   ${cancelOrderMutation}
@@ -50,7 +51,7 @@ function OrderDetail(props) {
   // console.log("propsdata",props?.route.params)
   const [cancelModalVisible, setCancelModalVisible] = useState(false)
   //const Analytics = analytics()
-  const { t, i18n } = useTranslation()
+  const { getTranslation } = useLanguage()
   const id = props?.route.params ? props?.route.params?._id : null
   const orderData = props?.route.params ? props?.route.params?.order : null
   // console.log('orderData',orderData)
@@ -58,7 +59,7 @@ function OrderDetail(props) {
   const configuration = useContext(ConfigurationContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: getTranslation('i18n_dir') === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const navigation = useNavigation()
@@ -98,7 +99,7 @@ function OrderDetail(props) {
 
   useEffect(() => {
     props?.navigation.setOptions({
-      headerRight: () => HelpButton({ iconBackground: currentTheme.main, navigation, t }),
+      headerRight: () => HelpButton({ iconBackground: currentTheme.main, navigation, t: getTranslation }),
       headerTitle: `${order ? order?.deliveryAddress?.deliveryAddress?.substr(0, 15) : ''}...`,
       headerTitleStyle: { color: currentTheme.newFontcolor },
       headerStyle: { backgroundColor: currentTheme.newheaderBG }
@@ -106,21 +107,21 @@ function OrderDetail(props) {
   }, [orders])
 
   const [remainingTimeState, setRemainingTimeState] = useState(0)
-  
+
   useEffect(() => {
     if (order && ![ORDER_STATUS_ENUM.DELIVERED, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order.orderStatus)) {
       const initialTime = calulateRemainingTime(order)
       setRemainingTimeState(initialTime)
-      
+
       const intervalId = setInterval(() => {
         const updatedTime = calulateRemainingTime(order)
         setRemainingTimeState(updatedTime)
-        
+
         if (updatedTime <= 0 || [ORDER_STATUS_ENUM.DELIVERED, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order.orderStatus)) {
           clearInterval(intervalId)
         }
       }, 1000)
-      
+
       return () => clearInterval(intervalId)
     }
   }, [order])
@@ -136,7 +137,7 @@ function OrderDetail(props) {
   const { _id, id: orderId, restaurant, deliveryAddress, items, tipping: tip, taxationAmount: tax, orderAmount: total, deliveryCharges } = order
 
   const subTotal = total - tip - tax - deliveryCharges
-  
+
   const isOrderPending = order?.orderStatus === ORDER_STATUS_ENUM.PENDING
   const isOrderCancelable = isOrderPending
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
@@ -238,17 +239,17 @@ function OrderDetail(props) {
               {![ORDER_STATUS_ENUM.PENDING, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order?.orderStatus) && (
                 <>
                   <TextDefault style={{ ...alignment.MTxSmall }} textColor={currentTheme.gray500} H5>
-                    {t('estimatedDeliveryTime')}
+                    {getTranslation('estimatedDeliveryTime')}
                   </TextDefault>
                   <TextDefault style={{ ...alignment.MTxSmall }} Regular textColor={currentTheme.gray900} H1 bolder>
-                    {remainingTimeState}-{remainingTimeState + 5} {t('mins')}
+                    {remainingTimeState}-{remainingTimeState + 5} {getTranslation('mins')}
                   </TextDefault>
                   <ProgressBar configuration={configuration} currentTheme={currentTheme} item={order} navigation={navigation} isPicked={order?.isPickedUp} />
                 </>
               )}
               <TextDefault H5 style={{ ...alignment.Mmedium }} textColor={currentTheme.gray600} bold center>
                 {' '}
-                {t(checkStatus(order?.orderStatus)?.statusText)}
+                {getTranslation(checkStatus(order?.orderStatus)?.statusText)}
               </TextDefault>
             </View>
           )}
@@ -258,12 +259,11 @@ function OrderDetail(props) {
         <Taxes tax={tax} deliveryCharges={deliveryCharges} currency={configuration.currencySymbol} />
       </ScrollView>
       <View style={styles().bottomContainer(currentTheme)}>
-        <PriceRow theme={currentTheme} title={t('total')} currency={configuration.currencySymbol} price={total.toFixed(2)} />
-        
-          <View style={{ margin: scale(20) }}>
-            <Button disabled={isOrderCancelable ? false : true} text={t('cancelOrder')} buttonProps={{ onPress: cancelModalToggle }} buttonStyles={styles().cancelButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.red600 }} textStyles={{ ...alignment.Pmedium }} />
-          </View>
-        
+        <PriceRow theme={currentTheme} title={getTranslation('total')} currency={configuration.currencySymbol} price={total.toFixed(2)} />
+
+        <View style={{ margin: scale(20) }}>
+          <Button disabled={isOrderCancelable ? false : true} text={getTranslation('cancel')} buttonProps={{ onPress: cancelModalToggle }} buttonStyles={styles().cancelButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.red600 }} textStyles={{ ...alignment.Pmedium }} />
+        </View>
       </View>
       <CancelModal theme={currentTheme} modalVisible={cancelModalVisible} setModalVisible={cancelModalToggle} cancelOrder={cancelOrder} loading={loadingCancel} orderStatus={order?.orderStatus} />
     </View>

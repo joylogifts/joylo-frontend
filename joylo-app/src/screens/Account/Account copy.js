@@ -1,30 +1,11 @@
-import React, {
-  useState,
-  useRef,
-  useContext,
-  useLayoutEffect,
-  useEffect,
-  useMemo
-} from 'react'
-import {
-  View,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  Modal,
-  FlatList,
-  ScrollView
-} from 'react-native'
+import React, { useState, useRef, useContext, useLayoutEffect, useEffect, useMemo } from 'react'
+import { View, TouchableOpacity, KeyboardAvoidingView, Platform, StatusBar, Modal, FlatList, ScrollView } from 'react-native'
 import { useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
 import { TextField, OutlinedTextField } from 'react-native-material-textfield'
 import { scale, verticalScale } from '../../utils/scaling'
 import { updateUser, login, Deactivate } from '../../apollo/mutations'
-import {
-  FavouriteRestaurant,
-  recentOrderRestaurantsQuery
-} from '../../apollo/queries'
+import { FavouriteRestaurant, recentOrderRestaurantsQuery } from '../../apollo/queries'
 import ChangePassword from './ChangePassword'
 import { theme } from '../../utils/themeColors'
 import UserContext from '../../context/User'
@@ -33,22 +14,12 @@ import styles from './styles'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import TextDefault from '../../components/Text/TextDefault/TextDefault'
 import { alignment } from '../../utils/alignment'
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute
-} from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import analytics from '../../utils/analytics'
-import {
-  Feather,
-  Entypo,
-  MaterialIcons,
-  Ionicons,
-  EvilIcons
-} from '@expo/vector-icons'
+import { Feather, Entypo, MaterialIcons, Ionicons, EvilIcons } from '@expo/vector-icons'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import Spinner from '../../components/Spinner/Spinner'
 import MainRestaurantCard from '../../components/Main/MainRestaurantCard/MainRestaurantCard'
 import { useQuery } from '@apollo/client'
@@ -75,7 +46,7 @@ function Account(props) {
   const navigation = useNavigation()
   const route = useRoute()
   const { params } = route
-  const { t } = useTranslation()
+  const { getTranslation, dir } = useLanguage()
   const refName = useRef()
   const [nameError, setNameError] = useState('')
   const [toggleEmailView, setToggleEmailView] = useState(true)
@@ -170,7 +141,7 @@ function Account(props) {
   // }, [])
   useLayoutEffect(() => {
     props.navigation.setOptions({
-      title: t('Account'),
+      title: getTranslation('Account'),
       headerRight: null,
       headerTitleAlign: 'center',
       headerTitleStyle: {
@@ -198,11 +169,7 @@ function Account(props) {
           truncatedLabel=''
           backImage={() => (
             <View>
-              <MaterialIcons
-                name='arrow-back'
-                size={25}
-                color={currentTheme.newIconColor}
-              />
+              <MaterialIcons name='arrow-back' size={25} color={currentTheme.newIconColor} />
             </View>
           )}
           onPress={() => {
@@ -434,16 +401,8 @@ function Account(props) {
         }}
       /> */}
       <View style={styles(currentTheme).formContainer}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : null}
-          style={styles(currentTheme).flex}
-        >
-          <ScrollView
-            style={styles().flex}
-            contentContainerStyle={{ flexGrow: 1 }}
-            showsVerticalScrollIndicator={false}
-            alwaysBounceVertical={false}
-          >
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} style={styles(currentTheme).flex}>
+          <ScrollView style={styles().flex} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
             {/* <View style={styles(currentTheme).mainContainer}>
             <View>
               <View style={styles(currentTheme).formSubContainer}>
@@ -650,10 +609,10 @@ function Account(props) {
                                   }
                                 >
                                   {profile?.phone === ''
-                                    ? t('addPhone')
+                                    ? getTranslation('add_phone')
                                     : profile?.phoneIsVerified
-                                      ? t('verified')
-                                      : t('verify')}
+                                      ? getTranslation('verified')
+                                      : getTranslation('verify')}
                                 </TextDefault>
                               </TouchableOpacity>
                             )}
@@ -687,7 +646,7 @@ function Account(props) {
                     }
                   >
                     <TextDefault textColor={currentTheme.editProfileButton}>
-                      {t('edit')}
+                      {getTranslation('edit')}
                     </TextDefault>
                   </TouchableOpacity>
                 </View>
@@ -700,7 +659,7 @@ function Account(props) {
                   H4
                   textColor={currentTheme.deleteAccountBtn}
                 >
-                  {t('DeleteAccount')}
+                  {getTranslation('delete_account')}
                 </TextDefault>
               </TouchableOpacity>
             </View>

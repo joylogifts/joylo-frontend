@@ -17,7 +17,7 @@ import analytics from '../../utils/analytics'
 import { Feather, MaterialIcons, EvilIcons } from '@expo/vector-icons'
 import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import Spinner from '../../components/Spinner/Spinner'
 import { LocationContext } from '../../context/Location'
 import ButtonContainer from '../../components/Account/ButtonContainer/ButtonContainer'
@@ -54,13 +54,13 @@ function Account(props) {
   const navigation = useNavigation()
   const route = useRoute()
   const { params } = route
-  const { t, i18n } = useTranslation()
+  const { getTranslation, dir, selectedLanguage, setSelectedLanguage, languages, languagesLoading, languagesError } = useLanguage()
   const [toggleView, setToggleView] = useState(true)
   const [showPass, setShowPass] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [lngModalVisible, setLngModalVisible] = useState(false)
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
-  const [selectedLanguage, setselectedLanguage] = useState('')
+
   const [spinnerLoading, setSpinnerLoading] = useState(false)
 
   const [orderNotification, orderNotificationSetter] = useState()
@@ -80,7 +80,7 @@ function Account(props) {
   })
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
@@ -103,7 +103,7 @@ function Account(props) {
   }, [])
   useEffect(() => {
     props.navigation.setOptions({
-      title: t('Account'),
+      title: getTranslation('account'),
       headerRight: null,
       headerTitleAlign: 'center',
       headerTitleStyle: {
@@ -152,11 +152,11 @@ function Account(props) {
     offerNotificationSetter(profile?.isOfferNotification)
   }, [profile])
 
-  useEffect(() => {
-    if (!lngModalVisible) {
-      fetchSelectedLanguage()
-    }
-  }, [lngModalVisible])
+  // useEffect(() => {
+  //   if (!lngModalVisible) {
+  //     fetchSelectedLanguage()
+  //   }
+  // }, [lngModalVisible])
 
   useEffect(() => {
     return () => {
@@ -185,19 +185,19 @@ function Account(props) {
     setAppState(nextAppState)
   }
 
-  const fetchSelectedLanguage = async () => {
-    const lang = await AsyncStorage.getItem('enatega-language-name')
-    const systemLangCode = Localization.locale.split('-')[0]
+  // const fetchSelectedLanguage = async () => {
+  //   const lang = await AsyncStorage.getItem('enatega-language-name')
+  //   const systemLangCode = Localization.locale.split('-')[0]
 
-    if (lang) {
-      setselectedLanguage(lang)
-    } else {
-      // Find the language value based on the system language code
-      const matchedLanguage = languageTypes.find((langType) => langType.code === systemLangCode)
-      // Set to the language value if found, otherwise default to 'English'
-      setselectedLanguage(matchedLanguage ? matchedLanguage.value : 'English')
-    }
-  }
+  //   if (lang) {
+  //     setselectedLanguage(lang)
+  //   } else {
+  //     // Find the language value based on the system language code
+  //     const matchedLanguage = languageTypes.find((langType) => langType.code === systemLangCode)
+  //     // Set to the language value if found, otherwise default to 'English'
+  //     setselectedLanguage(matchedLanguage ? matchedLanguage.value : 'English')
+  //   }
+  // }
 
   async function checkPermission() {
     const permission = await getPermission()
@@ -230,7 +230,7 @@ function Account(props) {
         navigation.reset({
           routes: [{ name: 'Main' }]
         })
-        FlashMessage({ message: t('accountDeactivated'), duration: 5000 })
+        FlashMessage({ message: getTranslation('account_deactivated'), duration: 5000 })
       })
       .catch((error) => {
         console.log(error)
@@ -247,7 +247,7 @@ function Account(props) {
       })
     } else {
       FlashMessage({
-        message: "Couldn't delete account. Please try again later"
+        message: getTranslation('could_not_delete_account_please_try_again_later')
       })
     }
   }
@@ -266,7 +266,7 @@ function Account(props) {
         routes: [{ name: 'Main' }]
       })
       // navigation.closeDrawer()
-      FlashMessage({ message: t('logoutMessage') })
+      FlashMessage({ message: getTranslation('logout_message') })
     } catch (error) {
       console.error('Error during logout:', error)
     }
@@ -285,7 +285,7 @@ function Account(props) {
       navigation.reset({
         routes: [{ name: 'Main' }]
       })
-      FlashMessage({ message: t('accountDeactivated') })
+      FlashMessage({ message: getTranslation('account_deactivated') })
     } catch (error) {
       console.error('Error during deactivation mutation:', error)
     }
@@ -293,23 +293,27 @@ function Account(props) {
 
   function onCompleted() {
     FlashMessage({
-      message: t('notificationStatusUpdated')
+      message: getTranslation('notification_status_updated')
     })
   }
 
   function onError(error) {
-    try {
+    if (error.graphQLErrors) {
       FlashMessage({
-        message: error.networkError.result.errors[0].message
+        message: error.graphQLErrors[0].message
       })
-    } catch (err) {}
+    } else {
+      FlashMessage({
+        message: getTranslation('error_in_profile')
+      })
+    }
   }
 
   async function updateNotificationStatus(notificationCheck) {
     let orderNotify, offerNotify
     if (!Device.isDevice) {
       FlashMessage({
-        message: t('notificationNotWork')
+        message: getTranslation('notification_not_work')
       })
       console.log('Device is not available, returning early')
       return
@@ -349,7 +353,7 @@ function Account(props) {
 
   if (errorProfile) {
     FlashMessage({
-      message: t('errorInProfile')
+      message: getTranslation('error_in_profile')
     })
   }
 
@@ -365,18 +369,18 @@ function Account(props) {
             <View style={styles(currentTheme).mainContainer}>
               <View style={styles(currentTheme).padding}>
                 <TextDefault H2 bolder textColor={currentTheme.fontThirdColor} isRTL>
-                  {t('Account')}
+                  {getTranslation('account')}
                 </TextDefault>
               </View>
 
               <View style={styles(currentTheme).subContainer}>
                 <View>
-                  <ButtonContainer title={t('email')} detail={profile?.email} status={profile?.emailIsVerified ? 'verified' : 'notVerified'} onPress='null' />
+                  <ButtonContainer title={getTranslation('email')} detail={profile?.email} status={profile?.emailIsVerified ? getTranslation('verified') : getTranslation('not_verified')} onPress='null' />
                   <View style={styles(currentTheme).line} />
                   <ButtonContainer
-                    title={t('phone')}
+                    title={getTranslation('phone')}
                     detail={profile?.phone}
-                    status={profile?.phoneIsVerified ? 'verified' : 'notVerified'}
+                    status={profile?.phoneIsVerified ? getTranslation('verified') : getTranslation('not_verified')}
                     onPress={() =>
                       navigation.navigate('PhoneNumber', {
                         prevScreen: 'Account'
@@ -385,7 +389,7 @@ function Account(props) {
                   />
                   <View style={styles(currentTheme).line} />
                   <ButtonContainer
-                    title={t('name')}
+                    title={getTranslation('name')}
                     detail={profile?.name}
                     status='null'
                     onPress={() =>
@@ -399,7 +403,7 @@ function Account(props) {
 
                   <View style={[styles().padding]}>
                     <TextDefault H5 bolder textColor={currentTheme.fontThirdColor} isRTL>
-                      {t('language')}
+                      {getTranslation('language')}
                     </TextDefault>
                     <TouchableOpacity
                       style={[styles(currentTheme).linkContainer, styles(currentTheme).flexRow]}
@@ -408,12 +412,12 @@ function Account(props) {
                       }}
                     >
                       <TextDefault style={styles().drawerContainer} textColor={currentTheme.fontMainColor} small H5 bolder isRTL>
-                        {selectedLanguage}
+                        {!languagesLoading && !languagesError && languages.find((item) => item.code === selectedLanguage)?.label}
                       </TextDefault>
 
                       <View style={[styles(currentTheme).leftContainer, styles(currentTheme).flexRow]}>
                         <TextDefault style={styles().drawerContainer} textColor={currentTheme.linkColor} small H5 bolder isRTL>
-                          {t('edit')}
+                          {getTranslation('edit')}
                         </TextDefault>
                         <EvilIcons name={currentTheme.isRTL ? 'chevron-left' : 'chevron-right'} size={scale(30)} color={currentTheme.darkBgFont} />
                       </View>
@@ -421,7 +425,7 @@ function Account(props) {
                   </View>
                   <View style={styles(currentTheme).line} />
 
-                  <ButtonContainer title={t('DeleteAccount')} detail={''} status='null' onPress={() => setDeleteModalVisible(true)} />
+                  <ButtonContainer title={getTranslation('delete_account')} detail={''} status='null' onPress={() => setDeleteModalVisible(true)} />
                   <View style={styles(currentTheme).line} />
                 </View>
 
@@ -451,7 +455,7 @@ function Account(props) {
                           isRTL
                         >
                           {' '}
-                          {t('receivePushNotification')}{' '}
+                          {getTranslation('receive_push_notification')}{' '}
                         </TextDefault>
                       </View>
                       {loading && btnText === 'order' && (
@@ -487,7 +491,7 @@ function Account(props) {
                           isRTL
                         >
                           {' '}
-                          {t('receiveOfferByEmail')}{' '}
+                          {getTranslation('receive_offer_by_email')}{' '}
                         </TextDefault>
                       </View>
                       {loading && btnText === 'offer' && (
@@ -506,7 +510,7 @@ function Account(props) {
                       <View style={styles(currentTheme).notificationChekboxContainer}>
                         <TextDefault numberOfLines={1} textColor={currentTheme.darkBgFont} style={alignment.MLsmall} isRTL>
                           {' '}
-                          {t('turnOnDarkTheme')}{' '}
+                          {getTranslation('turn_on_dark_theme')}{' '}
                         </TextDefault>
                       </View>
                     </TouchableOpacity>
@@ -515,10 +519,10 @@ function Account(props) {
 
                 <View>
                   <TextDefault H2 bolder textColor={currentTheme.fontThirdColor} style={styles().padding} isRTL>
-                    {t('legal')}
+                    {getTranslation('legal')}
                   </TextDefault>
                   <ButtonContainer
-                    title={t('serviceTerms')}
+                    title={getTranslation('service_terms')}
                     detail={''}
                     status='null'
                     onPress={() => {
@@ -528,7 +532,7 @@ function Account(props) {
                   <View style={styles(currentTheme).line} />
 
                   <ButtonContainer
-                    title={t('privacyPolicy')}
+                    title={getTranslation('privacy_policy')}
                     detail={''}
                     status='null'
                     onPress={() => {
@@ -537,21 +541,11 @@ function Account(props) {
                   />
                 </View>
 
-                {/* <View style={styles().padding}>
-                  <TextDefault
-                    H2
-                    bolder
-                    textColor={currentTheme.fontThirdColor}
-                  >
-                    {t('legal')}
-                  </TextDefault>
-                </View> */}
-
                 <View style={styles(currentTheme).containerButton}>
                   <TouchableOpacity activeOpacity={0.5} style={styles(currentTheme).addButton} onPress={logoutClick}>
                     <View style={styles(currentTheme).contentContainer}>
                       <TextDefault bold H5 textColor={currentTheme.red600}>
-                        {t('Logout')}
+                        {getTranslation('logout')}
                       </TextDefault>
                     </View>
                   </TouchableOpacity>
@@ -580,25 +574,25 @@ function Account(props) {
                   }}
                 >
                   <TextDefault bolder H3 textColor={currentTheme.newFontcolor} isRTL>
-                    {t('DeleteConfirmation')}
+                    {getTranslation('delete_confirmation')}
                   </TextDefault>
                   <Feather name='x-circle' size={24} color={currentTheme.newFontcolor} onPress={() => setDeleteModalVisible(!deleteModalVisible)} />
                 </View>
                 <TextDefault H5 textColor={currentTheme.newFontcolor} isRTL>
-                  {t('permanentDeleteMessage')}
+                  {getTranslation('permanent_delete_message')}
                 </TextDefault>
                 <TouchableOpacity style={[styles(currentTheme).btn, styles().btnDelete, { opacity: deactivateLoading ? 0.5 : 1 }]} onPress={deactivatewithemail} disabled={deactivateLoading}>
                   {deactivateLoading ? (
                     <Spinner backColor='transparent' size='small' />
                   ) : (
                     <TextDefault bolder H4 textColor={currentTheme.white}>
-                      {t('yesSure')}
+                      {getTranslation('yes_sure')}
                     </TextDefault>
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles(currentTheme).btn, styles().btnCancel]} onPress={() => setDeleteModalVisible(false)} disabled={deactivateLoading}>
                   <TextDefault bolder H4 textColor={currentTheme.black}>
-                    {t('noDelete')}
+                    {getTranslation('no_delete')}
                   </TextDefault>
                 </TouchableOpacity>
               </View>
@@ -606,7 +600,7 @@ function Account(props) {
           </Modal>
 
           <LogoutModal visible={modalVisible} onCancel={handleCancel} onLogout={handleLogout} showCrossButton />
-          <LanguageModal currentTheme={currentTheme} modalVisible={lngModalVisible} setModalVisible={setLngModalVisible} setselectedLanguage={setselectedLanguage} showCrossButton />
+          <LanguageModal currentTheme={currentTheme} modalVisible={lngModalVisible} setModalVisible={setLngModalVisible} showCrossButton />
         </KeyboardAvoidingView>
       </View>
     </>

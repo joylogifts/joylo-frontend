@@ -9,29 +9,22 @@ import ThemeContext from '../../ThemeContext/ThemeContext'
 import TextDefault from '../../../components/Text/TextDefault/TextDefault'
 import { alignment } from '../../../utils/alignment'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
-
-const FdGoogleBtn = props => {
-  const { t, i18n } = useTranslation()
+const FdGoogleBtn = (props) => {
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === "rtl", ...theme[themeContext.ThemeValue] }
+  const { getTranslation: t, dir } = useLanguage()
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      style={styles(currentTheme).mainContainer}
-      onPressIn={props?.onPressIn}
-      onPress={props?.onPress}>
+    <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).mainContainer} onPressIn={props?.onPressIn} onPress={props?.onPress}>
       {props?.loadingIcon ? (
-        <Spinner
-        backColor={currentTheme.themeBackground}
-        spinnerColor={currentTheme.main}
-        />
+        <Spinner backColor={currentTheme.themeBackground} spinnerColor={currentTheme.main} />
       ) : (
         <>
-          <FontAwesome name="google" size={scale(18)} color={currentTheme.newIconColor} />
+          <FontAwesome name='google' size={scale(18)} color={currentTheme.newIconColor} />
           <TextDefault H4 center textColor={currentTheme.newFontcolor} bold>
-            {t('ContinueWithGoogle')}
+            {t('continue_with_google')}
           </TextDefault>
         </>
       )}

@@ -72,7 +72,7 @@ export default function VariationAddForm({
   };
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // State
   const [isAddAddonVisible, setIsAddAddonVisible] = useState(false);
@@ -151,7 +151,13 @@ export default function VariationAddForm({
   const addonsDropdown = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
-        return { label: addon.title, code: addon._id };
+        return {
+          label:
+            typeof addon.title === 'object'
+              ? addon.title[selectedLanguage] || ''
+              : addon.title || '',
+          code: addon._id,
+        };
       }),
     [data?.restaurant?.addons]
   );
@@ -179,6 +185,10 @@ export default function VariationAddForm({
           delete item.__typename;
           return {
             ...item,
+            title:
+              typeof item.title === 'object'
+                ? item.title[selectedLanguage]
+                : item.title,
             discounted: discounted,
             addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
           };
@@ -283,7 +293,7 @@ export default function VariationAddForm({
                                           </button>
                                         )}
                                         <Fieldset
-                                          legend={`${getTranslation('variation')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                          legend={`${getTranslation('variation')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
                                           toggleable
                                         >
                                           <div className="grid grid-cols-12 gap-4">
@@ -295,7 +305,14 @@ export default function VariationAddForm({
                                                   'title'
                                                 )}
                                                 maxLength={35}
-                                                value={value.title}
+                                                value={
+                                                  typeof value.title ===
+                                                  'object'
+                                                    ? value.title[
+                                                        selectedLanguage
+                                                      ] || ''
+                                                    : value.title || ''
+                                                }
                                                 onChange={(e) =>
                                                   setFieldValue(
                                                     `variations[${index}].title`,

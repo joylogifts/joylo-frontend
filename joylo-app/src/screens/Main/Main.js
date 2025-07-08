@@ -17,6 +17,7 @@ import TextDefault from '../../components/Text/TextDefault/TextDefault'
 import { LocationContext } from '../../context/Location'
 import analytics from '../../utils/analytics'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import MainRestaurantCard from '../../components/Main/MainRestaurantCard/MainRestaurantCard'
 import { TopBrands } from '../../components/Main/TopBrands'
 import CustomHomeIcon from '../../assets/SVG/imageComponents/CustomHomeIcon'
@@ -53,17 +54,17 @@ const GET_CUISINES = gql`
 `
 
 function Main(props) {
-  const { t, i18n } = useTranslation();
-  const [busy, setBusy] = useState(false);
-  const { isLoggedIn, profile } = useContext(UserContext);
-  const { location, setLocation } = useContext(LocationContext);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const modalRef = useRef(null);
-  const navigation = useNavigation();
-  const themeContext = useContext(ThemeContext);
-  const { getCurrentLocation } = useLocation();
-  const { getAddress } = useGeocoding();
-  const [hasActiveOrders, setHasActiveOrders] = useState(false);
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
+  const [busy, setBusy] = useState(false)
+  const { isLoggedIn, profile } = useContext(UserContext)
+  const { location, setLocation } = useContext(LocationContext)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const modalRef = useRef(null)
+  const navigation = useNavigation()
+  const themeContext = useContext(ThemeContext)
+  const { getCurrentLocation } = useLocation()
+  const { getAddress } = useGeocoding()
+  const [hasActiveOrders, setHasActiveOrders] = useState(false)
   const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
 
   const {
@@ -79,20 +80,20 @@ function Main(props) {
       ip: null
     },
     fetchPolicy: 'network-only'
-  });
+  })
   const { data: banners, refetch: refetchBanners } = useQuery(GET_BANNERS, {
     fetchPolicy: 'network-only'
-  });
-  const { data: allCuisines } = useQuery(GET_CUISINES);
-  const { orderLoading, orderError, orderData } = useHomeRestaurants();
+  })
+  const { data: allCuisines } = useQuery(GET_CUISINES)
+  const { orderLoading, orderError, orderData } = useHomeRestaurants()
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
-  };
-  const locationData = location;
-  let filteredCuisines;
-  const cus = new Set();
+  }
+  const locationData = location
+  let filteredCuisines
+  const cus = new Set()
 
   function onError(error) {
     console.log(error)
@@ -122,8 +123,8 @@ function Main(props) {
   )
   useEffect(() => {
     async function Track() {
-      const AnalyticsInstance = Analytics();
-      await AnalyticsInstance.track(AnalyticsInstance.events.NAVIGATE_TO_MAIN);
+      const AnalyticsInstance = Analytics()
+      await AnalyticsInstance.track(AnalyticsInstance.events.NAVIGATE_TO_MAIN)
     }
     Track()
   }, [])
@@ -196,7 +197,7 @@ function Main(props) {
       }
 
       if (error) {
-        navigation.navigate('SelectLocation')
+        // navigation.navigate('SelectLocation')
       } else {
         modalRef.current?.close()
         setLocation({
@@ -259,7 +260,7 @@ function Main(props) {
             <AntDesign name='pluscircleo' size={scale(20)} color={currentTheme.black} />
             <View style={styles().mL5p} textColor={currentTheme.black} />
             <TextDefault bold textColor={currentTheme.black}>
-              {t('addAddress')}
+              {t('add_address')}
             </TextDefault>
           </View>
         </TouchableOpacity>
@@ -268,7 +269,7 @@ function Main(props) {
     </View>
   )
 
-  if (error) return <ErrorView />
+  // if (error) return <ErrorView />
 
   const groceryorders = data?.nearByRestaurantsPreview?.restaurants?.filter((restaurant) => restaurant.shopType === 'grocery')
 
@@ -286,11 +287,10 @@ function Main(props) {
         }
       }
       return allCuisines?.cuisines?.filter((cuisine) => {
-        return cus.has(cuisine.name)
+        return cus.has(typeof cuisine.name === "object" ? cuisine.name[selectedLanguage] : cuisine.name)
       })
     }
   }
-
 
   // Call hooks outside the conditional rendering block
 
@@ -307,12 +307,12 @@ function Main(props) {
                   <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
                     <Banner banners={banners?.banners} />
                     <View style={{ gap: 16 }}>
-                      <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={'Order it again'} queryType='orderAgain' />}</>}</View>
+                      <View>{isLoggedIn && recentOrderRestaurantsVar && recentOrderRestaurantsVar.length > 0 && <>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(recentOrderRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('order_it_again')} queryType='orderAgain' />}</>}</View>
 
-                      <View>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('Popular right now')} queryType='topPicks' icon='trending' />}</View>
+                      <View>{orderLoading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar || [])} loading={orderLoading} error={orderError} title={t('popular_right_now')} queryType='topPicks' icon='trending' />}</View>
                       <View style={{ padding: 15, gap: scale(8) }}>
                         <TextDefault bolder H4 isRTL>
-                          {t('I feel like eating...')}
+                          {t('i_feel_like_eating')}
                         </TextDefault>
                         <FlatList
                           data={filterCusinies()?.filter((cuisine) => cuisine.shopType === 'Restaurant') ?? []}
@@ -325,7 +325,7 @@ function Main(props) {
                                   })
                                 }}
                                 image={item?.image ? item?.image : IMAGE_LINK}
-                                name={item.name}
+                                name={typeof item.name === "object" ? item.name[selectedLanguage] : item.name}
                               />
                             )
                           }}
@@ -344,12 +344,12 @@ function Main(props) {
                           }}
                         />
                       </View>
-                      <View>{loading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(restaurantorders || [])} loading={orderLoading} error={orderError} title={t('Restaurants near you')} queryType='restaurant' icon='restaurant' />}</View>
+                      <View>{loading || isRefreshing ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(restaurantorders || [])} loading={orderLoading} error={orderError} title={t('restaurants_near_you')} queryType='restaurant' icon='restaurant' />}</View>
                       <View style={{ padding: 15, gap: scale(8) }}>
                         <TextDefault bolder H4 isRTL>
-                          {t('Fresh finds await...')}
+                          {t('fresh_finds_await')}
                         </TextDefault>
-                        <FlatList
+                        {/* <FlatList
                           data={filterCusinies()?.filter((cuisine) => cuisine?.shopType.toLowerCase() === 'grocery') ?? []}
                           renderItem={({ item }) => {
                             return (
@@ -360,7 +360,7 @@ function Main(props) {
                                   })
                                 }}
                                 image={item?.image}
-                                name={item.name}
+                                name={typeof item.name === "object" ? item.name[selectedLanguage] : item.name}
                               />
                             )
                           }}
@@ -374,11 +374,11 @@ function Main(props) {
                           showsHorizontalScrollIndicator={false}
                           horizontal={true}
                           inverted={currentTheme?.isRTL ? true : false}
-                        />
+                        /> */}
                       </View>
-                      <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('Grocery List')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
+                      <View>{loading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(groceryorders || [])} loading={orderLoading} error={orderError} title={t('grocery_list')} queryType='grocery' icon='grocery' selectedType='grocery' />}</View>
 
-                      <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('Top grocery picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
+                      <View>{orderLoading ? <MainLoadingUI /> : <MainRestaurantCard orders={sortRestaurantsByOpenStatus(mostOrderedRestaurantsVar?.filter((order) => order.shopType === 'grocery') || [])} loading={orderLoading} error={orderError} title={t('top_grocery_picks')} queryType='grocery' icon='store' selectedType='grocery' />}</View>
                     </View>
                     <View style={styles(currentTheme, hasActiveOrders).topBrandsMargin}>{orderLoading ? <TopBrandsLoadingUI /> : <TopBrands />}</View>
                   </ScrollView>
@@ -393,7 +393,7 @@ function Main(props) {
         </SafeAreaView>
       )}
     </>
-  );
+  )
 }
 
-export default Main;
+export default Main

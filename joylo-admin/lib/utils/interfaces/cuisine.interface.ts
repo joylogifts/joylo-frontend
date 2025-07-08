@@ -4,9 +4,9 @@ import { IFilterType } from './table.interface';
 
 export interface ICuisine {
   _id: string;
-  description: string;
+  description: JSON | string;
   image?: string;
-  name: string;
+  name: JSON | string;
   shopType: string;
   __typename: string;
 }

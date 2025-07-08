@@ -12,7 +12,7 @@ import styles from './styles'
 import SearchFood from '../../assets/SVG/imageComponents/SearchFood'
 import Spinner from '../../components/Spinner/Spinner'
 import OrdersContext from '../../context/Orders'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import ConfigurationContext from '../../context/Configuration'
 import StarIcon from '../../../src/assets/SVG/imageComponents/starIcon'
 import { scale } from '../../utils/scaling'
@@ -23,75 +23,34 @@ function emptyViewPastOrders() {
   const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
   const orderStatusInactive = ['DELIVERED', 'COMPLETED']
   const { orders, loadingOrders, errorOrders } = useContext(OrdersContext)
-  if (loadingOrders)
-    return (
-      <Spinner
-        visible={loadingOrders}
-        backColor='transparent'
-        spinnerColor={currentTheme.main}
-      />
-    )
+  if (loadingOrders) return <Spinner visible={loadingOrders} backColor='transparent' spinnerColor={currentTheme.main} />
   if (errorOrders) return <TextError text={errorOrders.message} />
   else {
-    const hasActiveOrders =
-      orders.filter((o) => orderStatusActive.includes(o.orderStatus)).length > 0
+    const hasActiveOrders = orders.filter((o) => orderStatusActive.includes(o.orderStatus)).length > 0
 
-    const hasPastOrders =
-      orders.filter((o) => orderStatusInactive.includes(o.orderStatus)).length >
-      0
+    const hasPastOrders = orders.filter((o) => orderStatusInactive.includes(o.orderStatus)).length > 0
     if (hasActiveOrders || hasPastOrders) return null
-    return (
-      <EmptyView
-        title={'titleEmptyPastOrders'}
-        description={'emptyPastOrdersDesc'}
-        buttonText={'emptyPastOrdersBtn'}
-      />
-    )
+    return <EmptyView title={'titleEmptyPastOrders'} description={'emptyPastOrdersDesc'} buttonText={'emptyPastOrdersBtn'} />
   }
 }
 
-const PastOrders = ({
-  navigation,
-  loading,
-  error,
-  pastOrders,
-  onPressReview
-}) => {
-  const { i18n } = useTranslation()
+const PastOrders = ({ navigation, loading, error, pastOrders, onPressReview }) => {
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const configuration = useContext(ConfigurationContext)
-  const { reFetchOrders, fetchMoreOrdersFunc, networkStatusOrders } =
-    useContext(OrdersContext)
-  const renderItem = ({ item }) => (
-    <Item
-      item={item}
-      navigation={navigation}
-      currentTheme={currentTheme}
-      configuration={configuration}
-      onPressReview={onPressReview}
-    />
-  )
+  const { reFetchOrders, fetchMoreOrdersFunc, networkStatusOrders } = useContext(OrdersContext)
+  const renderItem = ({ item }) => <Item item={item} navigation={navigation} currentTheme={currentTheme} configuration={configuration} onPressReview={onPressReview} />
 
   if (loading) {
     return <></>
   }
   if (error) return <TextError text={error.message} />
 
-  return (
-    <FlatList
-      data={pastOrders}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      ListEmptyComponent={emptyViewPastOrders()}
-      refreshing={networkStatusOrders === 4}
-      onRefresh={() => networkStatusOrders === 7 && reFetchOrders()}
-      onEndReached={fetchMoreOrdersFunc}
-    />
-  )
+  return <FlatList data={pastOrders} renderItem={renderItem} keyExtractor={(item, index) => index.toString()} ListEmptyComponent={emptyViewPastOrders()} refreshing={networkStatusOrders === 4} onRefresh={() => networkStatusOrders === 7 && reFetchOrders()} onEndReached={fetchMoreOrdersFunc} />
 }
 
 const formatDeliveredAt = (deliveredAt) => {
@@ -99,20 +58,7 @@ const formatDeliveredAt = (deliveredAt) => {
   const deliveryDate = new Date(deliveredAt)
 
   // Define months array for formatting
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ]
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   // Getting components of the date
   const day = deliveryDate.getDate()
@@ -129,23 +75,10 @@ const formatDeliveredAt = (deliveredAt) => {
   return `${formattedDay} ${month} ${formattedHours}:${formattedMinutes}`
 }
 const getItems = (items) => {
-  return items
-    .map(
-      (item) =>
-        `${item.quantity}x ${item.title}${
-          item.variation.title ? `(${item.variation.title})` : ''
-        }`
-    )
-    .join('\n')
+  return items.map((item) => `${item.quantity}x ${item.title}${item.variation.title ? `(${item.variation.title})` : ''}`).join('\n')
 }
 
-const Item = ({
-  item,
-  navigation,
-  currentTheme,
-  configuration,
-  onPressReview
-}) => {
+const Item = ({ item, navigation, currentTheme, configuration, onPressReview }) => {
   useSubscription(
     gql`
       ${subscriptionOrder}
@@ -155,7 +88,7 @@ const Item = ({
       skip: item.orderStatus === ORDER_STATUS_ENUM.DELIVERED
     }
   )
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
 
   return (
     <View style={{ ...alignment.MBsmall }}>
@@ -171,8 +104,7 @@ const Item = ({
         }
       >
         <View style={styles(currentTheme).subContainer}>
-          {(item.orderStatus == 'CANCELLED' ||
-            item.orderStatus === 'CANCELLEDBYREST') && (
+          {(item.orderStatus == 'CANCELLED' || item.orderStatus === 'CANCELLEDBYREST') && (
             <View style={{ display: 'flex', paddingBottom: 10 }}>
               <View
                 style={{
@@ -183,14 +115,7 @@ const Item = ({
                   padding: 8
                 }}
               >
-                <TextDefault
-                  textColor='black'
-                  uppercase
-                  bolder
-                  numberOfLines={2}
-                  style={[styles(currentTheme).restaurantName]}
-                  isRTL
-                >
+                <TextDefault textColor='black' uppercase bolder numberOfLines={2} style={[styles(currentTheme).restaurantName]} isRTL>
                   {item.orderStatus}
                 </TextDefault>
               </View>
@@ -202,11 +127,7 @@ const Item = ({
               flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row'
             }}
           >
-            <Image
-              style={styles(currentTheme).restaurantImage}
-              resizeMode='cover'
-              source={{ uri: item?.restaurant?.image }}
-            />
+            <Image style={styles(currentTheme).restaurantImage} resizeMode='cover' source={{ uri: item?.restaurant?.image }} />
             <View style={styles(currentTheme).textContainer2}>
               <View
                 style={{
@@ -214,23 +135,12 @@ const Item = ({
                 }}
               >
                 <View style={styles().subContainerLeft}>
-                  <TextDefault
-                    textColor={currentTheme.fontMainColor}
-                    uppercase
-                    bolder
-                    numberOfLines={2}
-                    style={styles(currentTheme).restaurantName}
-                    isRTL
-                  >
+                  <TextDefault textColor={currentTheme.fontMainColor} uppercase bolder numberOfLines={2} style={styles(currentTheme).restaurantName} isRTL>
                     {item.restaurant.name}
                   </TextDefault>
                 </View>
                 <View style={styles(currentTheme).subContainerRight}>
-                  <TextDefault
-                    textColor={currentTheme.fontMainColor}
-                    bolder
-                    isRTL
-                  >
+                  <TextDefault textColor={currentTheme.fontMainColor} bolder isRTL>
                     {configuration.currencySymbol}
                     {parseFloat(item.orderAmount).toFixed(2)}
                   </TextDefault>
@@ -246,55 +156,33 @@ const Item = ({
                   textColor={currentTheme.secondaryText}
                   isRTL
                 >
-                  {t('deliveredOn')} {formatDeliveredAt(item.deliveredAt)}
+                  {t('delivered_on')} {formatDeliveredAt(item.deliveredAt)}
                 </TextDefault>
-                <TextDefault
-                  numberOfLines={1}
-                  style={{ ...alignment.MTxSmall }}
-                  textColor={currentTheme.secondaryText}
-                  isRTL
-                >
+                <TextDefault numberOfLines={1} style={{ ...alignment.MTxSmall }} textColor={currentTheme.secondaryText} isRTL>
                   {getItems(item.items)}
                 </TextDefault>
               </View>
             </View>
           </View>
           <View style={styles().rateOrderContainer}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles(currentTheme).subContainerButton}
-              onPress={() => navigation.navigate('Reorder', { item })}
-            >
+            <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).subContainerButton} onPress={() => navigation.navigate('Reorder', { item })}>
               <TextDefault textColor={currentTheme.black} H4 bolder B700 center>
                 {' '}
-                {t('reOrder')}
+                {t('order_again')}
               </TextDefault>
             </TouchableOpacity>
           </View>
-          {!(
-            item.orderStatus === 'CANCELLED' ||
-            item.orderStatus === 'CANCELLEDBYREST'
-          ) && (
+          {!(item.orderStatus === 'CANCELLED' || item.orderStatus === 'CANCELLEDBYREST') && (
             <View style={styles(currentTheme).starsContainer}>
               <View>
-                <TextDefault
-                  H5
-                  bolder
-                  textColor={currentTheme.newFontcolor}
-                  isRTL
-                >
-                  {t('tapToRate')}
+                <TextDefault H5 bolder textColor={currentTheme.newFontcolor} isRTL>
+                  {t('tap_to_rate')}
                 </TextDefault>
               </View>
 
               <View style={{ flexDirection: 'row', gap: 10 }}>
                 {[1, 2, 3, 4, 5].map((index) => (
-                  <StarIcon
-                    disabled={Boolean(item?.review)}
-                    key={`star-icon-${index}`}
-                    isFilled={index <= item?.review?.rating}
-                    onPress={() => onPressReview(item, index)}
-                  />
+                  <StarIcon disabled={Boolean(item?.review)} key={`star-icon-${index}`} isFilled={index <= item?.review?.rating} onPress={() => onPressReview(item, index)} />
                 ))}
               </View>
             </View>

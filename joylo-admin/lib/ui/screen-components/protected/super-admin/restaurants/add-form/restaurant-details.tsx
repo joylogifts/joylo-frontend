@@ -81,7 +81,7 @@ export default function RestaurantDetailsForm({
 }: IRestaurantsAddRestaurantComponentProps) {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
@@ -171,9 +171,13 @@ export default function RestaurantDetailsForm({
             password: data.password,
             shopType: data.shopType?.code,
             salesTax: data.salesTax,
-            cuisines: data.cuisines.map(
-              (cuisin: IDropdownSelectItem) => cuisin.code
-            ),
+            cuisines: data.cuisines
+              .map((cuisin: IDropdownSelectItem) => cuisin.code)
+              .map((cuisine) =>
+                typeof cuisine === 'object'
+                  ? cuisine[selectedLanguage]
+                  : cuisine
+              ),
           },
         },
       });

@@ -24,7 +24,7 @@ export const FOODS_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -87,12 +87,38 @@ export const FOODS_TABLE_COLUMNS = ({
   };
 
   return [
-    { headerName: getTranslation('title'), propertyName: 'title' },
-    { headerName: getTranslation('description'), propertyName: 'description' },
+    {
+      headerName: getTranslation('title'),
+      propertyName: 'title',
+      body: (item: IFoodNew) => (
+        <div>
+          {typeof item.title === 'object'
+            ? item.title[selectedLanguage] || ''
+            : item.title || ''}
+        </div>
+      ),
+    },
+    {
+      headerName: getTranslation('description'),
+      propertyName: 'description',
+      body: (item: IFoodNew) => (
+        <div>
+          {typeof item.description === 'object'
+            ? item.description[selectedLanguage] || ''
+            : item.description || ''}
+        </div>
+      ),
+    },
     {
       headerName: getTranslation('category'),
       propertyName: 'category.label',
-      body: (item: IFoodNew) => <div>{item?.category?.label ?? ''}</div>,
+      body: (item: IFoodNew) => (
+        <div>
+          {typeof item?.category?.label === 'object'
+            ? item?.category?.label[selectedLanguage] || ''
+            : item?.category?.label || ''}
+        </div>
+      ),
     },
     {
       headerName: getTranslation('image'),
