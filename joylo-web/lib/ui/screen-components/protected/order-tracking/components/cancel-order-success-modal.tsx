@@ -1,4 +1,5 @@
 "use client"
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useRouter } from 'next/navigation';
 import { Dialog } from 'primereact/dialog'
 import React, { useEffect } from 'react'
@@ -9,6 +10,7 @@ interface CancelOrderSuccessModalProps {
 }
 
 function CancelOrderSuccessModal({ visible, onHide }: CancelOrderSuccessModalProps) {
+    const { getTranslation } = useLangTranslation();
     const router = useRouter();
     // create a function when user onHide then it will redirect to discover screen
     const handleOnHide = () => {
@@ -59,7 +61,7 @@ function CancelOrderSuccessModal({ visible, onHide }: CancelOrderSuccessModalPro
                 </svg>
             </button>
             <div className="flex flex-col items-center justify-center">
-                <h2 className="text-xl font-semibold mb-2">Your order is Cancelled</h2>
+                <h2 className="text-xl font-semibold mb-2">{getTranslation("your_order_cancelled")}</h2>
                 <p className="text-gray-600 text-sm text-center">
                     {"If you have any questions, feel free to reach  out to our support team."}
                 </p>

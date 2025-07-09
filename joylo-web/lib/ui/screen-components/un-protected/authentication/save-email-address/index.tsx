@@ -12,13 +12,13 @@ import EmailIcon from "@/public/assets/images/svgs/email";
 import { useAuth } from "@/lib/context/auth/auth.context";
 import useToast from "@/lib/hooks/useToast";
 import useUser from "@/lib/hooks/useUser";
-import { useTranslations } from "next-intl";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 export default function SaveEmailAddress({
   handleChangePanel,
 }: ISaveEmailAddressProps) {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const {showToast} = useToast();
   const { setUser, user, sendOtpToEmailAddress, setIsAuthModalVisible, isLoading} = useAuth();
   const {profile} = useUser();
@@ -29,8 +29,8 @@ export default function SaveEmailAddress({
       if (!user?.email) {
         showToast({
           type: "error",
-          title: t("Error"),
-          message: t("Please enter a valid email address"),
+          title: getTranslation("toast_error"),
+          message: getTranslation("please_enter_valid_email_address_message"),
         });
         return;
       }
@@ -41,16 +41,16 @@ export default function SaveEmailAddress({
       } else{
         showToast({
           type:"info",
-          title: t("Email Verification"),
-          message:t("Your email is already verified")
+          title: getTranslation("email_verification_label"),
+          message:getTranslation("your_email_already_verified_message")
         })
         if(profile?.phoneIsVerified){
           handleChangePanel(0);
           setIsAuthModalVisible(false)
           showToast({
             type: "success",
-            title: t("Login"),
-            message: t("You have logged in successfully"), // put ! at the end of the statement in the translation
+            title: getTranslation("login_label"),
+            message: getTranslation("login_success_message"),
           });
         }else{
           handleChangePanel(4);
@@ -72,9 +72,9 @@ export default function SaveEmailAddress({
       <EmailIcon />
       <div className="flex flex-col w-full h-auto self-start left-2 my-2">
         <h3 className="text-2xl">
-          {t("Please enter your email address")}?
+          {getTranslation("please_enter_your_email_address_label")}? 
         </h3>
-        <span className="font-bold">example@email.com</span>
+        <span className="font-bold">{getTranslation("example_email_label")}</span>
       </div>
       <div className="flex flex-col gap-y-1 my-6 w-full">
         <CustomTextField
@@ -82,12 +82,12 @@ export default function SaveEmailAddress({
           showLabel={false}
           name=""
           type="text"
-          placeholder={t("Email")}
+          placeholder={getTranslation("email_label")}
           onChange={(e) => handleChange(e.target.value)}
         />
       </div>
       <CustomButton
-        label={t("Continue")}
+        label={getTranslation("continue_label")}
         loading={isLoading}
         onClick={handleSubmit}
         className={`bg-[#FFA500] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72`}

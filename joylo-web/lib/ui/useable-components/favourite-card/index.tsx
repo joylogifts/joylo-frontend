@@ -1,4 +1,6 @@
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import type React from "react";
+
 import TextComponent from "../text-field";
 import ImageComponent from "../card-image-component";
 // import IconText from "../icon-text";
@@ -7,9 +9,10 @@ import IconWithTitle from "../icon-with-title";
 import { ClockSvg, CycleSvg, FaceSvg } from "@/lib/utils/assets/svg";
 import { useConfig } from "@/lib/context/configuration/configuration.context";
 import { useWindowWidth } from "@/lib/hooks/useWindowWidth";
-import {usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
+    const { getTranslation } = useLangTranslation();
     const pathname = usePathname();
     const width = useWindowWidth();
     const { DELIVERY_RATE } = useConfig();
@@ -32,7 +35,7 @@ const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
                                           item?.name?.length > 12
                                             ? item?.name.slice(0, 10) + "..."
                                             : item?.name
-                                        : "N/A"
+                                        : getTranslation("not_available_label")
                                 }
                                 title={
                                     item?.name
@@ -46,18 +49,26 @@ const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
                                 className="text-lg font-medium text-gray-800 mb-1"
                             />
                             <TextComponent
-                                text={item?.categories?.[0]?.title || "N/A"}
+                                text={
+                                    item?.categories?.[0]?.title ||
+                                    getTranslation("not_available_label")
+                                }
                                 className="text-sm text-gray-600 mb-6"
                             />
                         </div>
                         <p className=" text-[#FFA500] bg-[#FFDBBB] p-2 rounded-md font-light text-xs flex items-center justify-center">
-                            {`${item?.deliveryTime}`} min
+                            {`${item?.deliveryTime}`}{" "}
+                            {getTranslation("min_label")}
                         </p>
                     </div>
                     <div className="flex items-center justify-start mt-auto gap-4">
                         <IconWithTitle
                             logo={() => <ClockSvg isBlue={true} />}
-                            title={item?.deliveryTime + " mins"}
+                            title={
+                                item?.deliveryTime +
+                                " " +
+                                getTranslation("mins_label")
+                            }
                             isBlue={true}
                         />
 

@@ -7,6 +7,7 @@ import { useConfig } from "@/lib/context/configuration/configuration.context";
 import Map from "./components/Map";
 import SideList from "./components/SideList";
 import dynamic from "next/dynamic";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 interface MapViewPageProps {
@@ -17,6 +18,7 @@ interface MapViewPageProps {
 
 const MapView: FC<MapViewPageProps> = ({ params }) => {
     const [animationData, setAnimationData] = useState<null | object>(null);
+    const { getTranslation } = useLangTranslation();
 
     useEffect(() => {
         fetch("/assets/lottie/no-results.json")
@@ -61,9 +63,6 @@ const MapView: FC<MapViewPageProps> = ({ params }) => {
             ) : (
                 <div className="flex mt-1 relative min-h-screen max-h-screen md:flex-row flex-col-reverse">
                     <div className="md:relative absolute top-2 mt-12 z-[99] md:flex-[0.35] xl:flex-[0.25] overflow-y-auto md:w-auto w-full ">
-                        {/* <h1 className="text-2xl font-bold text-gray-900 h-screen flex items-center justify-center">
-                            No data available to show.
-                        </h1> */}
                         <div className="flex flex-col items-center justify-center p-6">
                             <div className="w-32 h-32 md:w-60 md:h-60 flex items-center justify-center">
                                 <Lottie
@@ -73,7 +72,7 @@ const MapView: FC<MapViewPageProps> = ({ params }) => {
                                 />
                             </div>
                             <p className="text-gray-500 text-sm md:text-base text-center mb-4">
-                                No data available to show.
+                                {getTranslation("no_data_available_to_show")}
                             </p>
                         </div>
                     </div>

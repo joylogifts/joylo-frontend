@@ -5,6 +5,7 @@ import { Sidebar } from "primereact/sidebar";
 import { Menu } from "primereact/menu";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 // Components
 import Cart from "@/lib/ui/useable-components/cart";
@@ -93,6 +94,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
     setSearchedData,
     setSearchedKeywords,
   } = useSearchUI();
+  const { getTranslation } = useLangTranslation();
 
   // Format subtotal for display
   const formattedSubtotal =
@@ -213,17 +215,16 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
       if (searchedKeywords.length === 0) {
         return (
           <div className="text-center py-4 text-gray-500">
-            🔍 Start typing to search for restaurants or stores.
+            {getTranslation("start_typing_to_search_for_restaurants_or_stores")}
           </div>
         );
       }
-
       // Subcase: Display recent history
       return (
         <div>
           <div className="flex flex-row justify-between">
             <span className="text-sm font-normal mb-2 text-gray-500">
-              You recently searched
+              {getTranslation("you_recently_searched")}
             </span>
             <span
               className="text-sm font-normal mb-2 text-sky-500 hover:cursor-pointer"
@@ -232,7 +233,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                 setSearchedKeywords([]);
               }}
             >
-              Clear history
+              {getTranslation("clear_history_btn")}
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -250,12 +251,11 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
         </div>
       );
     }
-
     // Case 2: User searched something
     if (filteredResults.length > 0) {
       return (
         <MainSection
-          title={`Restaurant and stores: ${filter}`}
+          title={getTranslation("restaurant_and_stores_title") + ": " + filter}
           data={filteredResults.slice(0, 3)}
           loading={false}
           error={false}
@@ -263,7 +263,6 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
         />
       );
     }
-
     // Case 3: No results found for the searched keyword
     return (
       <div className="text-center py-6 text-gray-500 flex flex-col items-center justify-center">
@@ -354,7 +353,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                     value={filter}
                     onChange={handleSearchInputChange}
                     onFocus={() => setIsSearchFocused(true)}
-                    placeholder="Search in joylo"
+                    placeholder={getTranslation("search_in_joylo_placeholder")}
                     className={`
       w-full px-4 py-2 pr-10 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sky-500
       ${!isSearchFocused ? "hidden" : "block"} sm:block
@@ -396,7 +395,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                     onClick={handleModalToggle}
                   >
                     <span className="text-white font-semibold text-[16px]">
-                      Login
+                      {getTranslation("login_label")}
                     </span>
                   </button>
                 ) : (
@@ -433,20 +432,19 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                     <Menu
                       model={[
                         {
-                          label: "Profile",
+                          label: getTranslation("profile_label"),
                           command: () => {
                             router.push("/profile");
                           },
                         },
-
                         {
-                          label: "Get Help",
+                          label: getTranslation("get_help_label"),
                           command: () => {
                             router.push("/profile/getHelp");
                           },
                         },
                         {
-                          label: "Logout",
+                          label: getTranslation("logout_label"),
                           command: () => {
                             onLogout();
                           },
@@ -474,7 +472,7 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
                               {cartCount}
                             </div>
                             <span className="ml-2 text-white text-[14px] font-semibold sm:text-[14px]">
-                              Show Items
+                              {getTranslation("show_items_btn")}
                             </span>
                           </div>
                           <span className="text-white text-[14px]  sm:text-[16px]">

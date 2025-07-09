@@ -31,7 +31,9 @@ import { SearchUIProvider } from "@/lib/context/search/search.context";
 import NotificationInitializer from "../NotificationInitialzer";
 import FirebaseForegroundHandler from "@/lib/config/FirebaseForegroundHandler";
 import { useEffect, useRef } from "react";
-import { TranslationsProvider } from "@/lib/context/global/translation.context";
+
+import { LangTranslationProvider } from "@/lib/context/global/language.context";
+
 
 export default function RootLayout({
   children,
@@ -122,13 +124,15 @@ export default function RootLayout({
       <body className={"flex flex-col flex-wrap"}>
         <PrimeReactProvider value={value}>
           <ApolloProvider client={client}>
+            <LangTranslationProvider>
             <ConfigurationProvider>
               <ToastProvider>
                 <AuthProvider>
                   <UserProvider>
-                    <TranslationsProvider>
-                      <LocationProvider>
-                        <UserAddressProvider>
+                    <LocationProvider>
+                      <UserAddressProvider>
+                        
+
                           <SearchUIProvider>
                             <AppLayout>
                               <NotificationInitializer />
@@ -136,13 +140,15 @@ export default function RootLayout({
                               {children}
                             </AppLayout>
                           </SearchUIProvider>
-                        </UserAddressProvider>
-                      </LocationProvider>
-                    </TranslationsProvider>
+                      
+                      </UserAddressProvider>
+                    </LocationProvider>
+
                   </UserProvider>
                 </AuthProvider>
               </ToastProvider>
             </ConfigurationProvider>
+            </LangTranslationProvider>
           </ApolloProvider>
         </PrimeReactProvider>
       </body>

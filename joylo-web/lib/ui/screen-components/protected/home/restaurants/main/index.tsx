@@ -8,6 +8,7 @@ import useNearByRestaurantsPreview from "@/lib/hooks/useNearByRestaurantsPreview
 import Card from "@/lib/ui/useable-components/card";
 // loading skeleton
 import SliderSkeleton from "@/lib/ui/useable-components/custom-skeletons/slider.loading.skeleton";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 
 
@@ -15,6 +16,7 @@ import SliderSkeleton from "@/lib/ui/useable-components/custom-skeletons/slider.
 function RestaurantsMainSection() {
   const {  error, loading, restaurantsData } = useNearByRestaurantsPreview();
   const [isModalOpen, setIsModalOpen] = useState({value: false, id: ""});
+  const { getTranslation } = useLangTranslation()
 
   const handleUpdateIsModalOpen = useCallback((value: boolean, id: string) => {
     if (isModalOpen.value !== value || isModalOpen.id !== id) {
@@ -34,7 +36,7 @@ function RestaurantsMainSection() {
     <div className="mb-20">
       <div className="mx-[6px] flex items-center gap-4">
         <span className="font-inter font-bold text-xl sm:text-2xl leading-8 tracking-normal text-gray-900">
-          All Restaurants
+          {getTranslation("all_restaurants")}
         </span>
 
       </div>
