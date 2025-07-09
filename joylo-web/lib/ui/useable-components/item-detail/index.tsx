@@ -100,7 +100,6 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
         };
       });
 
-      console.log(formattedAddons)
 
     // Call the addItem function from useUser hook
     addItem(
