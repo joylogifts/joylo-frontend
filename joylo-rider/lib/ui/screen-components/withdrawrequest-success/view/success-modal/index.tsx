@@ -16,10 +16,11 @@ import { IWalletSuccessModalProps } from "@/lib/utils/interfaces/withdraw.interf
 // Hooks
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const {  getTranslation:t } = useLanguage();
   return (
     <View
       style={{
@@ -63,7 +64,7 @@ const SuccessModal = ({ message }: IWalletSuccessModalProps) => {
           {message}
         </Text>
         <Text style={{ color: appTheme.fontSecondColor }}>
-          {t("Usually it takes 1-2 business days")}
+          {t("usually_it_takes_24_hours_to_process")}
         </Text>
       </View>
     </View>

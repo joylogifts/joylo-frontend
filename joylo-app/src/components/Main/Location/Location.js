@@ -18,7 +18,7 @@ function Location({ navigation, addresses, locationIconGray, modalOn, location: 
   const { location } = useContext(LocationContext)
 
   let translatedLabel
-  if (location?.label === 'Current Location') {
+  if (location?.label === 'Current Location' || location?.label === 'currentLocation') {
     translatedLabel = t('current_location')
   } else {
     translatedLabel = t(location?.label)

@@ -380,7 +380,7 @@ const RestaurantSections = ({
       ) : (
         <View style={styles(currentTheme).section}>
           <TextDefault H4 bolder textColor={currentTheme.fontMainColor} style={{ marginBottom: scale(15) }}>
-            {t("fint_what_you_want")}
+            {t("find_what_you_want")}
           </TextDefault>
 
           <View style={styles(currentTheme).categoriesGrid}>

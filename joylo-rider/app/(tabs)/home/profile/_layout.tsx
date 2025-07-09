@@ -1,4 +1,5 @@
 // Expo
+import { useLanguage } from "@/lib/context/global/language.context";
 import { Stack } from "expo-router";
 
 // Hooks
@@ -6,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export default function ProfileLayout() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation:t } = useLanguage();
   return (
     <Stack
       screenOptions={{ headerTitle: "", headerBackButtonMenuEnabled: true }}
@@ -15,7 +16,7 @@ export default function ProfileLayout() {
         name="index"
         options={{
           headerShown: true,
-          headerTitle: t("Profile"),
+          headerTitle: t("profile"),
           headerBackButtonMenuEnabled: true,
         }}
       />

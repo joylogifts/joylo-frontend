@@ -74,9 +74,9 @@ export const useConfiguration = () => {
   return {
     // SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     // WS_SERVER_URL: process.env.NEXT_PUBLIC_WS_SERVER_URL,
-    GRAPHQL_URL: 'http://192.168.18.28:8001/graphql',
-    WS_GRAPHQL_URL: 'ws://192.168.18.28:8001/graphql',
-    SERVER_URL: 'http://192.168.18.28:8001/',
+    GRAPHQL_URL: 'http://192.168.18.27:8001/graphql',
+    WS_GRAPHQL_URL: 'ws://192.168.18.27:8001/graphql',
+    SERVER_URL: 'http://192.168.18.27:8001/',
     COLORS,
 
     // EMAIL CONFIG

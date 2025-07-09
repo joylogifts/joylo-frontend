@@ -32,6 +32,7 @@ import useGeocoding from '../../ui/hooks/useGeocoding'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
+import { useLanguage } from '@/src/context/Language'
 
 const RESTAURANTS = gql`
   ${restaurantList}
@@ -43,7 +44,7 @@ const SELECT_ADDRESS = gql`
 function Main(props) {
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const [busy, setBusy] = useState(false)
   const { loadingOrders, isLoggedIn, profile } = useContext(UserContext)
   const { location, setLocation } = useContext(LocationContext)
@@ -468,7 +469,7 @@ function Main(props) {
                       </TextDefault>
                     </View>
                   </TouchableOpacity>
-                  <View style={styles().addressTick}>{address._id === location?._id && ![t('currentLocation'), t('selectedLocation')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
+                  <View style={styles().addressTick}>{address._id === location?._id && ![t('current_location'), t('selected_location')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
                 </View>
               )
             }}

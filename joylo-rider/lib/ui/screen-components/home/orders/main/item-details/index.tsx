@@ -1,4 +1,5 @@
 import { ConfigurationContext } from "@/lib/context/global/configuration.context";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { IOrder } from "@/lib/utils/interfaces/order.interface";
 import { useContext, useMemo } from "react";
@@ -13,7 +14,7 @@ const ItemDetails = ({
 }) => {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation:t, selectedLanguage } = useLanguage();
   const configuration = useContext(ConfigurationContext);
 
   if (!order) return null;
@@ -31,13 +32,13 @@ const ItemDetails = ({
           className="font-[Inter] text-[11px] text-base font-[500]"
           style={{ color: appTheme.fontSecondColor }}
         >
-          {t("ITEMS AND QUANTITY")}
+          {t("items_and_quantity")}
         </Text>
         <Text
           className="font-[Inter] text-[11px] text-base font-[500]"
           style={{ color: appTheme.fontSecondColor }}
         >
-          {t("PRICE")}
+          {t("price")}
         </Text>
       </View>
 
@@ -45,7 +46,7 @@ const ItemDetails = ({
         {order?.items?.map((item) => {
           return (
             <View
-              key={item.title ?? ""}
+              key={typeof item.title === "object"? item?.title[selectedLanguage]: item?.title ?? ""}
               className="flex-1 flex-row  justify-between items-start gap-x-2"
             >
               <View
@@ -67,7 +68,7 @@ const ItemDetails = ({
                     className="font-[Inter] text-[14px] font-semibold text-left "
                     style={{ color: appTheme.fontMainColor }}
                   >
-                    {item?.title ?? "-"}
+                    {typeof item.title === "object"? item?.title[selectedLanguage]: item?.title ?? "-"}
                   </Text>
                 </View>
                 <View>
@@ -75,7 +76,7 @@ const ItemDetails = ({
                     className="font-[Inter] text-[12px] font-semibold text-left"
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {item?.description ?? "-"}
+                    {typeof item.description === "object"? item?.description[selectedLanguage]: item?.description ?? "-"}
                   </Text>
                 </View>
                 <View>
@@ -114,7 +115,7 @@ const ItemDetails = ({
           className="font-[Inter] text-[16px] text-base font-[500]"
           style={{ color: appTheme.fontSecondColor }}
         >
-          {t("Total")}
+          {t("total")}
         </Text>
         <View className="flex-row gap-x-1">
           <Text

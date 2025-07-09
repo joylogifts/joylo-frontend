@@ -1,4 +1,5 @@
 // Expo
+import { useLanguage } from '@/lib/context/global/language.context'
 import { Stack } from 'expo-router'
 
 // Hooks
@@ -6,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 export default function Layout() {
   // Hooks
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   return (
     <Stack
       screenOptions={{
@@ -18,7 +19,7 @@ export default function Layout() {
       <Stack.Screen
         name="index" // This is the name of the page and must match the url from root
         options={{
-          title: t('Help'),
+          title: t('help'),
         }}
       />
     </Stack>

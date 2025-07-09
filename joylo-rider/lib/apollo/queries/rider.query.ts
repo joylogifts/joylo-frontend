@@ -136,7 +136,6 @@ export const RIDER_ORDERS = gql`
       createdAt
       acceptedAt
       pickedAt
-      assignedAt
       isPickedUp
       deliveredAt
       expectedTime
@@ -190,12 +189,7 @@ export const RIDER_ORDERS = gql`
         name
         phone
       }
-      chat {
-        user
-        message
-        images
-        isActive
-      }
+
       paymentMethod
       paidAmount
       orderAmount

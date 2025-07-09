@@ -135,7 +135,7 @@ function Profile(props) {
                     }}
                   >
                     <TextDefault H5 bold textColor={currentTheme.fontThirdColor} isRTL>
-                      {activeOrders?.length} {getTranslation('active_order')}
+                      {activeOrders?.length} {getTranslation('active_orders')}
                     </TextDefault>
                   </View>
                 </View>

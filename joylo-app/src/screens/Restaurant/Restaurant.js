@@ -620,7 +620,7 @@ function Restaurant(props) {
                         }}
                         isRTL
                       >
-                        {t('most_ordered_now')}
+                        {t('most_ordered_right_now')}
                       </TextDefault>
                       <View style={styles(currentTheme).popularItemCards}>
                         {data.map((item) => (

@@ -524,7 +524,7 @@ export const en = {
   saved_addresses: 'Saved Addresses',
   delete: 'Delete',
   are_you_sure_you_want_to_delete_selected_addresses: 'Are you sure you want to delete selected addresses?',
-  not_verifid: 'not verifid',
+  not_verifid: 'Not Verifid',
   browse_categories: 'Browse Categories',
   popular_right_now: 'Popular right now',
   i_feel_like_eating: 'I feel like eating...',

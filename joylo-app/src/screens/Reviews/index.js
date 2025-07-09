@@ -25,7 +25,7 @@ const Review = gql`
 `
 
 const Reviews = ({ navigation, route }) => {
-  const { getTranslation: t, dir } = useLanguage()
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
 
   const restaurant = route.params.restaurantObject
   const { restaurantId } = restaurant
@@ -241,7 +241,7 @@ const Reviews = ({ navigation, route }) => {
           </View>
           <View style={{ ...alignment.MBlarge }}>
             {sorted.map((review) => (
-              <ReviewCard key={review._id} name={review.order.user.name} description={review.description} rating={review.rating} date={calculateDaysAgo(review.createdAt)} theme={currentTheme} />
+              <ReviewCard key={review._id} name={review.order.user.name} description={typeof review.description === "object" ? review.description[selectedLanguage] : review.description} rating={review.rating} date={calculateDaysAgo(review.createdAt)} theme={currentTheme} />
             ))}
           </View>
           <View style={{ ...alignment.MTlarge }}>

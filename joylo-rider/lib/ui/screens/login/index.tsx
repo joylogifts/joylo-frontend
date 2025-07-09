@@ -32,6 +32,7 @@ import setupApollo from "@/lib/apollo";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { ILoginInitialValues } from "@/lib/utils/interfaces";
 import { CustomContinueButton } from "../../useable-components";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const initial: ILoginInitialValues = {
   username: "",
@@ -46,7 +47,7 @@ const LoginScreen = () => {
   // Hooks
   const { appTheme } = useApptheme();
   const client = setupApollo();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { onLogin, creds, isLogging } = useLogin();
 
   // Handlers
@@ -112,13 +113,13 @@ const LoginScreen = () => {
                     className="text-center text-xl font-semibold "
                     style={{ color: appTheme.fontMainColor }}
                   >
-                    {t("Enter Your Credentials to login")}
+                    {t("enter_your_credentails_to_login")}
                   </Text>
                   <Text
                     className="text-center text-sm mb-5"
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {t("We'll check if you have an account")}
+                    {t("we_will_check_if_you_have_an_account")}
                   </Text>
 
                   {/* Email Input */}
@@ -133,7 +134,7 @@ const LoginScreen = () => {
                     <TextInput
                       className="flex-1 h-12 text-base"
                       style={{ color: appTheme.fontMainColor }}
-                      placeholder={t("Email")}
+                      placeholder={t("email")}
                       keyboardType="email-address"
                       inputMode="email"
                       value={values.username}
@@ -158,7 +159,7 @@ const LoginScreen = () => {
                     <TextInput
                       className="flex-1 h-12 text-base"
                       style={{ color: appTheme.fontMainColor }}
-                      placeholder={t("Password")}
+                      placeholder={t("password")}
                       secureTextEntry={!passwordVisible}
                       value={values.password}
                       onChangeText={handleChange("password")}
@@ -183,7 +184,7 @@ const LoginScreen = () => {
 
                   {/* Login Button */}
                   <CustomContinueButton
-                    title={t("Login")}
+                    title={t("login")}
                     onPress={() => handleSubmit()}
                     className="self-center"
                   />

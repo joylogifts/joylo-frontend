@@ -1,4 +1,5 @@
 // Hooks
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 
@@ -11,7 +12,7 @@ import { Text, View } from "react-native";
 export default function ProfileHeader() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { dataProfile } = useUserContext();
   return (
     <View
@@ -54,7 +55,7 @@ export default function ProfileHeader() {
               color: appTheme.mainTextColor,
             }}
           >
-            {dataProfile?.name ?? t("rider name")}
+            {dataProfile?.name ?? t("rider_name")}
           </Text>
           <Text
             className="font-medium"

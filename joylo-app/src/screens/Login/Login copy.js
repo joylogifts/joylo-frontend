@@ -43,7 +43,7 @@ function Login(props) {
                     ...alignment.MBmedium
                   }}
                 >
-                  {t('whatsYourEmail')}
+                  {t('whats_your_email')}
                 </TextDefault>
                 {registeredEmail === false && (
                   <TextDefault

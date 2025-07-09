@@ -9,6 +9,7 @@ import { IWellDoneComponentProps } from "@/lib/utils/interfaces";
 // Hooks
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function WelldoneComponent({
   orderId = "",
@@ -23,7 +24,7 @@ export default function WelldoneComponent({
   }, [orderId]);
 
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   return (
     <Modal
       isVisible={!!orderId}
@@ -44,10 +45,10 @@ export default function WelldoneComponent({
           {/* </View> */}
           <View className="items-center">
             <Text className="font-inter text-lg font-bold text-centertext-gray-900">
-              {t("Well Done Rider")}
+              {t("well_done_rider")}
             </Text>
             <Text className="font-inter text-sm font-normal leading-[22px] text-center">
-              {t("Order Number")} #{orderId.substring(0, 5)} {status}
+              {t("order_number")} #{orderId.substring(0, 5)} {status}
             </Text>
           </View>
         </View>

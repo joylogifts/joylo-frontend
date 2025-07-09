@@ -6,7 +6,7 @@ export interface IRestaurantProfile {
   orderPrefix: string;
   slug: string;
   name: string;
-  image: string;
+  image?: string;
   logo: string;
   address: string;
   location: {
@@ -39,7 +39,7 @@ export interface IRestaurantProfile {
     __typename: string;
   };
   shopType: string;
-  cuisines: string[];
+  cuisines: JSON;
   __typename: string;
 }
 

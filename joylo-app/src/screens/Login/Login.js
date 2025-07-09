@@ -56,11 +56,11 @@ function Login(props) {
                   }}
                   isRTL
                 >
-                  {registeredEmail ? t('yourEmailPassword') : t('yourEmail')}
+                  {registeredEmail ? t('your_email_password') : t('your_email')}
                 </TextDefault>
 
                 <TextDefault H5 bold textColor={currentTheme.horizontalLine} style={{ ...alignment.MBmedium }} isRTL>
-                  {registeredEmail ? t('emailExists') : t('checkAccount')}
+                  {registeredEmail ? t('email_exists') : t('check_account')}
                 </TextDefault>
               </View>
               <View style={styles().form}>
@@ -105,7 +105,7 @@ function Login(props) {
                         }
                       >
                         <TextDefault textColor={currentTheme.linkColor} style={alignment.MTsmall} bolder isRTL>
-                          {t('forgotPassword')}
+                          {t('forgot_password')}
                         </TextDefault>
                       </TouchableOpacity>
                     </>

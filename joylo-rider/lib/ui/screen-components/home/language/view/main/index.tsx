@@ -1,4 +1,5 @@
 // Constants
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import {
   CustomContinueButton,
@@ -20,7 +21,7 @@ export default function LanguageMain() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const {  getTranslation: t } = useLanguage();
 
   // Handlers
   const handleLanguageSelection = async (selectedLanguage: string) => {
@@ -93,7 +94,7 @@ export default function LanguageMain() {
       })}
       <View>
         <CustomContinueButton
-          title={isChangingLang ? t("Please wait") : t("Update Language")}
+          title={isChangingLang ? t("please_wait") : t("update_language")}
           onPress={() => handleSubmission()}
         />
       </View>

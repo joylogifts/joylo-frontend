@@ -89,7 +89,7 @@ function ForgotPassword(props) {
                 }}
                 isRTL
               >
-                {t('forgotPassword')}
+                {t('forgot_password')}
               </TextDefault>
               <TextDefault
                 H5
@@ -98,7 +98,7 @@ function ForgotPassword(props) {
                 style={styles().emailHeading}
                 isRTL
               >
-                {t('enterYourEmail')}
+                {t('enter_your_email')}
               </TextDefault>
             </View>
             <View>

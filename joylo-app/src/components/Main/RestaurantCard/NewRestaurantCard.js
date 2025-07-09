@@ -120,7 +120,7 @@ function NewRestaurantCard(props) {
             </TextDefault>
           </View>
           <TextDefault textColor={currentTheme.gray600} numberOfLines={1} bold Normal style={styles(currentTheme).offerCategoty}>
-            {props?.categories ? props?.categories.map((category) => category?.title + ', ') : typeof props?.tags === "object" ? props?.tags[selectedLanguage]?.join(',') : props?.tags?.join(',')}
+            {props?.categories ? props?.categories.map((category) => typeof category?.title === "object" ? category?.title[selectedLanguage] : category?.title + ', ') : typeof props?.tags === "object" ? props?.tags[selectedLanguage]?.join(',') : props?.tags?.join(',')}
           </TextDefault>
           <View style={styles().border} />
           <View style={styles(currentTheme).deliveryInfo}>

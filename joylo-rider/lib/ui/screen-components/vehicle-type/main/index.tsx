@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { EDIT_RIDER } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { FlashMessageComponent } from "@/lib/ui/useable-components";
@@ -30,7 +31,7 @@ export default function VehicleTypeMainScreen() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 
   const vehicleMap: Record<string, JSX.Element> = {
     bicycle: <BikeRidingIcon color={appTheme.fontMainColor} />,
@@ -110,13 +111,13 @@ export default function VehicleTypeMainScreen() {
       },
       onCompleted: () => {
         FlashMessageComponent({
-          message: t("Vehicle Type has been updated successfully"),
+          message: t("vehicle_has_been_updated_successfully"),
         });
       },
       onError: (error) => {
         FlashMessageComponent({
           message:
-            error.graphQLErrors[0]?.message ?? t("Please try again later"),
+            error.graphQLErrors[0]?.message ?? t("please_try_again"),
         });
       },
     });
@@ -143,7 +144,7 @@ export default function VehicleTypeMainScreen() {
             <SpinnerComponent color={appTheme.white} />
           ) : (
             <Text className="text-center text-white text-lg font-medium">
-              {t("Update")}
+              {t("update")}
             </Text>
           )}
         </TouchableOpacity>

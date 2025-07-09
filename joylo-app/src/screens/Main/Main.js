@@ -225,7 +225,7 @@ function Main(props) {
                 <SimpleLineIcons name='target' size={scale(18)} color={currentTheme.black} />
                 <View style={styles().mL5p} />
                 <TextDefault bold textColor={currentTheme.black}>
-                  {t('currentLocation')}
+                  {t('current_location')}
                 </TextDefault>
               </>
             )}

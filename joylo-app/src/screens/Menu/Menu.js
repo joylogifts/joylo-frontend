@@ -63,7 +63,7 @@ export const FILTER_VALUES = {
   Rating: {
     selected: [],
     type: FILTER_TYPE.CHECKBOX,
-    values: ['3_rating', '4_Rating', '5_star_rating']
+    values: ['3_rating', '4_rating', '5_star_rating']
   }
 }
 const { height: HEIGHT } = Dimensions.get('window')
@@ -338,7 +338,7 @@ function Menu({ route, props }) {
                 <SimpleLineIcons name='target' size={scale(18)} color={currentTheme.black} />
                 <View style={styles().mL5p} />
                 <TextDefault bold textColor={currentTheme.black}>
-                  {t('currentLocation')}
+                  {t('current_location')}
                 </TextDefault>
               </>
             )}
@@ -655,7 +655,7 @@ function Menu({ route, props }) {
       <Modalize
         ref={filtersModalRef}
         modalStyle={styles(currentTheme).modal}
-        modalHeight={HEIGHT * 0.72}
+        modalHeight={HEIGHT * 0.92}
         overlayStyle={styles(currentTheme).overlay}
         handleStyle={styles(currentTheme).handle}
         handlePosition='inside'

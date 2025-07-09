@@ -159,7 +159,7 @@ function Main(props) {
         <View style={styles().addressSubContainer}>
           <MaterialCommunityIcons name='target' size={scale(25)} color={currentTheme.black} />
           <View style={styles().mL5p} />
-          <TextDefault bold>{t('currentLocation')}</TextDefault>
+          <TextDefault bold>{t('current_location')}</TextDefault>
         </View>
       </TouchableOpacity>
       <View style={styles().addressTick}>
@@ -209,7 +209,7 @@ function Main(props) {
   function loadingScreen() {
     return (
       <View style={styles(currentTheme).screenBackground}>
-        <Search search={''} setSearch={() => {}} />
+        <Search search={''} setSearch={() => { }} />
         <Placeholder Animation={(props) => <Fade {...props} style={styles(currentTheme).placeHolderFadeColor} duration={600} />} style={styles(currentTheme).placeHolderContainer}>
           <PlaceholderLine style={styles().height200} />
           <PlaceholderLine />
@@ -351,7 +351,7 @@ function Main(props) {
                       </TextDefault>
                     </View>
                   </TouchableOpacity>
-                  <View style={styles().addressTick}>{address._id === location?._id && ![t('currentLocation'), t('selectedLocation')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
+                  <View style={styles().addressTick}>{address._id === location?._id && ![t('current_location'), t('selected_location')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
                 </View>
               )
             }}

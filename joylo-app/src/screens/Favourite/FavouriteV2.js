@@ -65,7 +65,7 @@ function Favourite() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: t('titleFavourite'),
+      title: t('title_favourite'),
       headerTitleAlign: 'center',
       headerRight: null,
       headerTitleContainerStyle: {
