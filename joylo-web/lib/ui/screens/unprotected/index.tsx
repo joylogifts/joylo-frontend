@@ -16,6 +16,7 @@ import Couriers from "../../screen-components/un-protected/Home/ForCouriers";
 import { PaddingContainer } from "../../useable-components/containers";
 
 const Main = () => {
+
     const { getTranslation } = useLangTranslation();
     return (
         <div className="w-screen">
@@ -49,6 +50,7 @@ const Main = () => {
                             link={"/restaurantInfo"}
                         />
                     </div>
+
 
                     <Couriers />
                 </div>

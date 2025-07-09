@@ -8,11 +8,12 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faDollarSign } from '@fortawesome/free-solid-svg-icons';
-
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantMain: React.FC = () => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { restaurantProfileResponse } = useContext(ProfileContext);
@@ -23,9 +24,12 @@ const RestaurantMain: React.FC = () => {
   const InfoItem: React.FC<IInfoItemProps> = ({ label, value }) => {
     // Conditionally render icons based on label
     let icon = null;
-    if (label === t('Delivery Time')) {
+    if (label === getTranslation('delivery_time')) {
       icon = <FontAwesomeIcon icon={faClock} className="mr-1" />;
-    } else if (label === t('Service Charges') || label === t('Min Order')) {
+    } else if (
+      label === getTranslation('service_charges') ||
+      label === getTranslation('min_order')
+    ) {
       icon = <FontAwesomeIcon icon={faDollarSign} className="mr-1" />;
     }
     return (
@@ -44,21 +48,29 @@ const RestaurantMain: React.FC = () => {
         <div className="flex items-center mb-6">
           <ProfileLogoSVG width="55" height="55" strokeColor="#1E1E1E" />
           <div className="ml-2">
-            <h1 className="text-xs text-gray-500">{t('Store Name')}</h1>
+            <h1 className="text-xs text-gray-500">
+              {getTranslation('store_name')}
+            </h1>
             <h2 className="text-2xl font-bold">{restaurant?.name || 'N/A'}</h2>
           </div>
         </div>
         <hr className="mb-6" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <InfoItem label={t('Email')} value={restaurant?.username} />
-          <InfoItem label={t('Password')} value={restaurant?.password} />
+          <InfoItem
+            label={getTranslation('email')}
+            value={restaurant?.username}
+          />
+          <InfoItem
+            label={getTranslation('password')}
+            value={restaurant?.password}
+          />
           <div className="md:row-span-4">
-            <p className="text-xs text-gray-500 mb-4">{t('Images')}</p>
+            <p className="text-xs text-gray-500 mb-4">{getTranslation('images')}</p>
             <div className="flex space-x-2">
               {restaurant?.image ? (
                 <Image
                   src={restaurant?.image}
-                  alt={t('Store logo')}
+                  alt={getTranslation('store_logo')}
                   className="object-cover rounded"
                   width={96}
                   height={96}
@@ -69,7 +81,7 @@ const RestaurantMain: React.FC = () => {
               {restaurant?.logo ? (
                 <Image
                   src={restaurant?.logo}
-                  alt={t('Store logo')}
+                  alt={getTranslation('store_logo')}
                   className="object-cover rounded"
                   width={96}
                   height={96}
@@ -79,23 +91,23 @@ const RestaurantMain: React.FC = () => {
               )}
             </div>
           </div>
-          <InfoItem label={t('Name')} value={restaurant?.name} />
-          <InfoItem label={t('Address')} value={restaurant?.address} />
+          <InfoItem label={getTranslation('name')} value={restaurant?.name} />
+          <InfoItem label={getTranslation('address')} value={restaurant?.address} />
           <InfoItem
-            label={t('Delivery Time')}
+            label={getTranslation('delivery_time')}
             value={restaurant?.deliveryTime?.toString()}
           />
           <InfoItem
-            label={t('Min Order')}
+            label={getTranslation('min_order')}
             value={restaurant?.minimumOrder?.toString()}
           />
           <InfoItem
-            label={t('Service Charges')}
+            label={getTranslation('service_charges')}
             value={restaurant?.tax?.toString()}
           />
-          <InfoItem label={t('Order Prefix')} value={restaurant?.orderPrefix} />
-          <InfoItem label={t('Shop Category')} value={restaurant?.shopType} />
-          <InfoItem label={t('Phone')} value={restaurant?.phone} />
+          <InfoItem label={getTranslation('order_prefix')} value={restaurant?.orderPrefix} />
+          <InfoItem label={getTranslation('shop_category')} value={restaurant?.shopType} />
+          <InfoItem label={getTranslation('phone')} value={restaurant?.phone} />
         </div>
       </div>
     </div>

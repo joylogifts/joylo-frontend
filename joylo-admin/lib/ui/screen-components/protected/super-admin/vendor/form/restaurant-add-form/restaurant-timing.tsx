@@ -36,6 +36,7 @@ import { GET_RESTAURANT_PROFILE } from '@/lib/api/graphql';
 import { UPDATE_TIMINGS } from '@/lib/api/graphql/mutations/timing';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantTiming = ({
   stepperProps,
@@ -46,6 +47,7 @@ const RestaurantTiming = ({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -111,8 +113,8 @@ const RestaurantTiming = ({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Success'),
-          message: t('Timing updated'),
+          title: getTranslation('success'),
+          message: getTranslation('timing_updated'),
           // message: t('Store has been created Successfully'),
           duration: 3000,
         });
@@ -126,11 +128,11 @@ const RestaurantTiming = ({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('ActionFailedTryAgain');
+          message = getTranslation('action_failed_try_again');
         }
         showToast({
           type: 'error',
-          title: t('Error'),
+          title: getTranslation('error'),
           message,
           duration: 3000,
         });
@@ -141,7 +143,7 @@ const RestaurantTiming = ({
   return (
     <div className="flex flex-col gap-2 rounded">
       <div className="mb-2 flex flex-col">
-        <span className="text-lg">{t('Store Timing')}</span>
+        <span className="text-lg">{getTranslation('store_timing')}</span>
       </div>
       <Formik
         initialValues={initialValues}
@@ -196,7 +198,7 @@ const RestaurantTiming = ({
                                     );
                                   }}
                                   isLoading={loading}
-                                  placeholder={t('Start Time')}
+                                  placeholder={getTranslation('start_time')}
                                   style={{
                                     borderColor:
                                       (
@@ -235,7 +237,7 @@ const RestaurantTiming = ({
                                     );
                                   }}
                                   isLoading={loading}
-                                  placeholder={t('End Time')}
+                                  placeholder={getTranslation('end_time')}
                                   style={{
                                     borderColor:
                                       (
@@ -294,7 +296,7 @@ const RestaurantTiming = ({
                   ) : (
                     <div className="flex min-h-10 flex-1 items-center justify-start">
                       <span className="select-none rounded-full bg-black px-3 py-1 text-xs text-white">
-                        {t('Closed all Day')}
+                        {getTranslation('closed_all_day')}
                       </span>
                     </div>
                   )}
@@ -304,7 +306,7 @@ const RestaurantTiming = ({
 
             <CustomButton
               className="mb-[2px] mr-auto mt-auto flex h-11 rounded-md border-gray-300 bg-[black] px-10 text-white"
-              label={t('Save')}
+              label={getTranslation('save')}
               rounded={false}
               disabled={loading}
               type="submit"

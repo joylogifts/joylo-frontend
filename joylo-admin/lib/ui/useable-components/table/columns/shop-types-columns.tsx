@@ -1,7 +1,6 @@
 // Interfaces
 import { IActionMenuProps, IShopType } from '@/lib/utils/interfaces';
 
-
 // Components
 import CustomInputSwitch from '../../custom-input-switch';
 import ActionMenu from '../../action-menu';
@@ -17,10 +16,10 @@ import { GET_COUPONS, UPDATE_SHOP_TYPE } from '@/lib/api/graphql';
 import { ToastContext } from '@/lib/context/global/toast.context';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const SHOP_TYPES_TABLE_COLUMNS = ({
   menuItems,
-
 }: {
   menuItems: IActionMenuProps<IShopType>['items'];
 }) => {
@@ -28,6 +27,7 @@ export const SHOP_TYPES_TABLE_COLUMNS = ({
   const { showToast } = useContext(ToastContext);
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [editShopTypeLoading, setEditShopTypeLoading] = useState({
@@ -40,9 +40,11 @@ export const SHOP_TYPES_TABLE_COLUMNS = ({
     refetchQueries: [{ query: GET_COUPONS }],
     onCompleted: () => {
       showToast({
-        title: t('Edit ShopType'),
+        title: getTranslation('edit_shop_type'),
         type: 'success',
-        message: t('ShopType Status has been edited successfully'),
+        message: getTranslation(
+          'shop_type_status_has_been_edited_successfully'
+        ),
         duration: 2500,
       });
       setEditShopTypeLoading({
@@ -52,12 +54,12 @@ export const SHOP_TYPES_TABLE_COLUMNS = ({
     },
     onError: (err) => {
       showToast({
-        title: t('Edit ShopType'),
+        title: getTranslation('edit_shop_type'),
         type: 'error',
         message:
           err.message ||
           err?.cause?.message ||
-          t('Something went wrong, please try again'),
+          getTranslation('something_went_wrong_please_try_again'),
         duration: 2500,
       });
       setEditShopTypeLoading({
@@ -86,35 +88,31 @@ export const SHOP_TYPES_TABLE_COLUMNS = ({
     });
   }
 
-
-
   // Columns
   const shop_type_columns = useMemo(
     () => [
-        {
-            headerName: t('Image'),
-            propertyName: 'image',
-            body: (rowData: IShopType) => (
-                  <Image
-                    width={40}
-                    height={40}
-                    alt="Banner"
-                    src={
-                      rowData.image
-                        ? rowData.image
-                        : 'https://images.unsplash.com/photo-1595418917831-ef942bd9f9ec?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    }
-                  />
-                )
-              
-            
-          },
       {
-        headerName: t('Title'),
+        headerName: getTranslation('image'),
+        propertyName: 'image',
+        body: (rowData: IShopType) => (
+          <Image
+            width={40}
+            height={40}
+            alt="Banner"
+            src={
+              rowData.image
+                ? rowData.image
+                : 'https://images.unsplash.com/photo-1595418917831-ef942bd9f9ec?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+            }
+          />
+        ),
+      },
+      {
+        headerName: getTranslation('title'),
         propertyName: 'title',
       },
       {
-        headerName: t('Status'),
+        headerName: getTranslation('status'),
         propertyName: 'isActive',
         body: (rowData: IShopType) => {
           return (
@@ -139,6 +137,6 @@ export const SHOP_TYPES_TABLE_COLUMNS = ({
     ],
     [loading, editShopTypeLoading.bool, menuItems]
   );
-  
+
   return shop_type_columns;
 };

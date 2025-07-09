@@ -21,6 +21,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UserStats() {
   // Queries
@@ -31,6 +32,7 @@ export default function UserStats() {
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   const dashboardUsers = useMemo(() => {
     if (!data) return null;
@@ -45,33 +47,33 @@ export default function UserStats() {
   return (
     <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-3">
       <StatsCard
-        label={t('Total Users')}
+        label={getTranslation('total_users')}
         total={dashboardUsers?.usersCount ?? 0}
-        description={t('8.5% up from yesterday')}
+        description={getTranslation('85_up_from_yesterday')}
         icon={faUsers}
         route="/general/users"
         loading={loading}
       />
       <StatsCard
-        label={t('Total Vendors')}
+        label={getTranslation('total_vendors')}
         total={dashboardUsers?.vendorsCount ?? 0}
-        description={t('2.4% up from yesterday')}
+        description={getTranslation('24_up_from_yesterday')}
         icon={faStore}
         route="/general/vendors"
         loading={loading}
       />
       <StatsCard
-        label={t('Total Stores')}
+        label={getTranslation('total_stores')}
         total={dashboardUsers?.restaurantsCount ?? 0}
-        description={t('6.1% down from yesterday')}
+        description={getTranslation('61_down_from_yesterday')}
         icon={faUtensils}
         route="/general/stores"
         loading={loading}
       />
       <StatsCard
-        label={t('Total Riders')}
+        label={getTranslation('total_riders')}
         total={dashboardUsers?.ridersCount ?? 0}
-        description={t('1.9% up from yesterday')}
+        description={getTranslation('19_up_from_yesterday')}
         icon={faMotorcycle}
         route="/general/riders"
         loading={loading}

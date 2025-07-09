@@ -8,6 +8,7 @@ import classes from './order-vendor.header.module.css';
 import { IOrderVendorHeaderProps } from '@/lib/utils/interfaces/orders/order-vendor.interface';
 import { IMenuItem } from '@/lib/utils/interfaces/orders/order-vendor.interface';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
   setSelectedActions,
@@ -16,6 +17,7 @@ const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [searchValue, setSearchValue] = useState<string>('');
@@ -30,12 +32,12 @@ const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
   };
 
   const menuItems: IMenuItem[] = [
-    { label: t('PENDING'), value: 'PENDING' },
-    { label: t('ACCEPTED'), value: 'ACCEPTED' },
-    { label: t('ASSIGNED'), value: 'ASSIGNED' },
-    { label: t('PICKED'), value: 'PICKED' },
-    { label: t('DELIVERED'), value: 'DELIVERED' },
-    { label: t('CANCELLED'), value: 'CANCELLED' },
+    { label: getTranslation('pending_cap'), value: 'PENDING' },
+    { label: getTranslation('accepted_cap'), value: 'ACCEPTED' },
+    { label: getTranslation('assigned_cap'), value: 'ASSIGNED' },
+    { label: getTranslation('picked_cap'), value: 'PICKED' },
+    { label: getTranslation('delivered_cap'), value: 'DELIVERED' },
+    { label: getTranslation('cancelled_cap'), value: 'CANCELLED' },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +65,7 @@ const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
             maxLength={35}
             className="w-64"
             showLabel={false}
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
             value={searchValue}
             onChange={handleSearch}
           />
@@ -74,7 +76,7 @@ const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
             className="w-44 rounded border border-dotted border-[#E4E4E7] text-black"
             icon={faAdd}
             iconStyles={{ color: 'black' }}
-            title={t('Orders Status')}
+            title={getTranslation('orders_status')}
             onClick={(e) => overlayPanelRef.current?.toggle(e)}
           />
         </div>
@@ -112,7 +114,7 @@ const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
               className="mt-3 cursor-pointer text-center text-sm"
               onClick={() => setSelectedActions([])}
             >
-              {t('Clear filters')}
+              {getTranslation('clear_filters')}
             </p>
           </div>
         </OverlayPanel>

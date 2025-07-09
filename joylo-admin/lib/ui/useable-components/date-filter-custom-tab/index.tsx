@@ -1,4 +1,5 @@
 // Interface
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IDateFilterCustomTabProps } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
 
@@ -8,6 +9,7 @@ const DateFilterCustomTab = ({
   setSelectedTab,
 }: IDateFilterCustomTabProps) => {
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   return (
     <div className="flex h-10 w-fit space-x-2 rounded bg-gray-100 p-1">
@@ -21,7 +23,7 @@ const DateFilterCustomTab = ({
           }`}
           onClick={() => setSelectedTab(option)}
         >
-         {t(option)}
+          {getTranslation(option)}
         </div>
       ))}
     </div>

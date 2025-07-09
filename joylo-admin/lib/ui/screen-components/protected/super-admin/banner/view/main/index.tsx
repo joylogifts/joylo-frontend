@@ -27,6 +27,7 @@ import { GET_BANNERS } from '@/lib/api/graphql/queries/banners';
 import { generateDummyBanners } from '@/lib/utils/dummy';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function BannersMain({
   setIsAddBannerVisible,
@@ -35,6 +36,7 @@ export default function BannersMain({
   // Hooks
   const { showToast } = useToast();
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // State - Table
   const [deleteId, setDeleteId] = useState('');
@@ -85,7 +87,7 @@ export default function BannersMain({
 
   const menuItems: IActionMenuItem<IBannersResponse>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: IBannersResponse) => {
         if (data) {
           setIsAddBannerVisible(true);
@@ -94,7 +96,7 @@ export default function BannersMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IBannersResponse) => {
         if (data) {
           setDeleteId(data._id);
@@ -147,15 +149,15 @@ export default function BannersMain({
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Success'),
-                message: t(`Banner Deleted`),
+                title: getTranslation('success'),
+                message: getTranslation(`banner_deleted`),
                 duration: 3000,
               });
               setDeleteId('');
             },
           });
         }}
-        message={t('Are you sure you want to delete this item?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_item')}
       />
     </div>
   );

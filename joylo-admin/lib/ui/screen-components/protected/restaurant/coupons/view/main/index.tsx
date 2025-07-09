@@ -34,6 +34,7 @@ import { GET_RESTAURANT_COUPONS } from '@/lib/api/graphql/queries/coupons-restau
 import { DELETE_RESTAURANT_COUPON } from '@/lib/api/graphql/mutations/coupons-restaurant';
 import { useMutation } from '@apollo/client';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponsMain({
   setIsAddCouponVisible,
@@ -46,6 +47,7 @@ export default function CouponsMain({
   // Hooks
   const t = useTranslations();
   const { showToast } = useToast();
+  const { getTranslation } = useLangTranslation();
 
   // State - Table
   const [deleteId, setDeleteId] = useState('');
@@ -83,7 +85,7 @@ export default function CouponsMain({
 
   const menuItems: IActionMenuItem<ICouponRestaurantResponse>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: ICouponRestaurantResponse) => {
         if (data) {
           setIsAddCouponVisible(true);
@@ -92,7 +94,7 @@ export default function CouponsMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: ICouponRestaurantResponse) => {
         if (data) {
           setDeleteId(data._id);
@@ -132,15 +134,15 @@ export default function CouponsMain({
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Success'),
-                message: t('Coupon Deleted'),
+                title: getTranslation('success'),
+                message: getTranslation('coupon_deleted'),
                 duration: 3000,
               });
               setDeleteId('');
             },
           });
         }}
-        message={t('Are you sure you want to delete this item?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_item')}
       />
     </div>
   );

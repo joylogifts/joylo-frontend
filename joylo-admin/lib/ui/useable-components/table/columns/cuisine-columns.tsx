@@ -9,6 +9,7 @@ import Image from 'next/image';
 // Hooks
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const CUISINE_TABLE_COLUMNS = ({
   menuItems,
@@ -17,12 +18,13 @@ export const CUISINE_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Cuisine Columns
   const cuisine_columns = useMemo(
     () => [
       {
-        headerName: t('Image'),
+        headerName: getTranslation('image'),
         propertyName: 'image',
         body: (data: ICuisine) => (
           <div className="flex h-8 w-8 items-center justify-start overflow-hidden rounded-md">
@@ -31,7 +33,7 @@ export const CUISINE_TABLE_COLUMNS = ({
                 data?.image ||
                 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
               }
-              alt={data?.description ?? t('Cuisine')}
+              alt={data?.description ?? getTranslation('cuisine')}
               width={100}
               height={100}
             />
@@ -39,19 +41,19 @@ export const CUISINE_TABLE_COLUMNS = ({
         ),
       },
       {
-        headerName: t('Name'),
+        headerName: getTranslation('name'),
         propertyName: 'name',
       },
       {
-        headerName: t('Description'),
+        headerName: getTranslation('description'),
         propertyName: 'description',
       },
       {
-        headerName: t('Shop Category'),
+        headerName: getTranslation('shop_category'),
         propertyName: 'shopType',
       },
       {
-        headerName: t('Actions'),
+        headerName: getTranslation('actions'),
         propertyName: 'action',
         body: (rowData: ICuisine) => (
           <div className="three-dots">

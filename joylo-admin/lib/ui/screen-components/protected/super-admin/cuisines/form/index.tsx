@@ -26,8 +26,13 @@ import { ApolloError, useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import CustomUploadImageComponent from '@/lib/ui/useable-components/upload/upload-image';
 import { onErrorMessageMatcher } from '@/lib/utils/methods';
-import { CuisineErrors, MAX_SQUARE_FILE_SIZE, SHOP_TYPE } from '@/lib/utils/constants';
+import {
+  CuisineErrors,
+  MAX_SQUARE_FILE_SIZE,
+  SHOP_TYPE,
+} from '@/lib/utils/constants';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CuisineForm({
   setVisible,
@@ -43,6 +48,7 @@ export default function CuisineForm({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   // Initial values
@@ -56,7 +62,6 @@ export default function CuisineForm({
     },
     image: isEditing.bool ? isEditing.data.image : '',
   };
- 
 
   // Mutations
   const [CreateCuisine, { loading: createCuisineLoading }] = useMutation(
@@ -65,9 +70,9 @@ export default function CuisineForm({
       onError,
       onCompleted: () => {
         showToast({
-          title: `${!isEditing.bool ? t('New') : t('Edit')} ${t('Cuisine')}`,
+          title: `${!isEditing.bool ? getTranslation('new') : getTranslation('edit')} ${getTranslation('cuisine')}`,
           type: 'success',
-          message: `${t('Cuisine has been')} ${!isEditing.bool ? t('Created') : t('edited')} ${t('successfully')}`,
+          message: `${getTranslation('cuisine_has_been')} ${!isEditing.bool ? getTranslation('created') : getTranslation('edited')} ${getTranslation('successfully')}`,
           duration: 2000,
         });
       },
@@ -82,9 +87,9 @@ export default function CuisineForm({
       onError,
       onCompleted: () => {
         showToast({
-          title: `${!isEditing.bool ? t('New') : t('Edit')} ${t('Cuisine')}`,
+          title: `${!isEditing.bool ? getTranslation('new') : getTranslation('edit')} ${getTranslation('cuisine')}`,
           type: 'success',
-          message: `${t('Cuisine has been')} ${!isEditing.bool ? t('Created') : t('edited')} ${t('successfully')}`,
+          message: `${getTranslation('cuisine_has_been')} ${!isEditing.bool ? getTranslation('created') : getTranslation('edited')} ${getTranslation('successfully')}`,
           duration: 2000,
         });
       },
@@ -96,11 +101,11 @@ export default function CuisineForm({
   function onError({ cause, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: `${isEditing.bool ? t('Edit') : t('New')}  ${t('Cuisine')}`,
+      title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')}  ${getTranslation('cuisine')}`,
       message:
         cause?.message ??
         networkError?.message ??
-        ` ${t('Cuisine')} ${isEditing.bool ? t('Edition') : t('Creation')}  ${t('Failed')}`,
+        ` ${getTranslation('cuisine')} ${isEditing.bool ? getTranslation('edition') : getTranslation('creation')}  ${getTranslation('failed')}`,
       duration: 2500,
     });
   }
@@ -127,12 +132,12 @@ export default function CuisineForm({
     >
       <div className="flex flex-col gap-4">
         <h2 className="mb-3 text-xl font-bold">
-          {isEditing.bool ? t('Edit') : t('Add')} {t('Cuisine')}
+          {isEditing.bool ? getTranslation('edit') : getTranslation('add')}{' '}
+          {getTranslation('cuisine')}
         </h2>
         <Formik
           initialValues={initialValues}
           validationSchema={CuisineFormSchema}
-         
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
 
@@ -191,7 +196,7 @@ export default function CuisineForm({
             values,
             isSubmitting,
             setFieldValue,
-            touched
+            touched,
           }) => {
             return (
               <Form onSubmit={handleSubmit}>
@@ -203,7 +208,7 @@ export default function CuisineForm({
                     value={values.name}
                     type="text"
                     error={touched.name && errors.name ? errors.name : ''}
-                    placeholder={t('Name')}
+                    placeholder={getTranslation('name')}
                     style={{
                       borderColor: onErrorMessageMatcher(
                         'name',
@@ -214,15 +219,19 @@ export default function CuisineForm({
                         : '',
                     }}
                   />
-                  
+
                   <CustomTextAreaField
                     showLabel={true}
-                    label={t('Description')}
+                    label={getTranslation('description')}
                     name="description"
                     onChange={handleChange}
                     value={values.description}
-                    error={touched.description && errors.description ? errors.description : ''}
-                    placeholder={t('Description')}
+                    error={
+                      touched.description && errors.description
+                        ? errors.description
+                        : ''
+                    }
+                    placeholder={getTranslation('description')}
                     rows={5}
                     style={{
                       borderColor: onErrorMessageMatcher(
@@ -240,7 +249,7 @@ export default function CuisineForm({
                     options={SHOP_TYPE}
                     selectedItem={values.shopType}
                     setSelectedItem={setFieldValue}
-                    placeholder={t('Shop Category')}
+                    placeholder={getTranslation('shop_category')}
                     showLabel={true}
                     style={{
                       borderColor: onErrorMessageMatcher(
@@ -257,7 +266,7 @@ export default function CuisineForm({
                     name="image"
                     error={touched.image && errors.image ? errors.image : ''}
                     onSetImageUrl={setFieldValue}
-                    title={t('Upload Image')}
+                    title={getTranslation('upload_image')}
                     existingImageUrl={
                       isEditing.bool ? isEditing.data.image : ''
                     }
@@ -288,9 +297,9 @@ export default function CuisineForm({
                         color="white"
                       />
                     ) : isEditing.bool ? (
-                      t('Update')
+                      getTranslation('update')
                     ) : (
-                      t('Add')
+                      getTranslation('add')
                     )}
                   </button>
                 </div>

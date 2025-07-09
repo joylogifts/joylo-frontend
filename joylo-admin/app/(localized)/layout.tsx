@@ -25,6 +25,7 @@ import './global.css';
 
 // Apollo
 import { useSetupApollo } from '@/lib/hooks/useSetApollo';
+import { LangTranslationProvider } from '@/lib/context/global/language.context';
 
 export default function RootLayout({
   children,
@@ -48,15 +49,17 @@ export default function RootLayout({
       <body className={'flex flex-col flex-wrap'}>
         <PrimeReactProvider value={value}>
           <ApolloProvider client={client}>
-            <ConfigurationProvider>
-              <LayoutProvider>
-                <UserProvider>
-                  <SidebarProvider>
-                    <ToastProvider>{children}</ToastProvider>
-                  </SidebarProvider>
-                </UserProvider>
-              </LayoutProvider>
-            </ConfigurationProvider>
+            <LangTranslationProvider>
+              <ConfigurationProvider>
+                <LayoutProvider>
+                  <UserProvider>
+                    <SidebarProvider>
+                      <ToastProvider>{children}</ToastProvider>
+                    </SidebarProvider>
+                  </UserProvider>
+                </LayoutProvider>
+              </ConfigurationProvider>
+            </LangTranslationProvider>
           </ApolloProvider>
         </PrimeReactProvider>
       </body>

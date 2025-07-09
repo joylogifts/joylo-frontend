@@ -1,11 +1,11 @@
 import { useApptheme } from "@/lib/context/theme.context";
 import { Stack } from "expo-router";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { Platform } from "react-native";
 
 export default function LoginLayour() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
 
   return (
@@ -31,7 +31,7 @@ export default function LoginLayour() {
         name="index"
         options={{
           headerShown: false,
-          title: t("Chat"),
+          title: getTranslation("chat"),
           headerTitleAlign: "center",
           headerShadowVisible: false,
         }}

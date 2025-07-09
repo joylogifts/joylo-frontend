@@ -31,7 +31,9 @@ import { SearchUIProvider } from "@/lib/context/search/search.context";
 import NotificationInitializer from "../NotificationInitialzer";
 import FirebaseForegroundHandler from "@/lib/config/FirebaseForegroundHandler";
 import { useEffect, useRef } from "react";
+
 import { LangTranslationProvider } from "@/lib/context/global/language.context";
+
 
 export default function RootLayout({
   children,
@@ -93,7 +95,7 @@ export default function RootLayout({
           .register("/sw.js")
           .then((registration) => {
             console.log("✅ Service Worker registered:", registration.scope);
-            return registration.update()
+            return registration.update();
           })
           .catch((error) => {
             console.error("❌ SW registration failed:", error);
@@ -130,6 +132,7 @@ export default function RootLayout({
                     <LocationProvider>
                       <UserAddressProvider>
                         
+
                           <SearchUIProvider>
                             <AppLayout>
                               <NotificationInitializer />
@@ -137,9 +140,10 @@ export default function RootLayout({
                               {children}
                             </AppLayout>
                           </SearchUIProvider>
-                        
+                      
                       </UserAddressProvider>
                     </LocationProvider>
+
                   </UserProvider>
                 </AuthProvider>
               </ToastProvider>

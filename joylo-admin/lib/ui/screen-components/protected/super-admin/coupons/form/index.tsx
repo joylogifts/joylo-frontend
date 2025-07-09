@@ -29,6 +29,7 @@ import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 import { onErrorMessageMatcher } from '@/lib/utils/methods';
 import { CouponErrors } from '@/lib/utils/constants';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponForm({
   setVisible,
@@ -40,6 +41,7 @@ export default function CouponForm({
   const { showToast } = useContext(ToastContext);
   const [endDateError, setEndDateError] = useState('');
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Initial values
   const initialValues = {
@@ -58,9 +60,9 @@ export default function CouponForm({
       refetchQueries: [{ query: GET_COUPONS }],
       onCompleted: () => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('Coupon')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('coupon')}`,
           type: 'success',
-          message: t('Coupon has been added successfully'),
+          message: getTranslation('coupon_has_been_added_successfully'),
           duration: 2000,
         });
         setIsEditing({
@@ -79,11 +81,11 @@ export default function CouponForm({
       },
       onError: (err) => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('Coupon')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('coupon')}`,
           type: 'error',
           message:
             err.message ||
-            `${t('Coupon')} ${isEditing.bool ? t('Edition') : t('Creation')} ${t('Failed')}`,
+            `${getTranslation('coupon')} ${isEditing.bool ? getTranslation('edition') : getTranslation('creation')} ${getTranslation('failed')}`,
           duration: 2000,
         });
         setIsEditing({
@@ -108,9 +110,9 @@ export default function CouponForm({
       refetchQueries: [{ query: GET_COUPONS }],
       onCompleted: () => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('Coupon')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('coupon')}`,
           type: 'success',
-          message: `${t('Coupon has been')} ${isEditing.bool ? t('Edited') : t('Added')}  ${t('Successfully')}`,
+          message: `${getTranslation('coupon_has_been')} ${isEditing.bool ? getTranslation('edited') : getTranslation('added')}  ${getTranslation('successfully')}`,
           duration: 2000,
         });
         setIsEditing({
@@ -129,11 +131,11 @@ export default function CouponForm({
       },
       onError: (err) => {
         showToast({
-          title: `${isEditing.bool ? t('Edit') : t('New')} ${t('Coupon')}`,
+          title: `${isEditing.bool ? getTranslation('edit') : getTranslation('new')} ${getTranslation('coupon')}`,
           type: 'error',
           message:
             err.message ||
-            `${t('Coupon')} ${isEditing.bool ? t('Edition') : t('Creation')} ${t('Failed')}`,
+            `${getTranslation('coupon')} ${isEditing.bool ? getTranslation('edition') : getTranslation('creation')} ${getTranslation('failed')}`,
           duration: 2000,
         });
         setIsEditing({
@@ -228,10 +230,15 @@ export default function CouponForm({
               <div className="space-y-4">
                 <div className="flex gap-4">
                   <h2 className='className="mb-3 text-xl font-bold'>
-                    {isEditing.bool ? t('Edit') : t('Add')} {t('Coupon')}
+                    {isEditing.bool
+                      ? getTranslation('edit')
+                      : getTranslation('add')}{' '}
+                    {getTranslation('coupon')}
                   </h2>
                   <div className="flex items-center gap-x-1">
-                    {values.enabled ? t('Enabled') : t('Disabled')}
+                    {values.enabled
+                      ? getTranslation('enabled')
+                      : getTranslation('disabled')}
                     <CustomInputSwitch
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setFieldValue('enabled', e.target.checked)
@@ -245,7 +252,7 @@ export default function CouponForm({
                   value={values.title}
                   name="title"
                   showLabel={true}
-                  placeholder={t('Title')}
+                  placeholder={getTranslation('title')}
                   type="text"
                   onChange={(e) => setFieldValue('title', e.target.value)}
                   style={{
@@ -266,7 +273,7 @@ export default function CouponForm({
                   maxFractionDigits={2}
                   showLabel={true}
                   suffix="%"
-                  placeholder={t('Discount')}
+                  placeholder={getTranslation('discount')}
                   onChange={setFieldValue}
                   min={0}
                   max={100}
@@ -282,7 +289,7 @@ export default function CouponForm({
                 />
 
                 <CustomInputSwitch
-                  label={t('Lifetime Active')}
+                  label={getTranslation('lifetime_active')}
                   isActive={values.lifeTimeActive}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setFieldValue('lifeTimeActive', e.target.checked)
@@ -295,7 +302,7 @@ export default function CouponForm({
                     name="endDate"
                     showLabel={true}
                     type="date"
-                    placeholder={t('End Date')}
+                    placeholder={getTranslation('end_date')}
                     onChange={(e) => setFieldValue('endDate', e.target.value)}
                     style={{
                       borderColor: endDateError ? 'red' : '',
@@ -318,9 +325,9 @@ export default function CouponForm({
                       color="white"
                     />
                   ) : isEditing.bool ? (
-                    t('Update')
+                    getTranslation('update')
                   ) : (
-                    t('Add')
+                    getTranslation('add')
                   )}
                 </button>
               </div>
