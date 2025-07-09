@@ -51,7 +51,7 @@ const FavouriteProducts = () => {
       {isFavouriteRestaurantsLoading ? (
         <CardSkeletonGrid count={4} />
       ) : FavouriteRestaurantsData?.userFavourite && FavouriteRestaurantsData.userFavourite.length > 0 ? (
-        <FavouriteCardsGrid items={FavouriteRestaurantsData.userFavourite}
+        <FavouriteCardsGrid items={FavouriteRestaurantsData?.userFavourite}
         handleClickFavRestaurant={handleClickFavRestaurant}
         />
       ) : (
