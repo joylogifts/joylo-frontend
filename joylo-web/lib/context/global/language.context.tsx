@@ -17,7 +17,7 @@ interface LangTranslationContextType {
   languages: any[];
   languagesLoading: boolean;
   languagesError: any;
-  selectedLanguage: string | null;
+  selectedLanguage: string;
   setSelectedLanguage: (code: string) => void;
   translations: Record<string, string>;
   translationsLoading: boolean;
@@ -27,7 +27,7 @@ interface LangTranslationContextType {
 const LangTranslationContext = createContext<LangTranslationContextType | null>(
   null
 );
-
+const LANGUAGE_KEY = "selectedLanguage";
 export function LangTranslationProvider({ children }: { children: ReactNode }) {
   // LANGUAGES
   const {
@@ -36,16 +36,30 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     error: languagesError,
   } = useQuery(GET_LANGUAGES);
 
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
+  // Initialize selectedLanguage from localStorage if available
+  const [selectedLanguage, setSelectedLanguageState] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(LANGUAGE_KEY) || "en";
+    }
+    return "en";
+  });
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [translationsLoading, setTranslationsLoading] = useState(false);
+
 
   useEffect(() => {
     if (!languagesData || languagesLoading) return;
     const languages = languagesData.languages || [];
     const defaultLang = languages.find((l: any) => l.isDefault)?.code;
-    setSelectedLanguage((prev) => prev || defaultLang);
+    setSelectedLanguageState((prev) => prev || defaultLang);
   }, [languagesData, languagesLoading]);
+
+
+  useEffect(() => {
+    if (selectedLanguage) {
+      localStorage.setItem(LANGUAGE_KEY, selectedLanguage);
+    }
+  }, [selectedLanguage]);
 
   // TRANSLATIONS
   const { data: translationsData, loading: translationsQueryLoading } =
@@ -63,6 +77,11 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
 
   const getTranslation = (key: string) => {
     return translations[key] ?? key;
+  };
+
+  const setSelectedLanguage = (code: string) => {
+    setSelectedLanguageState(code);
+    localStorage.setItem(LANGUAGE_KEY, code);
   };
 
   const contextValue: LangTranslationContextType = {

@@ -44,7 +44,7 @@ export const ItemDetailSection = <
         requiredTag,
         showTag = false,
     } = props;
-    const { getTranslation } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const handleSelect = (option: T) => {
         if (option.isOutOfStock) {
             return;
@@ -57,8 +57,8 @@ export const ItemDetailSection = <
                     );
                     return exists
                         ? (prevSelected as T[]).filter(
-                              (o) => o._id !== option._id
-                          )
+                            (o) => o._id !== option._id
+                        )
                         : [...(prevSelected as T[]), option];
                 });
         } else {
@@ -73,7 +73,7 @@ export const ItemDetailSection = <
         <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
                 <h3 className="font-inter font-bold text-[14px] md:text-[16px] lg:text-[18px] leading-[20px] md:leading-[22px]">
-                    {title}
+                    {typeof title === "object" ? title[selectedLanguage] : title}
                 </h3>
 
                 {/* Required/Optional Tag - Only shown when showTag is true */}
@@ -92,16 +92,16 @@ export const ItemDetailSection = <
                         {/* Input Radio/Checkbox */}
                         <input
                             type={multiple ? "checkbox" : "radio"}
-                            name={name}
+                            name={typeof option?.title === "object" ? option?.title[selectedLanguage] : option?.title}
                             checked={
                                 multiple
                                     ? filteredMultiSelected.some(
-                                          (o) => o._id === option._id
-                                      )
+                                        (o) => o._id === option._id
+                                    )
                                     : singleSelected && !option.isOutOfStock
-                                      ? (singleSelected as Option | null)
+                                        ? (singleSelected as Option | null)
                                             ?._id === option._id
-                                      : false
+                                        : false
                             }
                             onChange={() => handleSelect(option)}
                             disabled={option.isOutOfStock}
@@ -110,7 +110,7 @@ export const ItemDetailSection = <
                         {/* Label & Price */}
                         <div className="flex justify-between items-center w-full">
                             <span className="text-sm text-gray-900">
-                                {option.title}{" "}
+                                {typeof option?.title === "object" ? option?.title[selectedLanguage] : option?.title}
                                 {option.isOutOfStock ? (
                                     <span className="text-red-500">
                                         {getTranslation("out_of_stock_label")}

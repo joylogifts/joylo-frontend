@@ -423,7 +423,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           showToast({
             type: "info",
             title: getTranslation("phone_verification"),
-            message: getTranslation(`otp_sent_phone_verify_number", ${ phone }`),
+            message: getTranslation(`otp_sent_phone_verify_number ${ phone }`),
           });
           setActivePanel(6);
         }

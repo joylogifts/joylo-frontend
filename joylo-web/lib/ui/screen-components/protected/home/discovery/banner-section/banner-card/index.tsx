@@ -4,10 +4,12 @@ import Image from "next/image";
 // interface
 import { IBannerItemProps } from "@/lib/utils/interfaces";
 import { useRouter } from "next/navigation";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 const BannerCard:React.FC<IBannerItemProps> = ({item}) => {
-  const isVideo = item?.file.includes("video");
+  const { getTranslation: t,  selectedLanguage } = useLangTranslation()
 
+  const isVideo = item?.file.includes("video");
   const router = useRouter();
   const onClickHandler = () => {
     if (item?.action === 'Navigate Specific Restaurant') {
@@ -39,14 +41,14 @@ const BannerCard:React.FC<IBannerItemProps> = ({item}) => {
               className="carousel-banner"
             >
               <source src={item?.file} type="video/mp4" />
-              {item.title}
+              {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
             </video>
           ) : (
             <Image
               src={item?.file}
               width={890}
               height={300}
-              alt={item?.title}
+              alt={typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
               objectFit="contain"
               style={{ borderRadius: 12 }}
               className="carousel-banner"
@@ -54,10 +56,10 @@ const BannerCard:React.FC<IBannerItemProps> = ({item}) => {
           )}
           <div className="absolute bottom-4 left-4 text-white">
             <p className="text-lg sm:text-2xl font-bold sm:font-extrabold">
-              {item?.title}
+             {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
             </p>
             <p className="text-xs sm:text-sm font-medium">
-              {item?.description}
+             {typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description}
             </p>
           </div>
         </div>

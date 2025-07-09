@@ -67,7 +67,7 @@ import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 import { useLangTranslation } from "@/lib/context/global/language.context";
 
 export default function OrderCheckoutScreen() {
-    const { getTranslation } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const [isAddressSelectedOnce, setIsAddressSelectedOnce] = useState(false);
     const [isUserAddressModalOpen, setIsUserAddressModalOpen] = useState(false);
     // const [isOpen, setIsOpen] = useState(false);
@@ -906,7 +906,7 @@ export default function OrderCheckoutScreen() {
                                 {getTranslation("selected_items_label")}
                             </h2>
                             {/* Map this below section */}
-                            {cart.map((item) => {
+                            {cart?.map((item) => {
                                 return (
                                     <div
                                         key={item._id}
@@ -922,7 +922,7 @@ export default function OrderCheckoutScreen() {
                                             />
                                             <div>
                                                 <h3 className="font-semibold text-gray-900 text-sm sm:text-base md:text-[12px] lg:text-[14px] xl:text-[16px]">
-                                                    {item.foodTitle}
+                                                    {typeof item?.foodTitle === "object" ? item?.foodTitle[selectedLanguage] : item?.foodTitle}
                                                 </h3>
                                                 <div className="flex flex-col items-start">
                                                     {item?.optionTitles?.map(
@@ -937,7 +937,7 @@ export default function OrderCheckoutScreen() {
                                                                 >
                                                                     +{" "}
                                                                     {
-                                                                        optionTitle
+                                                                         typeof optionTitle === "object" ?optionTitle[selectedLanguage] : optionTitle
                                                                     }
                                                                 </p>
                                                             );
@@ -1138,7 +1138,8 @@ export default function OrderCheckoutScreen() {
                             id="price-summary"
                         >
                             <h2 className="text-sm lg:text-lg font-semibold text-left flex justify-between">
-                                {getTranslation("prices_in_label")} {CURRENCY}
+                                {/* {getTranslation("prices_in_label") + CURRENCY} */}
+                                {getTranslation("prices_in_label").replace("{currency}", CURRENCY)}
                                 <InfoSvg />
                             </h2>
                             <p className="text-gray-400 mb-3 text-left leading-5 tracking-normal font-inter text-xs lg:text-[16px]">
@@ -1158,10 +1159,8 @@ export default function OrderCheckoutScreen() {
                             {deliveryType === "Delivery" && (
                                 <div className="flex justify-between mb-1 text-xs lg:text-[14px]">
                                     <span className="font-inter text-gray-900 leading-5">
-                                        {getTranslation(
-                                            "delivery_with_distance_label"
-                                        )}{" "}
-                                        {distance}
+                                        
+                                        {getTranslation("delivery_with_distance_label").replace("{distance}", distance)}
                                     </span>
                                     <span className="font-inter text-gray-900 leading-5">
                                         {CURRENCY_SYMBOL}
@@ -1254,7 +1253,7 @@ export default function OrderCheckoutScreen() {
                             id="price-summary"
                         >
                             <h2 className="text-sm lg:text-base font-semibold text-left flex justify-between">
-                                {getTranslation("prices_in_label")} {CURRENCY}
+                                {getTranslation("prices_in_label")} 
                                 <InfoSvg />
                             </h2>
                             <p className="text-gray-400 mb-3 text-left leading-5 tracking-normal font-inter text-xs lg:text-[10px]">
@@ -1276,8 +1275,8 @@ export default function OrderCheckoutScreen() {
                                     <span className="font-inter text-gray-900 leading-5">
                                         {getTranslation(
                                             "delivery_with_distance_label"
-                                        )}{" "}
-                                        {distance}
+                                        ) +
+                                        distance}
                                     </span>
                                     <span className="font-inter text-gray-900 leading-5">
                                         {CURRENCY_SYMBOL}

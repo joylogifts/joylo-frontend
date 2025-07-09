@@ -18,9 +18,12 @@ import { useLangTranslation } from "@/lib/context/global/language.context";
 // Hooks
 import useToast from "@/lib/hooks/useToast";
 import NameUpdateModal from "./update-name";
+import { Dropdown } from 'primereact/dropdown';
 
 export default function SettingsMain() {
     const { getTranslation } = useLangTranslation();
+    const { languages, selectedLanguage, setSelectedLanguage } = useLangTranslation();
+    console.log("languages------->>>>>>>>>>>>>", languages);
 
     // States for current values
     const [sendReceipts, setSendReceipts] = useState<boolean>(false);
@@ -256,6 +259,28 @@ export default function SettingsMain() {
                         label={getTranslation("logout")}
                     />
                 </div>
+            </div>
+            {/* Language */}
+           <div className="py-4">
+                <div className="flex justify-between items-center">
+                    <TextComponent
+                        text={getTranslation("language")}
+                        className="font-normal text-gray-700 text-base md:text-lg "
+                    />
+                        <div>
+                            <Dropdown 
+                            value={selectedLanguage} 
+                            onChange={(e) => setSelectedLanguage(e.value)} 
+                            options={languages?.map((lang: any) => ({
+                                value : lang.code,
+                                label : lang.label,
+
+                            }))} 
+                            optionLabel="label" 
+                            placeholder={getTranslation("select_language")} 
+                            className="w-full md:w-14rem" />
+                        </div>
+                    </div>
             </div>
         </div>
     );

@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { useLangTranslation } from "@/lib/context/global/language.context";
 import Image from "next/image";
