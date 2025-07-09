@@ -12,7 +12,7 @@ import { useWindowWidth } from "@/lib/hooks/useWindowWidth";
 import { usePathname } from "next/navigation";
 
 const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
-    const { getTranslation } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const pathname = usePathname();
     const width = useWindowWidth();
     const { DELIVERY_RATE } = useConfig();
@@ -21,14 +21,14 @@ const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
             <hr className="border-t-2 border-gray-300 border-dashed my-2 absolute bottom-10 w-full" />
             <div className="flex flex-col h-full w-full">
                 <div className="relative w-full h-52 overflow-hidden rounded-t-lg">
-                    <ImageComponent src={item?.image} alt={item?.name} />
+                    <ImageComponent src={item?.image} alt={typeof item?.name === "object" ? item?.name[selectedLanguage] : item?.name} />
                 </div>
                 <div className="p-4 flex flex-col flex-grow">
                     <div className="flex items-center justify-between">
                         <div>
                             <TextComponent
                                 text={
-                                    item?.name
+                                    typeof item?.name === "object" ? item?.name[selectedLanguage] : item?.name
                                         ? pathname === "/profile" &&
                                           width >= 1024 &&
                                           width <= 1150 &&
@@ -50,7 +50,7 @@ const FavoriteCard: React.FC<IFavoriteCardProps> = ({ item }) => {
                             />
                             <TextComponent
                                 text={
-                                    item?.categories?.[0]?.title ||
+                                    typeof item?.categories?.[0]?.title === "object" ? item?.categories?.[0]?.title[selectedLanguage] : item?.categories?.[0]?.title ||
                                     getTranslation("not_available_label")
                                 }
                                 className="text-sm text-gray-600 mb-6"
