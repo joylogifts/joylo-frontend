@@ -1,15 +1,17 @@
 // Components
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import HeaderText from '@/lib/ui/useable-components/header-text';
 import { useTranslations } from 'use-intl';
 
 const TransactionHistoryRestaurantHeader = () => {
- // Hooks
- const t = useTranslations();
+  // Hooks
+  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   return (
     <div className="sticky top-0 z-10 w-full flex-shrink-0 bg-white p-3 shadow-sm">
       <div className="flex w-full justify-between">
-        <HeaderText text={t("Transaction History")} />
+        <HeaderText text={getTranslation('transaction_history')} />
       </div>
     </div>
   );

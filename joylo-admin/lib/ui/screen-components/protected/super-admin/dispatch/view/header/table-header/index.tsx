@@ -1,4 +1,5 @@
 // CSS
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import classes from './table-header.module.css';
 
 // Components
@@ -23,6 +24,7 @@ export default function DispatchTableHeader({
 }: IDispatchTableHeaderProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Ref
   const overlayPanelRef = useRef<OverlayPanel>(null);
@@ -41,23 +43,23 @@ export default function DispatchTableHeader({
   // Actions
   const menuItems = [
     {
-      label: t('Pending'),
+      label: getTranslation('pending'),
       value: 'PENDING',
     },
     {
-      label: t('Assigned'),
+      label: getTranslation('assigned'),
       value: 'ASSIGNED',
     },
     {
-      label: t('Accepted'),
+      label: getTranslation('accepted'),
       value: 'ACCEPTED',
     },
     {
-      label: t('Picked'),
+      label: getTranslation('picked'),
       value: 'PICKED',
     },
     {
-      label: t('Delivered'),
+      label: getTranslation('delivered'),
       value: 'DELIVERED',
     },
   ];
@@ -85,7 +87,7 @@ export default function DispatchTableHeader({
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               debounceSearch(300, e.target.value)
             }
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
           />
         </div>
         <div className="flex items-center">
@@ -95,7 +97,7 @@ export default function DispatchTableHeader({
                 <CustomTextField
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder={t('Search')}
+                  placeholder={getTranslation('search')}
                   className="h-8 w-full"
                   type="text"
                   name="search"
@@ -134,7 +136,7 @@ export default function DispatchTableHeader({
                 className="mt-3 text-center text-sm cursor-pointer"
                 onClick={() => setSelectedActions([])}
               >
-                {t('Clear filters')}
+                {getTranslation('clear_filters')}
               </p>
             </div>
           </OverlayPanel>
@@ -143,7 +145,11 @@ export default function DispatchTableHeader({
             className="w-20 rounded border border-dotted border-[#E4E4E7] text-black"
             icon={faAdd}
             iconStyles={{ color: 'black' }}
-            title={selectedActions.length > 0 ? t('Filter') : t('Actions')}
+            title={
+              selectedActions.length > 0
+                ? getTranslation('filter')
+                : getTranslation('actions')
+            }
             onClick={(e) => overlayPanelRef.current?.toggle(e)}
           />
         </div>

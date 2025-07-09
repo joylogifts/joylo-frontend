@@ -78,3 +78,5 @@ export interface IGlobalTableHeaderProps {
 export interface IPolygonLocation {
   coordinates: TPolygonPoints;
 }
+
+

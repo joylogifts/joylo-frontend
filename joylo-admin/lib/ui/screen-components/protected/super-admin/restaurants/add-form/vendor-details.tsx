@@ -26,7 +26,10 @@ import CustomPasswordTextField from '@/lib/ui/useable-components/password-input-
 import CustomUploadImageComponent from '@/lib/ui/useable-components/upload/upload-image';
 
 // Schema
-import { RestaurantsVendorDetails, VendorSchemaOnStoreCreate } from '@/lib/utils/schema';
+import {
+  RestaurantsVendorDetails,
+  VendorSchemaOnStoreCreate,
+} from '@/lib/utils/schema';
 
 // GraphQL
 import { CREATE_VENDOR, GET_VENDORS } from '@/lib/api/graphql';
@@ -38,6 +41,7 @@ import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 import { IRestaurantsVendorDetailsComponentProps } from '@/lib/utils/interfaces/restaurants.interface';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IRestauransVendorDetailsForm = {
   _id: null,
@@ -60,6 +64,7 @@ export default function VendorDetails({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -83,8 +88,8 @@ export default function VendorDetails({
     onCompleted: (data: ICreateVendorResponseGraphQL) => {
       showToast({
         type: 'success',
-        title: t('New Vendor'),
-        message: `${t('Vendor has been')} ${!showAddForm ? t('selected') : t('added')} ${t('successfully')}`,
+        title: getTranslation('new_vendor'),
+        message: `${getTranslation('vendor_has_been')} ${!showAddForm ? getTranslation('selected') : getTranslation('added')} ${getTranslation('successfully')}`,
         duration: 3000,
       });
 
@@ -129,8 +134,8 @@ export default function VendorDetails({
     } catch (error) {
       showToast({
         type: 'error',
-        title: `${!showAddForm ? t('Select') : t('Create')} ${t('Vendor')}`,
-        message: `${t('Vendor')} ${!showAddForm ? t('Selection') : t('Create')} ${t('Failed')}`,
+        title: `${!showAddForm ? getTranslation('select') : getTranslation('create')} ${getTranslation('vendor')}`,
+        message: `${getTranslation('vendor')} ${!showAddForm ? getTranslation('selection') : getTranslation('create')} ${getTranslation('failed')}`,
         duration: 2500,
       });
     }
@@ -140,11 +145,11 @@ export default function VendorDetails({
     if (!graphQLErrors && !networkError) return;
     showToast({
       type: 'error',
-      title: `${!showAddForm ? t('Select') : t('Create')} ${t('Vendor')}`,
+      title: `${!showAddForm ? getTranslation('select') : getTranslation('create')} ${getTranslation('vendor')}`,
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        `${t('Vendor')} ${!showAddForm ? t('Selection') : t('Create')} ${t('Failed')}`,
+        `${getTranslation('vendor')} ${!showAddForm ? getTranslation('selection') : getTranslation('create')} ${getTranslation('failed')}`,
       duration: 2500,
     });
   }
@@ -173,11 +178,13 @@ export default function VendorDetails({
             <Formik
               initialValues={formInitialValues}
               validationSchema={
-                showAddForm ? VendorSchemaOnStoreCreate : RestaurantsVendorDetails
+                showAddForm
+                  ? VendorSchemaOnStoreCreate
+                  : RestaurantsVendorDetails
               }
               enableReinitialize={true}
               onSubmit={async (values) => {
-                console.log(values, "values")
+                console.log(values, 'values');
                 await onVendorSubmitHandler(values);
               }}
               validateOnChange={false}
@@ -196,7 +203,7 @@ export default function VendorDetails({
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center lg:items-center">
                         <div className="flex flex-shrink-0 items-center justify-end">
                           <CustomInputSwitch
-                            label={t('Add Vendor')}
+                            label={getTranslation('add_vendor')}
                             isActive={showAddForm}
                             onChange={() => {
                               if (!showAddForm) {
@@ -211,7 +218,7 @@ export default function VendorDetails({
                         <div>
                           <CustomDropdownComponent
                             name="_id"
-                            placeholder={t('Select Vendor')}
+                            placeholder={getTranslation('select_vendor')}
                             showLabel={true}
                             selectedItem={values._id}
                             setSelectedItem={setFieldValue}
@@ -233,7 +240,7 @@ export default function VendorDetails({
                             <CustomTextField
                               type="text"
                               name="name"
-                              placeholder={t('Name')}
+                              placeholder={getTranslation('name')}
                               maxLength={35}
                               value={values.name}
                               onChange={handleChange}
@@ -253,7 +260,7 @@ export default function VendorDetails({
                             <CustomIconTextField
                               type="email"
                               name="email"
-                              placeholder={t('Email')}
+                              placeholder={getTranslation('email')}
                               maxLength={35}
                               showLabel={true}
                               iconProperties={{
@@ -277,7 +284,7 @@ export default function VendorDetails({
 
                           <div>
                             <CustomPasswordTextField
-                              placeholder={t('Password')}
+                              placeholder={getTranslation('password')}
                               name="password"
                               maxLength={20}
                               value={values.password}
@@ -297,7 +304,7 @@ export default function VendorDetails({
 
                           <div>
                             <CustomPasswordTextField
-                              placeholder={t('Confirm Password')}
+                              placeholder={getTranslation('confirm_password')}
                               name="confirmPassword"
                               maxLength={20}
                               showLabel={true}
@@ -320,7 +327,7 @@ export default function VendorDetails({
                             <CustomUploadImageComponent
                               key="image"
                               name="image"
-                              title={t('Upload Profile Image')}
+                              title={getTranslation('upload_profile_image')}
                               fileTypes={[
                                 'image/jpg',
                                 'image/webp',
@@ -349,7 +356,7 @@ export default function VendorDetails({
                       <div className="mt-4 flex justify-end">
                         <CustomButton
                           className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                          label={t('Save & Next')}
+                          label={getTranslation('save_next')}
                           type="submit"
                           loading={isSubmitting}
                         />

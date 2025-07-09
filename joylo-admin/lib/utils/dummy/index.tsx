@@ -379,12 +379,11 @@ export const generateDummyShopTypes = (count: number = 10) => {
       title: `coupon_${i + 1}`,
       isActive: Math.random() * 3 > 2,
       image: '',
-      __typename: ''
+      __typename: '',
     });
   }
   return shop_types;
 };
-
 
 export const generateDummyCuisines = (count: number = 10) => {
   const cuisines: ICuisine[] = [];
@@ -542,7 +541,6 @@ export const generateDummyCouponsRestaurant = (
 
   return coupons;
 };
-
 
 export const generateDummyStaff = (count: number = 10): IStaffResponse[] => {
   const staffs: IStaffResponse[] = [];

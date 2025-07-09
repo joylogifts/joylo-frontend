@@ -32,6 +32,8 @@ import {
 } from '@/lib/api/graphql/mutations/coupons-restaurant';
 import { GET_RESTAURANT_COUPONS } from '@/lib/api/graphql/queries/coupons-restaurant';
 import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponsAddForm({
   onHide,
@@ -56,6 +58,7 @@ export default function CouponsAddForm({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
   // Mutation
@@ -72,7 +75,9 @@ export default function CouponsAddForm({
     { resetForm }: FormikHelpers<ICouponRestaurantForm>
   ) => {
     if (!values.lifeTimeActive && !values.endDate) {
-      setEndDateError('End Date is required when Lifetime is not active');
+      setEndDateError(
+        getTranslation('end_date_is_required_when_lifetime_is_not_active')
+      );
       return;
     }
     mutate({
@@ -90,8 +95,10 @@ export default function CouponsAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Success'),
-          message: coupon ? t('Coupon updated') : t('Coupon added'),
+          title: getTranslation('success'),
+          message: coupon
+            ? getTranslation('coupon_updated')
+            : getTranslation('coupon_added'),
           duration: 3000,
         });
         resetForm();
@@ -103,11 +110,11 @@ export default function CouponsAddForm({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('ActionFailedTryAgain');
+          message = getTranslation('action_failed_try_again');
         }
         showToast({
           type: 'error',
-          title: t('Error'),
+          title: getTranslation('error'),
           message,
           duration: 3000,
         });
@@ -128,7 +135,8 @@ export default function CouponsAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {coupon ? t('Edit') : t('Add')} {t('Coupon')}
+                {coupon ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('coupon')}
               </span>
             </div>
 
@@ -153,7 +161,7 @@ export default function CouponsAddForm({
                         <CustomTextField
                           type="text"
                           name="title"
-                          placeholder={t('Title')}
+                          placeholder={getTranslation('title')}
                           maxLength={35}
                           value={values.title}
                           onChange={handleChange}
@@ -166,7 +174,7 @@ export default function CouponsAddForm({
 
                         <CustomNumberField
                           min={0}
-                          placeholder={t('Discount')}
+                          placeholder={getTranslation('discount')}
                           minFractionDigits={0}
                           maxFractionDigits={2}
                           name="discount"
@@ -186,7 +194,7 @@ export default function CouponsAddForm({
                             setFieldValue('enabled', !values.enabled);
                           }}
                           showLabel
-                          placeholder={t('Status')}
+                          placeholder={getTranslation('status')}
                         />
 
                         <Toggle
@@ -202,14 +210,14 @@ export default function CouponsAddForm({
                             }
                           }}
                           showLabel
-                          placeholder={t('Lifetime Active')}
+                          placeholder={getTranslation('lifetime_active')}
                         />
 
                         {!values.lifeTimeActive && (
                           <CustomTextField
                             type="date"
                             name="endDate"
-                            placeholder={t('End Date')}
+                            placeholder={getTranslation('end_date')}
                             value={values.endDate}
                             onChange={(e) => {
                               setFieldValue('endDate', e.target.value);
@@ -229,7 +237,11 @@ export default function CouponsAddForm({
 
                         <CustomButton
                           className="h-10 ml-auto  w-fit border-gray-300 bg-black px-8 text-white"
-                          label={coupon ? t('Update') : t('Add')}
+                          label={
+                            coupon
+                              ? getTranslation('update')
+                              : getTranslation('add')
+                          }
                           type="submit"
                           loading={mutationLoading}
                         />

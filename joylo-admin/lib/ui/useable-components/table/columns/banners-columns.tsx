@@ -6,6 +6,7 @@ import ActionMenu from '@/lib/ui/useable-components/action-menu';
 import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
 import { IBannersResponse } from '@/lib/utils/interfaces/banner.interface';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 // Interfaces and Types
 export const BANNERS_TABLE_COLUMNS = ({
   menuItems,
@@ -14,9 +15,11 @@ export const BANNERS_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
+
   return [
     {
-      headerName: t('Image'),
+      headerName: getTranslation('image'),
       propertyName: 'image',
       body: (product: IBannersResponse) => {
         if (product.file.includes('video')) {
@@ -46,10 +49,10 @@ export const BANNERS_TABLE_COLUMNS = ({
         }
       },
     },
-    { headerName: t('Title'), propertyName: 'title' },
-    { headerName: t('Description'), propertyName: 'description' },
-    { headerName: t('Screen Name'), propertyName: 'screen' },
-    { headerName: t('Actions'), propertyName: 'action' },
+    { headerName: getTranslation('title'), propertyName: 'title' },
+    { headerName: getTranslation('description'), propertyName: 'description' },
+    { headerName: getTranslation('screen'), propertyName: 'screen' },
+    { headerName: getTranslation('actions'), propertyName: 'action' },
     {
       propertyName: 'actions',
       body: (banner: IBannersResponse) => (

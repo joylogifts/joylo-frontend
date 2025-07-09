@@ -37,6 +37,7 @@ import AnimatedSplashScreen from "@/lib/ui/useable-components/splash/AnimatedSpl
 import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 
 import { Slot } from "expo-router";
+import { LanguageProvider } from "@/lib/context/global/language.context";
 
 initSentry();
 
@@ -65,6 +66,7 @@ function RootLayout() {
   }
 
   return (
+
     <ApolloProvider client={client}>
       <AppThemeProvidor>
         <AnimatedSplashScreen>
@@ -76,8 +78,10 @@ function RootLayout() {
                   backgroundColor={appTheme.themeBackground ?? ""}
                 />
                 <UserProvider>
-                  <UnavailableStatus />
-                  <Slot />
+                  <LanguageProvider>
+                    <UnavailableStatus />
+                    <Slot />
+                  </LanguageProvider>
                 </UserProvider>
               </AuthProvider>
             </ConfigurationProvider>

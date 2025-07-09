@@ -1,5 +1,6 @@
-// Path: /index.tsx/mobile-tabs/view/customerSupport/super-admin/protected/screen-components/ui/lib  
+// Path: /index.tsx/mobile-tabs/view/customerSupport/super-admin/protected/screen-components/ui/lib
 
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useTranslations } from 'next-intl';
 
 // Interface
@@ -14,7 +15,8 @@ export default function CustomerSupportMobilesTabs({
 }: ICustomerSupportMobileTabsProps) {
   // Hooks
   const t = useTranslations();
-  
+  const { getTranslation } = useLangTranslation();
+
   return (
     <div className="flex border-b bg-gray-100 sm:hidden">
       <button
@@ -25,7 +27,7 @@ export default function CustomerSupportMobilesTabs({
         }`}
         onClick={() => setActiveTab('tickets')}
       >
-        {t('Users')}
+        {getTranslation('users')}
       </button>
       <button
         className={`flex-1 px-4 py-2 text-center ${
@@ -35,7 +37,7 @@ export default function CustomerSupportMobilesTabs({
         }`}
         onClick={() => setActiveTab('chats')}
       >
-        {t('Tickets')}
+        {getTranslation('tickets')}
       </button>
     </div>
   );

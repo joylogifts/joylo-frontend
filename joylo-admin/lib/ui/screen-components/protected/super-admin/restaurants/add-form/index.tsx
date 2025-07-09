@@ -32,12 +32,14 @@ import RestaurantLocation from './restaurant-location';
 import VendorDetails from './vendor-details';
 import RestaurantTiming from './restaurant-timing';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantsForm = ({
   position = 'right',
 }: IRestaurantsAddFormComponentProps) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Ref
   const stepperRef = useRef(null);
@@ -91,7 +93,7 @@ const RestaurantsForm = ({
     >
       <div ref={stepperRef}>
         <Stepper linear headerPosition="bottom" activeStep={activeIndex}>
-          <StepperPanel header={t('Set Vendor')}>
+          <StepperPanel header={getTranslation('set_vendor')}>
             <VendorDetails
               vendorsDropdown={vendorsDropdown ?? []}
               stepperProps={{
@@ -100,7 +102,7 @@ const RestaurantsForm = ({
               }}
             />
           </StepperPanel>
-          <StepperPanel header={t('Add Details')}>
+          <StepperPanel header={getTranslation('add_details')}>
             <RestaurantDetailsForm
               stepperProps={{
                 onStepChange: onHandleStepChange,
@@ -108,7 +110,7 @@ const RestaurantsForm = ({
               }}
             />
           </StepperPanel>
-          <StepperPanel header={t('Location')}>
+          <StepperPanel header={getTranslation('location')}>
             <RestaurantLocation
               stepperProps={{
                 onStepChange: onHandleStepChange,
@@ -117,7 +119,7 @@ const RestaurantsForm = ({
               }}
             />
           </StepperPanel>
-          <StepperPanel header={t('Timing')}>
+          <StepperPanel header={getTranslation('timing')}>
             <RestaurantTiming
               stepperProps={{
                 onStepChange: onHandleStepChange,

@@ -68,6 +68,7 @@ import { GET_RESTAURANT_PROFILE } from '@/lib/api/graphql';
 import { useLocale, useTranslations } from 'next-intl';
 import { TLocale } from '@/lib/utils/types/locale';
 import { setUserLocale } from '@/lib/utils/methods/locale';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const AppTopbar = () => {
   // Hooks
@@ -75,6 +76,7 @@ const AppTopbar = () => {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const currentLocale = useLocale();
+  const { getTranslation } = useLangTranslation();
 
   // Local Storage
   const restaurantId = onUseLocalStorage('get', 'restaurantId');
@@ -98,12 +100,11 @@ const AppTopbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<Menu>(null);
   const languageMenuRef = useRef<Menu>(null);
-  
+
   // Context
   const { showRestaurantSidebar } =
-  useContext<LayoutContextProps>(LayoutContext);
+    useContext<LayoutContextProps>(LayoutContext);
   const { user, setUser } = useUserContext();
-  
 
   // Handlers
   const onDevicePixelRatioChange = useCallback(() => {
@@ -191,7 +192,7 @@ const AppTopbar = () => {
                   return (
                     <div
                       className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer `}
-                      onClick={()=>onLocaleChange('en')}
+                      onClick={() => onLocaleChange('en')}
                     >
                       {item.label}
                     </div>
@@ -207,7 +208,7 @@ const AppTopbar = () => {
                   return (
                     <div
                       className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer `}
-                      onClick={()=>onLocaleChange('ar')}
+                      onClick={() => onLocaleChange('ar')}
                     >
                       {item.label}
                     </div>
@@ -223,7 +224,7 @@ const AppTopbar = () => {
                   return (
                     <div
                       className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer `}
-                      onClick={()=>onLocaleChange('fr')}
+                      onClick={() => onLocaleChange('fr')}
                     >
                       {item.label}
                     </div>
@@ -239,7 +240,7 @@ const AppTopbar = () => {
                   return (
                     <div
                       className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer `}
-                      onClick={()=>onLocaleChange('km')}
+                      onClick={() => onLocaleChange('km')}
                     >
                       {item.label}
                     </div>
@@ -255,7 +256,7 @@ const AppTopbar = () => {
                   return (
                     <div
                       className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer `}
-                      onClick={()=>onLocaleChange('zh')}
+                      onClick={() => onLocaleChange('zh')}
                     >
                       {item.label}
                     </div>
@@ -271,7 +272,7 @@ const AppTopbar = () => {
                   return (
                     <div
                       className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer `}
-                      onClick={()=>onLocaleChange('he')}
+                      onClick={() => onLocaleChange('he')}
                     >
                       {item.label}
                     </div>
@@ -315,7 +316,7 @@ const AppTopbar = () => {
           <Menu
             model={[
               {
-                label: t('Logout'),
+                label: getTranslation('logout'),
                 command: () => {
                   setLogoutModalVisible(true);
                 },
@@ -366,15 +367,21 @@ const AppTopbar = () => {
         </div>
       )}
       <CustomDialog
-        title={t('Logout Confirmation')}
-        message={t('Are you sure you want to logout?')}
+        title={getTranslation('logout_confirmation')}
+        message={getTranslation('are_you_sure_you_want_to_logout')}
         visible={isLogoutModalVisible}
         onHide={() => setLogoutModalVisible(false)}
         onConfirm={onConfirmLogout}
         loading={false} // Set to true if you have a loading state for logout
         buttonConfig={{
-          primaryButtonProp: { label: t('Yes'), icon: 'pi pi-check' },
-          secondaryButtonProp: { label: t('Cancel'), icon: 'pi pi-times' },
+          primaryButtonProp: {
+            label: getTranslation('yes'),
+            icon: 'pi pi-check',
+          },
+          secondaryButtonProp: {
+            label: getTranslation('cancel'),
+            icon: 'pi pi-times',
+          },
         }}
       />
     </div>

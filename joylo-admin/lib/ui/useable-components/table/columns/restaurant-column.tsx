@@ -22,6 +22,7 @@ import { DELETE_RESTAURANT } from '@/lib/api/graphql';
 // Components
 import ActionMenu from '../../action-menu';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const RESTAURANT_TABLE_COLUMNS = ({
   menuItems,
@@ -30,6 +31,7 @@ export const RESTAURANT_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -45,8 +47,8 @@ export const RESTAURANT_TABLE_COLUMNS = ({
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Store Status'),
-        message: `${t('Store has been marked as')} ${deletingRestaurant.isActive ? t('in-active') : t('active')}`,
+        title: getTranslation('store_status'),
+        message: `${getTranslation('store_has_been_marked_as')} ${deletingRestaurant.isActive ? getTranslation('in-active') : getTranslation('active')}`,
         duration: 2000,
       });
     },
@@ -67,8 +69,8 @@ export const RESTAURANT_TABLE_COLUMNS = ({
     } catch (err) {
       showToast({
         type: 'error',
-        title: t('Store Status'),
-        message: `${t('Store marked as')} ${isActive ? t('in-active') : t('active')} ${t('failed')}`,
+        title: getTranslation('store_status'),
+        message: `${getTranslation('store_marked_as')} ${isActive ? getTranslation('in-active') : getTranslation('active')} ${getTranslation('failed')}`,
         duration: 2000,
       });
     } finally {
@@ -82,11 +84,11 @@ export const RESTAURANT_TABLE_COLUMNS = ({
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Store Status Change'),
+      title: getTranslation('store_status_change'),
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        t('Store Status Change Failed'),
+        getTranslation('status_change_failed'),
       duration: 2500,
     });
 
@@ -98,14 +100,14 @@ export const RESTAURANT_TABLE_COLUMNS = ({
 
   return [
     {
-      headerName: t('Image'),
+      headerName: getTranslation('image'),
       propertyName: 'image',
       body: (restaurant: IRestaurantResponse) => {
         return (
           <Image
             width={30}
             height={30}
-            alt={t('Store')}
+            alt={getTranslation('store')}
             src={
               restaurant.image
                 ? restaurant.image
@@ -115,16 +117,16 @@ export const RESTAURANT_TABLE_COLUMNS = ({
         );
       },
     },
-    { headerName: t('ID'), propertyName: 'unique_restaurant_id' },
-    { headerName: t('Name'), propertyName: 'name' },
-    { headerName: t('Vendor'), propertyName: 'username' },
+    { headerName: getTranslation('id'), propertyName: 'unique_restaurant_id' },
+    { headerName: getTranslation('name'), propertyName: 'name' },
+    { headerName: getTranslation('vendor'), propertyName: 'username' },
     {
-      headerName: t('Email'),
+      headerName: getTranslation('email'),
       propertyName: 'owner.email',
     },
-    { headerName: t('Address'), propertyName: 'address' },
+    { headerName: getTranslation('address'), propertyName: 'address' },
     {
-      headerName: t('Status'),
+      headerName: getTranslation('status'),
       propertyName: 'actions',
       body: (rowData: IRestaurantResponse) => {
         return (
@@ -141,7 +143,7 @@ export const RESTAURANT_TABLE_COLUMNS = ({
       },
     },
     {
-      headerName: t('Actions'),
+      headerName: getTranslation('actions'),
       propertyName: 'actions',
       body: (rowData: IRestaurantResponse) => (
         <ActionMenu items={menuItems} data={rowData} />

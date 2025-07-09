@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { CircleSVG } from '@/lib/utils/assets/svgs/circle';
 import { PointLineSVG } from '@/lib/utils/assets/svgs/point-line';
 import { PolygonSVG } from '@/lib/utils/assets/svgs/polygon';
@@ -11,6 +12,7 @@ export default function CustomShape({
 }: ICustomShapeComponentProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   const items = [
     {
@@ -20,7 +22,7 @@ export default function CustomShape({
           <PointLineSVG
             strokeColor={selected === 'point' ? 'white' : 'black'}
           />
-          <p className="mt-2 text-center">{t('Point')}</p>
+          <p className="mt-2 text-center">{getTranslation('point')}</p>
         </>
       ),
     },
@@ -29,7 +31,7 @@ export default function CustomShape({
       child: (
         <>
           <CircleSVG strokeColor={selected === 'radius' ? 'white' : 'black'} />
-          <p className="mt-2 text-center">{t('Circle')}</p>
+          <p className="mt-2 text-center">{getTranslation('circle')}</p>
         </>
       ),
     },
@@ -40,7 +42,7 @@ export default function CustomShape({
           <PolygonSVG
             strokeColor={selected === 'polygon' ? 'white' : 'black'}
           />
-          <p className="mt-2 text-center">{t('Polygon')}</p>
+          <p className="mt-2 text-center">{getTranslation('polygon')}</p>
         </>
       ),
     },

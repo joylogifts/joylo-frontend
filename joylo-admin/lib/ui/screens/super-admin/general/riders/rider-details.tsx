@@ -17,10 +17,12 @@ import LicenseDetails from '@/lib/ui/screen-components/protected/super-admin/rid
 import PersonalDetails from '@/lib/ui/screen-components/protected/super-admin/riders/view/cards/personal-details';
 import VehicleDetails from '@/lib/ui/screen-components/protected/super-admin/riders/view/cards/vehicle-details';
 import HeaderText from '@/lib/ui/useable-components/header-text';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RidersDetailScreen() {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { id } = useParams();
 
   // Query
@@ -39,7 +41,10 @@ export default function RidersDetailScreen() {
 
   return (
     <div className="screen-container p-3">
-      <HeaderText className="heading" text={t('Rider Information')} />
+      <HeaderText
+        className="heading"
+        text={getTranslation('rider_information')}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
         {/* top-left */}

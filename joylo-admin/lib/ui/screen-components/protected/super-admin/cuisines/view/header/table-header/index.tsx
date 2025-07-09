@@ -1,4 +1,5 @@
 // CSS
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import classes from './table-header.module.css';
 
 // Components
@@ -23,6 +24,7 @@ export default function CuisineTableHeader({
 }: ICuisineTableHeaderProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   //Ref
   const overlayPanelRef = useRef<OverlayPanel>(null);
@@ -40,11 +42,11 @@ export default function CuisineTableHeader({
 
   const menuItems = [
     {
-      label: t('Store'),
+      label: getTranslation('store'),
       value: 'restaurant',
     },
     {
-      label: t('Grocery'),
+      label: getTranslation('grocery'),
       value: 'grocery',
     },
   ];
@@ -60,7 +62,7 @@ export default function CuisineTableHeader({
             showLabel={false}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
           />
         </div>
         <div className="flex items-center">
@@ -70,7 +72,7 @@ export default function CuisineTableHeader({
                 <CustomTextField
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder={t('Search')}
+                  placeholder={getTranslation('search')}
                   className="h-8 w-full"
                   type="text"
                   name="search"
@@ -109,7 +111,7 @@ export default function CuisineTableHeader({
                 className="mt-3 cursor-pointer text-center text-sm"
                 onClick={() => setSelectedActions([])}
               >
-                {t('Clear filters')}
+                {getTranslation('clear_filters')}
               </p>
             </div>
           </OverlayPanel>
@@ -118,7 +120,11 @@ export default function CuisineTableHeader({
             className="w-20 rounded border border-dotted border-[#E4E4E7] text-black"
             icon={faAdd}
             iconStyles={{ color: 'black' }}
-            title={selectedActions.length > 0 ? t('Filter') : t('Actions')}
+            title={
+              selectedActions.length > 0
+                ? getTranslation('filter')
+                : getTranslation('actions')
+            }
             onClick={(e) => overlayPanelRef.current?.toggle(e)}
           />
         </div>

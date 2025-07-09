@@ -53,6 +53,7 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons';
 // Components
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IFoodDetailsForm = {
   _id: null,
@@ -67,6 +68,7 @@ export default function FoodDetails({
 }: IFoodDetailsComponentProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
@@ -248,12 +250,12 @@ export default function FoodDetails({
                           htmlFor="category"
                           className="text-sm font-[500]"
                         >
-                          {t('Category')}
+                          {getTranslation('category')}
                         </label>
                         <Dropdown
                           name="category"
                           value={values.category}
-                          placeholder={t('Select Category')}
+                          placeholder={getTranslation('select_category')}
                           className="md:w-20rem p-dropdown-no-box-shadow m-0 h-10 w-full border border-gray-300 p-0 align-middle text-sm focus:shadow-none focus:outline-none"
                           panelClassName="border-gray-200 border-2"
                           onChange={(e: DropdownChangeEvent) => {
@@ -269,7 +271,7 @@ export default function FoodDetails({
                                   className="w-full h-fit rounded  text-black"
                                   icon={faAdd}
                                   iconStyles={{ color: 'black' }}
-                                  title={t('Add New Category')}
+                                  title={getTranslation('add_new_category')}
                                   onClick={() => setIsAddCategoryVisible(true)}
                                 />
                               </div>
@@ -291,7 +293,7 @@ export default function FoodDetails({
                         {!subCategoriesLoading ? (
                           <CustomDropdownComponent
                             name="subCategory"
-                            placeholder={t('Select Sub-Category')}
+                            placeholder={getTranslation('select_sub_category')}
                             showLabel={true}
                             extraFooterButton={{
                               onChange: () => {
@@ -307,7 +309,7 @@ export default function FoodDetails({
                                     '',
                                 });
                               },
-                              title: t('Add Sub-Category'),
+                              title: getTranslation('add_sub_category'),
                             }}
                             selectedItem={values.subCategory}
                             setSelectedItem={setFieldValue}
@@ -336,7 +338,7 @@ export default function FoodDetails({
                         <CustomTextField
                           type="text"
                           name="title"
-                          placeholder={t('Title')}
+                          placeholder={getTranslation('title')}
                           maxLength={35}
                           value={values.title}
                           onChange={handleChange}
@@ -355,8 +357,8 @@ export default function FoodDetails({
                       <div>
                         <CustomTextAreaField
                           name="description"
-                          label={t('Description')}
-                          placeholder={t('Description')}
+                          label={getTranslation('description')}
+                          placeholder={getTranslation('description')}
                           value={values.description}
                           onChange={handleChange}
                           showLabel={true}
@@ -377,7 +379,7 @@ export default function FoodDetails({
                         <CustomUploadImageComponent
                           key="image"
                           name="image"
-                          title={t('Upload Image')}
+                          title={getTranslation('upload_image')}
                           fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                           maxFileHeight={841}
                           maxFileWidth={1980}
@@ -404,7 +406,7 @@ export default function FoodDetails({
                     <div className="flex justify-end mt-4">
                       <CustomButton
                         className="w-fit h-10 bg-black text-white border-gray-300 px-8"
-                        label={t('Next')}
+                        label={getTranslation('next')}
                         type="submit"
                         loading={isSubmitting}
                       />

@@ -50,6 +50,7 @@ import {
 } from '@/lib/api/graphql/queries/sub-categories';
 import CustomLoader from '@/lib/ui/useable-components/custom-progress-indicator';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryAddForm({
   onHide,
@@ -59,6 +60,7 @@ export default function CategoryAddForm({
 }: ICategoryAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   // Queries
   const {
     data: subCategories,
@@ -89,7 +91,7 @@ export default function CategoryAddForm({
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
   const shopType = restaurantLayoutContextData?.shopType || '';
-  console.log("🚀 ~ shopType:", shopType)
+  console.log('🚀 ~ shopType:', shopType);
 
   // Mutations
   const [deleteSubCategory, { loading: deleteSubCategoryLoading }] =
@@ -105,19 +107,21 @@ export default function CategoryAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Delete Sub-Category'),
-          message: t('Deleted the sub-category successfully'),
+          title: getTranslation('delete_sub_category'),
+          message: getTranslation('deleted_the_sub_category_successfully'),
         });
       },
       onError: (error) => {
         showToast({
           type: 'error',
-          title: t('Delete Sub-Category'),
+          title: getTranslation('delete_sub_category'),
           message:
             error.message ||
             error.clientErrors[0].message ||
             error.networkError?.message ||
-            t('Failed to delete the sub-category, please try again later'),
+            getTranslation(
+              'failed_to_delete_the_sub_category_please_try_again_later'
+            ),
         });
       },
     });
@@ -136,8 +140,8 @@ export default function CategoryAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('New Category'),
-          message: `${t('Category has been')} ${category ? t('edited') : t('added')} ${t('successfully')}.`,
+          title: getTranslation('new_category'),
+          message: `${getTranslation('category_has_been')} ${category ? getTranslation('edited') : getTranslation('added')} ${getTranslation('successfully')}.`,
           duration: 3000,
         });
         onHide();
@@ -147,11 +151,11 @@ export default function CategoryAddForm({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('ActionFailedTryAgain');
+          message = getTranslation('action_failed_try_again');
         }
         showToast({
           type: 'error',
-          title: t('New Category'),
+          title: getTranslation('new_category'),
           message,
           duration: 3000,
         });
@@ -181,8 +185,8 @@ export default function CategoryAddForm({
       console.error({ error });
       showToast({
         type: 'error',
-        title: `${category ? t('Edit') : t('Create')} Category`,
-        message: `${t('Failed to create Category, please try again later')}.`,
+        title: `${category ? getTranslation('edit') : getTranslation('Create')} ${getTranslation('category')}`,
+        message: `${getTranslation('failed_to_create_category_please_try_again_later')}.`,
       });
     }
   };
@@ -203,7 +207,8 @@ export default function CategoryAddForm({
             <div className="flex flex-col gap-2">
               <div className="mb-2 flex flex-col">
                 <span className="text-lg">
-                  {category ? t('Edit') : t('Add')} {t('Category')}
+                  {category ? getTranslation('edit') : getTranslation('add')}{' '}
+                  {getTranslation('category')}
                 </span>
               </div>
               <div>
@@ -227,7 +232,7 @@ export default function CategoryAddForm({
                             <CustomTextField
                               type="text"
                               name="title"
-                              placeholder={t('Title')}
+                              placeholder={getTranslation('title')}
                               maxLength={30}
                               value={values.title}
                               onChange={handleChange}
@@ -248,7 +253,7 @@ export default function CategoryAddForm({
                             <div>
                               <CustomUploadImageComponent
                                 name="image"
-                                title={t('Upload Image')}
+                                title={getTranslation('upload_image')}
                                 onSetImageUrl={setFieldValue}
                                 existingImageUrl={values.image}
                                 showExistingImage={category ? true : false}
@@ -260,7 +265,12 @@ export default function CategoryAddForm({
                                   )
                                     ? 'red'
                                     : '',
-                                }} maxFileSize={0} maxFileWidth={1980} maxFileHeight={1080} fileTypes={[]}                              />
+                                }}
+                                maxFileSize={0}
+                                maxFileWidth={1980}
+                                maxFileHeight={1080}
+                                fileTypes={[]}
+                              />
                             </div>
                           )}
                           {/* Sub Categories  */}
@@ -286,7 +296,7 @@ export default function CategoryAddForm({
                                           className=" rounded-lg shadow-sm"
                                         >
                                           <Fieldset
-                                            legend={`${t('Sub-Category')} #${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                            legend={`${getTranslation('sub_category')} #${index + 1} ${value.title ? `(${value.title})` : ''}`}
                                             toggleable
                                             className="my-1"
                                           >
@@ -332,7 +342,9 @@ export default function CategoryAddForm({
                                             <div className="mt-4">
                                               <TextIconClickable
                                                 icon={faAdd}
-                                                title={t('Add More')}
+                                                title={getTranslation(
+                                                  'add_more'
+                                                )}
                                                 onClick={() =>
                                                   push({
                                                     title: '',
@@ -355,7 +367,11 @@ export default function CategoryAddForm({
                           <div className="mt-4 flex justify-end">
                             <CustomButton
                               className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                              label={category ? t('Update') : t('Add')}
+                              label={
+                                category
+                                  ? getTranslation('update')
+                                  : getTranslation('add')
+                              }
                               type="submit"
                               loading={mutationLoading}
                             />

@@ -1,6 +1,7 @@
 // import { createBanner, editBanner } from '@/lib/api/graphql/mutation/banners';
 import { CREATE_BANNER, EDIT_BANNER, GET_RESTAURANTS } from '@/lib/api/graphql';
 import { GET_BANNERS } from '@/lib/api/graphql/queries/banners';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 // import useToast from '@/lib/hooks/useToast';
@@ -42,6 +43,7 @@ const BannersAddForm = ({
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
 
   const RESTAURANT_NAMES =
     data?.restaurants?.map((v) => {
@@ -102,8 +104,10 @@ const BannersAddForm = ({
         onCompleted: () => {
           showToast({
             type: 'success',
-            title: t('Success'),
-            message: banner ? t('Banner updated') : t('Banner added'),
+            title: getTranslation('success'),
+            message: banner
+              ? getTranslation('banner_updated')
+              : getTranslation('banner_added'),
             duration: 3000,
           });
           resetForm();
@@ -114,11 +118,11 @@ const BannersAddForm = ({
           try {
             message = error.graphQLErrors[0]?.message;
           } catch (err) {
-            message = t('ActionFailedTryAgain');
+            message = getTranslation('action_failed_try_again');
           }
           showToast({
             type: 'error',
-            title: t('Error'),
+            title: getTranslation('error'),
             message,
             duration: 3000,
           });
@@ -139,7 +143,8 @@ const BannersAddForm = ({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {banner ? t('Edit') : t('Add')} {t('Banner')}
+                {banner ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('banner')}
               </span>
             </div>
 
@@ -166,7 +171,7 @@ const BannersAddForm = ({
                           <CustomTextField
                             type="text"
                             name="title"
-                            placeholder={t('Title')}
+                            placeholder={getTranslation('title')}
                             maxLength={35}
                             value={values.title}
                             onChange={handleChange}
@@ -186,7 +191,7 @@ const BannersAddForm = ({
                           <CustomTextField
                             type="text"
                             name="description"
-                            placeholder={t('Description')}
+                            placeholder={getTranslation('description')}
                             maxLength={35}
                             value={values.description}
                             onChange={handleChange}
@@ -205,7 +210,7 @@ const BannersAddForm = ({
 
                         <div>
                           <CustomDropdownComponent
-                            placeholder={t('Actions')}
+                            placeholder={getTranslation('actions')}
                             options={ACTION_TYPES}
                             showLabel={true}
                             name="action"
@@ -226,7 +231,7 @@ const BannersAddForm = ({
 
                         <div>
                           <CustomDropdownComponent
-                            placeholder={t('Screen')}
+                            placeholder={getTranslation('screen')}
                             options={
                               values.action?.code ===
                               'Navigate Specific Restaurant'
@@ -263,7 +268,7 @@ const BannersAddForm = ({
                           <CustomUploadImageComponent
                             key={'file'}
                             name="file"
-                            title={t('Upload file')}
+                            title={getTranslation('upload_file')}
                             fileTypes={[
                               'image/jpg',
                               'image/webp',
@@ -288,7 +293,11 @@ const BannersAddForm = ({
                         <div className="m-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={banner ? t('Update') : t('Add')}
+                            label={
+                              banner
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

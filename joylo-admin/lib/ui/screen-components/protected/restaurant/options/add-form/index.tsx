@@ -40,6 +40,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext } from 'react';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
 const initialFormValuesTemplate: IOptionForm = {
@@ -62,6 +63,7 @@ export default function OptionAddForm({
 }: IOptionsAddFormComponentProps) {
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
   // Context
@@ -92,8 +94,8 @@ export default function OptionAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('New Option'),
-          message: `${t('Option have been')} ${option ? t('edited') : t('added')} ${t('successfully')}.`,
+          title: getTranslation('new_option'),
+          message: `${getTranslation('option_have_been')} ${option ? getTranslation('edited') : getTranslation('added')} ${getTranslation('successfully')}.`,
         });
 
         onHide();
@@ -103,11 +105,11 @@ export default function OptionAddForm({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('Something went wrong');
+          message = getTranslation('something_went_wrong');
         }
         showToast({
           type: 'error',
-          title: t('New Option'),
+          title: getTranslation('new_option'),
           message,
         });
       },
@@ -140,7 +142,8 @@ export default function OptionAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {option ? t('Edit') : t('Add')} {t('Option')}
+                {option ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('option')}
               </span>
             </div>
 
@@ -189,7 +192,7 @@ export default function OptionAddForm({
                                             </button>
                                           )}
                                           <Fieldset
-                                            legend={`${t('Option')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                            legend={`${getTranslation('option')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
                                             toggleable
                                           >
                                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -197,7 +200,9 @@ export default function OptionAddForm({
                                                 <CustomTextField
                                                   type="text"
                                                   name={`options[${index}].title]`}
-                                                  placeholder={t('Title')}
+                                                  placeholder={getTranslation(
+                                                    'title'
+                                                  )}
                                                   maxLength={35}
                                                   value={value.title}
                                                   onChange={(e) =>
@@ -227,7 +232,9 @@ export default function OptionAddForm({
                                                   max={99999}
                                                   minFractionDigits={0}
                                                   maxFractionDigits={2}
-                                                  placeholder={t('Price')}
+                                                  placeholder={getTranslation(
+                                                    'price'
+                                                  )}
                                                   showLabel={true}
                                                   value={value.price}
                                                   onChangeFieldValue={
@@ -248,7 +255,9 @@ export default function OptionAddForm({
                                               <div className="col-span-1 sm:col-span-2">
                                                 <CustomTextAreaField
                                                   name={`[options[${index}].description]`}
-                                                  placeholder={t('Description')}
+                                                  placeholder={getTranslation(
+                                                    'description'
+                                                  )}
                                                   value={value.description}
                                                   onChange={handleChange}
                                                   showLabel={true}
@@ -279,7 +288,7 @@ export default function OptionAddForm({
                                     className="w-full rounded border border-black bg-transparent text-black"
                                     icon={faAdd}
                                     iconStyles={{ color: 'black' }}
-                                    title={t('Add New Option')}
+                                    title={getTranslation('add_new_option')}
                                     onClick={() =>
                                       push(initialFormValuesTemplate)
                                     }
@@ -293,7 +302,11 @@ export default function OptionAddForm({
                         <div className="mt-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={option ? t('Update') : t('Add')}
+                            label={
+                              option
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

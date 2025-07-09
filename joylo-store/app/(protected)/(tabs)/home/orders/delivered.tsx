@@ -1,12 +1,12 @@
 import HomeDeliveredOrdersMain from "@/lib/ui/screen-components/home/orders/main/delivered-orders";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function HomeScreen() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   return (
     <HomeDeliveredOrdersMain
-      route={{ key: "delivered", title: t("Delivered Orders") }}
+      route={{ key: "delivered", title: getTranslation("delivered_orders") }}
     />
   );
 }

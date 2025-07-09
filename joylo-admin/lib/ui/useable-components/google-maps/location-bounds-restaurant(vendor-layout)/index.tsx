@@ -61,6 +61,7 @@ import CustomShape from '../shapes';
 import useLocation from '@/lib/hooks/useLocation';
 import calculateZoom from '@/lib/utils/methods/zoom-calculator';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const autocompleteService: {
   current: google.maps.places.AutocompleteService | null;
@@ -103,6 +104,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
 
   // Hooks
   const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { getCurrentLocation } = useLocation();
 
   // API
@@ -179,11 +181,11 @@ const CustomGoogleMapsLocationBounds: React.FC<
   }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Store Profile'),
+      title: getTranslation('store_profile'),
       message:
         graphQLErrors[0].message ??
         networkError?.message ??
-        t('Store Profile Fetch Failed'),
+        getTranslation('store_profile_fetch_failed'),
       duration: 2500,
     });
   }
@@ -219,11 +221,11 @@ const CustomGoogleMapsLocationBounds: React.FC<
   }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Store Location & Zone'),
+      title: getTranslation('store_location_zone'),
       message:
         graphQLErrors[0].message ??
         networkError?.message ??
-        t('Store Location & Zone fetch failed'),
+        getTranslation('store_location_zone_fetch_failed'),
       duration: 2500,
     });
   }
@@ -272,11 +274,11 @@ const CustomGoogleMapsLocationBounds: React.FC<
   }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Store Location & Zone'),
+      title: getTranslation('store_location_zone'),
       message:
         graphQLErrors[0].message ??
         networkError?.message ??
-        t('Store Location & Zone update failed'),
+        getTranslation('store_location_zone_fetch_failed'),
       duration: 2500,
     });
   }
@@ -304,8 +306,8 @@ const CustomGoogleMapsLocationBounds: React.FC<
 
     showToast({
       type: 'success',
-      title: t('Zone Update'),
-      message: `${t('Store Zone has been updated successfully')}.`,
+      title: getTranslation('zone_update'),
+      message: `${getTranslation('store_zone_has_been_updated_successfully')}.`,
     });
 
     if (onStepChange) onStepChange(2);
@@ -493,8 +495,8 @@ const CustomGoogleMapsLocationBounds: React.FC<
       if (!restaurantContextData?.id) {
         showToast({
           type: 'error',
-          title: t('Location & Zone'),
-          message: t('No restaurnat is selected'),
+          title: getTranslation('location_zone'),
+          message: getTranslation('no_restaurnat_is_selected'),
         });
 
         return;
@@ -530,8 +532,8 @@ const CustomGoogleMapsLocationBounds: React.FC<
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('Location & Zone'),
-        message: t('Location & Zone update failed'),
+        title: getTranslation('location_zone'),
+        message: getTranslation('location_zone_update_failed'),
       });
     }
   };
@@ -620,7 +622,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
                     dropdown={true}
                     multiple={false}
                     loadingIcon={null}
-                    placeholder={t('Search Address')}
+                    placeholder={getTranslation('search_address')}
                     style={{ width: '100%' }}
                     itemTemplate={(item) => {
                       const matches =
@@ -759,7 +761,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
               <CustomRadiusInputField
                 type="number"
                 name="radius"
-                placeholder={t('Radius')}
+                placeholder={getTranslation('radius')}
                 maxLength={35}
                 min={0}
                 value={distance}
@@ -792,7 +794,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
           <div className="mt-4 flex justify-end">
             <CustomButton
               className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-              label={t('Save')}
+              label={getTranslation('save')}
               type="button"
               loading={isSubmitting}
               onClick={onLocationSubmitHandler}

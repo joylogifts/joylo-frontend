@@ -1,4 +1,5 @@
 // Contexts
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useApptheme } from "@/lib/context/theme.context";
 
@@ -10,7 +11,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Expo
 import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, TouchableOpacity, View } from "react-native";
@@ -26,7 +26,7 @@ export default function EarningBottomBar({
 }: IEarningBottomProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
 
   // Contexts
   const { setStoreOrderEarnings } = useUserContext();
@@ -71,7 +71,7 @@ export default function EarningBottomBar({
         className="font-bold text-xl w-full py-5 text-center"
         style={{ color: appTheme.fontMainColor }}
       >
-        {t("Earnings")}
+        {getTranslation("earnings")}
       </Text>
       <Ionicons
         name="close-circle-outline"
@@ -96,7 +96,7 @@ export default function EarningBottomBar({
           style={{ backgroundColor: appTheme.themeBackground }}
         >
           <Text className="font-bold" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Earning")}
+            {getTranslation("total_earning")}
           </Text>
           <Text style={{ color: appTheme.fontMainColor }}>
             ${totalEarnings}
@@ -108,7 +108,7 @@ export default function EarningBottomBar({
             style={{ color: appTheme.linkColor }}
             className="text-md font-bold"
           >
-            {t("Deliveries")}({totalDeliveries})
+            {getTranslation("deliveries")}({totalDeliveries})
           </Text>
           <TouchableOpacity
             className="flex flex-row gap-2 items-center flex-2"

@@ -40,6 +40,7 @@ import { GoogleMapsContext } from '@/lib/context/global/google-maps.context';
 import CustomShape from '../shapes';
 import { DEFAULT_CENTER, DEFAULT_POLYGON } from '@/lib/utils/constants';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const autocompleteService: {
   current: google.maps.places.AutocompleteService | null;
@@ -50,7 +51,7 @@ const CustomGoogleMapsLocationZoneBounds: React.FC<
 > = ({ _path, onSetZoneCoordinates }) => {
   // Hooks
   const t = useTranslations();
-
+  const { getTranslation } = useLangTranslation();
   // Context
   const googleMapsContext = useContext(GoogleMapsContext);
 
@@ -252,7 +253,7 @@ const CustomGoogleMapsLocationZoneBounds: React.FC<
                   dropdown={true}
                   multiple={false}
                   loadingIcon={null}
-                  placeholder={t('Enter your full address')}
+                  placeholder={getTranslation('enter_your_full_address')}
                   style={{ width: '100%' }}
                   itemTemplate={(item) => {
                     const matches =
