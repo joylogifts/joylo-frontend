@@ -37,6 +37,7 @@ export interface IAddonOption {
   title?: string;
   description?: string;
   price?: number;
+  categoryIds: string[];
 }
 
 export interface IAddon {
@@ -44,8 +45,6 @@ export interface IAddon {
   id?: string;
   title?: string;
   description?: string;
-  quantityMinimum?: number;
-  quantityMaximum?: number;
   options: IAddonOption[];
 }
 
@@ -68,7 +67,7 @@ export interface IUser {
   name?: string;
   phone?: string;
   email?: string;
-  token?:string;
+  token?: string;
 }
 
 export interface IRider {
@@ -144,7 +143,11 @@ export interface IOrderCardProps {
   type: "active" | "past";
   className?: string;
   handleTrackOrderClicked?: (id: string | undefined) => void;
-  handleReOrderClicked?: (id: string | undefined, slug: string | undefined, shopType: string | undefined) => void;
+  handleReOrderClicked?: (
+    id: string | undefined,
+    slug: string | undefined,
+    shopType: string | undefined
+  ) => void;
   handleRateOrderClicked?: (id: string | undefined) => void;
 }
 

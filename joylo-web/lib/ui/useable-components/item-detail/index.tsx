@@ -17,9 +17,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 import { useConfig } from "@/lib/context/configuration/configuration.context";
+import { GET_ADDONS_BY_CATEGORY } from "@/lib/api/graphql";
+import { useQuery } from "@apollo/client";
 
 export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
-    const { foodItem, addons, options, onClose, restaurant } = props;
+    const {categoryId,  foodItem,  onClose, restaurant } = props;
     const { CURRENCY_SYMBOL } = useConfig();
 
     // Access user context for cart functionality
@@ -31,32 +33,24 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
             ? foodItem.variations[0]
             : null
     );
-
     // State for quantity
     const [quantity, setQuantity] = useState(1);
-
     // State for selected addon options - use an object with addon IDs as keys
     const [selectedAddonOptions, setSelectedAddonOptions] = useState<
         Record<string, Option | Option[]>
     >({});
-
     // State for clear cart modal
     const [showClearCartModal, setShowClearCartModal] = useState(false);
 
-    // Get the addon objects for the selected variation
-    const variationAddons =
-        selectedVariation?.addons
-            ?.map((addonId) => addons?.find((a) => a._id === addonId))
-            .filter(Boolean) || [];
+    // API
+      const { data: addonsByCategory } = useQuery(GET_ADDONS_BY_CATEGORY, {
+        variables: {
+          storeId: restaurant?._id.toString(),
+          categoryId
+        },
+        fetchPolicy: 'network-only'
+      })
 
-    // Function to get options for a specific addon
-    const getAddonOptions = (addon: IAddon | undefined) => {
-        return (
-            addon?.options
-                ?.map((optionId) => options?.find((o) => o._id === optionId))
-                .filter(Boolean) || []
-        );
-    };
 
     // Handle selection for a specific addon
     const handleAddonSelection = (
@@ -70,48 +64,10 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
         }));
     };
 
-    // Validate if all required addons are selected
-    const isFormValid = () => {
-        // If no variation is selected, form is invalid
-        if (!selectedVariation) return false;
-
-        // Check if all required addons are selected
-        for (const addon of variationAddons) {
-            if (!addon) continue; // Skip if addon is undefined
-
-            const selected = selectedAddonOptions[addon._id ?? ""];
-
-            // Required addon check
-            if (addon.quantityMinimum && addon.quantityMinimum > 0) {
-                // For single select addons
-                if (
-                    addon.quantityMinimum === 1 &&
-                    addon.quantityMaximum === 1
-                ) {
-                    if (!selected) return false;
-                }
-                // For multi-select addons
-                else {
-                    const selectedCount = selected
-                        ? Array.isArray(selected)
-                            ? selected.length
-                            : 1
-                        : 0;
-                    if (
-                        selectedCount < (addon.quantityMinimum ?? 0) ||
-                        selectedCount > (addon.quantityMaximum ?? Infinity)
-                    ) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    };
 
     // Function to add item to cart
     const handleAddToCart = () => {
-        if (!isFormValid() || !foodItem || !selectedVariation) return;
+        if (/* !isFormValid() || */ !foodItem || !selectedVariation) return;
 
         // Check if we need to clear the cart (different restaurant)
         const needsClear =
@@ -145,7 +101,7 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                     options,
                 };
             });
-        console.log(foodItem, "FoodItemmmmmmmmmmm");
+      
         // Call the addItem function from useUser hook
         addItem(
             foodItem?.image,
@@ -174,7 +130,7 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
 
     // Handle clear cart confirmation
     const handleClearCartConfirm = async () => {
-        await clearCart();
+        clearCart();
         addItemToCart();
         setShowClearCartModal(false);
 
@@ -285,73 +241,41 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                     )}
 
                     {/* Addon Sections - With required/optional tags */}
-                    {variationAddons.map((addon) => {
+                    {addonsByCategory?.getAddonsByCategory?.map((addon: IAddon) => {
                         if (!addon) return null; // Skip rendering if addon is undefined
+                
+                        const addonOptions = addon.options;
 
-                        const isSingleSelect =
-                            addon.quantityMinimum === 1 &&
-                            addon.quantityMaximum === 1;
-                        const addonOptions = getAddonOptions(addon);
-
-                        // Determine required/optional tag text
-                        const requiredTagText =
-                            (addon.quantityMinimum ?? 0) > 0
-                                ? `${addon.quantityMinimum} Required`
-                                : "Optional";
-
+            
                         return (
                             <ItemDetailSection
                                 key={addon._id ?? "addon-" + Math.random()}
                                 title={addon.title ?? "Unknown"}
                                 name={addon._id ?? "addon"}
-                                multiple={!isSingleSelect}
+                                multiple={false}
                                 singleSelected={
-                                    isSingleSelect
-                                        ? (selectedAddonOptions[
+                                  selectedAddonOptions[
                                               addon._id ?? ""
-                                          ] as Option)
-                                        : null
+                                          ] as Option
+                                      
                                 }
                                 onSingleSelect={
-                                    isSingleSelect
-                                        ? (option) =>
+                                    (option) =>
                                               handleAddonSelection(
                                                   addon._id ?? "",
                                                   false,
                                                   option as Option
                                               )
-                                        : undefined
+                                      
                                 }
                                 multiSelected={
-                                    !isSingleSelect
-                                        ? (selectedAddonOptions[
-                                              addon._id ?? ""
-                                          ] as Option[]) || []
-                                        : []
+                                     []
                                 }
                                 onMultiSelect={
-                                    !isSingleSelect
-                                        ? (updateFn) => {
-                                              const current =
-                                                  (selectedAddonOptions[
-                                                      addon._id ?? ""
-                                                  ] as Option[]) || [];
-                                              if (
-                                                  typeof updateFn === "function"
-                                              ) {
-                                                  const updated =
-                                                      updateFn(current);
-                                                  handleAddonSelection(
-                                                      addon._id ?? "",
-                                                      true,
-                                                      updated as Option[]
-                                                  );
-                                              }
-                                          }
-                                        : undefined
+                                    undefined
                                 }
                                 options={addonOptions as Option[]}
-                                requiredTag={requiredTagText}
+                                requiredTag="Optional"
                                 showTag={true}
                             />
                         );
@@ -384,9 +308,10 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
 
                     {/* Add to Order Button - Takes Remaining 80% */}
                     <button
-                        className={`${isFormValid() ? "bg-[#FFA500]" : "bg-gray-300"} text-black px-4 py-2 text-[500] font-[14px] rounded-full flex flex-col md:flex-row items-center justify-between flex-[0.8]`}
+                        // className={`${isFormValid() ? "bg-[#FFA500]" : "bg-gray-300"} text-black px-4 py-2 text-[500] font-[14px] rounded-full flex flex-col md:flex-row items-center justify-between flex-[0.8]`}
+                        className="bg-[#FFA500] text-black px-4 py-2 text-[500] font-[14px] rounded-full flex flex-col md:flex-row items-center justify-between flex-[0.8]"
                         onClick={handleAddToCart}
-                        disabled={!isFormValid()}
+                        disabled={false /* !isFormValid() */}
                         type="button"
                     >
                         Add to order

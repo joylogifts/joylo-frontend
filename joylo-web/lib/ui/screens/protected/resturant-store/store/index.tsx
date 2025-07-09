@@ -959,6 +959,7 @@ export default function StoreDetailsScreen() {
             foodItem={showDialog}
             addons={data?.restaurant?.addons}
             options={data?.restaurant?.options}
+            categoryId=""
             onClose={handleCloseFoodModal}
           />
         )}

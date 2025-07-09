@@ -96,7 +96,6 @@ const AppTopbar = ({ handleModalToggle }: IAppBarProps) => {
   // Format subtotal for display
   const formattedSubtotal = cartCount > 0 ? `${CURRENCY_SYMBOL}${calculateSubtotal()}` : `${CURRENCY_SYMBOL}0`;
 
-  console.log(userAddress);
   // Handlers
   const onInit = () => {
     const current_location_ls = onUseLocalStorage(

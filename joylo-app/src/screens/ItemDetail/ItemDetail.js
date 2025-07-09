@@ -159,8 +159,6 @@ function ItemDetail(props) {
         const selected = selectedAddons?.find((ad) => ad._id === addon._id)
         const isSelected = !!selected
         const optionCount = selected?.options?.length ?? 0
-        const min = addon?.quantityMinimum ?? 0
-        const max = addon?.quantityMaximum ?? Infinity
         const isValid = (!isSelected && min === 0) || (isSelected && optionCount >= min && optionCount <= max)
 
         return !isValid // true means validation failed
@@ -170,9 +168,9 @@ function ItemDetail(props) {
   }
 
   async function onPressAddToCart(quantity) {
-    const isValidOrder = validateOrderItem()
-    console.log({ isValidOrder })
-    if (isValidOrder) {
+    // const isValidOrder = validateOrderItem()
+ 
+    // if (isValidOrder) {
       Analytics.track(Analytics.events.ADD_TO_CART, {
         title: food?.title,
         restaurantName: food?.restaurantName,
@@ -200,7 +198,7 @@ function ItemDetail(props) {
           { cancelable: false }
         )
       }
-    }
+    // }
   }
 
   // Add to cart
@@ -408,7 +406,7 @@ function ItemDetail(props) {
           <HeadingComponent title={food?.title} price={calculatePrice()} />
         </Animated.View>
         <View style={{ backgroundColor: currentTheme.themeBackground, zIndex: 10 }}>
-          <CartComponent onPress={onPressAddToCart} disabled={!validateButton()} />
+          <CartComponent onPress={onPressAddToCart} disabled={false /* !validateButton() */} />
         </View>
         <View
           style={{

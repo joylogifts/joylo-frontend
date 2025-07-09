@@ -32,8 +32,6 @@ const Card: React.FC<ICardProps> = ({
 
     const { DELIVERY_RATE } = useConfig();
 
-    console.log("isModalOpen", isModalOpen);
-
     const isWithinOpeningTime = (openingTimes: IOpeningTime[]): boolean => {
         const now = new Date();
         const currentDay = now
@@ -74,8 +72,14 @@ const Card: React.FC<ICardProps> = ({
                 }
 
                 router.push(
+                    `restaurant/${item?.slug}/${item._id}`
+                ); 
+              /*   router.push(
                     `/${item.shopType === "restaurant" ? "restaurant" : "store"}/${item?.slug}/${item._id}`
-                ); // the root route may change based on store or grocery
+                );  */
+                
+                
+                // the root route may change based on store or grocery
 
                 // onUseLocalStorage("save", "restaurant", item._id);
                 // onUseLocalStorage("save", "restaurant-slug", item.slug);

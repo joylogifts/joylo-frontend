@@ -1162,11 +1162,10 @@ export const GET_ADDONS_BY_CATEGORY = gql`
   query GetAddonsByCategory($storeId: String!, $categoryId: String!) {
     getAddonsByCategory(storeId: $storeId, categoryId: $categoryId) {
       _id
-      options
       title
+      options
       description
       categoryIds
-      categoryId
       isActive
     }
   }

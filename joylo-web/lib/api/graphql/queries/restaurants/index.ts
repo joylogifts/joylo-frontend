@@ -163,7 +163,6 @@ export const GET_RESTAURANT_BY_ID_SLUG = gql`
           image
           description
           isOutOfStock
-          subCategory
           variations {
             _id
             title
@@ -174,21 +173,21 @@ export const GET_RESTAURANT_BY_ID_SLUG = gql`
           }
         }
       }
-      options {
-        _id
-        title
-        description
-        price
-        isOutOfStock
-      }
-      addons {
-        _id
-        options
-        title
-        description
-        quantityMinimum
-        quantityMaximum
-      }
+      # options {
+      #   _id
+      #   title
+      #   description
+      #   price
+      #   isOutOfStock
+      # }
+      # addons {
+      #   _id
+      #   options
+      #   title
+      #   description
+      #   quantityMinimum
+      #   quantityMaximum
+      # }
       zone {
         _id
         title
@@ -273,3 +272,17 @@ export const GET_SUB_CATEGORIES = gql`
     }
   }
 `;
+
+
+export const GET_ADDONS_BY_CATEGORY = gql`
+  query GetAddonsByCategory($storeId: String!, $categoryId: String!) {
+    getAddonsByCategory(storeId: $storeId, categoryId: $categoryId) {
+      _id
+      options
+      title
+      description
+      categoryIds
+      isActive
+    }
+  }
+`

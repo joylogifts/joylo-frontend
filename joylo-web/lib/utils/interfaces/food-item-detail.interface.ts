@@ -4,6 +4,7 @@ import { IFood, IOption, IRestaurant } from "./restaurants.interface";
 import { IAddon } from "./orders.interface";
 
 export interface IFoodItemDetalComponentProps extends IGlobalComponentProps {
+  categoryId: string;
   foodItem: IFood | null;
   addons: IAddon[];
   options: IOption[];
