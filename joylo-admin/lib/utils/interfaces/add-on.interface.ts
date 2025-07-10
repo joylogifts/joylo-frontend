@@ -31,8 +31,8 @@ export interface IAddonMainComponentsProps extends IGlobalComponentProps {
 export interface IAddon {
   _id: string;
   options: string[];
-  title: JSON | string;
-  description: JSON | string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   quantityMinimum: number;
   quantityMaximum: number;
   __typename: string;

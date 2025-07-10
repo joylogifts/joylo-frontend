@@ -42,7 +42,7 @@ export interface ISubCategoriesAddFormProps {
 /* API */
 export interface ICategory {
   _id: string;
-  title: JSON | string;
+  title: Record<string, string> | string;
   image?: string | null;
 }
 
@@ -57,7 +57,7 @@ export interface ICategoryByRestaurantResponse {
 // Sub-Category
 export interface ISubCategory {
   _id?: string;
-  title: JSON | string;
+  title: Record<string, string> | string;
   parentCategoryId: string;
   __typename?: string;
 }

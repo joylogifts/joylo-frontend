@@ -92,8 +92,8 @@ export interface IFood {
 
 export interface IFoodNew {
   _id: string;
-  title: JSON | string;
-  description: JSON | string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   variations: IVariationForm[];
   category: IDropdownSelectItem | null;
   subCategory: IDropdownSelectItem | null;

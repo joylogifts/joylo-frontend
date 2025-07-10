@@ -1,8 +1,8 @@
 import { IDropdownSelectItem } from '../global.interface';
 
 export type IBannersForm = {
-  title: string;
-  description: string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   action: IDropdownSelectItem | null;
   screen: IDropdownSelectItem | null;
   file: string;
