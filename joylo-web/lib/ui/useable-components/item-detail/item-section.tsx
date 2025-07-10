@@ -35,7 +35,6 @@ export const ItemDetailSection = <
     const {
         title,
         options,
-        name,
         multiple = false,
         singleSelected,
         onSingleSelect,

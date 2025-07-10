@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useLangTranslation } from "@/lib/context/global/language.context";
 
 const BannerCard:React.FC<IBannerItemProps> = ({item}) => {
-  const { getTranslation: t,  selectedLanguage } = useLangTranslation()
+  const {  selectedLanguage } = useLangTranslation()
 
   const isVideo = item?.file.includes("video");
   const router = useRouter();
