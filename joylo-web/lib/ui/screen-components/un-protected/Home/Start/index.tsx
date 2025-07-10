@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 // Components
 import HomeSearch from "@/lib/ui/useable-components/Home-search";
@@ -18,11 +19,11 @@ import { useAuth } from "@/lib/context/auth/auth.context";
 
 const Start: React.FC = () => {
   // Hooks
+  const { getTranslation } = useLangTranslation();
   const router = useRouter();
   const { getCurrentLocation } = useLocation();
   const { onSetUserLocation } = useSetUserCurrentLocation();
   const { isAuthModalVisible, setIsAuthModalVisible, setActivePanel } = useAuth();
-
 
   const handleModalToggle = () => {
     const token = localStorage.getItem("token");
@@ -41,11 +42,11 @@ const Start: React.FC = () => {
   };
 
   return (
-    <div className="h-[100vh] w-full bg-cover bg-center flex items-center justify-center bg-[#94e469] relative">
+    <div className="h-[100vh] w-full bg-cover bg-center flex items-center justify-center bg-[#FFA500] relative">
       <div className="text-center flex flex-col items-center justify-center">
         <TextFlyingAnimation />
         <h1 className="text-[40px] md:text-[90px] font-extrabold text-white">
-          DELIVERED
+          {getTranslation("delivered_heading")}
         </h1>
         <HomeSearch />
         <div className="my-6 text-white flex items-center justify-center">
@@ -61,7 +62,7 @@ const Start: React.FC = () => {
                 router.push("/discovery");
               }}
             >
-              Current Location
+              {getTranslation("current_location_btn")}
             </button>
           </div>
           <LoginInForSavedAddresses handleModalToggle={handleModalToggle}/>

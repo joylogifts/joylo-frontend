@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 const FancyButton = () => {
-  return (
-    <div>
-      heloo mello
-    </div>
-  )
-}
+    const { getTranslation } = useLangTranslation();
+    return <div>{getTranslation("heloo_mello")}</div>;
+};
 
-export default FancyButton
+export default FancyButton;

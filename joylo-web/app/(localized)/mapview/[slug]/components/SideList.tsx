@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 
@@ -18,6 +19,7 @@ interface SideListProps {
 }
 
 const SideList: React.FC<SideListProps> = ({ data, onHover }) => {
+    const {getTranslation} = useLangTranslation();
     const router = useRouter();
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     
@@ -72,36 +74,42 @@ const SideList: React.FC<SideListProps> = ({ data, onHover }) => {
                     scrollSnapType: 'x mandatory',
                 }}
             >
-                {data.map((item,index) => (
-                    <div
-                        key={item._id}
-                        ref={(el) => {
-                            itemRefs.current[index] = el;
-                        }}
-                        className="bg-white flex items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow flex-shrink-0 md:w-auto w-[85%] cursor-pointer"
-                        style={{
-                            scrollSnapAlign: 'start',
-                        }}
-                        onMouseEnter={() => onHover({ lat: Number(item.location.coordinates[1]), lng: Number(item.location.coordinates[0]) })}
-                        onClick={() => {
-                            router.push(getRedirectUrl(item));
-                        }}
-                    >
-                        <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded-md mr-4"
-                        />
-                        <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
-                            <p className="text-sm text-gray-600">{item.address}</p>
-                            <div className="flex items-center text-sm text-gray-500 mt-1">
-                                <span className="mr-2">⭐ {item.reviewAverage.toFixed(1)}</span>
-                                <span>({item.reviewCount} reviews)</span>
+                {data.length === 0 ? (
+                    <div className="text-gray-500 text-center w-full py-8">
+                        {getTranslation("no_data_available_to_show")}
+                    </div>
+                ) : (
+                    data.map((item,index) => (
+                        <div
+                            key={item._id}
+                            ref={(el) => {
+                                itemRefs.current[index] = el;
+                            }}
+                            className="bg-white flex items-center p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow flex-shrink-0 md:w-auto w-[85%] cursor-pointer"
+                            style={{
+                                scrollSnapAlign: 'start',
+                            }}
+                            onMouseEnter={() => onHover({ lat: Number(item.location.coordinates[1]), lng: Number(item.location.coordinates[0]) })}
+                            onClick={() => {
+                                router.push(getRedirectUrl(item));
+                            }}
+                        >
+                            <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-16 h-16 object-cover rounded-md mr-4"
+                            />
+                            <div className="flex-1">
+                                <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                                <p className="text-sm text-gray-600">{item.address}</p>
+                                <div className="flex items-center text-sm text-gray-500 mt-1">
+                                    <span className="mr-2">⭐ {item.reviewAverage.toFixed(1)}</span>
+                                    <span>({item.reviewCount} {getTranslation('reviews')})</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
         </div>
     );

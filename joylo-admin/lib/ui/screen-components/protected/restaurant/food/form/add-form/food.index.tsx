@@ -393,8 +393,8 @@ export default function FoodDetails({
                           placeholder={getTranslation('description')}
                           value={
                             typeof values.description === 'object'
-                              ? values.description[selectedLanguage] || ''
-                              : values.description || ''
+                              ? values?.description?.[selectedLanguage] || ''
+                              : values?.description || ''
                           }
                           onChange={handleChange}
                           showLabel={true}

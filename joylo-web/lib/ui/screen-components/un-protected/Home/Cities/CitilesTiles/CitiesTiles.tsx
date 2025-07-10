@@ -11,14 +11,13 @@ import {
   City,
   CountryItem,
 } from "@/lib/utils/interfaces/Home-interfaces";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 // Assets
 import { CircleCrossSvg } from "@/lib/utils/assets/svg";
 import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 import { useUserAddress } from "@/lib/context/address/address.context";
 import { USER_CURRENT_LOCATION_LS_KEY } from "@/lib/utils/constants";
-
-
 
 const CITIES = gql`
   ${GET_CITIES}
@@ -30,6 +29,7 @@ const CitiesTiles: React.FC<CitiesTilesProps> = ({
 }) => {
   const router = useRouter();
   const { setUserAddress } = useUserAddress();
+  const { getTranslation } = useLangTranslation();
 
   const { data, loading } = useQuery<GetCitiesByCountryResponse>(CITIES, {
     variables: { id: countryId },
@@ -71,13 +71,12 @@ const CitiesTiles: React.FC<CitiesTilesProps> = ({
   return (
     <div>
       <div className="flex w-full justify-start items-center gap-x-2">
-        <p className="text-[#111827] font-semibold text-xl">Explore Cities</p>
+        <p className="text-[#111827] font-semibold text-xl">{getTranslation("explore_cities")}</p>
         {data?.getCitiesByCountry?.name && (
           <div className="relative flex gap-x-2">
-            <p className="text-[#94e469] border-2 border-[#94e469] px-2 rounded">
+            <p className="text-[#FFA500] border-2 border-[#FFA500] px-2 rounded">
               {data?.getCitiesByCountry?.name}
             </p>
-
             {/* <button onClick={AllCountries}>All Countries</button> */}
             <div
               className="absolute -right-2 -top-2 cursor-pointer"
@@ -88,7 +87,6 @@ const CitiesTiles: React.FC<CitiesTilesProps> = ({
           </div>
         )}
       </div>
-
       <div className="flex flex-wrap gap-6 items-center justify-start my-[30px]">
         {loading ?
           [...Array(8)].map((_, index) => (

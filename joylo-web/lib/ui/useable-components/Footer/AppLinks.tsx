@@ -1,3 +1,4 @@
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import React from "react";
 import Image from "next/image";
 
@@ -8,6 +9,7 @@ const AppleStoreLink =
 import Logo from "@/lib/utils/assets/svg/Logo";
 
 const AppLinks = () => {
+  const { getTranslation } = useLangTranslation();
   const handleButtonClick = (url: string) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
@@ -15,13 +17,13 @@ const AppLinks = () => {
   return (
     <div>
       <div className="text-[20px] mb-4 font-extrabold text-white">
-        <Logo className="w-32 h-auto" fillColor="#94e469" />
+        <Logo className="w-32 h-auto" fillColor="#FFA500" />
       </div>
 
       <div className="flex gap-2 flex-wrap">
-        <button onClick={() => handleButtonClick(AppleStoreLink)}>
+        <button onClick={() => handleButtonClick(AppleStoreLink)} aria-label={getTranslation("apple_app_store_link")}> 
           <Image
-            alt={"Apple App Store Link"}
+            alt={getTranslation("apple_app_store_link")}
             width={130}
             height={130}
             src={
@@ -29,9 +31,9 @@ const AppLinks = () => {
             }
           />
         </button>
-        <button onClick={() => handleButtonClick(PlayStoreLink)}>
+        <button onClick={() => handleButtonClick(PlayStoreLink)} aria-label={getTranslation("google_play_store_link")}> 
           <Image
-            alt={"Google Play Store Link"}
+            alt={getTranslation("google_play_store_link")}
             width={130}
             height={130}
             src={

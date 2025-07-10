@@ -13,8 +13,8 @@
 }
 
 :root {
-  --primary-color: #b1c748;
-  --secondary-color: #d8e3a3;
+  --primary-color: #FFA500;
+  --secondary-color: #0074D9;
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
@@ -326,8 +326,8 @@ body {
 }
 
 .p-datatable-table .p-checkbox.p-highlight .p-checkbox-box {
-  background-color: #5ac12f !important;
-  border-color: #5ac12f !important;
+  background-color: #FFA500 !important;
+  border-color: #FFA500 !important;
 }
 
 .p-datatable-tbody tr td {
@@ -762,7 +762,7 @@ Discovery Caurousal
 
 .p-panelmenu .p-panelmenu-header.p-highlight .p-menuitem-text,
 .p-panelmenu .p-panelmenu-header.p-highlight .p-panelmenu-header-link {
-  color: #5ac12f !important;
+  color: #FFA500 !important;
 }
 
 /* Remove background color on hover for menu items */
@@ -792,7 +792,7 @@ Discovery Caurousal
 } */
 
 .p-highlight {
-  background: green !important;
+  background: #FFA500 !important;
   border-color: rgb(224, 224, 100) !important;
 }
 .p-inputotp-input {

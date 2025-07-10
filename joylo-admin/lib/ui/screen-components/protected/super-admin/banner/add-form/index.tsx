@@ -54,11 +54,11 @@ const BannersAddForm = ({
   const initialValues: IBannersForm = {
     title:
       typeof banner?.title === 'object'
-        ? banner?.title[selectedLanguage]
+        ? banner?.title?.[selectedLanguage]
         : banner?.title || '',
     description:
       typeof banner?.description === 'object'
-        ? banner?.description[selectedLanguage]
+        ? banner?.description?.[selectedLanguage]
         : banner?.description || '',
     action: banner
       ? {

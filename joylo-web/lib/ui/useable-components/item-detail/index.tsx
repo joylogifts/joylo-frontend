@@ -1,3 +1,4 @@
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import { useEffect, useState } from "react";
 import useUser from "@/lib/hooks/useUser";
 
@@ -19,6 +20,7 @@ import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 import { useConfig } from "@/lib/context/configuration/configuration.context";
 
 export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const { foodItem, addons, options, onClose, restaurant } = props;
     const { CURRENCY_SYMBOL } = useConfig();
 
@@ -247,7 +249,7 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
 
             <div className="text-center mb-4">
                 <Image
-                    alt={foodItem?.title ?? ""}
+                    alt={typeof foodItem?.title === "object" ? foodItem?.title[selectedLanguage] : foodItem?.title ?? ""}
                     className="md:max-w-md w-100 h-[200px]  object-cover object-center rounded-t-md"
                     src={foodItem?.image ?? ""}
                     width={500}
@@ -257,14 +259,14 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
 
             <div className="py-3 px-6 mb-4">
                 <h2 className="font-inter font-bold text-[#111827] text-[16px] md:text-[18px] lg:text-[19px] leading-[22px] md:leading-[24px]">
-                    {foodItem?.title}
+                    {typeof foodItem?.title === "object" ? foodItem?.title[selectedLanguage] : foodItem?.title}
                 </h2>
                 <p className="text-[#0EA5E9] font-[600] text-[14px] md:text-[15px] lg:text-[16px] mb-2">
                     {CURRENCY_SYMBOL}
                     {selectedVariation?.price.toFixed(2)}
                 </p>
                 <p className="font-inter font-normal text-gray-500 text-[12px] md:text-[13px] lg:text-[14px] leading-[18px] md:leading-[20px]">
-                    {foodItem?.description}
+                    {typeof foodItem?.description === "object" ? foodItem?.description[selectedLanguage] : foodItem?.description}
                 </p>
 
                 <Divider />
@@ -274,12 +276,12 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                     {foodItem?.variations && foodItem.variations.length > 1 && (
                         <ItemDetailSection
                             key="variations"
-                            title="Select Variation"
-                            name="variation" // This is a string literal, no undefined issue
+                            title={getTranslation("select_variation")}
+                            name="variation"
                             singleSelected={selectedVariation}
                             onSingleSelect={setSelectedVariation}
                             options={foodItem?.variations || []}
-                            requiredTag="1 Required"
+                            requiredTag={`1 ${getTranslation("required")}`}
                             showTag={true}
                         />
                     )}
@@ -296,58 +298,58 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
                         // Determine required/optional tag text
                         const requiredTagText =
                             (addon.quantityMinimum ?? 0) > 0
-                                ? `${addon.quantityMinimum} Required`
-                                : "Optional";
+                                ? `${addon.quantityMinimum} ${getTranslation("required")}`
+                                : getTranslation("optional");
 
                         return (
                             <ItemDetailSection
                                 key={addon._id ?? "addon-" + Math.random()}
-                                title={addon.title ?? "Unknown"}
+                                title={typeof addon.title === "object" ? addon.title[selectedLanguage] : addon.title ?? getTranslation("unknown")}
                                 name={addon._id ?? "addon"}
                                 multiple={!isSingleSelect}
                                 singleSelected={
                                     isSingleSelect
                                         ? (selectedAddonOptions[
-                                              addon._id ?? ""
-                                          ] as Option)
+                                            addon._id ?? ""
+                                        ] as Option)
                                         : null
                                 }
                                 onSingleSelect={
                                     isSingleSelect
                                         ? (option) =>
-                                              handleAddonSelection(
-                                                  addon._id ?? "",
-                                                  false,
-                                                  option as Option
-                                              )
+                                            handleAddonSelection(
+                                                addon._id ?? "",
+                                                false,
+                                                option as Option
+                                            )
                                         : undefined
                                 }
                                 multiSelected={
                                     !isSingleSelect
                                         ? (selectedAddonOptions[
-                                              addon._id ?? ""
-                                          ] as Option[]) || []
+                                            addon._id ?? ""
+                                        ] as Option[]) || []
                                         : []
                                 }
                                 onMultiSelect={
                                     !isSingleSelect
                                         ? (updateFn) => {
-                                              const current =
-                                                  (selectedAddonOptions[
-                                                      addon._id ?? ""
-                                                  ] as Option[]) || [];
-                                              if (
-                                                  typeof updateFn === "function"
-                                              ) {
-                                                  const updated =
-                                                      updateFn(current);
-                                                  handleAddonSelection(
-                                                      addon._id ?? "",
-                                                      true,
-                                                      updated as Option[]
-                                                  );
-                                              }
-                                          }
+                                            const current =
+                                                (selectedAddonOptions[
+                                                    addon._id ?? ""
+                                                ] as Option[]) || [];
+                                            if (
+                                                typeof updateFn === "function"
+                                            ) {
+                                                const updated =
+                                                    updateFn(current);
+                                                handleAddonSelection(
+                                                    addon._id ?? "",
+                                                    true,
+                                                    updated as Option[]
+                                                );
+                                            }
+                                        }
                                         : undefined
                                 }
                                 options={addonOptions as Option[]}
@@ -384,12 +386,12 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
 
                     {/* Add to Order Button - Takes Remaining 80% */}
                     <button
-                        className={`${isFormValid() ? "bg-[#5AC12F]" : "bg-gray-300"} text-black px-4 py-2 text-[500] font-[14px] rounded-full flex flex-col md:flex-row items-center justify-between flex-[0.8]`}
+                        className={`${isFormValid() ? "bg-[#FFA500]" : "bg-gray-300"} text-black px-4 py-2 text-[500] font-[14px] rounded-full flex flex-col md:flex-row items-center justify-between flex-[0.8]`}
                         onClick={handleAddToCart}
                         disabled={!isFormValid()}
                         type="button"
                     >
-                        Add to order
+                        {getTranslation("add_to_order")}
                         <span className="ml-2 text-gray-900 text-[500] font-[14px]">
                             {CURRENCY_SYMBOL}
                             {calculateTotalPrice()}

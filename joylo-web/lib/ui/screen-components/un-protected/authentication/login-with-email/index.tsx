@@ -11,7 +11,7 @@ import EmailIcon from "@/public/assets/images/svgs/email";
 // Hooks
 import { useAuth } from "@/lib/context/auth/auth.context";
 import useToast from "@/lib/hooks/useToast";
-import { useTranslations } from "next-intl";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 export default function LoginWithEmail({
   handleChangePanel,
@@ -19,7 +19,7 @@ export default function LoginWithEmail({
   handleFormChange,
 }: ILoginWithEmailProps) {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { setUser, checkEmailExists, isLoading } = useAuth();
   const { showToast } = useToast();
 
@@ -28,8 +28,8 @@ export default function LoginWithEmail({
     if (!formData?.email) {
       return showToast({
         type: "error",
-        title: t("Error"),
-        message: t("Please enter a valid email address"),
+        title: getTranslation("toast_error"),
+        message: getTranslation("please_enter_valid_email_address_message"),
       });
     } else {
       // Check if the email exits
@@ -37,8 +37,8 @@ export default function LoginWithEmail({
       if (emailExists._id && emailExists.userType !== "default") {
         showToast({
           type: "warn",
-          title: t("Login"),
-          message: t("The email is associated with another provider"),
+          title: getTranslation("login_label"),
+          message: getTranslation("email_associated_with_another_provider_message"),
         });
         // re-direct to main modal
         return handleChangePanel(0);
@@ -63,10 +63,8 @@ export default function LoginWithEmail({
     <div className="flex flex-col items-start justify-between w-full h-full">
       <EmailIcon />
       <div className="flex flex-col w-full h-auto self-start left-2 my-2">
-        <h3 className="text-2xl">{t("Whats your email")}?</h3>
-        {/*replace whats with what's in the translation*/}
-        <p>{t("Well check if you have an account")}</p>
-        {/*replace well with we'll in the translation*/}
+        <h3 className="text-2xl">{getTranslation("whats_your_email_label")}? </h3>
+        <p>{getTranslation("well_check_if_you_have_an_account_message")}</p>
       </div>
       <div className="flex flex-col gap-y-1 my-6 w-full">
         <CustomTextField
@@ -74,21 +72,21 @@ export default function LoginWithEmail({
           showLabel={false}
           name="email"
           type="text"
-          placeholder={t("Email")}
+          placeholder={getTranslation("email_label")}
           onChange={(e) => handleChange(e.target.value)}
         />
         <span
-          className="self-end font-semibold text-sm underline cursor-pointer text-[#5AC12F]"
+          className="self-end font-semibold text-sm underline cursor-pointer text-[#FFA500]"
           onClick={() => handleChangePanel(0)}
         >
-          {t("Continue with google instead")}
+          {getTranslation("continue_with_google_instead_label")}
         </span>
       </div>
       <CustomButton
-        label={t("Continue")}
+        label={getTranslation("continue_label")}
         loading={isLoading}
         onClick={handleSubmit}
-        className={`bg-[#5AC12F] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72`}
+        className={`bg-[#FFA500] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72`}
       />
     </div>
   );

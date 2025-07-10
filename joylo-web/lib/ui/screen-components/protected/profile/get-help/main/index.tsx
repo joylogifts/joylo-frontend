@@ -11,8 +11,10 @@ import { CREATE_SUPPORT_TICKET } from "@/lib/api/graphql/mutations/SupportTicket
 import useToast from "@/lib/hooks/useToast";
 import { useRouter } from "next/navigation";
 import useDebounceFunction from "@/lib/hooks/useDebounceForFunction";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 export default function GetHelpMain() {
+    const { getTranslation } = useLangTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reason, setReason] = useState<string | null>(null);
     const [orderId, setOrderId] = useState<string>("");
@@ -26,8 +28,10 @@ export default function GetHelpMain() {
         fetchPolicy: "cache-and-network",
     });
 
-    const userName = profileData?.profile?.name || "User";
-    const userEmail = profileData?.profile?.email || "N/A";
+    const userName =
+        profileData?.profile?.name || getTranslation("user_default_name");
+    const userEmail =
+        profileData?.profile?.email || getTranslation("not_available_label");
 
     // Setup toast notification
     const { showToast } = useToast();
@@ -38,8 +42,8 @@ export default function GetHelpMain() {
             setIsSubmitting(false);
             showToast({
                 type: "success",
-                title: "Success",
-                message: "Your support ticket has been created successfully",
+                title: getTranslation("toast_success"),
+                message: getTranslation("support_ticket_created_successfully"),
                 duration: 3000,
             });
             handleCloseModal();
@@ -51,8 +55,10 @@ export default function GetHelpMain() {
             console.error("Mutation error:", error);
             showToast({
                 type: "error",
-                title: "Error",
-                message: error.message || "Failed to create support ticket",
+                title: getTranslation("toast_error"),
+                message:
+                    error.message ||
+                    getTranslation("failed_to_create_support_ticket"),
                 duration: 3000,
             });
         },
@@ -75,8 +81,8 @@ export default function GetHelpMain() {
         if (!reason) {
             showToast({
                 type: "error",
-                title: "Validation Error",
-                message: "Please select a reason for your inquiry",
+                title: getTranslation("validation_error_title"),
+                message: getTranslation("select_reason_for_inquiry"),
                 duration: 3000,
             });
             return;
@@ -85,8 +91,8 @@ export default function GetHelpMain() {
         if (reason === "order related" && !orderId.trim()) {
             showToast({
                 type: "error",
-                title: "Validation Error",
-                message: "Please provide an order ID",
+                title: getTranslation("validation_error_title"),
+                message: getTranslation("provide_order_id"),
                 duration: 3000,
             });
             return;
@@ -95,8 +101,8 @@ export default function GetHelpMain() {
         if (reason === "others" && !ticketTitle.trim()) {
             showToast({
                 type: "error",
-                title: "Validation Error",
-                message: "Please provide a title for your inquiry",
+                title: getTranslation("validation_error_title"),
+                message: getTranslation("provide_title_for_inquiry"),
                 duration: 3000,
             });
             return;
@@ -105,8 +111,8 @@ export default function GetHelpMain() {
         if (!description.trim()) {
             showToast({
                 type: "error",
-                title: "Validation Error",
-                message: "Please provide a description of your issue",
+                title: getTranslation("validation_error_title"),
+                message: getTranslation("provide_description_of_issue"),
                 duration: 3000,
             });
             return;
@@ -154,35 +160,33 @@ export default function GetHelpMain() {
 
     // Simplified reason options - matching exact values from API
     const reasonOptions = [
-        { label: "Order Related", value: "order related" },
-        { label: "Others", value: "others" },
+        {
+            label: getTranslation("order_related_label"),
+            value: "order related",
+        },
+        { label: getTranslation("others_label"), value: "others" },
     ];
 
     const faqItems = [
         {
-            header: "Can I track my order?",
-            content:
-                "Yes, you can track your order in real-time from the moment it's confirmed to when it's out for delivery. You'll receive updates on the status of your order through notifications on the app.",
+            header: getTranslation("faq_track_order_header"),
+            content: getTranslation("faq_track_order_content"),
         },
         {
-            header: "How long does delivery take?",
-            content:
-                "Delivery times may vary depending on factors such as the restaurant's preparation time, traffic conditions, and your location. However, we strive to deliver your order within a reasonable timeframe, typically ranging from 30 to 60 minutes.",
+            header: getTranslation("faq_delivery_time_header"),
+            content: getTranslation("faq_delivery_time_content"),
         },
         {
-            header: "Can I cancel my order after it's been placed?",
-            content:
-                "Yes, you can cancel your order once it is placed. However, once the order has been prepared and sent out for delivery, you can no longer cancel the order. You may contact the restaurant directly for assistance.",
+            header: getTranslation("faq_cancel_order_header"),
+            content: getTranslation("faq_cancel_order_content"),
         },
         {
-            header: "How can I provide feedback on my experience?",
-            content:
-                "You can provide feedback through the app by rating your order and leaving comments. You can also give a rating to the restaurant and leave a review.",
+            header: getTranslation("faq_feedback_header"),
+            content: getTranslation("faq_feedback_content"),
         },
         {
-            header: "Can I order from multiple places at the same time?",
-            content:
-                "Unfortunately, you can’t choose from multiple restaurants within the same order. However, you can place separate orders from different restaurants at the same time.",
+            header: getTranslation("faq_multiple_places_header"),
+            content: getTranslation("faq_multiple_places_content"),
         },
     ];
 
@@ -191,11 +195,11 @@ export default function GetHelpMain() {
             <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
                 <div className="mb-6">
                     <TextComponent
-                        text={`Hi ${userName} 👋`}
+                        text={`${getTranslation("welcome_user")}${userName} 👋`}
                         className="text-xl md:text-2xl font-bold mb-2"
                     />
                     <TextComponent
-                        text="How can we help?"
+                        text={getTranslation("how_can_we_help_label")}
                         className="text-2xl md:text-3xl font-bold"
                     />
                 </div>
@@ -222,17 +226,16 @@ export default function GetHelpMain() {
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
                 <TextComponent
-                    text="Still need help?"
+                    text={getTranslation("still_need_help_label")}
                     className="text-xl md:text-2xl font-semibold mb-4"
                 />
                 <p className="text-gray-600 mb-6">
-                    Our support team is available to assist you with any
-                    questions or issues you may have.
+                    {getTranslation("support_team_available_message")}
                 </p>
                 <CustomButton
-                    label="Chat with a person"
+                    label={getTranslation("chat_with_person_button")}
                     onClick={handleChatWithPerson}
-                    className="bg-[#5AC12F] text-white px-6 py-3 rounded-full"
+                    className="bg-[#FFA500] text-white px-6 py-3 rounded-full"
                 />
             </div>
 
@@ -246,13 +249,18 @@ export default function GetHelpMain() {
                 <div className="flex flex-col md:h-[500px] h-[450px]">
                     {/* Modal Header */}
                     <div className="flex justify-between items-center bg-[#1a1a1a] text-white p-4">
-                        <h3 className="font-medium">Support</h3>
+                        <h3 className="font-medium">
+                            {getTranslation("support_modal_title")}
+                        </h3>
                         <div className="flex items-center space-x-2">
                             <button
                                 onClick={handleCloseModal}
                                 className="text-white hover:text-gray-300"
                             >
-                                <span className="sr-only">Close</span>✕
+                                <span className="sr-only">
+                                    {getTranslation("close_label")}
+                                </span>
+                                ✕
                             </button>
                         </div>
                     </div>
@@ -261,17 +269,17 @@ export default function GetHelpMain() {
                     <div className="flex-1 p-4 overflow-y-auto">
                         <div className="mb-6">
                             <h2 className="text-lg font-semibold mb-2">
-                                Hi, {userName}
+                                {getTranslation("hi_label")}, {userName}
                             </h2>
                             <p className="text-sm text-gray-600">
-                                Email: {userEmail}
+                                {getTranslation("email_label")}: {userEmail}
                             </p>
                         </div>
 
                         {/* Reason Dropdown */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                What&apos;s your issue about?
+                                {getTranslation("whats_your_issue_about_label")}
                             </label>
                             <Dropdown
                                 value={reason}
@@ -283,7 +291,9 @@ export default function GetHelpMain() {
                                     }
                                 }}
                                 options={reasonOptions}
-                                placeholder="Select a reason"
+                                placeholder={getTranslation(
+                                    "select_reason_placeholder"
+                                )}
                                 className="w-full"
                             />
                         </div>
@@ -292,12 +302,14 @@ export default function GetHelpMain() {
                         {reason === "order related" && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Order ID
+                                    {getTranslation("order_id_label")}
                                 </label>
                                 <InputText
                                     value={orderId}
                                     onChange={(e) => setOrderId(e.target.value)}
-                                    placeholder="Enter order ID"
+                                    placeholder={getTranslation(
+                                        "enter_order_id_placeholder"
+                                    )}
                                     className="w-full p-3 border border-gray-300 rounded-md"
                                 />
                             </div>
@@ -306,14 +318,16 @@ export default function GetHelpMain() {
                         {reason === "others" && (
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Title
+                                    {getTranslation("title_label")}
                                 </label>
                                 <InputText
                                     value={ticketTitle}
                                     onChange={(e) =>
                                         setTicketTitle(e.target.value)
                                     }
-                                    placeholder="Enter a title for your inquiry"
+                                    placeholder={getTranslation(
+                                        "enter_title_for_inquiry_placeholder"
+                                    )}
                                     className="w-full p-3 border border-gray-300 rounded-md"
                                 />
                             </div>
@@ -323,15 +337,21 @@ export default function GetHelpMain() {
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 {reason === "order related"
-                                    ? "Describe your issue with this order"
-                                    : "Tell us more about your issue"}
+                                    ? getTranslation(
+                                          "describe_issue_with_order_label"
+                                      )
+                                    : getTranslation(
+                                          "tell_us_more_about_issue_label"
+                                      )}
                             </label>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 rows={4}
-                                placeholder="Please describe your issue in detail..."
-                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5AC12F]"
+                                placeholder={getTranslation(
+                                    "describe_issue_in_detail_placeholder"
+                                )}
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFA500]"
                             />
                         </div>
                     </div>
@@ -348,7 +368,7 @@ export default function GetHelpMain() {
                                 !description.trim() ||
                                 isSubmitting
                             }
-                            className={`bg-[#5AC12F] text-white w-full py-3 rounded-full flex items-center justify-center ${
+                            className={`bg-[#FFA500] text-white w-full py-3 rounded-full flex items-center justify-center ${
                                 !reason ||
                                 (reason === "order related" &&
                                     !orderId.trim()) ||
@@ -362,7 +382,7 @@ export default function GetHelpMain() {
                             {isSubmitting ? (
                                 <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                             ) : (
-                                <span>Send</span>
+                                <span>{getTranslation("send_button")}</span>
                             )}
                         </button>
                     </div>

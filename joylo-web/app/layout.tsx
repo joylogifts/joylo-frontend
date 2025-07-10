@@ -1,11 +1,11 @@
-import InstallPWA from "@/lib/ui/pwa/InstallPWA";
+// import InstallPWA from "@/lib/ui/pwa/InstallPWA";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import Script from "next/script";
 
 
 export const metadata = {
-  title: "Enatega Multivendor",
+  title: "Joylo",
   manifest:"/manifest.json",
 };
 
@@ -33,7 +33,7 @@ export default async function RootLayout({
           strategy="beforeInteractive"
         />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#94e469" />
+        <meta name="theme-color" content="#FFA500" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
@@ -49,7 +49,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}
-          <InstallPWA/>
+          {/* <InstallPWA/> */}
         </NextIntlClientProvider>
       </body>
     </html>

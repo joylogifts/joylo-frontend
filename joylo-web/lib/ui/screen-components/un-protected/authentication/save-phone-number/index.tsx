@@ -9,12 +9,12 @@ import { useAuth } from "@/lib/context/auth/auth.context";
 import useToast from "@/lib/hooks/useToast";
 import useUser from "@/lib/hooks/useUser";
 import CustomButton from "@/lib/ui/useable-components/button";
-import { useTranslations } from "next-intl";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 export default function SavePhoneNumber() {
 
   // Hooks
-  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const { sendOtpToPhoneNumber, setUser, user, isLoading } = useAuth();
   const {profile}=useUser();
   const { showToast } = useToast();
@@ -31,15 +31,15 @@ export default function SavePhoneNumber() {
       if(!user?.phone) {
         showToast({
           type: "error",
-          title: t("Error"),
-          message: "Please enter a valid phone number",
+          title: getTranslation("toast_error"),
+          message: getTranslation("please_enter_valid_phone_number_message"),
         });
         return;
       }else if(profile?.phoneIsVerified){
         showToast({
           type: "info",
-          title: t("Phone Verification"),
-          message: t("Your phone number is already verified"),
+          title: getTranslation("phone_verification_label"),
+          message: getTranslation("your_phone_number_already_verified_message"),
         });
         return;
       }else{
@@ -49,8 +49,8 @@ export default function SavePhoneNumber() {
       console.log(error);
       showToast({
         type: "error",
-        title: t("Error"),
-        message: t("An error occured while saving the phone number"),
+        title: getTranslation("toast_error"),
+        message: getTranslation("error_occurred_while_saving_phone_number_message"),
       });
     }
   };
@@ -60,11 +60,10 @@ export default function SavePhoneNumber() {
         <PhoneIcon />
       </div>
       <h2 className="font-bold text-xl my-1">
-        {t("Whats your mobile number")}
-        {/*Put an apostrophy comma as "What's" and put a "?" mark at the end of sentence in the translation*/}
+        {getTranslation("whats_your_mobile_number_label")}
       </h2>
       <p className="my-1">
-        {t("We need this to verify and secure your account")}
+        {getTranslation("we_need_this_to_verify_and_secure_your_account_message")}
       </p>
       <div className="flex my-1">
         <CustomPhoneTextField
@@ -78,10 +77,10 @@ export default function SavePhoneNumber() {
         />
       </div>
       <CustomButton
-        className={`bg-[#5AC12F] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72 my-1`}
+        className={`bg-[#FFA500] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72 my-1`}
         onClick={handleSubmit}
         loading={isLoading}
-        label={t("Continue")}
+        label={getTranslation("continue_label")}
       />
     </div>
   );

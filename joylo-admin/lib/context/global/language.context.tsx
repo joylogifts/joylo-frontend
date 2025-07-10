@@ -17,7 +17,7 @@ interface LangTranslationContextType {
   languages: any[];
   languagesLoading: boolean;
   languagesError: any;
-  selectedLanguage: string | null;
+  selectedLanguage: string;
   setSelectedLanguage: (code: string) => void;
   translations: Record<string, string>;
   translationsLoading: boolean;

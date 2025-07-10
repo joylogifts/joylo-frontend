@@ -1,4 +1,5 @@
 "use client"
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import type React from "react"
 import { useRef, useState, useEffect } from "react"
 //components
@@ -22,6 +23,7 @@ const VerificationEmailForChangePassword = ({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
   const {otp: emailOtpVerify} = useAuth()
   const { showToast } = useToast();
+  const { getTranslation } = useLangTranslation();
 
   // useEffect to handle resend email otp on first render
   const isFirstRender = useRef(true);
@@ -99,8 +101,8 @@ const VerificationEmailForChangePassword = ({
     if (otp.join("").length !== 6 || emailOtp !== emailOtpVerify) {
       return showToast({
         type: "error",
-        title: "Error",
-        message: "Please enter a valid OTP",
+        title: getTranslation("toast_error"),
+        message: getTranslation("please_enter_valid_otp_message"),
       })
     }else{
       handleSubmitAfterVerification()
@@ -115,11 +117,11 @@ const VerificationEmailForChangePassword = ({
         <EmailIcon/>
       </div>
 
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-1">We have sent OTP code to</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-1">{getTranslation("otp_sent_code_to_label")}</h2>
 
       <p className="text-xl font-bold text-center text-gray-800 mb-4">{formData?.email || ""}</p>
 
-      <p className="text-base text-gray-600 mb-8 text-center">Verify your Email</p>
+      <p className="text-base text-gray-600 mb-8 text-center">{getTranslation("verify_your_email_label")}</p>
 
       <div className="w-full mb-8">
         <div className="flex justify-center flex-wrap gap-2 sm:gap-4">
@@ -136,23 +138,23 @@ const VerificationEmailForChangePassword = ({
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onPaste={index === 0 ? handlePaste : undefined}
-              className="w-12 h-12 sm:w-14 sm:h-16 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:border-[#5AC12F] focus:ring-2 focus:ring-[#5AC12F] focus:ring-opacity-20"
+              className="w-12 h-12 sm:w-14 sm:h-16 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:border-[#FFA500] focus:ring-2 focus:ring-[#FFA500] focus:ring-opacity-20"
               autoFocus={index === 0}
             />
           ))}
         </div>
       </div>
 
-      <p className="text-sm text-gray-500 mb-8 text-center">Valid for 10 minutes</p>
+      <p className="text-sm text-gray-500 mb-8 text-center">{getTranslation("otp_valid_for_10_minutes_label")}</p>
 
       <CustomButton
-        label={"Continue"}
-        className="bg-[#5AC12F] text-white flex items-center justify-center rounded-full p-3 w-full mb-4 h-14 text-lg font-medium"
+        label={getTranslation("continue_label")}
+        className="bg-[#FFA500] text-white flex items-center justify-center rounded-full p-3 w-full mb-4 h-14 text-lg font-medium"
         onClick={handleSubmit}
       />
 
       <CustomButton
-        label={"Resend OTP"}
+        label={getTranslation("resend_otp_label")}
         className="bg-white flex items-center justify-center rounded-full border border-gray-300 p-3 w-full h-14 text-lg font-medium"
         onClick={handleResendEmailOtp}
       />

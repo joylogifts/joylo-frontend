@@ -3,6 +3,7 @@
 // core
 import Image from "next/image";
 import React from "react";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import { useRouter, usePathname } from "next/navigation";
 
 // Assets
@@ -29,6 +30,7 @@ const Card: React.FC<ICardProps> = ({
     const shouldTruncate = item.name?.length > 15;
     const { setIsSearchFocused, setFilter, isSearchFocused, filter } =
         useSearchUI();
+    const { getTranslation } = useLangTranslation();
 
     const { DELIVERY_RATE } = useConfig();
 
@@ -111,8 +113,12 @@ const Card: React.FC<ICardProps> = ({
                 !isWithinOpeningTime(item?.openingTimes)) && (
                 <div className="absolute rounded-md top-0 left-0 w-full h-[160px] bg-black/50 opacity-75 z-20 flex items-center justify-center">
                     <div className="text-white text-center z-30">
-                        <p className="text-lg font-bold">Closed</p>
-                        <p className="text-sm">We are currently closed</p>
+                        <p className="text-lg font-bold">
+                            {getTranslation("closed_label")}
+                        </p>
+                        <p className="text-sm">
+                            {getTranslation("currently_closed_message")}
+                        </p>
                     </div>
                 </div>
             )}
@@ -133,8 +139,8 @@ const Card: React.FC<ICardProps> = ({
                         </p>
                     </div>
                     {/* Delivery Time */}
-                    <div className="bg-[#F3FFEE] rounded-md flex items-center justify-center px-2 py-2 h-[40px]">
-                        <p className="text-xs text-[#5AC12F] font-light lg:font-normal text-center flex justify-center items-center">
+                    <div className="bg-[#FFDBBB] rounded-md flex items-center justify-center px-2 py-2 h-[40px]">
+                        <p className="text-xs text-[#FFA500] font-light lg:font-normal text-center flex justify-center items-center">
                             {`${item?.deliveryTime}`} min
                             {/* {`${item?.deliveryTime > 5 ? item?.deliveryTime - 5 : item?.deliveryTime} - ${item?.deliveryTime + 5}`}{" "} */}
                             {/* <br /> min */}
@@ -164,12 +170,16 @@ const Card: React.FC<ICardProps> = ({
             >
                 <div className="text-center  pt-10">
                     <p className="text-lg font-bold pb-3">
-                        {item.shopType === "restaurant"
-                            ? "Restaurant"
-                            : "Store"}{" "}
-                        is closed
+                        {getTranslation(
+                            item.shopType === "restaurant"
+                                ? "restaurant_label"
+                                : "store_label"
+                        )}{" "}
+                        {getTranslation("is_closed_label")}
                     </p>
-                    <p className="text-sm">Do you want to see menu?</p>
+                    <p className="text-sm">
+                        {getTranslation("see_menu_prompt")}
+                    </p>
                     <div className="flex pt-9 px-2 pb-2 flex-row justify-center items-center gap-2 w-full">
                         <Button
                             style={{
@@ -179,7 +189,7 @@ const Card: React.FC<ICardProps> = ({
                             onClick={() =>
                                 handleUpdateIsModalOpen(false, item._id)
                             }
-                            label="Close"
+                            label={getTranslation("close_label")}
                             className="w-1/2 bg-red-300 text-base font-normal text-black rounded-md min-h-10"
                         />
                         <Button
@@ -192,8 +202,8 @@ const Card: React.FC<ICardProps> = ({
                                     `/${item.shopType === "restaurant" ? "restaurant" : "store"}/${item?.slug}/${item._id}`
                                 )
                             }
-                            label="See Menu"
-                            className="w-1/2 bg-[#94e469] text-base font-normal text-black rounded-md min-h-10"
+                            label={getTranslation("see_menu_label")}
+                            className="w-1/2 bg-[#FFA500] text-base font-normal text-black rounded-md min-h-10"
                         />
                     </div>
                 </div>

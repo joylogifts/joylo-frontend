@@ -1,5 +1,6 @@
 // libraries
 import React from "react";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 // Components
 import HomeCard from "@/lib/ui/useable-components/Home-Card";
@@ -14,38 +15,35 @@ import CustomerApp from "@/public/assets/images/png/CustomerApp.png"
 
 
 const EnategaInfo: React.FC = () => {
+  const { getTranslation } = useLangTranslation();
   return (
     <div className="mt-[80px] mb-[80px]">
       <div className="flex flex-col justify-center items-center my-[20px]">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold m-4">
-          LIFE TASTES BETTER WITH ENATEGA
+          {getTranslation("life_tastes_better_with_joylo")}
         </h1>
         <p className="m-4 text-xl md:text-2xl lg:text-3xl">
-          Almost everything delivered to you – quickly, reliably, and affordably
+          {getTranslation("almost_everything_delivered_to_you")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 ">
         <MoveableCard
           image={deliveryFee}
-          heading={"Real support from real people"}
-          subText={
-            "Our world-class support team has your back, with friendly assistance and fast response times. "
-          }
+          heading={getTranslation("real_support_from_real_people_heading")}
+          subText={getTranslation("real_support_from_real_people_subtext")}
         />
         <MoveableCard
           image={ZeroDelivery}
-          heading={"0 € delivery fees with Enatega"}
-          subText={
-            "Enjoy zero delivery fees from the best restaurants and stores in your city."
-          }
+          heading={getTranslation("zero_delivery_fees_with_joylo_heading")}
+          subText={getTranslation("zero_delivery_fees_with_joylo_subtext")}
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-[30px] mb-[30px]">
-        <HomeCard image={CustomerApp} heading={"Fresh Groceries Delivered"} subText={"Go to Enatega App"} link={"https://play.google.com/store/apps/details?id=com.enatega.multivendor&hl=en"}/>
-        <HomeCard image={RestaurantApp} heading={"Restaurants Earn More"} subText={"Go to Enatega Restaurant App"} link={"https://play.google.com/store/apps/details?id=multivendor.enatega.restaurant&hl=en"} />
-        <HomeCard image={RiderApp} heading={"Riders Reaches Fast"} subText={"Go to Enatega Rider App"} link={"https://play.google.com/store/apps/details?id=com.enatega.multirider&hl=en"}/>
+        <HomeCard image={CustomerApp} heading={getTranslation("fresh_groceries_delivered_heading")} subText={getTranslation("go_to_joylo_app_subtext")} link={"https://play.google.com/store/apps/details?id=com.enatega.multivendor&hl=en"}/>
+        <HomeCard image={RestaurantApp} heading={getTranslation("restaurants_earn_more_heading")} subText={getTranslation("go_to_joylo_restaurant_app_subtext")} link={"https://play.google.com/store/apps/details?id=multivendor.enatega.restaurant&hl=en"} />
+        <HomeCard image={RiderApp} heading={getTranslation("riders_reaches_fast_heading")} subText={getTranslation("go_to_joylo_rider_app_subtext")} link={"https://play.google.com/store/apps/details?id=com.enatega.multirider&hl=en"}/>
       </div>
     </div>
   );

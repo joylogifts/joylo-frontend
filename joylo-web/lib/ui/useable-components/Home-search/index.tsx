@@ -1,3 +1,4 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +12,7 @@ import { USER_CURRENT_LOCATION_LS_KEY } from "@/lib/utils/constants";
 import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 
 const CitySearch: React.FC = () => {
+  const { getTranslation } = useLangTranslation();
   // Ref
   const inputRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null); // Added containerRef
@@ -120,7 +122,7 @@ const CitySearch: React.FC = () => {
       ref={containerRef}
       className="w-full max-w-md mx-auto p-2 rounded-md relative"
     >
-      <div className="flex justify-center items-center gap-4 rounded-full bg-white p-4 border-2 border-transparent hover:border-[#7dd24f] ">
+      <div className="flex justify-center items-center gap-4 rounded-full bg-white p-4 border-2 border-transparent hover:border-[#FFA500] ">
         <i
           className="pi pi-map-marker"
           style={{ fontSize: "1.5rem", color: "black" }}
@@ -128,7 +130,7 @@ const CitySearch: React.FC = () => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search for a city..."
+          placeholder={getTranslation('search_for_a_city')}
           value={cityName}
           onChange={(e) => setCityName(e.target.value)}
           className="w-full border rounded-md focus:outline-none focus:ring-0 hover:outline-none hover:ring-0 border-none"
@@ -156,7 +158,7 @@ const CitySearch: React.FC = () => {
                   onClick={() =>
                     handleSelect(suggestion.place_id, suggestion.description)
                   }
-                  className=" hover:text-[#94e469] px-5 hover:cursor-pointer"
+                  className=" hover:text-[#FFA500] px-5 hover:cursor-pointer"
                 >
                   {suggestion.description}
                 </li>

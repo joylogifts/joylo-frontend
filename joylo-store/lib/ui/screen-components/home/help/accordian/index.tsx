@@ -1,7 +1,7 @@
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import { Entypo } from "@expo/vector-icons";
 import { ReactNode, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 export default function HelpAccordian({
   heading,
@@ -14,7 +14,7 @@ export default function HelpAccordian({
 }) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const [open, setOpen] = useState(false);
   return (
     <View
@@ -35,7 +35,7 @@ export default function HelpAccordian({
           className="text-lg font-semibold text-gray-800 w-80"
           style={{ color: appTheme.fontSecondColor }}
         >
-          {t(heading)}
+          {getTranslation(heading)}
         </Text>
         <Entypo
           name={open ? "chevron-small-up" : "chevron-small-down"}

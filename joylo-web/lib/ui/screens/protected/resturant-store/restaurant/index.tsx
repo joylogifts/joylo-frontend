@@ -46,7 +46,10 @@ import { motion } from "framer-motion";
 import CustomDialog from "@/lib/ui/useable-components/custom-dialog";
 import Image from "next/image";
 
+import { useLangTranslation } from "@/lib/context/global/language.context";
+
 export default function RestaurantDetailsScreen() {
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     // Access the UserContext via our custom hook
     const {
         cart,
@@ -81,6 +84,8 @@ export default function RestaurantDetailsScreen() {
 
     // Fetch restaurant data
     const { data, loading } = useRestaurant(id, decodeURIComponent(slug));
+    // Function to handle opening the food item modal
+
 
     // fetch popular deals id
     const { data: popularSubCategoriesList } = useQuery(
@@ -180,11 +185,11 @@ export default function RestaurantDetailsScreen() {
         // Create a "Popular Deals" category if there are matching foods
         const popularDealsCategory: ICategory | null = popularFoods.length
             ? {
-                  _id: "popular-deals",
-                  title: "Popular Deals",
-                  foods: popularFoods,
-                  // index can be used for custom ordering if needed
-              }
+                _id: "popular-deals",
+                title: "Popular Deals",
+                foods: popularFoods,
+                // index can be used for custom ordering if needed
+            }
             : null;
 
         // Add the new category at the top
@@ -451,11 +456,15 @@ export default function RestaurantDetailsScreen() {
 
             let selected = "";
             deals.forEach((category) => {
-                const element = document.getElementById(toSlug(category.title));
+                const element = document.getElementById(toSlug(typeof category.title === "object"
+                    ? category.title[selectedLanguage]
+                    : category.title));
                 if (element) {
                     const rect = element.getBoundingClientRect();
                     if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
-                        selected = toSlug(category.title);
+                        selected = toSlug(typeof category.title === "object"
+                            ? category.title[selectedLanguage]
+                            : category.title);
                     }
                 }
             });
@@ -610,7 +619,7 @@ export default function RestaurantDetailsScreen() {
                             {loading ? (
                                 <Skeleton width="10rem" height="1.5rem" />
                             ) : (
-                                "See more information"
+                                getTranslation("see_more_information")
                             )}
                         </a>
 
@@ -627,7 +636,7 @@ export default function RestaurantDetailsScreen() {
                             {loading ? (
                                 <Skeleton width="10rem" height="1.5rem" />
                             ) : (
-                                "See reviews"
+                                getTranslation("see_reviews")
                             )}
                         </a>
                     </div>
@@ -666,7 +675,7 @@ export default function RestaurantDetailsScreen() {
                                             index: number
                                         ) => {
                                             const _slug = toSlug(
-                                                category.title
+                                                typeof category.title === "object" ? category.title[selectedLanguage] : category.title
                                             );
                                             return (
                                                 <li
@@ -675,16 +684,16 @@ export default function RestaurantDetailsScreen() {
                                                 >
                                                     <button
                                                         type="button"
-                                                        className={`bg-${selectedCategory === _slug ? "[#F3FFEE]" : "gray-100"} text-${selectedCategory === _slug ? "[#5AC12F]" : "gray-600"} rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
+                                                        className={`bg-${selectedCategory === _slug ? "[#FFDBBB]" : "gray-100"} text-${selectedCategory === _slug ? "[#FFA500]" : "gray-600"} rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
                                                         onClick={() =>
                                                             handleScroll(
                                                                 toSlug(
-                                                                    category.title
+                                                                    typeof category.title === "object" ? category.title[selectedLanguage] : category.title
                                                                 )
                                                             )
                                                         }
                                                     >
-                                                        {category.title}
+                                                        {typeof category.title === "object" ? category.title[selectedLanguage] : category.title}
                                                     </button>
                                                 </li>
                                             );
@@ -701,7 +710,9 @@ export default function RestaurantDetailsScreen() {
                                                         setShowAll(true)
                                                     }
                                                 >
-                                                    More
+                                                    {getTranslation(
+                                                        "more_button"
+                                                    )}
                                                 </button>
                                             </li>
                                         )}
@@ -720,7 +731,9 @@ export default function RestaurantDetailsScreen() {
                                         position: "left",
                                         style: { marginTop: "-10px" },
                                     }}
-                                    placeholder="Search for food items"
+                                    placeholder={getTranslation(
+                                        "search_for_food_items_placeholder"
+                                    )}
                                     type="text"
                                     name="search"
                                     showLabel={false}
@@ -741,7 +754,7 @@ export default function RestaurantDetailsScreen() {
                     <FoodCategorySkeleton />
                 ) : (
                     deals.map((category: ICategory, catIndex: number) => {
-                        const categorySlug = toSlug(category.title);
+                        const categorySlug = toSlug(typeof category.title === "object" ? category.title[selectedLanguage] : category.title);
 
                         return (
                             <div
@@ -754,7 +767,7 @@ export default function RestaurantDetailsScreen() {
                                 }}
                             >
                                 <h2 className="mb-4 font-inter text-gray-900 font-bold text-2xl sm:text-xl leading-snug tracking-tight">
-                                    {category.title}
+                                    {typeof category.title === "object" ? category.title[selectedLanguage] : category.title}
                                 </h2>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -771,17 +784,19 @@ export default function RestaurantDetailsScreen() {
                                                 <div className="flex-grow text-left md:text-left space-y-2">
                                                     <div className="flex flex-col lg:flex-row justify-between flex-wrap">
                                                         <h3 className="text-gray-900 text-lg font-semibold font-inter">
-                                                            {meal.title}
+                                                            {typeof meal.title === "object" ? meal.title[selectedLanguage] : meal.title}
                                                         </h3>
                                                         {meal.isOutOfStock && (
                                                             <span className="text-red-500">
-                                                                (Out of stock)
+                                                                {getTranslation(
+                                                                    "out_of_stock_label"
+                                                                )}
                                                             </span>
                                                         )}
                                                     </div>
 
                                                     <p className="text-gray-500 text-sm text-wrap">
-                                                        {meal.description}
+                                                        {typeof meal.description === "object" ? meal.description[selectedLanguage] : meal.description}
                                                     </p>
 
                                                     <div className="flex items-center gap-2">
@@ -832,7 +847,7 @@ export default function RestaurantDetailsScreen() {
                                                     visible={
                                                         isModalOpen.value &&
                                                         isModalOpen.id ===
-                                                            meal?._id?.toString()
+                                                        meal?._id?.toString()
                                                     }
                                                     onHide={() =>
                                                         handleUpdateIsModalOpen(
@@ -843,13 +858,18 @@ export default function RestaurantDetailsScreen() {
                                                 >
                                                     <div className="text-center pb-10 pt-10">
                                                         <p className="text-lg font-bold pb-3">
-                                                            Restaurant is closed
+                                                            {getTranslation(
+                                                                "restaurant_is_closed"
+                                                            )}
                                                         </p>
                                                         <p className="text-sm">
-                                                            You can&apos;t order
-                                                            this food item right
-                                                            now.<br></br> Please
-                                                            try again later.
+                                                            {getTranslation(
+                                                                "cannot_order_food_item_now"
+                                                            )}
+                                                            <br></br>{" "}
+                                                            {getTranslation(
+                                                                "please_try_again_later"
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </CustomDialog>

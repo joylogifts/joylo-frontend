@@ -1,4 +1,4 @@
 export const ORDER_DISPATCH_TYPE: string[] = [
-  "Delivery Orders",
-  "Pick up Orders",
+  "delivery_orders",
+  "pickup_orders",
 ];

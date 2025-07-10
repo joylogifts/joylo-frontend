@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +17,7 @@ interface CartProps {
 }
 
 export default function Cart({ onClose }: CartProps) {
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     // Access user context for cart functionality
     const {
         cart,
@@ -77,10 +79,10 @@ export default function Cart({ onClose }: CartProps) {
             <div className="h-full flex flex-col items-center justify-center p-6">
                 <div className="text-center">
                     <h2 className="font-inter font-semibold text-xl text-gray-900 mb-2">
-                        Your cart is empty
+                        {getTranslation("your_cart_is_empty")}
                     </h2>
                     <p className="text-gray-500 mb-6">
-                        Add items to your cart to continue
+                        {getTranslation("add_items_to_cart_to_continue")}
                     </p>
                     <button
                         onClick={async () => {
@@ -94,10 +96,10 @@ export default function Cart({ onClose }: CartProps) {
 
                             router.push("/discovery", { scroll: true });
                         }}
-                        className="bg-[#5AC12F] text-black px-6 py-2 rounded-full font-medium"
+                        className="bg-[#FFA500] text-black px-6 py-2 rounded-full font-medium"
                         type="button"
                     >
-                        Browse Restaurant
+                        {getTranslation("browse_restaurant")}
                     </button>
                 </div>
             </div>
@@ -109,16 +111,18 @@ export default function Cart({ onClose }: CartProps) {
         0,
         3
     );
-
     return (
         <div className="h-full flex flex-col bg-white relative">
             {/* Header */}
             <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="font-inter font-semibold text-xl text-gray-900">
-                    Your order
+                    {getTranslation("your_order_label")}
                 </h2>
                 <span className="text-gray-500 text-sm">
-                    {cartCount} {cartCount === 1 ? "item" : "items"}
+                    {cartCount}{" "}
+                    {cartCount === 1
+                        ? getTranslation("item_label")
+                        : getTranslation("items_label")}
                 </span>
             </div>
 
@@ -140,26 +144,28 @@ export default function Cart({ onClose }: CartProps) {
                                     />
                                     <div>
                                         <h3 className="font-inter font-semibold text-sm text-gray-700">
-                                            {item.foodTitle ||
+                                            {typeof item?.foodTitle === "object" ? item?.foodTitle[selectedLanguage] : item?.foodTitle ||
                                                 item.title ||
-                                                "Food Item"}
+                                                getTranslation(
+                                                    "food_item_label"
+                                                )}
                                         </h3>
                                         <p className="text-[#0EA5E9] font-semibold text-sm">
                                             {CURRENCY_SYMBOL}
-                                            {item.price || 0}
+                                            {item?.price || 0}
                                         </p>
                                     </div>
                                 </div>
-                                {item.optionTitles &&
-                                    item.optionTitles.length > 0 && (
+                                {item?.optionTitles &&
+                                    item?.optionTitles?.length > 0 && (
                                         <div className="text-xs text-gray-500 mt-1">
-                                            {item.optionTitles.map(
+                                            {item?.optionTitles?.map(
                                                 (title, index) => (
                                                     <span
                                                         key={index}
                                                         className="mr-2"
                                                     >
-                                                        + {title}
+                                                        + {typeof title === "object" ? title[selectedLanguage] : title}
                                                     </span>
                                                 )
                                             )}
@@ -182,7 +188,7 @@ export default function Cart({ onClose }: CartProps) {
                                 </button>
 
                                 <span className="text-gray-900 w-6 text-center">
-                                    {item.quantity}
+                                    {item?.quantity}
                                 </span>
 
                                 <button
@@ -202,13 +208,13 @@ export default function Cart({ onClose }: CartProps) {
                 </div>
 
                 {/* Recommended for You Section */}
-                {slicedRelatedItems.length > 0 && (
+                {slicedRelatedItems?.length > 0 && (
                     <div className="p-4 bg-gray-50">
                         <h2 className="font-inter font-semibold text-base text-gray-900 mb-3">
-                            Recommended for you
+                            {getTranslation("recommended_for_you_label")}
                         </h2>
                         <div className="flex flex-wrap gap-3">
-                            {slicedRelatedItems.map((id: string) => {
+                            {slicedRelatedItems?.map((id: string) => {
                                 // Read the food fragment using Apollo Client
                                 const food = client.readFragment({
                                     id: `Food:${id}`,
@@ -222,22 +228,22 @@ export default function Cart({ onClose }: CartProps) {
                                         key={id}
                                         onClick={() => handleAddRelatedItem(id)}
                                         className="flex-grow basis-[calc(50%-0.75rem)] bg-white rounded-lg overflow-hidden relative 
-                    transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg cursor-pointer group"
+                                                   transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg cursor-pointer group"
                                     >
-                                        {food.image && (
+                                        {food?.image && (
                                             <img
-                                                src={food.image}
-                                                alt={food.title}
+                                                src={food?.image}
+                                                alt={typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title}
                                                 className="w-full h-36 object-cover group-hover:opacity-80 transition-opacity duration-300"
                                             />
                                         )}
                                         <div className="p-2">
                                             <p className="text-sm font-semibold text-gray-700 truncate">
-                                                {food.title}
+                                                {typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title}
                                             </p>
                                             <p className="text-[#0EA5E9] text-sm font-semibold">
                                                 {CURRENCY_SYMBOL}
-                                                {food.variations[0].price}
+                                                {food?.variations[0].price}
                                             </p>
                                         </div>
                                     </div>
@@ -251,12 +257,14 @@ export default function Cart({ onClose }: CartProps) {
                 <div className="p-4 bg-white">
                     <div className="bg-gray-50 rounded-lg p-3">
                         <h2 className="font-inter font-semibold text-base text-gray-900 mb-2">
-                            Add comment for Restaurant
+                            {getTranslation("add_comment_for_restaurant_label")}
                         </h2>
                         <textarea
                             id="instructions"
                             className="w-full h-20 p-2 bg-white border border-gray-300 rounded-md resize-none focus:border-[#0EA5E9] focus:outline-none text-sm"
-                            placeholder="Special requests, allergies, dietary restrictions..."
+                            placeholder={getTranslation(
+                                "special_requests_placeholder"
+                            )}
                             onChange={({ target: { value } }) => {
                                 if (value?.length > 500) return;
                                 localStorage.setItem(
@@ -270,7 +278,9 @@ export default function Cart({ onClose }: CartProps) {
                         <div className="flex items-end justify-between mt-2">
                             <span className="text-red-500 text-xs">
                                 {instructions?.length >= 500 &&
-                                    "Maximum limit reached"}
+                                    getTranslation(
+                                        "maximum_limit_reached_label"
+                                    )}
                             </span>
                             <span className="text-xs text-gray-500">
                                 {instructions.length}/500
@@ -283,7 +293,7 @@ export default function Cart({ onClose }: CartProps) {
             {/* Fixed Checkout Button */}
             <div className="p-4 border-t bg-white">
                 <button
-                    className="flex justify-between items-center w-full bg-[#5AC12F] text-black rounded-full px-4 py-3"
+                    className="flex justify-between items-center w-full bg-[#FFA500] text-black rounded-full px-4 py-3"
                     onClick={() => {
                         router.push("/order/checkout");
                         if (onClose) onClose();
@@ -291,11 +301,11 @@ export default function Cart({ onClose }: CartProps) {
                     type="button"
                 >
                     <div className="flex items-center">
-                        <span className="bg-black text-[#5AC12F] rounded-full w-6 h-6 flex items-center justify-center mr-2 text-sm font-medium">
+                        <span className="bg-black text-[#FFA500] rounded-full w-6 h-6 flex items-center justify-center mr-2 text-sm font-medium">
                             {cartCount}
                         </span>
                         <span className="text-black text-base font-medium">
-                            Go to Checkout
+                            {getTranslation("go_to_checkout_label")}
                         </span>
                     </div>
                     <span className="text-black text-base font-medium">

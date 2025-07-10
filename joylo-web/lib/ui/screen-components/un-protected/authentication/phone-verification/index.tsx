@@ -14,7 +14,7 @@ import { useAuth } from "@/lib/context/auth/auth.context";
 import { useConfig } from "@/lib/context/configuration/configuration.context";
 import useToast from "@/lib/hooks/useToast";
 import useUser from "@/lib/hooks/useUser";
-import { useTranslations } from "next-intl";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import { useEffect, useState } from "react";
 
 // Prime React
@@ -33,7 +33,7 @@ export default function PhoneVerification({
 
   // Hooks
   const { SKIP_MOBILE_VERIFICATION, TEST_OTP } = useConfig();
-  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const {
     user,
     otp,
@@ -56,10 +56,10 @@ export default function PhoneVerification({
     onError: (error: ApolloError) => {
       showToast({
         type: "error",
-        title: t("Error"),
+        title: getTranslation("toast_error"),
         message:
           error.cause?.message ||
-          t("An error occurred while updating the user"),
+          getTranslation("error_occurred_while_updating_user_message"),
       });
     },
   });
@@ -96,14 +96,14 @@ export default function PhoneVerification({
         }
         return showToast({
           type: "success",
-          title: t("Phone Verification"),
-          message: t("Your phone number is verified successfully"),
+          title: getTranslation("phone_verification_label"),
+          message: getTranslation("your_phone_number_verified_successfully_message"),
         });
       } else {
         showToast({
           type: "error",
-          title: t("OTP Error"),
-          message: t("Please enter a valid OTP code"),
+          title: getTranslation("otp_error_label"),
+          message: getTranslation("please_enter_valid_otp_code_message"),
         });
       }
     } catch (error) {
@@ -123,15 +123,15 @@ export default function PhoneVerification({
       await sendOtpToPhoneNumber(user?.phone);
       showToast({
         type: "success",
-        title: t("OTP Resent"),
-        message: t("We have resent the OTP code to your phone"),
+        title: getTranslation("otp_resent_label"),
+        message: getTranslation("resent_otp_code_to_your_phone_message"),
       });
       setIsResendingOtp(false);
     } else {
       showToast({
         type: "error",
-        title: t("Error"),
-        message: t("Please re-enter your valid phone number"),
+        title: getTranslation("toast_error"),
+        message: getTranslation("please_reenter_your_valid_phone_number_message"),
       });
       handleChangePanel(4);
     }
@@ -143,8 +143,8 @@ export default function PhoneVerification({
       setOtp(TEST_OTP);
       showToast({
         type: "success",
-        title: t("Phone Verification"),
-        message: t("Your phone number is verified successfully"),
+        title: getTranslation("phone_verification_label"),
+        message: getTranslation("your_phone_number_verified_successfully_message"),
       });
       if (!profile?.emailIsVerified) {
         handleChangePanel(5);
@@ -160,10 +160,10 @@ export default function PhoneVerification({
   return (
     <div className=" flex flex-col justify-between item-center self-center">
       <p>
-        {t("We have sent OTP code to")}
+        {getTranslation("otp_sent_code_to_label")}
         <span className="font-bold">{user?.phone}</span>
       </p>
-      <p className="font-light text-sm mb-2">{t("Please check your inbox")}</p>
+      <p className="font-light text-sm mb-2">{getTranslation("please_check_your_inbox_message")}</p>
       <InputOtp
         value={phoneOtp}
         onChange={(e) => setPhoneOtp(String(e.value))}
@@ -184,13 +184,13 @@ export default function PhoneVerification({
       {/* create a span and give a margin top */}
       <span className="mt-4"></span>
       <CustomButton
-        label={t("Continue")}
+        label={getTranslation("continue_label")}
         loading={isLoading}
-        className={`bg-[#5AC12F] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72 my-1`}
+        className={`bg-[#FFA500] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72 my-1`}
         onClick={handleSubmit}
       />
       <CustomButton
-        label={t("Resend OTP")}
+        label={getTranslation("resend_otp_label")}
         className={`bg-[#fff] flex items-center justify-center gap-x-4 px-3 rounded-full border border-gray-300 p-3 m-auto w-72 my-1`}
         onClick={handleResendPhoneOtp}
         loading={isResendingOtp}

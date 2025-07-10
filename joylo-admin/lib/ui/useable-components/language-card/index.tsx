@@ -31,10 +31,11 @@ import { LanguageManagementContext } from '@/lib/context/super-admin/language-ma
 // Utils & Constants
 import { useTranslations } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
+import Image from 'next/image';
 
 export default function LanguageCard({ lng }: ILanguageCardProps) {
   // Props
-  const { _id, label, code, isDefault, processed, processedAt } = lng;
+  const { _id, label, code, isDefault, processed, processedAt, flag } = lng;
 
   // Hooks
   const t = useTranslations();
@@ -131,6 +132,9 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
       >
         <div className="flex flex-1 flex-col">
           <div className="w-fit flex gap-x-2">
+            {!!flag && (
+              <Image src={flag ?? ''} width={20} height={40} alt="item.png" />
+            )}
             <TextComponent
               className={`text-card-h3 flex flex-1 text-xs text-${language?.code === code ? 'white' : 'black'}`}
               text={label}

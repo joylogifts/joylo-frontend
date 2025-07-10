@@ -70,7 +70,7 @@ const Help = (props) => {
   }
 
   const openWhatsAppChat = async () => {
-    const phoneNumber = '+14232600408'
+    const phoneNumber = '+40742200227'
 
     if (Platform.OS === 'android') {
       const androidUrl = `whatsapp://send?phone=${phoneNumber}`

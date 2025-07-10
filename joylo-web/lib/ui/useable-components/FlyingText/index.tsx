@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
-const texts = [
-  "BURGERS.",
-  "GIFTS.",
-  "PIZZA.",
-  "DESSERTS."
-];
+const FlyingText = () => {
+  const { getTranslation } = useLangTranslation();
+  const texts = [
+    getTranslation('burgers'),
+    getTranslation('gifts'),
+    getTranslation('pizza'),
+    getTranslation('desserts')
+  ];
 
 const containerVariants = {
   animate: {
@@ -45,7 +48,6 @@ const letterVariants = {
   }
 };
 
-const AnimatedText = () => {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
@@ -59,7 +61,7 @@ const AnimatedText = () => {
     }, 3000);
 
     return () => clearInterval(cycle);
-  }, []);
+  }, [texts.length]);
 
   const currentText = texts[index];
 
@@ -78,6 +80,7 @@ const AnimatedText = () => {
             {currentText.split("").map((char, i) => (
               <motion.span
                 key={i}
+                // @ts-ignore
                 variants={letterVariants}
                 className='text-[40px] md:text-[80px] font-extrabold text-white inline-block'
               >
@@ -91,4 +94,4 @@ const AnimatedText = () => {
   );
 };
 
-export default AnimatedText;
+export default FlyingText;

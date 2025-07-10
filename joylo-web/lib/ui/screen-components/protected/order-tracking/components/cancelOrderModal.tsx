@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client";
 import { ABORT_ORDER } from "@/lib/api/graphql";
 import useToast from "@/lib/hooks/useToast";
 import { useAuth } from "@/lib/context/auth/auth.context";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 interface CancelOrderModalProps {
   visible: boolean;
@@ -13,6 +14,7 @@ interface CancelOrderModalProps {
 }
 
 function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderModalProps) {
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
   const { authToken } = useAuth(); // Get auth context for authentication
  
@@ -21,8 +23,8 @@ function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderMo
       console.log("Order cancelled successfully:", data);
       showToast({
         type: "success",
-        title: "Order Cancelled",
-        message: "Your order has been cancelled successfully.",
+        title: getTranslation("order_cancelled_title"),
+        message: getTranslation("order_cancelled_success_message"),
       });
       console.log("onSuccess is called");
       onSuccess();
@@ -38,8 +40,8 @@ function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderMo
       });
       showToast({
         type: "error",
-        title: "Cancellation Failed",
-        message: error.message || "Unable to cancel order at this time.",
+        title: getTranslation("cancellation_failed_title"),
+        message: getTranslation("unable_to_cancel_order_message"),
       });
     },
     // Ensure token is sent with the request
@@ -55,8 +57,8 @@ function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderMo
       console.error("No authentication token available");
       showToast({
         type: "error",
-        title: "Authentication Required",
-        message: "Please log in to cancel your order.",
+        title: getTranslation("authentication_required_title"),
+        message: getTranslation("login_to_cancel_order_message"),
       });
       return;
     }
@@ -106,11 +108,11 @@ function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderMo
           </button>
         </div>
 
-        <h2 className="text-xl font-semibold mb-3">Cancel your order</h2>
+        <h2 className="text-xl font-semibold mb-3">{getTranslation("cancel_your_order_heading")}</h2>
         <p className="text-gray-600 text-sm mb-6">
-          {"We've got your order and may find you a rider any"}
+          {getTranslation("order_cancel_warning_line1")}
           <br />
-          second now. Cancel anyway?
+          {getTranslation("order_cancel_warning_line2")}
         </p>
 
         <div className="space-y-3">
@@ -119,7 +121,7 @@ function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderMo
             disabled={loading}
             className="w-full py-3 px-4 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
           >
-            {loading ? "Cancelling..." : "Cancel my order"}
+            {loading ? getTranslation("cancelling_text") : getTranslation("cancel_my_order_button")}
           </button>
 
           <button
@@ -127,7 +129,7 @@ function CancelOrderModal({ visible, onHide, orderId, onSuccess }: CancelOrderMo
             disabled={loading}
             className="w-full py-3 px-4 border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            {"I'll wait for my order"}
+            {getTranslation("ill_wait_for_my_order_button")}
           </button>
         </div>
       </div>
