@@ -21,6 +21,7 @@ import {
   View,
 } from "react-native";
 import { Switch } from "react-native-switch";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const { width } = Dimensions.get("window");
 
@@ -42,7 +43,7 @@ const timeOptions = generateTimeSlots();
 export default function ScheduleScreen() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   // States
   const [schedule, setSchedule] = useState<WorkSchedule[]>();
   const [dropdown, setDropdown] = useState<{
@@ -71,7 +72,7 @@ export default function ScheduleScreen() {
 
       if (overlapping_day) {
         FlashMessageComponent({
-          message: `${t(overlapping_day)} ${t("has overlapping slots")}`,
+          message: `${t(overlapping_day)} ${t("has_overlapping_slots")}`,
         });
         return;
       }
@@ -94,13 +95,13 @@ export default function ScheduleScreen() {
         },
         onCompleted: () => {
           FlashMessageComponent({
-            message: t("Work Schedule has been updated successfully"),
+            message: t("work_schedule_updated_successfully"),
           });
         },
         onError: (error) => {
           FlashMessageComponent({
             message:
-              error.graphQLErrors[0]?.message ?? t("Something went wrong"),
+              error.graphQLErrors[0]?.message ?? t("something_went_wrong"),
           });
         },
       });
@@ -175,7 +176,7 @@ export default function ScheduleScreen() {
       // Ensure new startTime is before endTime
       if (slot.endTime && newTime >= timeToMinutes(slot.endTime)) {
         FlashMessageComponent({
-          message: t("Start time must be earlier than end time"),
+          message: t("start_time_must_be_before_end_time"),
         });
         return;
       }
@@ -183,7 +184,7 @@ export default function ScheduleScreen() {
       // Ensure new endTime is after startTime
       if (slot.startTime && newTime <= timeToMinutes(slot.startTime)) {
         FlashMessageComponent({
-          message: t("End time must be greater than start time"),
+          message: t("end_time_must_be_after_start_time"),
         });
         return;
       }
@@ -207,7 +208,7 @@ export default function ScheduleScreen() {
 
     if (isOverlapping) {
       FlashMessageComponent({
-        message: t("Time slot overlaps with another existing slot"),
+        message: t("time_slot_overlaps_with_existing_slot"),
       });
       return;
     }
@@ -441,7 +442,7 @@ export default function ScheduleScreen() {
               className="text-center  text-lg font-medium"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Update Schedule")}
+              {t("update_schedule")}
             </Text>
           )}
         </TouchableOpacity>
@@ -479,7 +480,7 @@ export default function ScheduleScreen() {
               className="font-[Inter] text-lg font-bold mb-2"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Select Time Slot")}
+              {t("select_time_slot")}
             </Text>
             <ScrollView
               style={{ maxHeight: 300 }}

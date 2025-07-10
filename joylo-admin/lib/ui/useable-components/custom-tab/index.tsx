@@ -1,7 +1,7 @@
 // Interface
 import { ICustomTabProps } from '@/lib/utils/interfaces';
 import OrdersDashboardDateFilter from '../orders-date-filter';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const CustomTab = ({
@@ -12,7 +12,7 @@ const CustomTab = ({
   setDateFilter,
 }: ICustomTabProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div>
@@ -20,11 +20,10 @@ const CustomTab = ({
         {options.map((option) => (
           <div
             key={String(option)}
-            className={`flex cursor-pointer items-center justify-center rounded px-4 ${
-              selectedTab === option
-                ? 'bg-white text-black shadow'
-                : 'text-gray-500'
-            }`}
+            className={`flex cursor-pointer items-center justify-center rounded px-4 ${selectedTab === option
+              ? 'bg-white text-black shadow'
+              : 'text-gray-500'
+              }`}
             onClick={() => setSelectedTab(option)}
           >
             {option}
@@ -41,7 +40,7 @@ const CustomTab = ({
                 dateKeyword: 'Today',
               }
             }
-            setDateFilter={setDateFilter ?? function () {}}
+            setDateFilter={setDateFilter ?? function () { }}
           />
         ))}
     </div>

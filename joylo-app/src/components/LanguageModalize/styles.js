@@ -5,7 +5,7 @@ import { theme } from '../../utils/themeColors'
 const { height } = Dimensions.get('window')
 
 
-const styles = (props = null) => {  
+const styles = (props = null) => {
   return StyleSheet.create({
     backdrop: {
       height: '80%'
@@ -44,6 +44,11 @@ const styles = (props = null) => {
       ...alignment.PBxSmall,
       marginTop: scale(5),
       columnGap: 10
+    },
+    flagImage: {
+      width: scale(20),
+      height: scale(20),
+      borderRadius: scale(10)
     },
     emptyButton: {
       display: 'flex',

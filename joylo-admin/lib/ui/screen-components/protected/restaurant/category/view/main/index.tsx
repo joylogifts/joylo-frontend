@@ -36,7 +36,7 @@ import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
 import { GET_SUBCATEGORIES } from '@/lib/api/graphql/queries/sub-categories';
 import SubCategoriesPreiwModal from '../modal';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryMain({
@@ -46,7 +46,7 @@ export default function CategoryMain({
   setIsAddSubCategoriesVisible,
 }: ICategoryMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
 
   // Context
   const {
@@ -133,7 +133,7 @@ export default function CategoryMain({
     setIsSubCategoryModalOpen((prev) => !prev);
   };
   // Restaurant Profile Complete
-  function onFetchCategoriesByRestaurantCompleted() {}
+  function onFetchCategoriesByRestaurantCompleted() { }
   // Restaurant Zone Info Error
   function onErrorFetchCategoriesByRestaurant() {
     showToast({
@@ -172,23 +172,23 @@ export default function CategoryMain({
     },
     ...(shopType === 'grocery'
       ? [
-          {
-            label: getTranslation('view_sub_categories'),
-            command: (data?: ICategory) => {
-              if (data && data._id) {
-                handleCategoryRowClick(data?._id);
-              } else {
-                showToast({
-                  type: 'error',
-                  title: getTranslation('view_sub_categories'),
-                  message: getTranslation(
-                    'an_error_occured_while_previewing_the_related_sub_categories'
-                  ),
-                });
-              }
-            },
+        {
+          label: getTranslation('view_sub_categories'),
+          command: (data?: ICategory) => {
+            if (data && data._id) {
+              handleCategoryRowClick(data?._id);
+            } else {
+              showToast({
+                type: 'error',
+                title: getTranslation('view_sub_categories'),
+                message: getTranslation(
+                  'an_error_occured_while_previewing_the_related_sub_categories'
+                ),
+              });
+            }
           },
-        ]
+        },
+      ]
       : []),
   ];
   return (

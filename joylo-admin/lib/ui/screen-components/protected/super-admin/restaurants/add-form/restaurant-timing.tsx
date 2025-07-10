@@ -4,7 +4,7 @@ import { ErrorMessage, Form, Formik, FormikErrors } from 'formik';
 
 // Hooks
 import { useContext } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 // Interface and Types
 import { TWeekDays } from '@/lib/utils/types/days';
@@ -44,11 +44,11 @@ const RestaurantTiming = ({
   stepperProps,
 }: IRestaurantsRestaurantTimingComponentProps) => {
   const { onStepChange } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -165,11 +165,11 @@ const RestaurantTiming = ({
                           value?.times?.length > 0
                             ? []
                             : [
-                                {
-                                  startTime: '00:00',
-                                  endTime: '23:59',
-                                },
-                              ];
+                              {
+                                startTime: '00:00',
+                                endTime: '23:59',
+                              },
+                            ];
                         setFieldValue(`${dayIndex}.times`, newTimes);
                       }}
                       checked={value?.times?.length > 0}
@@ -204,11 +204,11 @@ const RestaurantTiming = ({
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.startTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.startTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.startTime
                                         ? 'red'
                                         : '',
                                   }}
@@ -243,11 +243,11 @@ const RestaurantTiming = ({
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.endTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.endTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.endTime
                                         ? 'red'
                                         : '',
                                   }}

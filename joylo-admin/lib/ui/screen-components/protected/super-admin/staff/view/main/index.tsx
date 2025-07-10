@@ -28,7 +28,7 @@ import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
 import useToast from '@/lib/hooks/useToast';
 import { useMutation } from '@apollo/client';
 import { DELETE_STAFF } from '@/lib/api/graphql/mutations/staff';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function StaffMain({
@@ -36,7 +36,7 @@ export default function StaffMain({
   setStaff,
 }: IStaffMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 

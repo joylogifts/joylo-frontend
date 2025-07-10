@@ -10,11 +10,12 @@ import CustomSwitch from "@/lib/ui/useable-components/switch-button";
 import { IRiderProfile } from "@/lib/utils/interfaces";
 import { MutationTuple, useMutation } from "@apollo/client";
 import { showMessage } from "react-native-flash-message";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const CustomDrawerHeader = () => {
   // Hook
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const {  getTranslation:t } = useLanguage();
   const { dataProfile, userId } = useUserContext();
 
   // Queries
@@ -26,7 +27,7 @@ const CustomDrawerHeader = () => {
         message:
           error.graphQLErrors[0].message ||
           error?.networkError?.message ||
-          t("Unable to update availability"),
+          t("unable_to_update_availability"),
       });
     },
   }) as MutationTuple<IRiderProfile | undefined, { id: string }>;
@@ -86,7 +87,7 @@ const CustomDrawerHeader = () => {
           className="text-md"
           style={{ color: appTheme.secondaryTextColor }}
         >
-          {t("Availability")}
+          {t("availability")}
         </Text>
         {loading ? (
           <SpinnerComponent color={appTheme.secondaryTextColor} />
@@ -103,7 +104,7 @@ const CustomDrawerHeader = () => {
           className="text-xs font-medium"
           style={{ color: appTheme.secondaryTextColor }}
         >
-          {dataProfile?.available ? t("Available") : t("Not Available")}
+          {dataProfile?.available ? t("available") : t("not_available")}
         </Text>
       </View>
     </View>

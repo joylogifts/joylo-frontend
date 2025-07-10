@@ -23,7 +23,7 @@ import {
 // Components
 import SidebarItem from './side-bar-item';
 import { onUseLocalStorage } from '@/lib/utils/methods';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 function VendorSidebar({ children }: IGlobalComponentProps) {
@@ -49,7 +49,7 @@ function VendorSidebar({ children }: IGlobalComponentProps) {
 
 export default function MakeVendorSidebar() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { isVendorSidebarVisible } =
     useContext<LayoutContextProps>(LayoutContext);

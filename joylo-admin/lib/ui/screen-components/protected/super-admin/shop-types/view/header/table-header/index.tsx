@@ -6,7 +6,7 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 import { IShopTypesTableHeaderProps } from '@/lib/utils/interfaces';
 
 // Icons
-import { useTranslations } from 'next-intl';
+
 
 // Prime react
 import { OverlayPanel } from 'primereact/overlaypanel';
@@ -17,7 +17,7 @@ export default function ShopTypesTableHeader({
   onGlobalFilterChange,
 }: IShopTypesTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   //Ref

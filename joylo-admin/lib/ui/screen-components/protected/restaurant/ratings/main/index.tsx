@@ -6,12 +6,12 @@ import RatingsHeaderDataView from '../header/table-header';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import RatingSkeleton from '@/lib/ui/useable-components/custom-skeletons/rating.card.skeleton';
 import { IItem, IReview } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RatingMain: React.FC = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

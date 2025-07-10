@@ -6,7 +6,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import React, { useRef, useState } from 'react';
 import classes from './commission-rate.header.module.css';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface MenuItem {
@@ -20,7 +20,7 @@ const CommissionRateHeader: React.FC<ICommissionRateHeaderProps> = ({
   onSearch,
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

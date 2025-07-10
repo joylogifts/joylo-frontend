@@ -20,19 +20,19 @@ import {
   IUpdateBussinessDetailsForm,
 } from '@/lib/utils/interfaces';
 import { BussinessDetailsSchema } from '@/lib/utils/schema';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UpdateBusinessDetails({
   stepperProps,
 }: IUpdateProfileProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Contexts

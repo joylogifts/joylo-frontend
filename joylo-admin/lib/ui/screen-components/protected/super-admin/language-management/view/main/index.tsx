@@ -2,7 +2,7 @@
 
 // Core
 import { useContext, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { Chip } from 'primereact/chip';
 import ReactJson from 'react18-json-view';
 import { ApolloError, useMutation } from '@apollo/client';
@@ -48,7 +48,7 @@ export default function LanguageManagementMain({
   activeTab,
 }: ILanguageManagementMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
@@ -180,9 +180,8 @@ export default function LanguageManagementMain({
   return (
     <div className="flex flex-grow flex-col overflow-hidden sm:flex-row">
       <div
-        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/6 ${
-          activeTab === 'language' ? '' : 'hidden sm:block'
-        }`}
+        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/6 ${activeTab === 'language' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Mobile-only header for Vendors section */}
         <div className="mt-3  border-b p-3 sm:hidden">
@@ -193,7 +192,7 @@ export default function LanguageManagementMain({
               icon={faAdd}
               iconStyles={{ color: 'white' }}
               title={getTranslation('add_vendor')}
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </div>
         </div>
@@ -221,9 +220,8 @@ export default function LanguageManagementMain({
       </div>
 
       <div
-        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${
-          activeTab === 'translations' ? '' : 'hidden sm:block'
-        }`}
+        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${activeTab === 'translations' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Header for Restaurants section */}
         <div className="border-b  pt-3">

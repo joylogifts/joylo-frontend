@@ -9,7 +9,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useTransition,
 } from 'react';
 import Image from 'next/image';
 
@@ -61,15 +60,14 @@ import classes from './app-bar.module.css';
 import { AppLogo } from '@/lib/utils/assets/svgs/logo';
 import { useQuery } from '@apollo/client';
 import { GET_VENDOR_BY_ID } from '@/lib/api/graphql';
-import { useLocale, useTranslations } from 'next-intl';
-import { setUserLocale } from '@/lib/utils/methods/locale';
-import { TLocale } from '@/lib/utils/types/locale';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
+import { MenuItem } from 'primereact/menuitem';
 
 const VendorAppTopbar = () => {
   // Hooks
-  const t = useTranslations();
-  const currentLocale = useLocale();
+
+
 
   // Local Storage
   const vendorId = onUseLocalStorage('get', 'vendorId');
@@ -98,7 +96,6 @@ const VendorAppTopbar = () => {
 
   // Hooks
   const router = useRouter();
-  const [, startTransition] = useTransition();
 
   // Queries
   const { data: vendorData } = useQuery<
@@ -134,12 +131,12 @@ const VendorAppTopbar = () => {
     router.push('/authentication/login');
   };
 
-  function onLocaleChange(value: string) {
-    const locale = value as TLocale;
-    startTransition(() => {
-      setUserLocale(locale);
-    });
-  }
+  // function onLocaleChange(value: string) {
+  //   const locale = value as TLocale;
+  //   startTransition(() => {
+  //     setUserLocale(locale);
+  //   });
+  // }
 
   const onRedirectToPage = (_route: string) => {
     router.push(_route);
@@ -166,6 +163,27 @@ const VendorAppTopbar = () => {
     }
   }, [vendorData?.getVendor?.name]);
 
+
+  const menuItems: MenuItem[] =
+    !languagesLoading && !languagesError
+      ? languages.map<MenuItem>((lang) => ({
+        label: lang.label,
+        // PrimeReact’s MenuItem.template signature is (item, options) => ReactNode
+        template: () => (
+          <div
+            className={`${selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
+              } p-2 cursor-pointer`}
+            onClick={() => setSelectedLanguage(lang.code)}
+          >
+            {lang.label}
+          </div>
+        ),
+        command: () => {
+          setSelectedLanguage(lang.code);
+        },
+      }))
+      : [];
+
   return (
     <div className={`${classes['layout-topbar']}`}>
       <div className="flex items-center cursor-pointer">
@@ -189,27 +207,7 @@ const VendorAppTopbar = () => {
 
           <Menu
             model={
-              (!languagesLoading &&
-                !languagesError &&
-                languages?.map((lang: any) => ({
-                  label: lang.label,
-                  template(item: any) {
-                    return (
-                      <div
-                        className={`${
-                          selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
-                        } p-2 cursor-pointer`}
-                        onClick={() => setSelectedLanguage(lang.code)}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    setSelectedLanguage(lang.code);
-                  },
-                }))) ??
-              []
+              menuItems
             }
             //  model={[
             //   {

@@ -4,7 +4,7 @@ import CustomDateInput from '@/lib/ui/useable-components/date-input';
 import { IDashboardDateFilterComponentsProps } from '@/lib/utils/interfaces/dashboard.interface';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useState } from 'react';
 
 export default function DashboardDateFilter({
@@ -12,7 +12,7 @@ export default function DashboardDateFilter({
   setDateFilter,
 }: IDashboardDateFilterComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // State

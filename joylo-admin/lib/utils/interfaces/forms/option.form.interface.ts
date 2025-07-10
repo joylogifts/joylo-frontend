@@ -1,7 +1,7 @@
 export interface IOptionForm {
   _id?: string;
-  title: string;
-  description: string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   price: number;
 }
 

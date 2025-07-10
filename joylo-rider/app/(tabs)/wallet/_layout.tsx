@@ -1,4 +1,5 @@
 // Expo
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { Stack } from "expo-router";
 
@@ -10,7 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function StackLayout() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 const {top} = useSafeAreaInsets()
   return (
     <View style={{paddingTop: top+10, flex: 1, backgroundColor: appTheme.themeBackground}}>
@@ -19,7 +20,7 @@ const {top} = useSafeAreaInsets()
           name="index"
           options={{
             headerShown: true,
-            headerTitle: t("Wallet"),
+            headerTitle: t("wallet"),
             headerTitleAlign: "center",
             headerShadowVisible: false,
             headerStyle: { backgroundColor: appTheme.themeBackground },

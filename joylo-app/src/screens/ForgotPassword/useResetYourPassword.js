@@ -7,13 +7,14 @@ import { theme } from '../../utils/themeColors'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const RESET_PASSWORD = gql`
   ${resetPassword}
 `
 
 export const useResetYourPassword = () => {
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const route = useRoute()
   const navigation = useNavigation()
   const [password, setPassword] = useState('')

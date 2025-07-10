@@ -5,7 +5,7 @@ import {
   formatNumber,
   formatNumberWithCurrency,
 } from '@/lib/utils/methods/currency';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function DashboardStatsTable({
@@ -14,7 +14,7 @@ export default function DashboardStatsTable({
   data,
   amountConfig,
 }: IDashboardStatsTableComponentsProps) {
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   if (loading) return <DashboardStatsTableSkeleton />;
@@ -41,9 +41,9 @@ export default function DashboardStatsTable({
                 {amountConfig
                   ? amountConfig?.format === 'currency'
                     ? formatNumberWithCurrency(
-                        item.value,
-                        amountConfig.currency
-                      )
+                      item.value,
+                      amountConfig.currency
+                    )
                     : formatNumber(item.value)
                   : item.value}
               </span>

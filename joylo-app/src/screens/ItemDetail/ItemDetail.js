@@ -20,13 +20,13 @@ import ErrorView from '../../components/ErrorView/ErrorView'
 // Hooks
 import React, { useState, useContext, useLayoutEffect, useEffect, useRef, useCallback } from 'react'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import { useTranslation } from 'react-i18next'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useLanguage } from '@/src/context/Language'
 import Animated, { Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, useAnimatedRef } from 'react-native-reanimated'
 import { IconButton } from 'react-native-paper'
 import { Text } from 'react-native'
 import { scale } from '../../utils/scaling'
 import { TextField } from 'react-native-material-textfield'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { height } = Dimensions.get('window')
 const TOP_BAR_HEIGHT = Math.round(height * 0.08)
@@ -37,6 +37,7 @@ const SCROLL_RANGE = HEADER_MAX_HEIGHT
 function ItemDetail(props) {
   const { food, addons, options, restaurant } = props?.route?.params
 
+  console.log(food, "food")
   // States
   const [listZindex, setListZindex] = useState(0)
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(false)
@@ -56,7 +57,7 @@ function ItemDetail(props) {
   const [selectedAddons, setSelectedAddons] = useState([])
   const [specialInstructions, setSpecialInstructions] = useState('')
 
-  const { t, i18n } = useTranslation()
+  const { getTranslation, dir, selectedLanguage } = useLanguage()
   const navigation = useNavigation()
   const Analytics = analytics()
   const { restaurant: restaurantCart, setCartRestaurant, cart, addQuantity, addCartItem } = useContext(UserContext)
@@ -83,8 +84,10 @@ function ItemDetail(props) {
     }
   })
 
+  console.log(food?.description, selectedLanguage, "food")
+
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
@@ -178,15 +181,15 @@ function ItemDetail(props) {
       } else if (food?.restaurant !== restaurantCart) {
         Alert.alert(
           '',
-          t('cartClearWarning'),
+          getTranslation('cart_clear_warning'),
           [
             {
-              text: t('Cancel'),
+              text: getTranslation('cancel'),
               onPress: () => console.log('Cancel Pressed'),
               style: 'cancel'
             },
             {
-              text: t('okText'),
+              text: getTranslation('ok_text'),
               onPress: async () => {
                 await addToCart(quantity, true)
               }
@@ -210,28 +213,28 @@ function ItemDetail(props) {
     const cartItem = clearFlag
       ? null
       : cart.find((cartItem) => {
-          if (cartItem?._id === food?._id && cartItem?.variation?._id === selectedVariation?._id) {
-            if (cartItem?.addons?.length === addons?.length) {
-              if (addons?.length === 0) return true
-              const addonsResult = addons?.every((newAddon) => {
-                const cartAddon = cartItem.addons?.find((ad) => ad._id === newAddon._id)
+        if (cartItem?._id === food?._id && cartItem?.variation?._id === selectedVariation?._id) {
+          if (cartItem?.addons?.length === addons?.length) {
+            if (addons?.length === 0) return true
+            const addonsResult = addons?.every((newAddon) => {
+              const cartAddon = cartItem.addons?.find((ad) => ad._id === newAddon._id)
 
-                if (!cartAddon) return false
-                const optionsResult = newAddon?.options?.every((newOption) => {
-                  const cartOption = cartAddon?.options?.find((op) => op._id === newOption._id)
+              if (!cartAddon) return false
+              const optionsResult = newAddon?.options?.every((newOption) => {
+                const cartOption = cartAddon?.options?.find((op) => op._id === newOption._id)
 
-                  if (!cartOption) return false
-                  return true
-                })
-
-                return optionsResult
+                if (!cartOption) return false
+                return true
               })
 
-              return addonsResult
-            }
+              return optionsResult
+            })
+
+            return addonsResult
           }
-          return false
-        })
+        }
+        return false
+      })
 
     if (!cartItem) {
       await setCartRestaurant(restaurant)
@@ -317,10 +320,7 @@ function ItemDetail(props) {
 
   if (!connect) return <ErrorView />
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <View style={[styles().flex, styles(currentTheme).mainContainer]}>
         <Animated.ScrollView
           ref={scrollViewRef}
@@ -353,7 +353,7 @@ function ItemDetail(props) {
           <View>
             {food?.image ? <ImageHeader image={food?.image} /> : <Text>No image to display</Text>}
             {/* <Text style={{ color: 'white', width: '100%', height: 'auto', fontSize: 14 }}> */}
-            <Text
+            {food?.description && <Text
               style={[
                 styles(currentTheme).descriptionText,
                 {
@@ -364,15 +364,15 @@ function ItemDetail(props) {
                 }
               ]}
             >
-              {food?.description}
-            </Text>
-            <HeadingComponent title={food?.title} price={calculatePrice()} />
+              {typeof food?.description === "object" ? food?.description[selectedLanguage] : food?.description}
+            </Text>}
+            <HeadingComponent title={typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title} price={calculatePrice()} />
           </View>
           <View style={[styles(currentTheme).subContainer]}>
             <View>
               {food?.variations?.length > 1 && (
                 <View>
-                  <TitleComponent title={t('SelectVariation')} subTitle={t('SelectOne')} status={t('Required')} />
+                  <TitleComponent title={getTranslation('select_variation')} subTitle={getTranslation('select_one')} status={getTranslation('required')} />
                   <RadioComponent
                     options={food?.variations}
                     selected={selectedVariation}
@@ -386,7 +386,7 @@ function ItemDetail(props) {
               )}
               {selectedVariation?.addons?.map((addon) => (
                 <View key={addon?._id}>
-                  <TitleComponent title={addon?.title} subTitle={addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? t('optional') : `${addon?.quantityMinimum} ${t('Required')}`} />
+                  <TitleComponent title={typeof addon?.title === "object" ? addon?.title[selectedLanguage] : addon?.title} subTitle={typeof addon?.description === "object" ? addon?.description[selectedLanguage] : addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? getTranslation('optional') : `${addon?.quantityMinimum} ${getTranslation('required')}`} />
                   <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
                 </View>
               ))}
@@ -394,8 +394,8 @@ function ItemDetail(props) {
 
             <View style={styles(currentTheme).line}></View>
             <View style={styles(currentTheme).inputContainer}>
-              <TitleComponent title={t('specialInstructions')} subTitle={t('anySpecificPreferences')} status={t('optional')} />
-              <TextField style={styles(currentTheme).input} placeholder={t('noMayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? "white" : "black"} />
+              <TitleComponent title={getTranslation('special_instructions')} subTitle={getTranslation('any_specific_preferences')} status={getTranslation('optional')} />
+              <TextField style={styles(currentTheme).input} placeholder={getTranslation('no_mayo')} textAlignVertical='center' value={specialInstructions} onChangeText={setSpecialInstructions} maxLength={144} textColor={currentTheme.fontMainColor} baseColor={currentTheme.lightHorizontalLine} errorColor={currentTheme.textErrorColor} tintColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} placeholderTextColor={themeContext.ThemeValue === 'Dark' ? 'white' : 'black'} />
             </View>
             {/** frequently bought together */}
             <FrequentlyBoughtTogether itemId={food?._id} restaurantId={restaurant} />
@@ -403,7 +403,7 @@ function ItemDetail(props) {
         </Animated.ScrollView>
 
         <Animated.View style={[styles(currentTheme).titleContainer, { opacity: 1, height: 35, marginTop: -12, zIndex: 9, padding: 2 }, animatedTitleStyle]}>
-          <HeadingComponent title={food?.title} price={calculatePrice()} />
+          <HeadingComponent title={typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title} price={calculatePrice()} />
         </Animated.View>
         <View style={{ backgroundColor: currentTheme.themeBackground, zIndex: 10 }}>
           <CartComponent onPress={onPressAddToCart} disabled={validateButton()} />

@@ -7,10 +7,20 @@ export const VariationSchema = Yup.object({
     .of(
       Yup.object().shape({
         _id: Yup.string().nullable(),
-        title: Yup.string()
-          .max(50)
-          .trim()
-          .matches(/\S/, 'Name cannot be only spaces')
+        title: Yup.mixed<string | object>()
+          .test(
+            'is-string-or-json',
+            'Title must be a string or a valid JSON object',
+            (value) => {
+              if (typeof value === 'string') {
+                return /\S/.test(value.trim());
+              }
+              if (typeof value === 'object' && value !== null) {
+                return true;
+              }
+              return false;
+            }
+          )
           .required('Required'),
         price: Yup.number()
           .min(MIN_PRICE, 'Minimum value must be greater than 0')

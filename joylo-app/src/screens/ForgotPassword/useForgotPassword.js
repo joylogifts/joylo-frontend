@@ -6,13 +6,14 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const FORGOT_PASSWORD = gql`
   ${forgotPassword}
 `
 export const useForgotPassword = () => {
-  const {t, i18n} = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const navigation = useNavigation()
   const route = useRoute()
   const [email, setEmail] = useState(route.params?.email || '')
@@ -25,7 +26,7 @@ export const useForgotPassword = () => {
   })
 
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
 
   function validateCredentials() {
     let result = true

@@ -6,14 +6,14 @@ import { theme } from '../../../utils/themeColors'
 import styles from './styles'
 import TextDefault from '../../Text/TextDefault/TextDefault'
 import { formatNumber } from '../../../utils/formatNumber'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { scale } from '../../../utils/scaling'
 
 function HeadingComponent(props) {
-  const { i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const configuration = useContext(ConfigurationContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
 
   return (
     <View style={{ paddingVertical: scale(4) }}>

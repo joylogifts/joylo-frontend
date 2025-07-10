@@ -6,7 +6,7 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { Checkbox } from 'primereact/checkbox';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import classes from './ratings.header.module.css';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface MenuItem {
@@ -20,7 +20,7 @@ const RatingsHeaderDataView: React.FC<ICommissionRateHeaderProps> = ({
   onSearch,
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

@@ -4,14 +4,14 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
 import { IStaffTableHeaderProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export default function StaffTableHeader({
   globalFilterValue,
   onGlobalFilterChange,
 }: IStaffTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
 
   const { getTranslation } = useLangTranslation();
 

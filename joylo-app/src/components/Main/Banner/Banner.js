@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import VideoBanner from './VideoBanner'
 import { BANNER_PARAMETERS } from '../../../utils/banner-routes'
 import { scale } from '../../../utils/scaling'
+import { useLanguage } from '@/src/context/Language'
 
 // Helper function to get media type from URL
 const getMediaTypeFromUrl = (url) => {
@@ -22,6 +23,7 @@ const Banner = ({ banners }) => {
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const { width } = Dimensions.get('window')
+  const { selectedLanguage } = useLanguage()
 
   const onPressBanner = (banner) => {
     let _selectedType = ''
@@ -59,10 +61,10 @@ const Banner = ({ banners }) => {
   const renderBannerContent = (item) => (
     <View style={styles().container}>
       <TextDefault H3 bolder textColor='#fff' style={{ textTransform: 'capitalize', marginHorizontal: scale(5) }}>
-        {item?.title}
+        {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.name}
       </TextDefault>
       <TextDefault bolder textColor='#fff' style={{ marginHorizontal: scale(5), marginBottom: scale(5) }}>
-        {item?.description}
+        {typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description}
       </TextDefault>
     </View>
   )

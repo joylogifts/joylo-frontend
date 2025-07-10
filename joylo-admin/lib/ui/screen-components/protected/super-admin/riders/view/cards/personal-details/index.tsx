@@ -5,11 +5,11 @@ import { IRiderDetailsProps } from '@/lib/utils/interfaces';
 import { Skeleton } from 'primereact/skeleton';
 
 // Localization
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const PersonalDetails = ({ loading, rider }: IRiderDetailsProps) => {
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div className="flex flex-col gap-2 border rounded-lg overflow-hidden">

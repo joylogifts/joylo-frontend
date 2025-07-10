@@ -55,10 +55,10 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { useLangTranslation } from '@/lib/context/global/language.context';
-import { get } from 'lodash';
+
 
 const initialValues: IRestaurantForm = {
   name: '',
@@ -81,14 +81,14 @@ export default function RestaurantDetails({
   stepperProps,
 }: IAddRestaurantComponentProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -129,7 +129,15 @@ export default function RestaurantDetails({
   const cuisinesDropdown = useMemo(
     () =>
       cuisineResponse.data?.cuisines?.map((cuisin: ICuisine) => {
-        return { label: toTextCase(cuisin.name, 'title'), code: cuisin.name };
+        return {
+          label: toTextCase(
+            typeof cuisin.name === 'object'
+              ? cuisin.name[selectedLanguage]
+              : cuisin.name,
+            'title'
+          ),
+          code: cuisin.name,
+        };
       }),
     [cuisineResponse.data?.cuisines]
   );
@@ -147,6 +155,14 @@ export default function RestaurantDetails({
         return;
       }
 
+      console.log(
+        data.cuisines
+          .map((cuisin: IDropdownSelectItem) => cuisin.code)
+          .map((cuisine) =>
+            typeof cuisine === 'object' ? cuisine[selectedLanguage] : cuisine
+          )
+      );
+
       await createRestaurant({
         variables: {
           owner: vendorId,
@@ -162,9 +178,13 @@ export default function RestaurantDetails({
             password: data.password,
             shopType: data.shopType?.code,
             salesTax: data.salesTax,
-            cuisines: data.cuisines.map(
-              (cuisin: IDropdownSelectItem) => cuisin.code
-            ),
+            cuisines: data.cuisines
+              .map((cuisin: IDropdownSelectItem) => cuisin.code)
+              .map((cuisine) =>
+                typeof cuisine === 'object'
+                  ? cuisine[selectedLanguage]
+                  : cuisine
+              ),
           },
         },
       });

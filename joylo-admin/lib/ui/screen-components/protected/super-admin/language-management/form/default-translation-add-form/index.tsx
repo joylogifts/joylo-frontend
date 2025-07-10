@@ -57,7 +57,7 @@ import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { toTextCase } from '@/lib/utils/methods';
 import { RestaurantSchema } from '@/lib/utils/schema/restaurant';
 import { ApolloCache, ApolloError, useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { Sidebar } from 'primereact/sidebar';
 import { useLangTranslation } from '@/lib/context/global/language.context';
@@ -83,13 +83,13 @@ export default function RestaurantDetails({
   stepperProps,
 }: IAddRestaurantComponentProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -223,7 +223,7 @@ export default function RestaurantDetails({
     <Sidebar
       visible={false}
       position="right"
-      onHide={() => {}}
+      onHide={() => { }}
       className="w-full sm:w-[450px]"
     >
       <div className="flex h-full w-full items-center justify-start">

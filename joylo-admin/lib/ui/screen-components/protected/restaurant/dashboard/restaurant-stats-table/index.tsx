@@ -22,14 +22,14 @@ import DashboardStatsTableSkeleton from '@/lib/ui/useable-components/custom-skel
 
 // Hooks
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantStatesTable({
   dateFilter,
 }: IDashboardRestaurantStatesTableComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { CURRENCY_CODE } = useConfiguration();
 

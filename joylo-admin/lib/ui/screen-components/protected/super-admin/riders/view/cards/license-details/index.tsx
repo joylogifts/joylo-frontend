@@ -5,12 +5,12 @@ import { IRiderDetailsProps } from '@/lib/utils/interfaces';
 import { Skeleton } from 'primereact/skeleton';
 
 // Localization
-import { useTranslations } from 'next-intl';
+
 import Image from 'next/image';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const LicenseDetails = ({ loading, rider }: IRiderDetailsProps) => {
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

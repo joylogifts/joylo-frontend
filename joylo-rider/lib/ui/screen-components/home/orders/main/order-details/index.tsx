@@ -55,6 +55,7 @@ import WelldoneComponent from "@/lib/ui/useable-components/well-done";
 import { CustomMapStyles } from "@/lib/utils/constants/map";
 import { map_styles } from "@/lib/utils/constants/order-details";
 import { IOrder } from "@/lib/utils/interfaces/order.interface";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const { height } = Dimensions.get("window");
 
@@ -82,7 +83,7 @@ export default function OrderDetailScreen() {
 
   // Hooks
   const { appTheme, currentTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const {
     restaurantAddressPin,
     deliveryAddressPin,
@@ -153,15 +154,15 @@ export default function OrderDetailScreen() {
       // when trying to construct navigation URLs with invalid data
       if (!isValidCoordinate(locationPin?.location)) {
         console.log("Invalid rider location for maps navigation");
-        Alert.alert(t("Navigation Error"), t("Rider location is unavailable."));
+        Alert.alert(t("navigation_error"), t("rider_location_is_unavailable"));
         return;
       }
 
       if (!isValidCoordinate(restaurantAddressPin?.location)) {
         console.log("Invalid store location for maps navigation");
         Alert.alert(
-          t("Navigation Error"),
-          t("Restaurant location is unavailable."),
+          t("navigation_error"),
+          t("restaurant_location_is_unavailable"),
         );
         return;
       }
@@ -169,8 +170,8 @@ export default function OrderDetailScreen() {
       if (!isValidCoordinate(deliveryAddressPin?.location)) {
         console.log("Invalid customer location for maps navigation");
         Alert.alert(
-          t("Navigation Error"),
-          t("Delivery location is unavailable."),
+          t("navigation_error"),
+          t("delivery_location_is_unavailable"),
         );
         return;
       }
@@ -185,8 +186,8 @@ export default function OrderDetailScreen() {
         // Added error handling for Linking
         Linking.openURL(appleMapsUrl).catch(() => {
           Alert.alert(
-            t("Navigation Error"),
-            t("Could not open maps application"),
+            t("navigation_error"),
+            t("could_not_open_maps_application"),
           );
         });
       } else {
@@ -195,8 +196,8 @@ export default function OrderDetailScreen() {
         // Added error handling for Linking
         Linking.openURL(googleMapsUrl).catch(() => {
           Alert.alert(
-            t("Navigation Error"),
-            t("Could not open maps application"),
+            t("navigation_error"),
+            t("could_not_open_maps_application"),
           );
         });
       }
@@ -204,8 +205,8 @@ export default function OrderDetailScreen() {
       // Added global error handling
       console.log("Error opening maps:", error);
       Alert.alert(
-        t("Navigation Error"),
-        t("An error occurred when trying to open maps"),
+        t("navigation_error"),
+        t("an_error_occurred_when_trying_to_open_maps"),
       );
     }
   };
@@ -376,7 +377,7 @@ export default function OrderDetailScreen() {
               {restaurantAddressPin?.location && (
                 <Marker
                   coordinate={restaurantAddressPin.location}
-                  title={t("Restaurant")}
+                  title={t("restaurant")}
                   onPress={() => {
                     linkToMapsApp(
                       restaurantAddressPin.location,
@@ -396,7 +397,7 @@ export default function OrderDetailScreen() {
                   <Marker.Animated
                     coordinate={{ latitude, longitude }}
                     title="Rider"
-                    description={t("This is rider's location")}
+                    description={t("this_is_riders_location")}
                     onPress={() => {
                       if (
                         locationPin?.location &&
@@ -516,12 +517,12 @@ export default function OrderDetailScreen() {
             </MapView>
           ) : (
             <View className="flex-1 justify-center items-center gap-y-3">
-              <Text className="text-3xl">{t("Map not loaded.")}</Text>
+              <Text className="text-3xl">{t("map_not_loaded")}</Text>
               <Text
                 className="text-lg "
                 style={{ color: appTheme.fontSecondColor }}
               >
-                {t("Please check for permissions.")}
+                {t("please_check_for_permissions")}
               </Text>
             </View>
           )}
@@ -558,7 +559,7 @@ export default function OrderDetailScreen() {
                   className="font-bold "
                   style={{ color: appTheme.fontSecondColor }}
                 >
-                  {t("Order ID")}
+                  {t("order_id")}
                 </Text>
                 <Text style={{ color: appTheme.fontMainColor }}>
                   #{localOrder?.orderId ?? "-"}
@@ -595,7 +596,7 @@ export default function OrderDetailScreen() {
                     className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink "
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {t("Pickup Order")}
+                    {t("pickup_order")}
                   </Text>
                   <Text
                     className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
@@ -612,7 +613,7 @@ export default function OrderDetailScreen() {
                   className="font-[Inter] text-[16px] text-base font-[500]"
                   style={{ color: appTheme.fontSecondColor }}
                 >
-                  {t("Payment Method")}
+                  {t("payment_method")}
                 </Text>
                 <Text
                   className="font-[Inter] text-base font-semibold  text-left underline-offset-auto decoration-skip-ink   mr-2"
@@ -628,7 +629,7 @@ export default function OrderDetailScreen() {
                   className="flex-1 font-[Inter] text-[16px] text-base font-[500] "
                   style={{ color: appTheme.fontSecondColor }}
                 >
-                  {t("Order Amount")}
+                  {t("order_amount")}
                 </Text>
 
                 <Text
@@ -638,15 +639,15 @@ export default function OrderDetailScreen() {
                   {configuration?.currencySymbol}
                   {localOrder?.orderAmount}
                   {localOrder.paymentStatus === "PAID"
-                    ? t("Paid")
-                    : t("(Not paid yet)")}
+                    ? t("paid")
+                    : t("not_yet_paid")}
                 </Text>
               </View>
 
               {/* Divider */}
               <View className="flex-1 h-[1px] mb-4" />
 
-              <AccordionItem title={t("Order Details")}>
+              <AccordionItem title={t("order_details")}>
                 <ItemDetails orderData={localOrder} tab={tab} />
               </AccordionItem>
 
@@ -670,7 +671,7 @@ export default function OrderDetailScreen() {
                         className="text-center  text-lg font-medium"
                         style={{ color: appTheme.black }}
                       >
-                        {t("Pick up")}
+                        {t("pick_up_location")}
                       </Text>
                     )}
                   </TouchableOpacity>
@@ -698,7 +699,7 @@ export default function OrderDetailScreen() {
                       className="text-center text-lg font-medium"
                       style={{ color: appTheme.black }}
                     >
-                      {t("Mark as Delivered")}
+                      {t("mark_as_delivered")}
                     </Text>
                   )}
                 </TouchableOpacity>
@@ -707,7 +708,7 @@ export default function OrderDetailScreen() {
               {tab === "new_orders" &&
                 localOrder.orderStatus === "ACCEPTED" && (
                   <CustomContinueButton
-                    title={t("Assign me")}
+                    title={t("assign_me")}
                     className="w-[55%] mx-auto"
                     onPress={() =>
                       mutateAssignOrder({

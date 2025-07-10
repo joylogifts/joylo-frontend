@@ -16,10 +16,10 @@ export interface IAddonAddFormComponentProps extends IGlobalComponentProps {
   isAddAddonVisible: boolean;
   onHide: () => void;
   addon: IAddon | null;
-  isAddOptionsVisible?:boolean;
-  setIsAddOptionsVisible?:Dispatch<SetStateAction<boolean>>;
-  option?:IOptions | null;
-  setOption?:Dispatch<SetStateAction<IOptions | null>>;
+  isAddOptionsVisible?: boolean;
+  setIsAddOptionsVisible?: Dispatch<SetStateAction<boolean>>;
+  option?: IOptions | null;
+  setOption?: Dispatch<SetStateAction<IOptions | null>>;
 }
 
 export interface IAddonMainComponentsProps extends IGlobalComponentProps {
@@ -31,8 +31,8 @@ export interface IAddonMainComponentsProps extends IGlobalComponentProps {
 export interface IAddon {
   _id: string;
   options: string[];
-  title: string;
-  description: string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   quantityMinimum: number;
   quantityMaximum: number;
   __typename: string;

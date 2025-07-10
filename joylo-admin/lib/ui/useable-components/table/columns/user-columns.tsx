@@ -5,11 +5,11 @@ import { IUserResponse } from '@/lib/utils/interfaces/users.interface';
 // Icons
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export const USERS_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return [

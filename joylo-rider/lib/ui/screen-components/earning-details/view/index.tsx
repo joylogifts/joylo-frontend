@@ -25,6 +25,7 @@ import { showMessage } from "react-native-flash-message";
 
 // React Native Gesture
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function EarningDetailsMain({
   dateFilter,
@@ -32,7 +33,7 @@ export default function EarningDetailsMain({
 }: IEarningDetailsMainProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 
   // States
   const [isFiltering, setIsFiltering] = useState(false);
@@ -74,21 +75,21 @@ export default function EarningDetailsMain({
       if (!dateFilter.startDate && !dateFilter.endDate) {
         setIsFiltering(false);
         return showMessage({
-          message: t("Please select a date range"),
+          message: t("please_select_date_range"),
           type: "danger",
           duration: 1000,
         });
       } else if (!dateFilter.startDate) {
         setIsFiltering(false);
         return showMessage({
-          message: t("Please select a start date"),
+          message: t("please_select_start_date"),
           type: "danger",
           duration: 1000,
         });
       } else if (!dateFilter.endDate) {
         setIsFiltering(false);
         return showMessage({
-          message: t("Please select an end date"),
+          message: t("please_select_end_date"),
           type: "danger",
           duration: 1000,
         });
@@ -97,7 +98,7 @@ export default function EarningDetailsMain({
       ) {
         setIsFiltering(false);
         return showMessage({
-          message: t("Start date cannot be after end date"),
+          message: t("start_date_cannot_be_after_end_date"),
           type: "danger",
           duration: 1000,
         });
@@ -105,7 +106,7 @@ export default function EarningDetailsMain({
       if (!userId) {
         setIsFiltering(false);
         return showMessage({
-          message: t("Please log in to view your earnings"),
+          message: t("please_login_to_view_your_earnings"),
           type: "danger",
           duration: 1000,
         });

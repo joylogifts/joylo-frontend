@@ -9,6 +9,7 @@ import UserContext from '../../context/User'
 import analytics from '../../utils/analytics'
 
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const MYORDERS = gql`
   ${myOrders}
@@ -18,7 +19,7 @@ function StripeCheckout(props) {
   const Analytics = analytics()
 
   const { SERVER_URL } = useEnvVars()
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const [loading, loadingSetter] = useState(true)
   const { clearCart } = useContext(UserContext)
   const client = useApolloClient()

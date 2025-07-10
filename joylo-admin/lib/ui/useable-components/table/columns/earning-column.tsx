@@ -1,7 +1,7 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IActionMenuProps } from '@/lib/utils/interfaces';
 import { IEarning } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export const EARNING_COLUMNS = ({
   isSuperAdmin = false,
@@ -10,7 +10,7 @@ export const EARNING_COLUMNS = ({
   isSuperAdmin?: boolean;
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   console.log({ isSuperAdmin });

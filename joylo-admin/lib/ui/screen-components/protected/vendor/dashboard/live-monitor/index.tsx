@@ -8,14 +8,14 @@ import {
   IVendorLiveMonitorProps,
   IVendorLiveMonitorResponseGraphQL,
 } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+
 import React, { useContext } from 'react';
 
 export default function VendorLiveMonitor({
   dateFilter,
 }: IVendorLiveMonitorProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Contexts

@@ -13,7 +13,7 @@ import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import analytics from '../../utils/analytics'
 import AuthContext from '../../context/Auth'
 import { useNavigation } from '@react-navigation/native'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const LOGIN = gql`
   ${login}
@@ -23,7 +23,7 @@ const EMAIL = gql`
 `
 
 export const useLogin = () => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation, dir } = useLanguage()
   const Analytics = analytics()
 
   const navigation = useNavigation()
@@ -34,7 +34,7 @@ export const useLogin = () => {
   const [passwordError, setPasswordError] = useState(null)
   const [registeredEmail, setRegisteredEmail] = useState(false)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const { setTokenAsync } = useContext(AuthContext)
 
   const [EmailEixst, { loading }] = useMutation(EMAIL, {
@@ -48,7 +48,7 @@ export const useLogin = () => {
   })
 
   // Debounce the setEmail function
-  const setEmail = (email)=>{
+  const setEmail = (email) => {
     emailRef.current = email
   }
   function validateCredentials() {
@@ -56,17 +56,17 @@ export const useLogin = () => {
     setEmailError(null)
     setPasswordError(null)
     if (!emailRef.current) {
-      setEmailError(t('emailErr1'))
+      setEmailError(getTranslation('email_err_1'))
       result = false
     } else {
       const emailRegex = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
       if (emailRegex.test(emailRef.current) !== true) {
-        setEmailError(t('emailErr2'))
+        setEmailError(getTranslation('email_err_2'))
         result = false
       }
     }
     if (!password && registeredEmail) {
-      setPasswordError(t('passErr1'))
+      setPasswordError(getTranslation('pass_err_1'))
       result = false
     }
     return result
@@ -75,22 +75,16 @@ export const useLogin = () => {
   function onCompleted({ emailExist }) {
     if (validateCredentials()) {
       if (emailExist && emailExist._id) {
-        if (
-          emailExist.userType !== 'apple' &&
-          emailExist.userType !== 'google' &&
-          emailExist.userType !== 'facebook'
-        ) {
+        if (emailExist.userType !== 'apple' && emailExist.userType !== 'google' && emailExist.userType !== 'facebook') {
           setRegisteredEmail(true)
         } else {
           FlashMessage({
-            message: `${t('emailAssociatedWith')} ${emailExist.userType} ${t(
-              'continueWith'
-            )} ${emailExist.userType}`
+            message: `${getTranslation('email_associated_with')} ${emailExist.userType} ${getTranslation('continue_with')} ${emailExist.userType}`
           })
           navigation.navigate({ name: 'Main', merge: true })
         }
       } else {
-        navigation.navigate('Register', { email:emailRef.current })
+        navigation.navigate('Register', { email: emailRef.current })
       }
     }
   }
@@ -102,14 +96,14 @@ export const useLogin = () => {
       })
     } catch (e) {
       FlashMessage({
-        message: t('mailCheckingError')
+        message: getTranslation('mail_checking_error')
       })
     }
   }
 
   async function onLoginCompleted(data) {
     if (data.login.isActive == false) {
-      FlashMessage({ message: t('accountDeactivated') })
+      FlashMessage({ message: getTranslation('account_deactivated') })
     } else {
       try {
         await Analytics.identify(
@@ -140,7 +134,7 @@ export const useLogin = () => {
         message: error.graphQLErrors[0].message
       })
     } catch (e) {
-      FlashMessage({ message: t('errorInLoginError') })
+      FlashMessage({ message: getTranslation('error_in_login_error') })
     }
   }
 
@@ -149,14 +143,13 @@ export const useLogin = () => {
       if (validateCredentials()) {
         let notificationToken = null
         if (Device.isDevice) {
-          const {
-            status: existingStatus
-          } = await Notifications.getPermissionsAsync()
+          const { status: existingStatus } = await Notifications.getPermissionsAsync()
           if (existingStatus === 'granted') {
-            notificationToken = (await Notifications.getExpoPushTokenAsync({
-              projectId: Constants.expoConfig.extra.eas.projectId 
-            }))
-              .data
+            notificationToken = (
+              await Notifications.getExpoPushTokenAsync({
+                projectId: Constants.expoConfig.extra.eas.projectId
+              })
+            ).data
           }
         }
         LoginMutation({
@@ -170,14 +163,14 @@ export const useLogin = () => {
       }
     } catch (e) {
       FlashMessage({
-        message: t('errorWhileLogging')
+        message: getTranslation('error_while_logging')
       })
     } finally {
     }
   }
 
   function checkEmailExist() {
-    EmailEixst({ variables: { email:emailRef.current } })
+    EmailEixst({ variables: { email: emailRef.current } })
   }
 
   function onBackButtonPressAndroid() {

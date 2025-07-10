@@ -14,7 +14,7 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import NoData from '@/lib/ui/useable-components/no-data';
 import VendorsLayoutRestaurantCard from '@/lib/ui/useable-components/vendors-layout-resturant-card';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorRestaurantsMain() {
@@ -25,7 +25,7 @@ export default function VendorRestaurantsMain() {
     onSetRestaurantContextData,
   } = useContext(VendorLayoutRestaurantContext);
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const restaurants = restaurantContextData?.globalFilter
     ? restaurantContextData?.filtered

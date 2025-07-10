@@ -4,11 +4,12 @@ import { MotiView, Text } from "moti";
 // Hooks
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function WalletHeadingSkeleton() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   return (
     <MotiView
       className="p-3"
@@ -21,7 +22,7 @@ export default function WalletHeadingSkeleton() {
           color: appTheme.fontMainColor,
         }}
       >
-        {t("Recent Transactions")}
+        {t("recent_transactions")}
       </Text>
     </MotiView>
   );

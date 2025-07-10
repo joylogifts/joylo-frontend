@@ -55,7 +55,7 @@ import { IRestaurantsAddRestaurantComponentProps } from '@/lib/utils/interfaces/
 import { toTextCase } from '@/lib/utils/methods';
 import { RestaurantSchema } from '@/lib/utils/schema/restaurant';
 import { ApolloCache, ApolloError, useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -80,12 +80,12 @@ export default function RestaurantDetailsForm({
   stepperProps,
 }: IRestaurantsAddRestaurantComponentProps) {
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
@@ -135,7 +135,7 @@ export default function RestaurantDetailsForm({
   const cuisinesDropdown = useMemo(
     () =>
       cuisineResponse.data?.cuisines?.map((cuisin: ICuisine) => {
-        return { label: toTextCase(cuisin.name, 'title'), code: cuisin.name };
+        return { label: toTextCase(typeof cuisin.name === "object" ? cuisin.name[selectedLanguage] : cuisin.name, 'title'), code: typeof cuisin.name === "object" ? cuisin.name[selectedLanguage] : cuisin.name };
       }),
     [cuisineResponse.data?.cuisines]
   );
@@ -171,9 +171,13 @@ export default function RestaurantDetailsForm({
             password: data.password,
             shopType: data.shopType?.code,
             salesTax: data.salesTax,
-            cuisines: data.cuisines.map(
-              (cuisin: IDropdownSelectItem) => cuisin.code
-            ),
+            cuisines: data.cuisines
+              .map((cuisin: IDropdownSelectItem) => cuisin.code)
+              .map((cuisine) =>
+                typeof cuisine === 'object'
+                  ? cuisine[selectedLanguage]
+                  : cuisine
+              ),
           },
         },
       });

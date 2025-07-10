@@ -12,7 +12,7 @@ import {
   DataTablePageEvent,
 } from 'primereact/datatable';
 import DataTableColumnSkeleton from '../custom-skeletons/datatable.column.skeleton';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const Table = <T extends ITableExtends>({
@@ -47,7 +47,7 @@ const Table = <T extends ITableExtends>({
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Handlers
@@ -79,11 +79,11 @@ const Table = <T extends ITableExtends>({
   // Prepare pagination props based on server pagination status
   const paginationProps = isServerPaginated
     ? {
-        first: (currentPage - 1) * rowsPerPage,
-        lazy: true,
-        totalRecords,
-        onPage: handlePageChange,
-      }
+      first: (currentPage - 1) * rowsPerPage,
+      lazy: true,
+      totalRecords,
+      onPage: handlePageChange,
+    }
     : {};
 
   return (

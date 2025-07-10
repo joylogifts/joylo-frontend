@@ -12,7 +12,7 @@ import { useMutation } from '@apollo/client';
 import { EDIT_STAFF } from '@/lib/api/graphql/mutations/staff';
 import { GET_STAFFS } from '@/lib/api/graphql/queries/staff';
 import useToast from '@/lib/hooks/useToast';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const STAFF_TABLE_COLUMNS = ({
@@ -21,7 +21,7 @@ export const STAFF_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IStaffResponse>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 

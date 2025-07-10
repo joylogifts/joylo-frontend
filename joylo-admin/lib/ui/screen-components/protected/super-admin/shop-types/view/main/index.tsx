@@ -21,7 +21,7 @@ import { FilterMatchMode } from 'primereact/api';
 
 // Hooks
 import { useContext, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useMutation } from '@apollo/client';
 
 // Components
@@ -43,7 +43,7 @@ export default function ShopTypesMain({
   setIsEditing,
 }: IShopTypesMainProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Toast

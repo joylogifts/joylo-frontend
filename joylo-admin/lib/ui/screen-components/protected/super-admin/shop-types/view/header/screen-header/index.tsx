@@ -8,13 +8,13 @@ import { IShopTypesScreenHeaderProps } from '@/lib/utils/interfaces';
 
 //Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 
 export default function ShopTypeScreenHeader({
   handleButtonClick,
 }: IShopTypesScreenHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div className="sticky top-0 z-10 w-full flex-shrink-0 bg-white p-3 shadow-sm">

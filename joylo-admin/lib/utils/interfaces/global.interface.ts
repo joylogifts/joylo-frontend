@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, no-console */
+
 import { ApolloError } from '@apollo/client';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
@@ -11,7 +13,7 @@ export interface IGlobalComponentProps extends IGlobalProps {
 }
 export interface IDropdownSelectItem {
   _id?: string;
-  label?: string;
+  label?: string | any;
   code?: string;
   body?: () => void;
 }
@@ -78,5 +80,3 @@ export interface IGlobalTableHeaderProps {
 export interface IPolygonLocation {
   coordinates: TPolygonPoints;
 }
-
-

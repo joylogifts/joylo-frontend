@@ -8,7 +8,7 @@ import React, { useRef } from 'react';
 import classes from './order-superadmin.header.module.css';
 import { IMenuItem } from '@/lib/utils/interfaces/orders/order-vendor.interface';
 
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import DateFilterCustomTab from '@/lib/ui/useable-components/date-filter-custom-tab';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -21,7 +21,7 @@ const OrderSuperAdminTableHeader: React.FC<IOrderSuperAdminHeaderProps> = ({
   handleDateFilter,
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Refs

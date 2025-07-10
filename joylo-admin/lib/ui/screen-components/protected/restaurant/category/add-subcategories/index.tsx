@@ -39,7 +39,7 @@ import { CREATE_SUB_CATEGORIES } from '@/lib/api/graphql/mutations/sub-category'
 
 // Contexts
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function SubCategoriesAddForm({
@@ -47,8 +47,8 @@ export default function SubCategoriesAddForm({
   isAddSubCategoriesVisible,
 }: ISubCategoriesAddFormProps) {
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
@@ -214,7 +214,7 @@ export default function SubCategoriesAddForm({
                             />
                             <CustomTextField
                               name={`subCategories[${index}].title`}
-                              value={value.title}
+                              value={typeof value.title === "object" ? value?.title[selectedLanguage] || '' : value.title || ''}
                               maxLength={15}
                               onChange={handleChange}
                               placeholder={getTranslation('title')}

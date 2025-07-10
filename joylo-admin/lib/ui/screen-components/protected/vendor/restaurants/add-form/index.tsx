@@ -21,14 +21,14 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 import RestaurantDetails from './restaurant-details';
 import RestaurantLocation from './restaurant-location';
 import RestaurantTiming from './restaurant-timing';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const VendorRestaurantsForm = ({
   position = 'right',
 }: IRestaurantsAddFormComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Ref

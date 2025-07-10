@@ -31,8 +31,8 @@ import {
   EDIT_RESTAURANT_COUPON,
 } from '@/lib/api/graphql/mutations/coupons-restaurant';
 import { GET_RESTAURANT_COUPONS } from '@/lib/api/graphql/queries/coupons-restaurant';
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponsAddForm({
@@ -57,7 +57,7 @@ export default function CouponsAddForm({
   const [endDateError, setEndDateError] = useState('');
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 

@@ -8,13 +8,13 @@ import { ICuisineScreenHeaderProps } from '@/lib/utils/interfaces/cuisine.interf
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 
 export default function CuisineScreenHeader({
   handleButtonClick,
 }: ICuisineScreenHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

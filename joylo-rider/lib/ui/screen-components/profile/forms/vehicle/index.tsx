@@ -43,6 +43,7 @@ import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function VehiclePlateForm({
   setIsFormOpened,
@@ -50,7 +51,7 @@ export default function VehiclePlateForm({
   setIsFormOpened: Dispatch<SetStateAction<TRiderProfileBottomBarBit>>;
 }) {
   // Hooks
-  const { t } = useTranslation();
+  const {getTranslation: t } = useLanguage();
   const { userId, dataProfile } = useUserContext();
   const { appTheme, currentTheme } = useApptheme();
 
@@ -69,10 +70,10 @@ export default function VehiclePlateForm({
   const [mutateLicense] = useMutation(UPDATE_VEHICLE, {
     onError: (error) => {
       showMessage({
-        message: t("Failed to update license"),
+        message: t("failed_to_update_license"),
         type: "danger",
       });
-      console.log("Failed to update license", error);
+      console.log("failed_to_update_license", error);
     },
     onCompleted: () => {
       setIsLoading({
@@ -128,7 +129,7 @@ export default function VehiclePlateForm({
     } catch (error) {
       console.log(error);
       // showMessage({
-      //   message: t("Failed to upload image"),
+      //   message: t("failed_to_upload_image"),
       //   type: "danger",
       // });
     } finally {
@@ -151,12 +152,12 @@ export default function VehiclePlateForm({
       }));
       if (!formData.number) {
         return showMessage({
-          message: t("Please enter a plate number"),
+          message: t("please_enter_a_plate_number"),
           type: "danger",
         });
       } else if (!formData.image) {
         return showMessage({
-          message: t("Please upload an image"),
+          message: t("please_upload_an_image"),
           type: "danger",
         });
       }
@@ -190,11 +191,11 @@ export default function VehiclePlateForm({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex flex-col justify-between w-full p-2 h-[90%] mt-0 ">
-          <FormHeader title={t("Vehicle Plate")} />
+          <FormHeader title={t("vehicle_plate")} />
           <View>
             <View className="flex flex-col w-full my-2">
               <Text style={{ color: appTheme.fontMainColor }}>
-                {t("Plate No")}
+                {t("plate_number")}
               </Text>
               <TextInput
                 value={formData.number}
@@ -210,7 +211,7 @@ export default function VehiclePlateForm({
             </View>
             <View className="flex flex-col w-full my-2">
               <Text style={{ color: appTheme.fontMainColor }}>
-                {t("Add Registration Document")}
+                {t("add_registration_document")}
               </Text>
               {!cloudinaryResponse?.secure_url ? (
                 <TouchableOpacity
@@ -259,7 +260,7 @@ export default function VehiclePlateForm({
             </View>
             <View>
               <CustomContinueButton
-                title={isLoading.isSubmitting ? t("Please wait") : t("Add")}
+                title={isLoading.isSubmitting ? t("please_wait") : t("add")}
                 onPress={handleSubmit}
               />
             </View>

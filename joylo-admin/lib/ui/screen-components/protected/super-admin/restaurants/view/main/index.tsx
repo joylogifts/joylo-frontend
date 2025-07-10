@@ -42,13 +42,13 @@ import { onUseLocalStorage } from '@/lib/utils/methods';
 // Dummy
 import { generateDummyRestaurants } from '@/lib/utils/dummy';
 import { DataTableRowClickEvent } from 'primereact/datatable';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { RESTAURANT_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/restaurant-column';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantsMain() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

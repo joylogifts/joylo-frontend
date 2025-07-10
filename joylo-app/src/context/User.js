@@ -11,6 +11,7 @@ import AuthContext from './Auth'
 import analytics from '../utils/analytics'
 
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from './Language'
 
 const v1options = {
   random: [0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea, 0x71, 0xb4, 0xef, 0xe1, 0x67, 0x1c, 0x58, 0x36]
@@ -25,7 +26,7 @@ const UserContext = React.createContext({})
 export const UserProvider = (props) => {
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
 
   const { token, setToken } = useContext(AuthContext)
   const client = useApolloClient()
@@ -50,12 +51,12 @@ export const UserProvider = (props) => {
   })
   useEffect(() => {
     let isSubscribed = true
-    ;(async () => {
-      const restaurant = await AsyncStorage.getItem('restaurant')
-      const cart = await AsyncStorage.getItem('cartItems')
-      isSubscribed && setRestaurant(restaurant || null)
-      isSubscribed && setCart(cart ? JSON.parse(cart) : [])
-    })()
+      ; (async () => {
+        const restaurant = await AsyncStorage.getItem('restaurant')
+        const cart = await AsyncStorage.getItem('cartItems')
+        isSubscribed && setRestaurant(restaurant || null)
+        isSubscribed && setCart(cart ? JSON.parse(cart) : [])
+      })()
     return () => {
       isSubscribed = false
     }

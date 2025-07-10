@@ -4,14 +4,14 @@ import HeaderText from '@/lib/ui/useable-components/header-text';
 import StatsCard from '@/lib/ui/useable-components/stats-card';
 import { IEarningsHeaderComponentProps } from '@/lib/utils/interfaces';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 // import { useState } from 'react';
 
 const EarningsSuperAdminHeader = ({
   earnings,
 }: IEarningsHeaderComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   // Helper function to format numbers to 2 decimal places
   const formatNumber = (value: number) => Number(value.toFixed(2));
@@ -28,7 +28,7 @@ const EarningsSuperAdminHeader = ({
           icon={faDollarSign}
           route=""
           isClickable={false}
-          // loading= {loading}
+        // loading= {loading}
         />
         <StatsCard
           label={getTranslation('total_stores_earning')}

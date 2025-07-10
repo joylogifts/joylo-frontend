@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useQuery, useMutation, useApolloClient } from '@apollo/client';
 import {
   GET_TICKET_USERS,
@@ -57,7 +57,7 @@ export default function CustomerSupportMain({
   activeTab = 'tickets',
 }: ICustomerSupportMainProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const client = useApolloClient();
 
@@ -499,9 +499,8 @@ export default function CustomerSupportMain({
     <div className="flex flex-grow flex-col overflow-hidden sm:flex-row">
       {/* Left panel - Users list */}
       <div
-        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/3 ${
-          activeTab === 'tickets' ? '' : 'hidden sm:block'
-        }`}
+        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/3 ${activeTab === 'tickets' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Mobile-only header for Users section */}
         <div className="mt-3 border-b p-3 sm:hidden">
@@ -539,9 +538,8 @@ export default function CustomerSupportMain({
 
       {/* Right panel - Tickets list */}
       <div
-        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${
-          activeTab === 'chats' ? '' : 'hidden sm:block'
-        }`}
+        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${activeTab === 'chats' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Header for Tickets section */}
         <div className="border-b pb-2 pt-3">

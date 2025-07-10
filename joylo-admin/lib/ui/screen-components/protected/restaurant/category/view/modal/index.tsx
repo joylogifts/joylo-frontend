@@ -13,7 +13,7 @@ import {
 
 // Hooks
 import { QueryResult, useQuery } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 // Prime React
 import { Dialog } from 'primereact/dialog';
@@ -24,8 +24,8 @@ export default function SubCategoriesPreiwModal({
   setIsSubCategoryModalOpen,
 }: ISubCategoriesPreviewModalProps) {
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Queries
   const { data: sub_categories_data, loading: sub_categories_loading } =
@@ -66,7 +66,7 @@ export default function SubCategoriesPreiwModal({
                 key={sub_ctg._id}
                 className="my-1 text-sm font-semibold text-primary-color"
               >
-                {sub_ctg.title}
+                {typeof sub_ctg.title === "object" ? sub_ctg?.title[selectedLanguage] || '' : sub_ctg?.title || ''}
               </li>
             );
           })

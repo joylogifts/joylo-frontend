@@ -4,14 +4,14 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
 import { IAddonTableHeaderProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export default function AddonTableHeader({
   globalFilterValue,
   onGlobalFilterChange,
 }: IAddonTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

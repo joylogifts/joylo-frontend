@@ -5,12 +5,12 @@ import NoData from '@/lib/ui/useable-components/no-data';
 
 // Hooks
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ConfigurationsScreen() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { ISPAID_VERSION } = useConfiguration();
   return (

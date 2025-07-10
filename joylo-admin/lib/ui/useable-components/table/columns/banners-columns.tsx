@@ -5,7 +5,7 @@ import ActionMenu from '@/lib/ui/useable-components/action-menu';
 // Interfaces and Types
 import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
 import { IBannersResponse } from '@/lib/utils/interfaces/banner.interface';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 // Interfaces and Types
 export const BANNERS_TABLE_COLUMNS = ({
@@ -14,8 +14,8 @@ export const BANNERS_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IBannersResponse>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   return [
     {
@@ -49,8 +49,28 @@ export const BANNERS_TABLE_COLUMNS = ({
         }
       },
     },
-    { headerName: getTranslation('title'), propertyName: 'title' },
-    { headerName: getTranslation('description'), propertyName: 'description' },
+    {
+      headerName: getTranslation('title'),
+      propertyName: 'title',
+      body: (banner: IBannersResponse) => (
+        <span className="text-sm">
+          {typeof banner.description === 'object'
+            ? banner.description[selectedLanguage] || ''
+            : banner.description || ''}
+        </span>
+      ),
+    },
+    {
+      headerName: getTranslation('description'),
+      propertyName: 'description',
+      body: (banner: IBannersResponse) => (
+        <span className="text-sm">
+          {typeof banner.description === 'object'
+            ? banner.description[selectedLanguage] || ''
+            : banner.description || ''}
+        </span>
+      ),
+    },
     { headerName: getTranslation('screen'), propertyName: 'screen' },
     { headerName: getTranslation('actions'), propertyName: 'action' },
     {

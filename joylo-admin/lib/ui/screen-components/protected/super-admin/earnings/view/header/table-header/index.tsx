@@ -12,7 +12,7 @@ import {
   OrderTypeEnum,
   PaymentMethodEnum,
 } from '@/lib/utils/interfaces/';
-import { useTranslations } from 'use-intl';
+import { } from 'use-intl';
 
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 
@@ -28,7 +28,7 @@ export default function EarningTableHeader({
   const [errors, setErrors] = useState({ startDate: '', endDate: '' });
   const [userType, setUserType] = useState<UserTypeEnum>();
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Query

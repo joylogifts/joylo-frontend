@@ -14,6 +14,7 @@ import LogoutModal from './LogoutModal/LogoutModal'
 import analytics from '../../utils/analytics'
 
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const datas = [
   {
@@ -63,7 +64,7 @@ const datas = [
 function SidebBar(props) {
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
 
   const inset = useSafeAreaInsets()
   const { isLoggedIn, logout } = useContext(UserContext)
@@ -90,9 +91,7 @@ function SidebBar(props) {
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor(currentTheme.menuBar)
     }
-    StatusBar.setBarStyle(
-      themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content'
-    )
+    StatusBar.setBarStyle(themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content')
   })
 
   return (
@@ -104,7 +103,8 @@ function SidebBar(props) {
           paddingBottom: inset.bottom,
           backgroundColor: currentTheme.themeBackground
         }
-      ]}>
+      ]}
+    >
       <View style={{ flexGrow: 1 }}>
         <View style={styles(currentTheme).topContainer}>
           <SideDrawerProfile navigation={props.navigation} />
@@ -128,21 +128,13 @@ function SidebBar(props) {
           ))}
           {isLoggedIn && (
             <View style={styles().item}>
-              <SideDrawerItems
-                onPress={logoutClick}
-                icon={'logout'}
-                title={t('titleLogout')}
-              />
+              <SideDrawerItems onPress={logoutClick} icon={'logout'} title={t('titleLogout')} />
             </View>
           )}
         </View>
       </View>
 
-      <LogoutModal
-        visible={modalVisible}
-        onCancel={handleCancel}
-        onLogout={handleLogout}
-      />
+      <LogoutModal visible={modalVisible} onCancel={handleCancel} onLogout={handleLogout} />
     </View>
   )
 }

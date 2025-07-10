@@ -39,7 +39,7 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 
 // Utils & Constants
 import { SELECTED_VENDOR_EMAIL } from '@/lib/utils/constants';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorCard({
@@ -52,7 +52,7 @@ export default function VendorCard({
   isLast = false,
 }: IVendorCardProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -203,9 +203,8 @@ export default function VendorCard({
           {vendorId === _id && (
             <FontAwesomeIcon
               icon={faEllipsisVertical}
-              className={`p-1 ${
-                isPopupOpen ? 'text-gray-400' : 'text-white'
-              } cursor-pointer hover:scale-105`}
+              className={`p-1 ${isPopupOpen ? 'text-gray-400' : 'text-white'
+                } cursor-pointer hover:scale-105`}
               onClick={(e) => {
                 e.stopPropagation();
                 setPopupOpen(!isPopupOpen);

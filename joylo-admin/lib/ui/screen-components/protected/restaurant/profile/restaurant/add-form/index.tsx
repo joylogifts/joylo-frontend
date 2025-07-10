@@ -16,7 +16,7 @@ import UpdateTiming from './update-timing';
 
 // Interfaces & Types
 import { IRestaurantsAddFormComponentProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import UpdateBusinessDetails from './update-bussiness-details';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -24,7 +24,7 @@ const UpdateRestaurantsProfileForm = ({
   position = 'right',
 }: IRestaurantsAddFormComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Refs

@@ -23,14 +23,14 @@ import {
 
 // Context
 import { VendorLayoutContext } from '@/lib/context/vendor/layout-vendor.context';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantStats({
   dateFilter,
 }: IDashboardOrderStatsComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

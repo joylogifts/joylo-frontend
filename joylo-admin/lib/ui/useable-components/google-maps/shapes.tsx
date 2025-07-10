@@ -3,7 +3,7 @@ import { CircleSVG } from '@/lib/utils/assets/svgs/circle';
 import { PointLineSVG } from '@/lib/utils/assets/svgs/point-line';
 import { PolygonSVG } from '@/lib/utils/assets/svgs/polygon';
 import { ICustomShapeComponentProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export default function CustomShape({
   selected,
@@ -11,7 +11,7 @@ export default function CustomShape({
   hidenNames = [],
 }: ICustomShapeComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   const items = [
@@ -61,11 +61,10 @@ export default function CustomShape({
         return (
           <button
             key={`${item.value}-${index}`}
-            className={`flex flex-col items-center justify-center p-3 ${
-              item.value === selected
-                ? 'bg-black text-white'
-                : 'bg-[#F4F4F5] text-black'
-            } w-30 h-30 transform rounded-lg shadow transition duration-300 ease-in-out hover:scale-105 focus:outline-none active:bg-gray-800`}
+            className={`flex flex-col items-center justify-center p-3 ${item.value === selected
+              ? 'bg-black text-white'
+              : 'bg-[#F4F4F5] text-black'
+              } w-30 h-30 transform rounded-lg shadow transition duration-300 ease-in-out hover:scale-105 focus:outline-none active:bg-gray-800`}
             type="button"
             onClick={() => onClick(item.value)}
           >

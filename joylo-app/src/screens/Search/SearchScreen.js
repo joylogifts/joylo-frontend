@@ -25,19 +25,20 @@ import { escapeRegExp } from '../../utils/regex'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
+import { useLanguage } from '@/src/context/Language'
 
 const RESTAURANTS = gql`
   ${restaurantListPreview}
 `
 
 const SearchScreen = () => {
-  const { t, i18n } = useTranslation()
   const [search, setSearch] = useState('')
   const { location, setLocation } = useContext(LocationContext)
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const newheaderColor = currentTheme.backgroundColor
@@ -87,7 +88,7 @@ const SearchScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: t('searchTitle'),
+      title: t('search'),
       headerTitleAlign: 'center',
       headerRight: null,
       headerTitleStyle: {
@@ -122,8 +123,12 @@ const SearchScreen = () => {
     const regex = new RegExp(escapedSearchText, 'i')
 
     restaurants?.forEach((restaurant) => {
-      const resultCatFoods = restaurant.keywords.some((keyword) => {
-        const result = keyword.search(regex)
+
+      const resultCatFoods = typeof restaurant?.keywords === "object" ? restaurant?.keywords[selectedLanguage]?.some((keyword) => {
+        const result = typeof keyword === "object" ? keyword[selectedLanguage].search(regex) : keyword.search(regex)
+        return result > -1
+      }) : restaurant?.keywords?.some((keyword) => {
+        const result = typeof keyword === "object" ? keyword[selectedLanguage].search(regex) : keyword.search(regex)
         return result > -1
       })
       if (resultCatFoods) data.push(restaurant)
@@ -134,7 +139,7 @@ const SearchScreen = () => {
   function getUniqueTags(restaurants) {
     const allTags = new Set()
     restaurants?.forEach((restaurant) => {
-      restaurant?.tags.forEach((tag) => allTags.add(tag))
+      return typeof restaurant?.tags === "object" ? restaurant?.tags[selectedLanguage]?.forEach((tag) => allTags.add(tag)) : restaurant?.tags.forEach((tag) => allTags.add(tag))
     })
     return Array.from(allTags) // Convert Set back to an array
   }
@@ -299,7 +304,7 @@ const SearchScreen = () => {
         }
       >
         <View style={styles().searchbar}>
-          <Search setSearch={setSearch} search={search} newheaderColor={newheaderColor} placeHolder={t('searchRestaurant')} />
+          <Search setSearch={setSearch} search={search} newheaderColor={newheaderColor} placeHolder={t('search_restaurant')} />
         </View>
         {renderTagsOrSearches()}
       </View>

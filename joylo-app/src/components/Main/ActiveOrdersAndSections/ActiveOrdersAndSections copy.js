@@ -9,11 +9,11 @@ import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
 import RestaurantCard from './RestaurantCard'
 import { scale } from '../../../utils/scaling'
-import {useTranslation} from 'react-i18next'
-
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 function ActiveOrdersAndSections(props) {
-  const {t} = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const { sections } = props
   const { isLoggedIn, profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
@@ -22,7 +22,7 @@ function ActiveOrdersAndSections(props) {
   return (
     <View>
       <View>{isLoggedIn && profile && <ActiveOrders />}</View>
-      {sections.map(resSection => (
+      {sections.map((resSection) => (
         <View key={resSection._id}>
           <TextDefault
             numberOfLines={1}
@@ -33,7 +33,8 @@ function ActiveOrdersAndSections(props) {
               ...alignment.PTmedium
             }}
             bolder
-            H3>
+            H3
+          >
             {resSection.name}
           </TextDefault>
           <View style={{ width: '100%' }}>
@@ -61,8 +62,9 @@ function ActiveOrdersAndSections(props) {
           marginRight: scale(20)
         }}
         bolder
-        H3>
-        {t('allRestaurant')}
+        H3
+      >
+        {t('all_restaurant')}
       </TextDefault>
     </View>
   )

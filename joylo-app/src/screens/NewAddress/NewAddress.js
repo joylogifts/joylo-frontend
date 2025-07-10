@@ -86,7 +86,7 @@ function NewAddress(props) {
   useLayoutEffect(() => {
     props?.navigation.setOptions({
       headerRight: null,
-      title: t('addAddress'),
+      title: t('add_address'),
       headerTitleStyle: {
         color: '#000',
         fontWeight: 'bold'

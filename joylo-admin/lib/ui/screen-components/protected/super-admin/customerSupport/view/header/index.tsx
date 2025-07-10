@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import CustomerSupportMain from '@/lib/ui/screen-components/protected/super-admin/customerSupport/view/main';
 import CustomerSupportMobilesTabs from '@/lib/ui/screen-components/protected/super-admin/customerSupport/view/mobile-tabs';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import HeaderText from '@/lib/ui/useable-components/header-text';
 import { useLangTranslation } from '@/lib/context/global/language.context';
@@ -14,7 +14,7 @@ type CustomerSupportTabType = 'tickets' | 'chats';
 
 export default function CustomerSupportScreen() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

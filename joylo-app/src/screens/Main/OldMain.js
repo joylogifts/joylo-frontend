@@ -28,6 +28,7 @@ import Spinner from '../../components/Spinner/Spinner'
 import analytics from '../../utils/analytics'
 import MapSection from '../MapSection/index'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const RESTAURANTS = gql`
   ${restaurantList}
@@ -39,7 +40,7 @@ const SELECT_ADDRESS = gql`
 function Main(props) {
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const [busy, setBusy] = useState(false)
   const { loadingOrders, isLoggedIn, profile } = useContext(UserContext)
   const { location, setLocation } = useContext(LocationContext)
@@ -158,7 +159,7 @@ function Main(props) {
         <View style={styles().addressSubContainer}>
           <MaterialCommunityIcons name='target' size={scale(25)} color={currentTheme.black} />
           <View style={styles().mL5p} />
-          <TextDefault bold>{t('currentLocation')}</TextDefault>
+          <TextDefault bold>{t('current_location')}</TextDefault>
         </View>
       </TouchableOpacity>
       <View style={styles().addressTick}>
@@ -197,7 +198,7 @@ function Main(props) {
           <View style={styles().addressSubContainer}>
             <AntDesign name='pluscircleo' size={scale(12)} color={currentTheme.black} />
             <View style={styles().mL5p} />
-            <TextDefault bold>{t('addAddress')}</TextDefault>
+            <TextDefault bold>{t('add_address')}</TextDefault>
           </View>
         </TouchableOpacity>
       </View>
@@ -208,7 +209,7 @@ function Main(props) {
   function loadingScreen() {
     return (
       <View style={styles(currentTheme).screenBackground}>
-        <Search search={''} setSearch={() => {}} />
+        <Search search={''} setSearch={() => { }} />
         <Placeholder Animation={(props) => <Fade {...props} style={styles(currentTheme).placeHolderFadeColor} duration={600} />} style={styles(currentTheme).placeHolderContainer}>
           <PlaceholderLine style={styles().height200} />
           <PlaceholderLine />
@@ -350,7 +351,7 @@ function Main(props) {
                       </TextDefault>
                     </View>
                   </TouchableOpacity>
-                  <View style={styles().addressTick}>{address._id === location?._id && ![t('currentLocation'), t('selectedLocation')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
+                  <View style={styles().addressTick}>{address._id === location?._id && ![t('current_location'), t('selected_location')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
                 </View>
               )
             }}

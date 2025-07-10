@@ -27,7 +27,7 @@ import {
 import SidebarItem from './side-bar-item';
 import { useUserContext } from '@/lib/hooks/useUser';
 import { onUseLocalStorage } from '@/lib/utils/methods';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 function AdminSidebar({ children }: IGlobalComponentProps) {
@@ -53,7 +53,7 @@ function AdminSidebar({ children }: IGlobalComponentProps) {
 
 export default function MakeSidebar() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   const { isRestaurantSidebarVisible } =

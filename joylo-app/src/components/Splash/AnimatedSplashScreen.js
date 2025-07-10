@@ -2,13 +2,7 @@
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import Animated, {
-  Easing,
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
-} from 'react-native-reanimated'
+import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import SplashVideo from './SplashVideo'
 
 export default function AnimatedSplashScreen({ children }) {
@@ -72,14 +66,7 @@ export default function AnimatedSplashScreen({ children }) {
   return (
     <View style={{ flex: 1 }}>
       {isSplashAnimationComplete ? children : null}
-      <Animated.View
-        pointerEvents='none'
-        style={[
-          StyleSheet.absoluteFill,
-          animatedStyle,
-          { backgroundColor: 'black' }
-        ]}
-      >
+      <Animated.View pointerEvents='none' style={[StyleSheet.absoluteFill, animatedStyle, { backgroundColor: 'black' }]}>
         {videoElement}
       </Animated.View>
     </View>

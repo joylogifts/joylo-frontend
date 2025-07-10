@@ -11,7 +11,7 @@ const navigationOptions = headerText => {
   const { t } = useTranslation() // Initializing the useTranslation hook
 
   return {
-    title: t('titleFavourite'), // Using translation function to get the title
+    title: t('title_favourite'), // Using translation function to get the title
     headerTitleAlign: 'center',
     headerRight: null,
     headerTitleContainerStyle: {

@@ -27,13 +27,13 @@ import { generateSkeletonTransactionHistory } from '@/lib/utils/dummy';
 import TransactionDetailModal from '@/lib/ui/useable-components/popup-menu/transaction-history-modal.module';
 import TransactionHistoryStoreTableHeader from '../header/table-header';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import useDebounce from '@/lib/hooks/useDebounce';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function TransactionHistoryStoreMain() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

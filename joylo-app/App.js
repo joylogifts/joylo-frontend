@@ -1,3 +1,6 @@
+import 'react-native-gesture-handler'
+import 'react-native-reanimated'
+
 import { ApolloProvider } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 // import 'expo-dev-client'
@@ -8,7 +11,7 @@ import * as Updates from 'expo-updates'
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { ActivityIndicator, BackHandler, I18nManager, LogBox, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native'
 import FlashMessage from 'react-native-flash-message'
-import 'react-native-gesture-handler'
+
 // import * as Sentry from 'sentry-expo'
 import useEnvVars, { isProduction } from './environment'
 import setupApolloClient from './src/apollo/index'
@@ -32,6 +35,7 @@ import useWatchLocation from './src/ui/hooks/useWatchLocation'
 import './i18next'
 import * as SplashScreen from 'expo-splash-screen'
 import TextDefault from './src/components/Text/TextDefault/TextDefault'
+import { LanguageProvider } from './src/context/Language'
 
 // LogBox.ignoreLogs([
 //   // 'Warning: ...',
@@ -92,7 +96,6 @@ export default function App() {
       })
       // await permissionForPushNotificationsAsync()
       await getActiveLocation()
-      BackHandler.addEventListener('hardwareBackPress', exitAlert)
       // get stored theme
       // await getStoredTheme()
       setAppIsReady(true)
@@ -100,8 +103,10 @@ export default function App() {
 
     loadAppData()
 
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', exitAlert)
+
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', exitAlert)
+      backHandler.remove()
     }
   }, [])
 
@@ -148,22 +153,22 @@ export default function App() {
   useEffect(() => {
     // eslint-disable-next-line no-undef
     if (__DEV__) return
-    ;(async () => {
-      const { isAvailable } = await Updates.checkForUpdateAsync()
-      if (isAvailable) {
-        try {
-          setIsUpdating(true)
-          const { isNew } = await Updates.fetchUpdateAsync()
-          if (isNew) {
-            await Updates.reloadAsync()
+      ; (async () => {
+        const { isAvailable } = await Updates.checkForUpdateAsync()
+        if (isAvailable) {
+          try {
+            setIsUpdating(true)
+            const { isNew } = await Updates.fetchUpdateAsync()
+            if (isNew) {
+              await Updates.reloadAsync()
+            }
+          } catch (error) {
+            console.log('error while updating app', JSON.stringify(error))
+          } finally {
+            setIsUpdating(false)
           }
-        } catch (error) {
-          console.log('error while updating app', JSON.stringify(error))
-        } finally {
-          setIsUpdating(false)
         }
-      }
-    })()
+      })()
   }, [])
 
   // For Push Notification
@@ -255,28 +260,32 @@ export default function App() {
         <ThemeContext.Provider
           // use default theme
           value={{ ThemeValue: theme, dispatch: themeSetter }}
-          // use stored theme
-          // value={{
-          //   ThemeValue: theme,
-          //   dispatch: (action) => {
-          //     themeSetter(action)
-          //     setStoredTheme(action.type) // Save the theme in AsyncStorage when it changes
-          //   }
-          // }}
+        // use stored theme
+        // value={{
+        //   ThemeValue: theme,
+        //   dispatch: (action) => {
+        //     themeSetter(action)
+        //     setStoredTheme(action.type) // Save the theme in AsyncStorage when it changes
+        //   }
+        // }}
         >
-          <StatusBar backgroundColor={Theme[theme].menuBar} barStyle={theme === 'Dark' ? 'light-content' : 'dark-content'} />
-          <LocationProvider>
-            <ConfigurationProvider>
-              <AuthProvider>
-                <UserProvider>
-                  <OrdersProvider>
-                    <AppContainer />
-                    <ReviewModal ref={reviewModalRef} onOverlayPress={onOverlayPress} theme={Theme[theme]} orderId={orderId} />
-                  </OrdersProvider>
-                </UserProvider>
-              </AuthProvider>
-            </ConfigurationProvider>
-          </LocationProvider>
+          <LanguageProvider>
+            <StatusBar backgroundColor={Theme[theme].menuBar} barStyle={theme === 'Dark' ? 'light-content' : 'dark-content'} />
+            <LocationProvider>
+              <ConfigurationProvider>
+                <AuthProvider>
+                  <UserProvider>
+                    <OrdersProvider>
+
+                      <AppContainer />
+                      <ReviewModal ref={reviewModalRef} onOverlayPress={onOverlayPress} theme={Theme[theme]} orderId={orderId} />
+
+                    </OrdersProvider>
+                  </UserProvider>
+                </AuthProvider>
+              </ConfigurationProvider>
+            </LocationProvider>
+          </LanguageProvider>
           <FlashMessage MessageComponent={MessageComponent} />
         </ThemeContext.Provider>
       </ApolloProvider>

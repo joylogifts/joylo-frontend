@@ -30,7 +30,7 @@ import { IZoneForm } from '@/lib/utils/interfaces/forms/zone.form.interface';
 import CustomTextAreaField from '@/lib/ui/useable-components/custom-text-area-field';
 import CustomGoogleMapsLocationZoneBounds from '@/lib/ui/useable-components/google-maps/location-bounds-zone';
 import { TPolygonPoints } from '@/lib/utils/types';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { GoogleMapsContext } from '@/lib/context/global/google-maps.context';
 import { useContext } from 'react';
 import { useLangTranslation } from '@/lib/context/global/language.context';
@@ -50,7 +50,7 @@ export default function ZoneAddForm({
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
@@ -91,9 +91,9 @@ export default function ZoneAddForm({
             description: values.description,
             coordinates:
               Array.isArray(values.coordinates) &&
-              Array.isArray(values.coordinates[0]) &&
-              Array.isArray(values.coordinates[0][0]) &&
-              values.coordinates[0][0].length > 1
+                Array.isArray(values.coordinates[0]) &&
+                Array.isArray(values.coordinates[0][0]) &&
+                values.coordinates[0][0].length > 1
                 ? values.coordinates
                 : [[[0, 0]]],
           },

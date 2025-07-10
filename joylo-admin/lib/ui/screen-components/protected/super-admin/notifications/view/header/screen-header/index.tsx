@@ -6,13 +6,13 @@ import { INotificationHeaderProps } from '@/lib/utils/interfaces/notification.in
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 
 export default function NotificationHeader({
   handleButtonClick,
 }: INotificationHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

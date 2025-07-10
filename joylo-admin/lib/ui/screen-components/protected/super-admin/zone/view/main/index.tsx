@@ -34,7 +34,7 @@ import { DELETE_ZONE, GET_ZONES } from '@/lib/api/graphql';
 
 // Data
 import { generateDummyZones } from '@/lib/utils/dummy';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ZoneMain({
@@ -42,7 +42,7 @@ export default function ZoneMain({
   setZone,
 }: IZoneMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
   const { ISPAID_VERSION } = useConfiguration();

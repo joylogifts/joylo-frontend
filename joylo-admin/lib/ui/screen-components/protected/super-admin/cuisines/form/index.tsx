@@ -31,7 +31,7 @@ import {
   MAX_SQUARE_FILE_SIZE,
   SHOP_TYPE,
 } from '@/lib/utils/constants';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CuisineForm({
@@ -47,15 +47,23 @@ export default function CuisineForm({
   };
 
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   // Initial values
   const initialValues = {
     _id: isEditing.bool ? isEditing?.data?._id : '',
-    name: isEditing.bool ? isEditing?.data?.name : '',
-    description: isEditing.bool ? isEditing?.data?.description : '',
+    name: isEditing.bool
+      ? typeof isEditing?.data?.name === 'object'
+        ? isEditing?.data?.name[selectedLanguage]
+        : isEditing?.data?.name
+      : '',
+    description: isEditing.bool
+      ? typeof isEditing?.data?.description === 'object'
+        ? isEditing?.data?.description[selectedLanguage]
+        : isEditing?.data?.description
+      : '',
     shopType: {
       label: capitalizeFirstWord(isEditing?.data?.shopType ?? ''),
       code: isEditing?.data?.shopType.toLocaleLowerCase() ?? '',
@@ -288,8 +296,8 @@ export default function CuisineForm({
                     type="submit"
                   >
                     {isSubmitting ||
-                    createCuisineLoading ||
-                    editCuisineLoading ? (
+                      createCuisineLoading ||
+                      editCuisineLoading ? (
                       <ProgressSpinner
                         className="m-0 h-6 w-6 items-center self-center p-0"
                         strokeWidth="5"

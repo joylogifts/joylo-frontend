@@ -25,13 +25,13 @@ import { GET_TRANSACTION_HISTORY } from '@/lib/api/graphql';
 import { useQuery } from '@apollo/client';
 import { generateSkeletonTransactionHistory } from '@/lib/utils/dummy';
 import TransactionDetailModal from '@/lib/ui/useable-components/popup-menu/transaction-history-modal.module';
-import { useTranslations } from 'next-intl';
+
 import useDebounce from '@/lib/hooks/useDebounce';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function TransactionHistoryMain() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // State

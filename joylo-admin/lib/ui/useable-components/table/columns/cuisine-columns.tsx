@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 // Hooks
 import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const CUISINE_TABLE_COLUMNS = ({
@@ -17,8 +17,8 @@ export const CUISINE_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<ICuisine>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Cuisine Columns
   const cuisine_columns = useMemo(
@@ -33,7 +33,12 @@ export const CUISINE_TABLE_COLUMNS = ({
                 data?.image ||
                 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
               }
-              alt={data?.description ?? getTranslation('cuisine')}
+              alt={
+                typeof data?.description === 'object'
+                  ? data?.description[selectedLanguage] ||
+                  getTranslation('cuisine')
+                  : data?.description || getTranslation('cuisine')
+              }
               width={100}
               height={100}
             />
@@ -42,11 +47,25 @@ export const CUISINE_TABLE_COLUMNS = ({
       },
       {
         headerName: getTranslation('name'),
+        body: (data: ICuisine) => (
+          <span className="text-sm">
+            {typeof data?.name === 'object'
+              ? data?.name[selectedLanguage] || ''
+              : data?.name || ''}
+          </span>
+        ),
         propertyName: 'name',
       },
       {
         headerName: getTranslation('description'),
         propertyName: 'description',
+        body: (data: ICuisine) => (
+          <span className="text-sm">
+            {typeof data?.description === 'object'
+              ? data?.description[selectedLanguage] || ''
+              : data?.description || ''}
+          </span>
+        ),
       },
       {
         headerName: getTranslation('shop_category'),

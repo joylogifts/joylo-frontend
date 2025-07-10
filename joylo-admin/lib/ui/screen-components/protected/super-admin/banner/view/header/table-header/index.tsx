@@ -4,14 +4,14 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces and Types
 import { IBannerTableHeaderProps } from '@/lib/utils/interfaces/banner.interface';
-import { useTranslations } from 'next-intl';
+
 
 export default function BannerTableHeader({
   globalFilterValue,
   onGlobalFilterChange,
 }: IBannerTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div className="mb-4 flex flex-col gap-6">

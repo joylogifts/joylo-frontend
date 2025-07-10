@@ -6,7 +6,7 @@ import {
   formatNumberWithCurrency,
 } from '@/lib/utils/methods/currency';
 import { DASHBOARD_PAYMENT_METHOD_SUB_TITLE } from '@/lib/utils/constants';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function DashboardRestaurantStatsTable({
@@ -16,7 +16,7 @@ export default function DashboardRestaurantStatsTable({
   amountConfig,
 }: IDashboardRestaurantStatsTableComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   if (loading) return <DashboardStatsTableSkeleton />;
@@ -69,9 +69,9 @@ export default function DashboardRestaurantStatsTable({
             <span className="text-gray-800">
               {amountConfig
                 ? formatNumberWithCurrency(
-                    total_sales_without_delivery,
-                    amountConfig.currency
-                  )
+                  total_sales_without_delivery,
+                  amountConfig.currency
+                )
                 : total_sales_without_delivery}
             </span>
           </div>
@@ -83,9 +83,9 @@ export default function DashboardRestaurantStatsTable({
             <span className="text-gray-800">
               {amountConfig
                 ? formatNumberWithCurrency(
-                    total_delivery_fee,
-                    amountConfig.currency
-                  )
+                  total_delivery_fee,
+                  amountConfig.currency
+                )
                 : total_delivery_fee}
             </span>
           </div>

@@ -36,7 +36,7 @@ import TextComponent from '../text-field';
 import CustomLoader from '../custom-progress-indicator';
 import { CarSVG } from '@/lib/utils/assets/svgs/Car';
 import { FrameSVG } from '@/lib/utils/assets/svgs/Frame';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
@@ -53,7 +53,7 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
 
   const configuration = useContext(ConfigurationContext);
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 

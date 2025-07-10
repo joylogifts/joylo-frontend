@@ -49,7 +49,7 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
@@ -76,8 +76,8 @@ export default function AddonAddForm({
   isAddAddonVisible,
 }: IAddonAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
-  const { getTranslation } = useLangTranslation();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
   // Context
 
@@ -114,7 +114,15 @@ export default function AddonAddForm({
   const optionsDropdown = useMemo(
     () =>
       data?.restaurant?.options.map((option: IOptions) => {
-        return { label: toTextCase(option.title, 'title'), code: option._id };
+        return {
+          label: toTextCase(
+            typeof option.title === 'object'
+              ? option?.title[selectedLanguage] || ''
+              : option?.title || '',
+            'title'
+          ),
+          code: option._id,
+        };
       }),
     [data?.restaurant?.options]
   );
@@ -156,7 +164,7 @@ export default function AddonAddForm({
 
   // Handlers
   // Complete and Error
-  function onFetchAddonsByRestaurantCompleted() {}
+  function onFetchAddonsByRestaurantCompleted() { }
   function onErrorFetchAddonsByRestaurant() {
     showToast({
       type: 'error',
@@ -182,8 +190,8 @@ export default function AddonAddForm({
           restaurant: restaurantId,
           addons: addon
             ? mapOptions([
-                omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
-              ])[0]
+              omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
+            ])[0]
             : mapOptions(addons),
         },
       },
@@ -284,7 +292,7 @@ export default function AddonAddForm({
                                             </button>
                                           )}
                                           <Fieldset
-                                            legend={`${getTranslation('addons')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                            legend={`${getTranslation('addons')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
                                             toggleable
                                           >
                                             <div className="grid grid-cols-12 gap-4">
@@ -296,7 +304,14 @@ export default function AddonAddForm({
                                                     'title'
                                                   )}
                                                   maxLength={35}
-                                                  value={value.title}
+                                                  value={
+                                                    typeof value.title ===
+                                                      'object'
+                                                      ? value.title[
+                                                      selectedLanguage
+                                                      ] || ''
+                                                      : value.title || ''
+                                                  }
                                                   onChange={(e) =>
                                                     setFieldValue(
                                                       `addons[${index}].title`,
@@ -379,7 +394,14 @@ export default function AddonAddForm({
                                                   placeholder={getTranslation(
                                                     'description'
                                                   )}
-                                                  value={value.description}
+                                                  value={
+                                                    typeof value.description ===
+                                                      'object'
+                                                      ? value.description[
+                                                      selectedLanguage
+                                                      ] || ''
+                                                      : value.description || ''
+                                                  }
                                                   onChange={handleChange}
                                                   showLabel={true}
                                                   maxLength={40}

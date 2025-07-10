@@ -8,11 +8,11 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 // Icons
 import { IAddonHeaderProps } from '@/lib/utils/interfaces';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 const AddonHeader = ({ setIsAddAddonVisible }: IAddonHeaderProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (
