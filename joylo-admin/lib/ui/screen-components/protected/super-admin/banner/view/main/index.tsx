@@ -26,7 +26,7 @@ import { DELETE_BANNER } from '@/lib/api/graphql';
 import { GET_BANNERS } from '@/lib/api/graphql/queries/banners';
 import { generateDummyBanners } from '@/lib/utils/dummy';
 import { useMutation, useQuery } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function BannersMain({
@@ -35,7 +35,7 @@ export default function BannersMain({
 }: IBannersMainComponentsProps) {
   // Hooks
   const { showToast } = useToast();
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // State - Table

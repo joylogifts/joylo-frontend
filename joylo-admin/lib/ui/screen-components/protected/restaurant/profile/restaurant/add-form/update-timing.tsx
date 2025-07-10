@@ -33,14 +33,14 @@ import useToast from '@/lib/hooks/useToast';
 import { GET_RESTAURANT_PROFILE } from '@/lib/api/graphql';
 import { UPDATE_TIMINGS } from '@/lib/api/graphql/mutations/timing';
 import { useMutation, useQuery } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const UpdateTiming = ({
   stepperProps,
 }: IRestaurantsRestaurantTimingComponentProps) => {
   const { onStepChange } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
   };
 
   // Context
@@ -50,7 +50,7 @@ const UpdateTiming = ({
     useContext(ProfileContext);
 
   // Hooks
-  const t = useTranslations();
+
   const { showToast } = useToast();
   const { getTranslation } = useLangTranslation();
 
@@ -157,11 +157,11 @@ const UpdateTiming = ({
                           value?.times?.length > 0
                             ? []
                             : [
-                                {
-                                  startTime: '00:00',
-                                  endTime: '23:59',
-                                },
-                              ];
+                              {
+                                startTime: '00:00',
+                                endTime: '23:59',
+                              },
+                            ];
                         setFieldValue(`${dayIndex}.times`, newTimes);
                       }}
                       checked={value?.times?.length > 0}
@@ -196,11 +196,11 @@ const UpdateTiming = ({
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.startTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.startTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.startTime
                                         ? 'red'
                                         : '',
                                   }}
@@ -235,11 +235,11 @@ const UpdateTiming = ({
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.endTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.endTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.endTime
                                         ? 'red'
                                         : '',
                                   }}

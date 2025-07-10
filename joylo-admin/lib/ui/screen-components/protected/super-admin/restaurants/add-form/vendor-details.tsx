@@ -40,7 +40,7 @@ import CustomDropdownComponent from '@/lib/ui/useable-components/custom-dropdown
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 import { IRestaurantsVendorDetailsComponentProps } from '@/lib/utils/interfaces/restaurants.interface';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IRestauransVendorDetailsForm = {
@@ -57,13 +57,13 @@ export default function VendorDetails({
 }: IRestaurantsVendorDetailsComponentProps) {
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

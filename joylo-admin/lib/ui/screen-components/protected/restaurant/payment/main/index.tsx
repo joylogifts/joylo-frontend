@@ -1,7 +1,7 @@
 // Hooks
 import { useState, useContext, useEffect } from 'react';
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 // Components
 import PaymentCard from '@/lib/ui/useable-components/PaymentCard';
@@ -21,7 +21,7 @@ import { useLangTranslation } from '@/lib/context/global/language.context';
 export default function PaymentMain() {
   // Hooks
   const { SERVER_URL } = useConfiguration();
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Contexts
@@ -101,11 +101,10 @@ export default function PaymentMain() {
     <div className="flex flex-col items-center justify-center bg-white">
       <div className="w-full rounded-lg border border-gray-200 p-8 md:p-16">
         <div
-          className={`grid gap-6 pb-16 ${
-            paymentMethods.length === 1
-              ? 'grid-cols-1 place-items-center'
-              : 'grid-cols-1 sm:grid-cols-2'
-          }`}
+          className={`grid gap-6 pb-16 ${paymentMethods.length === 1
+            ? 'grid-cols-1 place-items-center'
+            : 'grid-cols-1 sm:grid-cols-2'
+            }`}
         >
           {renderPaymentMethods()}
         </div>

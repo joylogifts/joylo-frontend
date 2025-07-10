@@ -5,7 +5,7 @@ import ActionMenu from '@/lib/ui/useable-components/action-menu';
 // Interfaces and Types
 import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
 import { IBannersResponse } from '@/lib/utils/interfaces/banner.interface';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 // Interfaces and Types
 export const BANNERS_TABLE_COLUMNS = ({
@@ -14,7 +14,7 @@ export const BANNERS_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IBannersResponse>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   return [

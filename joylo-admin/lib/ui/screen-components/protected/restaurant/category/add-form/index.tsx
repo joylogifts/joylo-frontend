@@ -49,7 +49,7 @@ import {
   GET_SUBCATEGORIES_BY_PARENT_ID,
 } from '@/lib/api/graphql/queries/sub-categories';
 import CustomLoader from '@/lib/ui/useable-components/custom-progress-indicator';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryAddForm({
@@ -59,7 +59,7 @@ export default function CategoryAddForm({
   isAddCategoryVisible,
 }: ICategoryAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
   // Queries
   const {
@@ -330,7 +330,7 @@ export default function CategoryAddForm({
                                               />
                                               <CustomTextField
                                                 name={`subCategories[${index}].title`}
-                                                value={value.title}
+                                                value={typeof value.title === "object" ? value.title[selectedLanguage] || '' : value.title || ''}
                                                 maxLength={15}
                                                 onChange={handleChange}
                                                 placeholder="Title"
@@ -343,22 +343,22 @@ export default function CategoryAddForm({
                                           {index ===
                                             (values.subCategories.length - 1 &&
                                               !category) && (
-                                            <div className="mt-4">
-                                              <TextIconClickable
-                                                icon={faAdd}
-                                                title={getTranslation(
-                                                  'add_more'
-                                                )}
-                                                onClick={() =>
-                                                  push({
-                                                    title: '',
-                                                    parentCategoryId: '',
-                                                  })
-                                                }
-                                                className="w-full flex justify-center items-center py-2 border border-dashed border-gray-400 rounded-md text-gray-600 hover:text-black hover:border-black transition-all"
-                                              />
-                                            </div>
-                                          )}
+                                              <div className="mt-4">
+                                                <TextIconClickable
+                                                  icon={faAdd}
+                                                  title={getTranslation(
+                                                    'add_more'
+                                                  )}
+                                                  onClick={() =>
+                                                    push({
+                                                      title: '',
+                                                      parentCategoryId: '',
+                                                    })
+                                                  }
+                                                  className="w-full flex justify-center items-center py-2 border border-dashed border-gray-400 rounded-md text-gray-600 hover:text-black hover:border-black transition-all"
+                                                />
+                                              </div>
+                                            )}
                                         </div>
                                       );
                                     }

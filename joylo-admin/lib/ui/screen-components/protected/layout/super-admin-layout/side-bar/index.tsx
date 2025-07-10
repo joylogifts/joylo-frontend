@@ -28,7 +28,7 @@ import useCheckAllowedRoutes from '@/lib/hooks/useCheckAllowedRoutes';
 
 // Components
 import SidebarItem from './side-bar-item';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { faHeadset } from '@fortawesome/free-solid-svg-icons/faHeadset';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -55,7 +55,7 @@ function SuperAdminSidebar({ children }: IGlobalComponentProps) {
 
 export default function MakeSidebar() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Contexts

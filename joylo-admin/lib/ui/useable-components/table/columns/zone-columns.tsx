@@ -1,6 +1,6 @@
 import { IActionMenuProps, IZoneResponse } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const ZONE_TABLE_COLUMNS = ({
@@ -9,7 +9,7 @@ export const ZONE_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IZoneResponse>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return [
     { headerName: getTranslation('title'), propertyName: 'title' },

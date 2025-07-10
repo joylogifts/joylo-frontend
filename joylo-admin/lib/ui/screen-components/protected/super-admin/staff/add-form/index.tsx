@@ -31,7 +31,7 @@ import { CREATE_STAFF, EDIT_STAFF } from '@/lib/api/graphql/mutations/staff';
 import { GET_STAFFS } from '@/lib/api/graphql/queries/staff';
 import { useMutation } from '@apollo/client';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function StaffAddForm({
@@ -41,7 +41,7 @@ export default function StaffAddForm({
   isAddStaffVisible,
 }: IStaffAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States
@@ -55,8 +55,8 @@ export default function StaffAddForm({
     confirmPassword: staff ? staff.plainPassword : '',
     permissions: staff
       ? staff.permissions?.map((p) => {
-          return { label: p, code: p };
-        })
+        return { label: p, code: p };
+      })
       : [],
   };
 

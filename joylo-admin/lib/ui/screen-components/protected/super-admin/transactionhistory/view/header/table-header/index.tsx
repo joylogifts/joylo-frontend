@@ -3,7 +3,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { ITransactionHistoryTableHeaderProps } from '@/lib/utils/interfaces';
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function TransactionHistoryTableHeader({
@@ -13,7 +13,7 @@ export default function TransactionHistoryTableHeader({
   setDateFilters,
 }: ITransactionHistoryTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

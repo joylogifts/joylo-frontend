@@ -3,7 +3,7 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import { TPaymentType } from '@/lib/utils/types/payment-type';
 import { StripeSVG } from '@/lib/utils/assets/svgs/stripe';
 import { IPaymentCardProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function PaymentCard({
@@ -17,7 +17,7 @@ export default function PaymentCard({
   const LogoComponent = type === 'stripe' ? StripeSVG : null;
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-6">

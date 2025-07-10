@@ -10,7 +10,7 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+
 
 // Interface and Types
 import {
@@ -67,12 +67,12 @@ export default function FoodDetails({
   stepperProps,
 }: IFoodDetailsComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };

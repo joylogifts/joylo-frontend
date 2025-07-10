@@ -43,9 +43,9 @@ import {
 import { useLazyQueryQL } from '@/lib/hooks/useLazyQueryQL';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
-import { get } from 'lodash';
+
 
 const initialValues: IVendorForm = {
   // name: '',
@@ -62,7 +62,7 @@ export default function VendorAddForm({
   position = 'right',
 }: IVendorAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

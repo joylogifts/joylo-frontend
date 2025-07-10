@@ -161,6 +161,15 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
             {!languagesLoading && !languagesLoading && languages.map((item, index) => (
               <TouchableOpacity activeOpacity={0.7} key={index} onPress={() => setSelectedLanguage(item.code)} style={[styles(currentTheme).radioContainer]}>
                 <RadioButton animation={'bounceIn'} size={13} outerColor={currentTheme.iconColorDark} innerColor={currentTheme.main} isSelected={selectedLanguage === item.code} onPress={() => setSelectedLanguage(item.code)} />
+                {
+                  item?.flag && (
+                    <Image
+                      source={{ uri: item.flag }}
+                      style={styles(currentTheme).flagImage}
+                      resizeMode='contain'
+                    />
+                  )
+                }
                 <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} bold>
                   {item.label}
                 </TextDefault>

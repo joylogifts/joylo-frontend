@@ -1,6 +1,6 @@
 // Hooks
 import { useState, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 
 // Interfaces & Types
@@ -26,7 +26,7 @@ import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OrderSuperAdminMain() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

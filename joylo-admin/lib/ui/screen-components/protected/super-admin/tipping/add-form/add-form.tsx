@@ -24,7 +24,7 @@ import useToast from '@/lib/hooks/useToast';
 import { CREATE_TIPPING, EDIT_TIPPING, GET_TIPPING } from '@/lib/api/graphql';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const TippingAddForm = () => {
@@ -34,7 +34,7 @@ const TippingAddForm = () => {
   }) as IQueryResult<ITippingResponse | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // State

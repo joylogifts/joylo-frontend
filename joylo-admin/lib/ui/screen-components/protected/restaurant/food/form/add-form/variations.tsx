@@ -50,7 +50,7 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 // Apollo
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialFormValuesTemplate: IVariationForm = {
@@ -66,12 +66,12 @@ export default function VariationAddForm({
 }: IFoodVariationsAddRestaurantComponentProps) {
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // State
@@ -92,13 +92,13 @@ export default function VariationAddForm({
   const initialValues = {
     variations:
       foodContextData?.isEditing ||
-      (foodContextData?.food?.variations ?? [])?.length > 0
+        (foodContextData?.food?.variations ?? [])?.length > 0
         ? (foodContextData?.food?.variations ?? [])
         : [
-            {
-              ...initialFormValuesTemplate,
-            },
-          ],
+          {
+            ...initialFormValuesTemplate,
+          },
+        ],
   };
 
   // Query
@@ -163,7 +163,7 @@ export default function VariationAddForm({
   );
 
   // API Handlers
-  function onFetchAddonsByRestaurantCompleted() {}
+  function onFetchAddonsByRestaurantCompleted() { }
   function onErrorFetchAddonsByRestaurant() {
     showToast({
       type: 'error',
@@ -280,18 +280,18 @@ export default function VariationAddForm({
                                       <div className="relative">
                                         {(foodContextData?.isEditing ||
                                           !!index) && (
-                                          <button
-                                            className="absolute -right-1 top-2"
-                                            onClick={() => remove(index)}
-                                            type="button"
-                                          >
-                                            <FontAwesomeIcon
-                                              icon={faTimes}
-                                              size="lg"
-                                              color="#FF6347"
-                                            />
-                                          </button>
-                                        )}
+                                            <button
+                                              className="absolute -right-1 top-2"
+                                              onClick={() => remove(index)}
+                                              type="button"
+                                            >
+                                              <FontAwesomeIcon
+                                                icon={faTimes}
+                                                size="lg"
+                                                color="#FF6347"
+                                              />
+                                            </button>
+                                          )}
                                         <Fieldset
                                           legend={`${getTranslation('variation')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
                                           toggleable
@@ -307,10 +307,10 @@ export default function VariationAddForm({
                                                 maxLength={35}
                                                 value={
                                                   typeof value.title ===
-                                                  'object'
+                                                    'object'
                                                     ? value.title[
-                                                        selectedLanguage
-                                                      ] || ''
+                                                    selectedLanguage
+                                                    ] || ''
                                                     : value.title || ''
                                                 }
                                                 onChange={(e) =>

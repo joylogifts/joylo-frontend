@@ -33,7 +33,7 @@ import { GET_ADDONS_BY_RESTAURANT_ID } from '@/lib/api/graphql/queries/addon';
 
 // Context
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OptionMain({
@@ -45,7 +45,7 @@ export default function OptionMain({
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
@@ -96,7 +96,7 @@ export default function OptionMain({
   };
 
   // Restaurant Profile Complete
-  function onFetchAddonsByRestaurantCompleted() {}
+  function onFetchAddonsByRestaurantCompleted() { }
   // Restaurant Zone Info Error
   function onErrorFetchAddonsByRestaurant() {
     showToast({

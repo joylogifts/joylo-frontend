@@ -11,12 +11,12 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Constants
 import HeaderText from '@/lib/ui/useable-components/header-text';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorHeader() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

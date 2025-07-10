@@ -5,14 +5,14 @@ import { Avatar } from 'primereact/avatar';
 import { ProfileContext } from '@/lib/context/restaurant/profile.context';
 import RestaurantProfileSkeleton from '@/lib/ui/useable-components/custom-skeletons/restaurant.profile.skeleton';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantMain: React.FC = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

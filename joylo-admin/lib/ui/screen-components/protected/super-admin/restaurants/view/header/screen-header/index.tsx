@@ -12,12 +12,12 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Icon imports
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantsScreenHeader() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

@@ -11,8 +11,8 @@ export interface IFoodErrors {
 
 export interface IFoodDetailsForm {
   _id: string | null;
-  title: string;
-  description: string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   image: string;
   category: IDropdownSelectItem | null;
   subCategory: IDropdownSelectItem | null;

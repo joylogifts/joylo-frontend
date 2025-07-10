@@ -7,12 +7,12 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RiderHeader = ({ setIsAddRiderVisible }: IRiderHeaderProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

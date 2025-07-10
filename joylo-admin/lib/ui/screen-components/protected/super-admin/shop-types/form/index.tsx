@@ -1,6 +1,6 @@
 'use client';
 import { ChangeEvent, useContext } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useMutation } from '@apollo/client';
 // GraphQL
 import {
@@ -45,7 +45,7 @@ export default function ShopTypesForm({
 }: IAddShopTypeProps) {
   // Hooks
   const { showToast } = useContext(ToastContext);
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Initial values
@@ -277,8 +277,8 @@ export default function ShopTypesForm({
                   type="submit"
                 >
                   {isSubmitting ||
-                  editShopTypeLoading ||
-                  createShopTypeLoading ? (
+                    editShopTypeLoading ||
+                    createShopTypeLoading ? (
                     <ProgressSpinner
                       className="m-0 h-6 w-6 items-center self-center p-0"
                       strokeWidth="5"

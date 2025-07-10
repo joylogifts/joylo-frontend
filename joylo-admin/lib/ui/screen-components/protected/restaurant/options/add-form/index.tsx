@@ -39,7 +39,7 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
@@ -62,7 +62,7 @@ export default function OptionAddForm({
   isAddOptionsVisible,
 }: IOptionsAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
 
@@ -206,10 +206,10 @@ export default function OptionAddForm({
                                                   maxLength={35}
                                                   value={
                                                     typeof value.title ===
-                                                    'object'
+                                                      'object'
                                                       ? value.title[
-                                                          selectedLanguage
-                                                        ] || ''
+                                                      selectedLanguage
+                                                      ] || ''
                                                       : value.title || ''
                                                   }
                                                   onChange={(e) =>
@@ -267,10 +267,10 @@ export default function OptionAddForm({
                                                   )}
                                                   value={
                                                     typeof value.description ===
-                                                    'object'
+                                                      'object'
                                                       ? value.description[
-                                                          selectedLanguage
-                                                        ] || ''
+                                                      selectedLanguage
+                                                      ] || ''
                                                       : value.description || ''
                                                   }
                                                   onChange={handleChange}

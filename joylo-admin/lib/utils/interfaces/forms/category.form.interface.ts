@@ -2,7 +2,7 @@ import { ISubCategory } from '../category.interface';
 
 export interface ICategoryForm {
   _id?: string;
-  title: string;
+  title: Record<string, string> | string;
   subCategories: ISubCategory[];
   image?: string | null;
 }

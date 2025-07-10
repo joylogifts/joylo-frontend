@@ -58,7 +58,7 @@ import CustomButton from '../../button';
 import CustomRadiusInputField from '../../custom-radius-input';
 import CustomShape from '../shapes';
 import calculateZoom from '@/lib/utils/methods/zoom-calculator';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const autocompleteService: {
@@ -89,7 +89,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
   const [path, setPath] = useState<ILocationPoint[]>([]);
   const [distance, setDistance] = useState(1);
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States
@@ -365,7 +365,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
         const lng =
           center.lng +
           (radius / (111300 * Math.cos(center.lat * (Math.PI / 180)))) *
-            Math.sin(angle);
+          Math.sin(angle);
         path.push({ lat, lng });
       }
 
@@ -388,7 +388,7 @@ const CustomGoogleMapsLocationBounds: React.FC<
         const lng =
           center.lng +
           (radius / (111320 * Math.cos((center.lat * Math.PI) / 180))) *
-            Math.sin(angle);
+          Math.sin(angle);
         path.push([lng, lat]);
       }
 

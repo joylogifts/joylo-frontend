@@ -25,7 +25,7 @@ import { useContext, useEffect, useState } from 'react';
 import { COMMISSION_RATE_ACTIONS } from '@/lib/utils/constants';
 
 import CommissionRateHeader from '../header/table-header';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { COMMISSION_RATE_COLUMNS } from '@/lib/ui/useable-components/table/columns/comission-rate-columns';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -35,7 +35,7 @@ interface RestaurantsData {
 
 export default function CommissionRateMain() {
   //Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

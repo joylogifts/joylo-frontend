@@ -20,7 +20,7 @@ import {
   faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UserStats() {
@@ -31,7 +31,7 @@ export default function UserStats() {
   }) as IQueryResult<IDashboardUsersResponseGraphQL | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   const dashboardUsers = useMemo(() => {

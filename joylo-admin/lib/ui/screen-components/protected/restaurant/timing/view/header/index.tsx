@@ -1,11 +1,11 @@
 // Components
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import HeaderText from '@/lib/ui/useable-components/header-text';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 const TimingHeader = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

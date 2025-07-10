@@ -17,7 +17,7 @@ import { onErrorMessageMatcher } from '@/lib/utils/methods';
 import { NotificationSchema } from '@/lib/utils/schema/notification';
 import { useMutation } from '@apollo/client';
 import { Form, Formik } from 'formik';
-import { useTranslations } from 'next-intl';
+
 import { Sidebar } from 'primereact/sidebar';
 import { ChangeEvent, useContext } from 'react';
 
@@ -26,7 +26,7 @@ export default function NotificationForm({
   visible,
 }: INotificationFormProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   //Toast
@@ -101,15 +101,14 @@ export default function NotificationForm({
                   showLabel={true}
                   placeholder={getTranslation('title')}
                   type="text"
-                  className={`${
-                    onErrorMessageMatcher(
-                      'title',
-                      errors.title,
-                      NotificationErrors
-                    )
+                  className={`${onErrorMessageMatcher(
+                    'title',
+                    errors.title,
+                    NotificationErrors
+                  )
                       ? 'border border-red-500'
                       : ''
-                  }`}
+                    }`}
                 />
                 <CustomTextAreaField
                   value={values.body}
@@ -120,15 +119,14 @@ export default function NotificationForm({
                   label={getTranslation('description')}
                   name="body"
                   placeholder={getTranslation('add_description_here')}
-                  className={`${
-                    onErrorMessageMatcher(
-                      'body',
-                      errors.body,
-                      NotificationErrors
-                    )
+                  className={`${onErrorMessageMatcher(
+                    'body',
+                    errors.body,
+                    NotificationErrors
+                  )
                       ? 'border border-red-500'
                       : ''
-                  }`}
+                    }`}
                   rows={5}
                 />
 

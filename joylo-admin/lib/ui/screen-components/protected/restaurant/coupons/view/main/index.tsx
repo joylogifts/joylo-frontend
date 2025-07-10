@@ -33,7 +33,7 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 import { GET_RESTAURANT_COUPONS } from '@/lib/api/graphql/queries/coupons-restaurant';
 import { DELETE_RESTAURANT_COUPON } from '@/lib/api/graphql/mutations/coupons-restaurant';
 import { useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponsMain({
@@ -45,7 +45,7 @@ export default function CouponsMain({
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { showToast } = useToast();
   const { getTranslation } = useLangTranslation();
 

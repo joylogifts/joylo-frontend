@@ -7,7 +7,7 @@ import {
   OrderTypeEnum,
   PaymentMethodEnum,
 } from '@/lib/utils/interfaces/earnings.interface';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function EarningRestaurantTableHeader({
@@ -17,7 +17,7 @@ export default function EarningRestaurantTableHeader({
   setDateFilters,
 }: IEarningTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

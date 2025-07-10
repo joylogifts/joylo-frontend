@@ -32,7 +32,7 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 // CSS
 import classes from '@/lib/ui/screen-components/protected/super-admin/dispatch/view/main/index.module.css';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Status templates
@@ -75,7 +75,7 @@ function severityChecker(status: string | undefined) {
 
 export const DISPATCH_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
@@ -415,10 +415,10 @@ export const DISPATCH_TABLE_COLUMNS = () => {
         // CHANGE 2: Filter status options based on whether it's a pickup order
         const availableStatuses = rowData.isPickedUp
           ? actionStatusOptions.filter((status) =>
-              ['PENDING', 'ACCEPTED', 'DELIVERED', 'CANCELLED'].includes(
-                status.code
-              )
+            ['PENDING', 'ACCEPTED', 'DELIVERED', 'CANCELLED'].includes(
+              status.code
             )
+          )
           : actionStatusOptions;
 
         const currentStatus = availableStatuses.find(

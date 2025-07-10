@@ -9,7 +9,7 @@ import { ICuisineTableHeaderProps } from '@/lib/utils/interfaces/cuisine.interfa
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 // Prime react
 import { Checkbox } from 'primereact/checkbox';
@@ -23,7 +23,7 @@ export default function CuisineTableHeader({
   setSelectedActions,
 }: ICuisineTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   //Ref

@@ -31,7 +31,7 @@ import {
   MAX_SQUARE_FILE_SIZE,
   SHOP_TYPE,
 } from '@/lib/utils/constants';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CuisineForm({
@@ -47,7 +47,7 @@ export default function CuisineForm({
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
@@ -296,8 +296,8 @@ export default function CuisineForm({
                     type="submit"
                   >
                     {isSubmitting ||
-                    createCuisineLoading ||
-                    editCuisineLoading ? (
+                      createCuisineLoading ||
+                      editCuisineLoading ? (
                       <ProgressSpinner
                         className="m-0 h-6 w-6 items-center self-center p-0"
                         strokeWidth="5"

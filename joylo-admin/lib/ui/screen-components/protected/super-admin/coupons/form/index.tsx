@@ -28,7 +28,7 @@ import { ChangeEvent, useContext, useState } from 'react';
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 import { onErrorMessageMatcher } from '@/lib/utils/methods';
 import { CouponErrors } from '@/lib/utils/constants';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponForm({
@@ -40,7 +40,7 @@ export default function CouponForm({
   // Hooks
   const { showToast } = useContext(ToastContext);
   const [endDateError, setEndDateError] = useState('');
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Initial values

@@ -21,7 +21,7 @@ import { DELETE_RESTAURANT } from '@/lib/api/graphql';
 
 // Components
 import ActionMenu from '../../action-menu';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const RESTAURANT_TABLE_COLUMNS = ({
@@ -30,7 +30,7 @@ export const RESTAURANT_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IRestaurantResponse>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

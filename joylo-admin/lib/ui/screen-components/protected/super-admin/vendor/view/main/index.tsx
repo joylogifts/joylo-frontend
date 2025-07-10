@@ -25,12 +25,12 @@ import { onUseLocalStorage } from '@/lib/utils/methods';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { Chip } from 'primereact/chip';
 import NoData from '@/lib/ui/useable-components/no-data';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -62,9 +62,8 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
   return (
     <div className="flex flex-grow flex-col overflow-hidden sm:flex-row">
       <div
-        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/3 ${
-          activeTab === 'vendors' ? '' : 'hidden sm:block'
-        }`}
+        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/3 ${activeTab === 'vendors' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Mobile-only header for Vendors section */}
         <div className="mt-3  border-b p-3 sm:hidden">
@@ -124,9 +123,8 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
       </div>
 
       <div
-        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${
-          activeTab === 'restaurants' ? '' : 'hidden sm:block'
-        }`}
+        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${activeTab === 'restaurants' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Header for Restaurants section */}
         <div className="border-b pb-2 pt-3">

@@ -1,6 +1,6 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IExtendedOrder } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',
@@ -13,7 +13,7 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 
 export const ORDER_SUPER_ADMIN_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return [
     {

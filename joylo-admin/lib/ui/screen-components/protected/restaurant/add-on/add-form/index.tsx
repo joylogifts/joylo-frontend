@@ -49,7 +49,7 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
@@ -76,7 +76,7 @@ export default function AddonAddForm({
   isAddAddonVisible,
 }: IAddonAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
   // Context
@@ -164,7 +164,7 @@ export default function AddonAddForm({
 
   // Handlers
   // Complete and Error
-  function onFetchAddonsByRestaurantCompleted() {}
+  function onFetchAddonsByRestaurantCompleted() { }
   function onErrorFetchAddonsByRestaurant() {
     showToast({
       type: 'error',
@@ -190,8 +190,8 @@ export default function AddonAddForm({
           restaurant: restaurantId,
           addons: addon
             ? mapOptions([
-                omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
-              ])[0]
+              omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
+            ])[0]
             : mapOptions(addons),
         },
       },
@@ -306,10 +306,10 @@ export default function AddonAddForm({
                                                   maxLength={35}
                                                   value={
                                                     typeof value.title ===
-                                                    'object'
+                                                      'object'
                                                       ? value.title[
-                                                          selectedLanguage
-                                                        ] || ''
+                                                      selectedLanguage
+                                                      ] || ''
                                                       : value.title || ''
                                                   }
                                                   onChange={(e) =>
@@ -396,10 +396,10 @@ export default function AddonAddForm({
                                                   )}
                                                   value={
                                                     typeof value.description ===
-                                                    'object'
+                                                      'object'
                                                       ? value.description[
-                                                          selectedLanguage
-                                                        ] || ''
+                                                      selectedLanguage
+                                                      ] || ''
                                                       : value.description || ''
                                                   }
                                                   onChange={handleChange}

@@ -11,12 +11,12 @@ import { GET_NOTIFICATIONS, SEND_NOTIFICATION_USER } from '@/lib/api/graphql';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const NOTIFICATIONS_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 

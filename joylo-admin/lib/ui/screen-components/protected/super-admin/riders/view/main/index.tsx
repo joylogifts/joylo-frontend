@@ -33,7 +33,7 @@ import { IQueryResult } from '@/lib/utils/interfaces';
 
 // Data
 import { generateDummyRiders } from '@/lib/utils/dummy';
-import { useTranslations } from 'next-intl';
+
 import { useRouter } from 'next/navigation';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -42,7 +42,7 @@ export default function RidersMain({
   setRider,
 }: IRidersMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
   const router = useRouter();

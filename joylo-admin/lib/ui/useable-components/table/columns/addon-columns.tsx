@@ -1,6 +1,6 @@
 import { IActionMenuProps, IAddon } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const ADDON_TABLE_COLUMNS = ({
@@ -9,7 +9,7 @@ export const ADDON_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IAddon>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   return [
@@ -45,7 +45,7 @@ export const ADDON_TABLE_COLUMNS = ({
     {
       propertyName: 'actions',
       body: (option: IAddon) => (
-        <ActionMenu items={menuItems} data={option} onToggle={() => {}} />
+        <ActionMenu items={menuItems} data={option} onToggle={() => { }} />
       ),
     },
   ];

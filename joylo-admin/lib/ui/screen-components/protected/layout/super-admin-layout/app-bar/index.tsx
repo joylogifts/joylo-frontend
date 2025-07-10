@@ -10,7 +10,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useTransition,
 } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -62,9 +61,7 @@ import { timeAgo } from '@/lib/utils/methods/timeAgo';
 // Styles
 import classes from './app-bar.module.css';
 import { AppLogo } from '@/lib/utils/assets/svgs/logo';
-import { useLocale, useTranslations } from 'next-intl';
-import { TLocale } from '@/lib/utils/types/locale';
-import { setUserLocale } from '@/lib/utils/methods/locale';
+
 
 // GraphQL
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
@@ -73,6 +70,7 @@ import {
   GET_WEB_NOTIFICATIONS,
   MARK_WEB_NOTIFICATIONS_AS_READ,
 } from '@/lib/api/graphql';
+import { MenuItem } from 'primereact/menuitem';
 
 const AppTopbar = () => {
   // States
@@ -82,11 +80,10 @@ const AppTopbar = () => {
   const [notifications, setNotifications] = useState<IWebNotification[]>([]);
 
   // Hooks
-  const t = useTranslations();
+
   const pathname = usePathname();
   const router = useRouter();
-  const [, startTransition] = useTransition();
-  const currentLocale = useLocale();
+
   const {
     selectedLanguage,
     setSelectedLanguage,
@@ -171,12 +168,12 @@ const AppTopbar = () => {
     router.push('/authentication/login');
   };
 
-  function onLocaleChange(value: string) {
-    const locale = value as TLocale;
-    startTransition(() => {
-      setUserLocale(locale);
-    });
-  }
+  // function onLocaleChange(value: string) {
+  //   const locale = value as TLocale;
+  //   startTransition(() => {
+  //     setUserLocale(locale);
+  //   });
+  // }
 
   // Use Effects
   useEffect(() => {
@@ -210,6 +207,26 @@ const AppTopbar = () => {
       document.removeEventListener('mousedown', ntfnClickOutside);
     };
   }, [isNtfnOpen]);
+
+  const menuItems: MenuItem[] =
+    !languagesLoading && !languagesError
+      ? languages.map<MenuItem>((lang) => ({
+        label: lang.label,
+        // PrimeReact’s MenuItem.template signature is (item, options) => ReactNode
+        template: () => (
+          <div
+            className={`${selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
+              } p-2 cursor-pointer`}
+            onClick={() => setSelectedLanguage(lang.code)}
+          >
+            {lang.label}
+          </div>
+        ),
+        command: () => {
+          setSelectedLanguage(lang.code);
+        },
+      }))
+      : [];
 
   return (
     <div className={`${classes['layout-topbar']}`}>
@@ -299,11 +316,10 @@ const AppTopbar = () => {
                   notifications?.map((notification, index) => (
                     <Link
                       key={index}
-                      className={`p-2 mx-3 rounded-md text-sm cursor-pointer ${
-                        notification.read
-                          ? 'text-black'
-                          : 'text-[#484848] bg-[#d8e3a369]'
-                      } hover:bg-gray-300`}
+                      className={`p-2 mx-3 rounded-md text-sm cursor-pointer ${notification.read
+                        ? 'text-black'
+                        : 'text-[#484848] bg-[#d8e3a369]'
+                        } hover:bg-gray-300`}
                       href={`${notification.navigateTo}`}
                       onClick={() => {
                         markAllAsRead();
@@ -333,27 +349,7 @@ const AppTopbar = () => {
 
             <Menu
               model={
-                (!languagesLoading &&
-                  !languagesError &&
-                  languages?.map((lang: any) => ({
-                    label: lang.label,
-                    template(item: any) {
-                      return (
-                        <div
-                          className={`${
-                            selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
-                          } p-2 cursor-pointer`}
-                          onClick={() => setSelectedLanguage(lang.code)}
-                        >
-                          {item.label}
-                        </div>
-                      );
-                    },
-                    command: () => {
-                      setSelectedLanguage(lang.code);
-                    },
-                  }))) ??
-                []
+                menuItems
               }
               //   [
               //   {
@@ -497,27 +493,7 @@ const AppTopbar = () => {
             />
             <Menu
               model={
-                (!languagesLoading &&
-                  !languagesError &&
-                  languages?.map((lang: any) => ({
-                    label: lang.label,
-                    template(item: any) {
-                      return (
-                        <div
-                          className={`${
-                            selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
-                          } p-2 cursor-pointer`}
-                          onClick={() => setSelectedLanguage(lang.code)}
-                        >
-                          {item.label}
-                        </div>
-                      );
-                    },
-                    command: () => {
-                      setSelectedLanguage(lang.code);
-                    },
-                  }))) ??
-                []
+                menuItems
               }
               // model={
               //   [
@@ -639,27 +615,7 @@ const AppTopbar = () => {
 
           <Menu
             model={
-              (!languagesLoading &&
-                !languagesError &&
-                languages?.map((lang: any) => ({
-                  label: lang.label,
-                  template(item: any) {
-                    return (
-                      <div
-                        className={`${
-                          selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
-                        } p-2 cursor-pointer`}
-                        onClick={() => setSelectedLanguage(lang.code)}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    setSelectedLanguage(lang.code);
-                  },
-                }))) ??
-              []
+              menuItems
             }
             // model={[
             //   {

@@ -2,7 +2,7 @@ import { useLangTranslation } from '@/lib/context/global/language.context';
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 import DateFilterCustomTab from '@/lib/ui/useable-components/date-filter-custom-tab';
 import { IDashboardSubHeaderComponentsProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+
 
 export default function DashboardSubHeader({
   isStoreView,
@@ -11,7 +11,7 @@ export default function DashboardSubHeader({
   handleDateFilter,
 }: IDashboardSubHeaderComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

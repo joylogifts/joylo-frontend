@@ -29,7 +29,7 @@ import { EDIT_VENDOR } from '@/lib/api/graphql';
 
 // Icons
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IVendorForm = {
@@ -45,7 +45,7 @@ const initialValues: IVendorForm = {
 
 export default function VendorUpdateForms() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -64,7 +64,7 @@ export default function VendorUpdateForms() {
   const [updateVendor] = useMutation(EDIT_VENDOR, {
     //  refetchQueries: [{ query: GET_VENDORS, fetchPolicy: 'network-only' }],
     onError,
-    onCompleted: () => {},
+    onCompleted: () => { },
   });
 
   // Handlers

@@ -4,7 +4,7 @@ import {
   GET_LANGUAGES,
   GET_TRANSLATIONS_BY_LANGUAGE_CODE,
 } from '@/lib/api/graphql';
-import { useQuery } from '@apollo/client';
+import { ApolloError, useQuery } from '@apollo/client';
 import {
   createContext,
   useState,
@@ -13,10 +13,19 @@ import {
   ReactNode,
 } from 'react';
 
+export interface Language {
+  _id: string;
+  code: string;
+  label: string;
+  flag?: string; // URL to the flag image
+  isDefault: boolean;
+  __typename?: string;
+}
+
 interface LangTranslationContextType {
-  languages: any[];
+  languages: Language[];
   languagesLoading: boolean;
-  languagesError: any;
+  languagesError: ApolloError | undefined;
   selectedLanguage: string;
   setSelectedLanguage: (code: string) => void;
   translations: Record<string, string>;
@@ -44,7 +53,7 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     if (!languagesData || languagesLoading) return;
 
     const languages = languagesData.languages || [];
-    const defaultLang = languages.find((l: any) => l.isDefault)?.code;
+    const defaultLang = languages.find((l: Language) => l.isDefault)?.code;
     setSelectedLanguage((prev) => prev || defaultLang);
   }, [languagesData, languagesLoading]);
 

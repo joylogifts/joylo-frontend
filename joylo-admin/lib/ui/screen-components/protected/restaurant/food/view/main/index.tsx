@@ -53,7 +53,7 @@ import {
   GET_SUBCATEGORIES,
   GET_SUBCATEGORY,
 } from '@/lib/api/graphql/queries/sub-categories';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function FoodsMain() {
@@ -63,7 +63,7 @@ export default function FoodsMain() {
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { showToast } = useToast();
   const { getTranslation } = useLangTranslation();
 
@@ -170,7 +170,7 @@ export default function FoodsMain() {
           isOutOfStock: fd.isOutOfStock,
           subCategory: {
             code: fd.subCategory,
-            label: sub_categories?.subCategories.find(
+            label: typeof sub_categories?.subCategories.find(
               (sub_ctg) => sub_ctg._id === fd.subCategory
             )?.title,
           },
@@ -231,7 +231,12 @@ export default function FoodsMain() {
                       (addon: IDropdownSelectItem) => addon.code === addonId
                     ) ?? ({} as IDropdownSelectItem)
                   );
-                }),
+                })?.forEach((addon) => {
+                  return {
+                    label: addon.label,
+                    code: addon.code,
+                  }
+                }) ?? [],
               };
             }) as IVariationForm[]) ?? ([] as IVariationForm[]);
 

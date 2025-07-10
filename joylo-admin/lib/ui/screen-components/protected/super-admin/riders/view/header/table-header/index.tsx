@@ -4,14 +4,14 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
 import { IRidersTableHeaderProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+
 
 export default function RidersTableHeader({
   globalFilterValue,
   onGlobalFilterChange,
 }: IRidersTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

@@ -55,10 +55,10 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { useLangTranslation } from '@/lib/context/global/language.context';
-import { get } from 'lodash';
+
 
 const initialValues: IRestaurantForm = {
   name: '',
@@ -81,13 +81,13 @@ export default function RestaurantDetails({
   stepperProps,
 }: IAddRestaurantComponentProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context

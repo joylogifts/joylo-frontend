@@ -30,7 +30,7 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 import { generateDummyOptions } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OptionMain({
@@ -42,7 +42,7 @@ export default function OptionMain({
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { showToast } = useToast();
   const { getTranslation } = useLangTranslation();
 
@@ -93,7 +93,7 @@ export default function OptionMain({
   };
 
   // Complete and Error
-  function onFetchCategoriesByRestaurantCompleted() {}
+  function onFetchCategoriesByRestaurantCompleted() { }
   function onErrorFetchCategoriesByRestaurant() {
     showToast({
       type: 'error',

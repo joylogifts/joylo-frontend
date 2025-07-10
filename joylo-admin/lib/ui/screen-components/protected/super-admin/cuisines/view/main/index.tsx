@@ -28,7 +28,7 @@ import Table from '@/lib/ui/useable-components/table';
 import CuisineTableHeader from '../header/table-header';
 import { generateDummyCuisines } from '@/lib/utils/dummy';
 import { CUISINE_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/cuisine-columns';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CuisinesMain({
@@ -51,7 +51,7 @@ export default function CuisinesMain({
   }) as ILazyQueryResult<IGetCuisinesData | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 

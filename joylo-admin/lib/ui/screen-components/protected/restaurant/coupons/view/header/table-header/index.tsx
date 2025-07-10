@@ -4,14 +4,14 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
 import { ICouponRestaurantTableHeaderProps } from '@/lib/utils/interfaces/coupons-restaurant.interface';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export default function CouponsTableHeader({
   globalFilterValue,
   onGlobalFilterChange,
 }: ICouponRestaurantTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

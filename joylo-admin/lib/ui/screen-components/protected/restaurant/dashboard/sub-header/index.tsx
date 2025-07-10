@@ -1,14 +1,14 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import DateFilterCustomTab from '@/lib/ui/useable-components/date-filter-custom-tab';
 import { IDashboardSubHeaderComponentsProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export default function DashboardSubHeader({
   dateFilter,
   handleDateFilter,
 }: IDashboardSubHeaderComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div className="flex flex-row items-center justify-between px-4 py-3 bg-white rounded-lg ">

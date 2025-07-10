@@ -1,5 +1,5 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import React from 'react';
 
 export default function NoData({
@@ -9,7 +9,7 @@ export default function NoData({
   title?: string;
   message?: string;
 }) {
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   return (
     <div className="w-full flex flex-col items-center justify-center p-8 text-center">

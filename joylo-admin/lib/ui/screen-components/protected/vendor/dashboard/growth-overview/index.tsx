@@ -24,7 +24,7 @@ import Table from '@/lib/ui/useable-components/table';
 import { DataTableRowClickEvent } from 'primereact/datatable';
 import { onUseLocalStorage } from '@/lib/utils/methods';
 import { generateVendorStoreDetails } from '@/lib/utils/dummy';
-import { useTranslations } from 'next-intl';
+
 import { VENDOR_STORE_DETAILS_COLUMN } from '@/lib/ui/useable-components/table/columns/store-details-by-vendor-columns';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -32,7 +32,7 @@ import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const VendorGrowthOverViewGraph = () => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -222,7 +222,7 @@ const VendorGrowthOverViewTabular = ({
           data?.getStoreDetailsByVendorId ||
           (loading ? generateVendorStoreDetails() : [])
         }
-        setSelectedData={() => {}}
+        setSelectedData={() => { }}
         selectedData={[]}
         columns={VENDOR_STORE_DETAILS_COLUMN()}
         loading={loading}

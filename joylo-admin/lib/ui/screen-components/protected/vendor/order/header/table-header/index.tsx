@@ -7,7 +7,7 @@ import React, { useRef, useState } from 'react';
 import classes from './order-vendor.header.module.css';
 import { IOrderVendorHeaderProps } from '@/lib/utils/interfaces/orders/order-vendor.interface';
 import { IMenuItem } from '@/lib/utils/interfaces/orders/order-vendor.interface';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
@@ -16,7 +16,7 @@ const OrderTableHeader: React.FC<IOrderVendorHeaderProps> = ({
   onSearch,
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

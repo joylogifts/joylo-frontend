@@ -5,7 +5,7 @@ import { GET_RIDER } from '@/lib/api/graphql';
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 // Interfaces
@@ -21,7 +21,7 @@ import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RidersDetailScreen() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { id } = useParams();
 

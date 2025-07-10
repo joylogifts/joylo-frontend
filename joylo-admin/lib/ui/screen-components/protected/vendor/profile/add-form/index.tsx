@@ -33,7 +33,7 @@ import { EDIT_VENDOR } from '@/lib/api/graphql';
 
 // Icons
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IVendorForm = {
@@ -50,7 +50,7 @@ export default function VendorUpdateForm({
   setIsUpdateProfileVisible,
 }: IVendorUpdateFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context
@@ -67,7 +67,7 @@ export default function VendorUpdateForm({
   const [createVendor] = useMutation(EDIT_VENDOR, {
     //  refetchQueries: [{ query: GET_VENDORS, fetchPolicy: 'network-only' }],
     onError,
-    onCompleted: () => {},
+    onCompleted: () => { },
   });
 
   // Handlers

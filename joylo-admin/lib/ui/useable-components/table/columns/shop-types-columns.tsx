@@ -14,7 +14,7 @@ import { GET_COUPONS, UPDATE_SHOP_TYPE } from '@/lib/api/graphql';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import Image from 'next/image';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -26,7 +26,7 @@ export const SHOP_TYPES_TABLE_COLUMNS = ({
   // Hooks
   const { showToast } = useContext(ToastContext);
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

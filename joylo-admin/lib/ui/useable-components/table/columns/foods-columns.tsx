@@ -14,7 +14,7 @@ import { useContext, useState } from 'react';
 import { ToastContext } from '@/lib/context/global/toast.context';
 import CustomInputSwitch from '../../custom-input-switch';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const FOODS_TABLE_COLUMNS = ({
@@ -23,7 +23,7 @@ export const FOODS_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IFoodNew>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context

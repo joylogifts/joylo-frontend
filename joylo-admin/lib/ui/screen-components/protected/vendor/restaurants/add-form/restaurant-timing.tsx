@@ -32,14 +32,14 @@ import useToast from '@/lib/hooks/useToast';
 import { GET_RESTAURANT_PROFILE } from '@/lib/api/graphql';
 import { UPDATE_TIMINGS } from '@/lib/api/graphql/mutations/timing';
 import { useMutation, useQuery } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantTiming = ({
   stepperProps,
 }: IRestaurantsRestaurantTimingComponentProps) => {
   const { onStepChange } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
   };
 
   const {
@@ -50,7 +50,7 @@ const RestaurantTiming = ({
   const restaurantId = restaurantContextData?.id || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
 
@@ -157,11 +157,11 @@ const RestaurantTiming = ({
                           value?.times?.length > 0
                             ? []
                             : [
-                                {
-                                  startTime: '00:00',
-                                  endTime: '23:59',
-                                },
-                              ];
+                              {
+                                startTime: '00:00',
+                                endTime: '23:59',
+                              },
+                            ];
                         setFieldValue(`${dayIndex}.times`, newTimes);
                       }}
                       checked={value?.times?.length > 0}
@@ -196,11 +196,11 @@ const RestaurantTiming = ({
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.startTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.startTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.startTime
                                         ? 'red'
                                         : '',
                                   }}
@@ -235,11 +235,11 @@ const RestaurantTiming = ({
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.endTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.endTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.endTime
                                         ? 'red'
                                         : '',
                                   }}

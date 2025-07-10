@@ -19,14 +19,14 @@ import { RestaurantContext } from '@/lib/context/super-admin/restaurant.context'
 import RestaurantDetails from './restaurant-details';
 import RestaurantLocation from './restaurant-location';
 import RestaurantTiming from './restaurant-timing';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantsForm = ({
   position = 'right',
 }: IRestaurantsAddFormComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Ref

@@ -29,7 +29,7 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 import { LanguageManagementContext } from '@/lib/context/super-admin/language-management.context';
 
 // Utils & Constants
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import Image from 'next/image';
 
@@ -38,7 +38,7 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
   const { _id, label, code, isDefault, processed, processedAt, flag } = lng;
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   // Context
   const { language, onSetLanguage, languageResponse } = useContext(
@@ -172,9 +172,8 @@ export default function LanguageCard({ lng }: ILanguageCardProps) {
           {language?.code === code && !isDefault && (
             <FontAwesomeIcon
               icon={faRemove}
-              className={`p-1 ${
-                isPopupOpen ? 'text-gray-400' : 'text-white'
-              } cursor-pointer hover:scale-105`}
+              className={`p-1 ${isPopupOpen ? 'text-gray-400' : 'text-white'
+                } cursor-pointer hover:scale-105`}
               onClick={onHandlerDelete}
             />
           )}

@@ -27,7 +27,7 @@ import { getLabelByCode } from '@/lib/utils/methods/label-by-code';
 import { BannerSchema } from '@/lib/utils/schema/banner';
 import { useMutation } from '@apollo/client';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { useTranslations } from 'next-intl';
+
 import { Sidebar } from 'primereact/sidebar';
 
 const BannersAddForm = ({
@@ -42,7 +42,7 @@ const BannersAddForm = ({
   }) as IQueryResult<IRestaurantsResponseGraphQL | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   const RESTAURANT_NAMES =
@@ -62,21 +62,21 @@ const BannersAddForm = ({
         : banner?.description || '',
     action: banner
       ? {
-          label: getLabelByCode(ACTION_TYPES, banner.action),
-          code: banner.action,
-        }
+        label: getLabelByCode(ACTION_TYPES, banner.action),
+        code: banner.action,
+      }
       : null,
     screen: banner
       ? banner.action === 'Navigate Specific Page'
         ? {
-            label: getLabelByCode(SCREEN_NAMES, banner.screen),
-            code: banner.screen,
-          }
+          label: getLabelByCode(SCREEN_NAMES, banner.screen),
+          code: banner.screen,
+        }
         : banner.action === 'Navigate Specific Restaurant'
           ? {
-              label: banner.screen,
-              code: banner.screen,
-            }
+            label: banner.screen,
+            code: banner.screen,
+          }
           : null
       : null,
     file: banner?.file || '',
@@ -179,7 +179,7 @@ const BannersAddForm = ({
                             name="title"
                             placeholder={getTranslation('title')}
                             maxLength={35}
-                            value={values.title}
+                            value={typeof values.title === "object" ? values.title[selectedLanguage] || '' : values.title || ''}
                             onChange={handleChange}
                             showLabel={true}
                             style={{
@@ -199,7 +199,7 @@ const BannersAddForm = ({
                             name="description"
                             placeholder={getTranslation('description')}
                             maxLength={35}
-                            value={values.description}
+                            value={typeof values.description === "object" ? values.description[selectedLanguage] || '' : values.description || ''}
                             onChange={handleChange}
                             showLabel={true}
                             style={{
@@ -240,10 +240,10 @@ const BannersAddForm = ({
                             placeholder={getTranslation('screen')}
                             options={
                               values.action?.code ===
-                              'Navigate Specific Restaurant'
+                                'Navigate Specific Restaurant'
                                 ? RESTAURANT_NAMES
                                 : values.action?.code ===
-                                    'Navigate Specific Page'
+                                  'Navigate Specific Page'
                                   ? SCREEN_NAMES
                                   : []
                             }
@@ -265,11 +265,10 @@ const BannersAddForm = ({
                         </div>
 
                         <div
-                          className={`${
-                            errors.file && !values.file
-                              ? 'border-red-500'
-                              : 'border-gray-200'
-                          } rounded-lg border p-4`}
+                          className={`${errors.file && !values.file
+                            ? 'border-red-500'
+                            : 'border-gray-200'
+                            } rounded-lg border p-4`}
                         >
                           <CustomUploadImageComponent
                             key={'file'}

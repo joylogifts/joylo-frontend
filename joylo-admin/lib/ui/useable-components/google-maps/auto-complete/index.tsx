@@ -4,7 +4,7 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import {
   AutoComplete,
   AutoCompleteChangeEvent,
@@ -42,7 +42,7 @@ const CountryService: Country[] = [
 
 export default function TemplateDemo() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // States

@@ -12,7 +12,8 @@ import { GET_LANGUAGES, GET_TRANSLATIONS_BY_LANGUAGE_CODE } from '@/lib/apollo/q
   // --- Types for GraphQL responses ---
   interface Language {
     code: string;
-    name: string;
+    label: string;
+    flag?: string; // URL to the flag image
     isDefault: boolean;
     __typename?: string;
   }

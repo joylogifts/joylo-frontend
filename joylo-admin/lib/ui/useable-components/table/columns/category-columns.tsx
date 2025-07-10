@@ -15,7 +15,7 @@ import {
 } from 'react';
 import TextIconClickable from '../../text-icon-clickable';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 import Image from 'next/image';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
@@ -81,7 +81,7 @@ export const CATEGORY_TABLE_COLUMNS = ({
   >;
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Define base columns

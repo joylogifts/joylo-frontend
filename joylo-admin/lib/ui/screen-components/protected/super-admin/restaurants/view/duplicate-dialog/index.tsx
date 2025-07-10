@@ -29,7 +29,7 @@ import {
   IVendorReponse,
   IVendorResponseGraphQL,
 } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantDuplicateDialog = ({
@@ -38,7 +38,7 @@ const RestaurantDuplicateDialog = ({
   onHide,
 }: IRestaurantDuplicateDialogComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Context

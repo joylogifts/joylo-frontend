@@ -11,12 +11,12 @@ import { IOrder, IOrdersData, IExtendedOrder } from '@/lib/utils/interfaces';
 import { TOrderRowData } from '@/lib/utils/types';
 import { DataTableRowClickEvent } from 'primereact/datatable';
 import OrderDetailModal from '@/lib/ui/useable-components/popup-menu/order-details-modal';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OrderVendorMain() {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
   // States
   const [selectedData, setSelectedData] = useState<IExtendedOrder[]>([]);

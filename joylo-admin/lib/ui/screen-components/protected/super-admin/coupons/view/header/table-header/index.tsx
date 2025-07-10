@@ -9,7 +9,7 @@ import { ICouponTableHeaderProps } from '@/lib/utils/interfaces/coupons.interfac
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 // Prime react
 import { Checkbox } from 'primereact/checkbox';
@@ -23,7 +23,7 @@ export default function CouponTableHeader({
   setSelectedActions,
 }: ICouponTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   //Ref

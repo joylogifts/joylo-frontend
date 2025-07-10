@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog } from 'primereact/dialog';
 import { ITransactionHistory } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { Rating } from 'primereact/rating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +19,7 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
   transaction,
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   if (!transaction) return null;
@@ -45,13 +45,12 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
             <div>
               <p className="text-gray-600">{getTranslation('status')}</p>
               <span
-                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium ${
-                  transaction.status === 'COMPLETED'
-                    ? 'bg-green-100 text-green-800'
-                    : transaction.status === 'PENDING'
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-red-100 text-red-800'
-                }`}
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium ${transaction.status === 'COMPLETED'
+                  ? 'bg-green-100 text-green-800'
+                  : transaction.status === 'PENDING'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
+                  }`}
               >
                 {transaction?.status}
               </span>
@@ -204,22 +203,20 @@ const TransactionDetailModal: React.FC<ITransactionDetailModalProps> = ({
                 <p className="text-gray-600">{getTranslation('status')}</p>
                 <div className="space-x-2">
                   <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      transaction?.store?.isActive
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${transaction?.store?.isActive
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                      }`}
                   >
                     {transaction?.store?.isActive
                       ? getTranslation('active')
                       : getTranslation('in_active')}
                   </span>
                   <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      transaction?.store?.isAvailable
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${transaction?.store?.isAvailable
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                      }`}
                   >
                     {transaction?.store?.isAvailable
                       ? getTranslation('available')

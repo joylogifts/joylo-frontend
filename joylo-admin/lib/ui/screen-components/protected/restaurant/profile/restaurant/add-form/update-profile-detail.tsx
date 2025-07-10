@@ -39,7 +39,7 @@ import {
   ICuisine,
   IGetCuisinesData,
 } from '@/lib/utils/interfaces/cuisine.interface';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -47,12 +47,12 @@ export default function UpdateRestaurantDetails({
   stepperProps,
 }: IUpdateProfileProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Contexts
@@ -119,9 +119,9 @@ export default function UpdateRestaurantDetails({
         null,
       cuisines: Array.isArray(restaurantData?.cuisines)
         ? restaurantData.cuisines.map((cuisine) => ({
-            label: toTextCase(cuisine, 'title'),
-            code: cuisine,
-          }))
+          label: toTextCase(cuisine, 'title'),
+          code: cuisine,
+        }))
         : [],
       image: restaurantData?.image ?? '',
       logo: restaurantData?.logo ?? '',

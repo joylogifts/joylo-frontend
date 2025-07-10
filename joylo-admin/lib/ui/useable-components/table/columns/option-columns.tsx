@@ -1,6 +1,6 @@
 import { IActionMenuProps, IOptions } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const OPTION_TABLE_COLUMNS = ({
@@ -9,7 +9,6 @@ export const OPTION_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IOptions>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
   const { getTranslation, selectedLanguage } = useLangTranslation();
   return [
     {

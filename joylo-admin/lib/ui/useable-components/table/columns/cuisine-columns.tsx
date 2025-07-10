@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 // Hooks
 import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const CUISINE_TABLE_COLUMNS = ({
@@ -17,7 +17,7 @@ export const CUISINE_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<ICuisine>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Cuisine Columns
@@ -36,7 +36,7 @@ export const CUISINE_TABLE_COLUMNS = ({
               alt={
                 typeof data?.description === 'object'
                   ? data?.description[selectedLanguage] ||
-                    getTranslation('cuisine')
+                  getTranslation('cuisine')
                   : data?.description || getTranslation('cuisine')
               }
               width={100}

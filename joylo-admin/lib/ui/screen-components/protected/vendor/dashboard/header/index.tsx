@@ -1,12 +1,12 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import { ProfileContext } from '@/lib/context/vendor/profile.context';
-import { useTranslations } from 'next-intl';
+
 import React, { useContext } from 'react';
 
 export default function DashboardHeader() {
   const { vendorProfileResponse } = useContext(ProfileContext);
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   return (

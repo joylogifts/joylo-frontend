@@ -1,7 +1,7 @@
 import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
 import { ITransactionHistory } from '@/lib/utils/interfaces';
 import ActionMenu from '@/lib/ui/useable-components/action-menu';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const TRANSACTION_HISTORY_COLUMNS = ({
@@ -14,7 +14,7 @@ export const TRANSACTION_HISTORY_COLUMNS = ({
   setOpenMenuId: (id: string) => void;
 }) => {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation } = useLangTranslation();
 
   // Columns
@@ -60,11 +60,10 @@ export const TRANSACTION_HISTORY_COLUMNS = ({
       propertyName: 'status',
       body: (transaction: ITransactionHistory) => (
         <span
-          className={`rounded-full px-2 py-1 text-sm ${
-            transaction.status === 'COMPLETED'
-              ? 'bg-green-100 text-green-800'
-              : 'bg-yellow-100 text-yellow-800'
-          }`}
+          className={`rounded-full px-2 py-1 text-sm ${transaction.status === 'COMPLETED'
+            ? 'bg-green-100 text-green-800'
+            : 'bg-yellow-100 text-yellow-800'
+            }`}
         >
           {transaction.status}
         </span>
