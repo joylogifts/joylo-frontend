@@ -25,11 +25,13 @@ import { onUseLocalStorage } from '@/lib/utils/methods';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { Chip } from 'primereact/chip';
 import NoData from '@/lib/ui/useable-components/no-data';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -48,8 +50,10 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
     onSetRestaurantContextData,
   } = useContext(RestaurantContext);
 
-  const vendors = (filtered && filtered.length > 0) || globalFilter ? filtered : vendorResponse?.data?.vendors;
-
+  const vendors =
+    (filtered && filtered.length > 0) || globalFilter
+      ? filtered
+      : vendorResponse?.data?.vendors;
 
   const restaurants = restaurantContextData.globalFilter
     ? restaurantContextData?.filtered
@@ -58,19 +62,18 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
   return (
     <div className="flex flex-grow flex-col overflow-hidden sm:flex-row">
       <div
-        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/3 ${
-          activeTab === 'vendors' ? '' : 'hidden sm:block'
-        }`}
+        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/3 ${activeTab === 'vendors' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Mobile-only header for Vendors section */}
         <div className="mt-3  border-b p-3 sm:hidden">
           <div className="mb-4 flex items-center justify-between">
-            <HeaderText text={t('Vendors')} />
+            <HeaderText text={getTranslation('vendors')} />
             <TextIconClickable
               className="rounded border-gray-300 bg-black text-white sm:w-auto"
               icon={faAdd}
               iconStyles={{ color: 'white' }}
-              title={t('Add Vendor')}
+              title={getTranslation('add_vendor')}
               onClick={() => onSetVendorFormVisible(true)}
             />
           </div>
@@ -79,7 +82,7 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
               type="text"
               name={'vendorFilter'}
               maxLength={35}
-              placeholder={t('Search Vendors')}
+              placeholder={getTranslation('search_vendors')}
               showLabel={false}
               value={globalFilter}
               onChange={(e) => onSetGlobalFilter(e.target.value)}
@@ -120,18 +123,17 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
       </div>
 
       <div
-        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${
-          activeTab === 'restaurants' ? '' : 'hidden sm:block'
-        }`}
+        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${activeTab === 'restaurants' ? '' : 'hidden sm:block'
+          }`}
       >
         {/* Header for Restaurants section */}
         <div className="border-b pb-2 pt-3">
           <div className="mb-4 flex items-center justify-between">
             <div className="hidden sm:block">
-              <HeaderText text={t('Stores')} />
+              <HeaderText text={getTranslation('stores')} />
             </div>
             <div className="flex flex-col sm:hidden">
-              <HeaderText text={t('Stores')} />
+              <HeaderText text={getTranslation('stores')} />
 
               <Chip
                 label={`${(onUseLocalStorage('get', SELECTED_VENDOR_EMAIL) ?? '').slice(0, 20)}`}
@@ -142,7 +144,7 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
               className="rounded border-gray-300 bg-black text-white sm:w-auto"
               icon={faAdd}
               iconStyles={{ color: 'white' }}
-              title={t('Add Store')}
+              title={getTranslation('add_store')}
               onClick={() => onSetRestaurantFormVisible(true)}
             />
           </div>
@@ -152,7 +154,7 @@ export default function VendorMain({ activeTab }: IVendorMainComponentProps) {
                 type="text"
                 name="restaurantFilter"
                 maxLength={35}
-                placeholder={t('Search Stores')}
+                placeholder={getTranslation('search_stores')}
                 showLabel={false}
                 value={restaurantContextData.globalFilter}
                 onChange={(e) =>

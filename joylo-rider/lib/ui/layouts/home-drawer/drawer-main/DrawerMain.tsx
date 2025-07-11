@@ -26,6 +26,7 @@ import { DrawerActions } from "@react-navigation/native";
 import { AppTheme } from "@/lib/utils/interfaces/app-theme";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const DrawerMain = ({
   currentTheme,
@@ -34,7 +35,7 @@ const DrawerMain = ({
   currentTheme: ColorSchemeName;
   appTheme: AppTheme;
 }) => {
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   console.log("rendered drawer");
 
   return (
@@ -80,8 +81,8 @@ const DrawerMain = ({
       <Drawer.Screen
         name="orders"
         options={{
-          drawerLabel: t("Home"),
-          title: t("Orders"),
+          drawerLabel: t("home"),
+          title: t("orders"),
           drawerIcon: ({ color, size }) => (
             <HomeIcon
               color={appTheme.iconColor ?? color}
@@ -94,8 +95,8 @@ const DrawerMain = ({
       <Drawer.Screen
         name="language"
         options={{
-          drawerLabel: t("Language"),
-          title: t("Language"),
+          drawerLabel: t("language"),
+          title: t("language"),
           drawerIcon: ({ color, size }) => (
             <LanguageIcon
               color={appTheme.iconColor ?? color}
@@ -108,8 +109,8 @@ const DrawerMain = ({
       <Drawer.Screen
         name="vehicle-type"
         options={{
-          drawerLabel: t("Vehicle Type"),
-          title: t("Vehicle Type"),
+          drawerLabel: t("vehicle_type"),
+          title: t("vehicle_type"),
           drawerIcon: ({ color, size }) => (
             <BikeRidingIcon
               color={appTheme.iconColor ?? color}
@@ -123,8 +124,8 @@ const DrawerMain = ({
       <Drawer.Screen
         name="work-schedule"
         options={{
-          drawerLabel: t("Work Schedule"),
-          title: t("Work Schedule"),
+          drawerLabel: t("work_schedule"),
+          title: t("work_schedule"),
           drawerIcon: ({ color, size }) => (
             <ClockIcon
               color={appTheme.iconColor ?? color}
@@ -137,8 +138,8 @@ const DrawerMain = ({
       <Drawer.Screen
         name="bank-management"
         options={{
-          drawerLabel: t("Bank Management"),
-          title: t("Bank Management"),
+          drawerLabel: t("bank_management"),
+          title: t("bank_management"),
           drawerIcon: ({ color, size }) => (
             <CardIcon
               color={appTheme.iconColor ?? color}
@@ -151,8 +152,8 @@ const DrawerMain = ({
       <Drawer.Screen
         name="help"
         options={{
-          drawerLabel: t("Help"),
-          title: t("Help"),
+          drawerLabel: t("help"),
+          title: t("help"),
           drawerIcon: ({ color, size }) => (
             <HelpIcon
               color={appTheme.iconColor ?? color}

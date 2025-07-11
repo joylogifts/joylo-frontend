@@ -32,6 +32,7 @@ import useGeocoding from '../../ui/hooks/useGeocoding'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
+import { useLanguage } from '@/src/context/Language'
 
 const RESTAURANTS = gql`
   ${restaurantList}
@@ -43,7 +44,7 @@ const SELECT_ADDRESS = gql`
 function Main(props) {
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const [busy, setBusy] = useState(false)
   const { loadingOrders, isLoggedIn, profile } = useContext(UserContext)
   const { location, setLocation } = useContext(LocationContext)
@@ -202,7 +203,6 @@ function Main(props) {
         <View style={styles().addressSubContainer}>
           <MaterialCommunityIcons name='target' size={scale(25)} color={currentTheme.black} />
           <View style={styles().mL5p} />
-          <TextDefault bold>{t('currentLocation')}</TextDefault>
         </View>
       </TouchableOpacity>
       <View style={styles().addressTick}>
@@ -241,7 +241,7 @@ function Main(props) {
           <View style={styles().addressSubContainer}>
             <AntDesign name='pluscircleo' size={scale(12)} color={currentTheme.black} />
             <View style={styles().mL5p} />
-            <TextDefault bold>{t('addAddress')}</TextDefault>
+            <TextDefault bold>{t('add_address')}</TextDefault>
           </View>
         </TouchableOpacity>
       </View>
@@ -252,7 +252,7 @@ function Main(props) {
   function loadingScreen() {
     return (
       <View style={styles(currentTheme).screenBackground}>
-        <Search search={''} setSearch={() => {}} placeHolder={t('searchRestaurant')} />
+        <Search search={''} setSearch={() => { }} placeHolder={t('search_restaurant')} />
         <Placeholder Animation={(props) => <Fade {...props} style={styles(currentTheme).placeHolderFadeColor} duration={600} />} style={styles(currentTheme).placeHolderContainer}>
           <PlaceholderLine style={styles().height200} />
           <PlaceholderLine />
@@ -327,7 +327,7 @@ function Main(props) {
             <View style={styles().mainContentContainer}>
               <View style={[styles().flex, styles().subContainer]}>
                 <View style={styles().searchbar}>
-                  <Search setSearch={setSearch} search={search} placeHolder={t('searchRestaurant')} />
+                  <Search setSearch={setSearch} search={search} placeHolder={t('search_restaurant')} />
                 </View>
                 <ScrollView>
                   <View style={styles().mainItemsContainer}>
@@ -469,7 +469,7 @@ function Main(props) {
                       </TextDefault>
                     </View>
                   </TouchableOpacity>
-                  <View style={styles().addressTick}>{address._id === location?._id && ![t('currentLocation'), t('selectedLocation')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
+                  <View style={styles().addressTick}>{address._id === location?._id && ![t('current_location'), t('selected_location')].includes(location.label) && <MaterialIcons name='check' size={scale(25)} color={currentTheme.iconColorPink} />}</View>
                 </View>
               )
             }}

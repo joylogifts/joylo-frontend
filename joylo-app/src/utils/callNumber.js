@@ -1,6 +1,8 @@
 import { Linking, Alert, Platform } from 'react-native'
+import { useLanguage } from '../context/Language'
 
-export const callNumber = phone => {
+export const callNumber = (phone) => {
+  const { getTranslation } = useLanguage()
   let phoneNumber = phone
   if (Platform.OS !== 'android') {
     phoneNumber = `telprompt:${phone}`
@@ -8,12 +10,12 @@ export const callNumber = phone => {
     phoneNumber = `tel:${phone}`
   }
   Linking.canOpenURL(phoneNumber)
-    .then(supported => {
+    .then((supported) => {
       if (!supported) {
-        Alert.alert('Phone number is not available')
+        Alert.alert(getTranslation('phone_number_not_available'))
       } else {
         return Linking.openURL(phoneNumber)
       }
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }

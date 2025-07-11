@@ -16,14 +16,16 @@ import UpdateTiming from './update-timing';
 
 // Interfaces & Types
 import { IRestaurantsAddFormComponentProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import UpdateBusinessDetails from './update-bussiness-details';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const UpdateRestaurantsProfileForm = ({
   position = 'right',
 }: IRestaurantsAddFormComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Refs
   const stepperRef = useRef(null);
@@ -56,7 +58,7 @@ const UpdateRestaurantsProfileForm = ({
     >
       <div ref={stepperRef}>
         <Stepper linear headerPosition="bottom" activeStep={activeIndex}>
-          <StepperPanel header={t('Update Details')}>
+          <StepperPanel header={getTranslation('update_details')}>
             <UpdateRestaurantDetails
               stepperProps={{
                 onStepChange: onHandleStepChange,
@@ -64,7 +66,7 @@ const UpdateRestaurantsProfileForm = ({
               }}
             />
           </StepperPanel>
-          <StepperPanel header={t('Update Business Details')}>
+          <StepperPanel header={getTranslation('update_business_details')}>
             <UpdateBusinessDetails
               stepperProps={{
                 onStepChange: onHandleStepChange,
@@ -73,7 +75,7 @@ const UpdateRestaurantsProfileForm = ({
               }}
             />
           </StepperPanel>
-          <StepperPanel header={t('Update Location')}>
+          <StepperPanel header={getTranslation('update_location')}>
             <UpdateRestaurantLocation
               stepperProps={{
                 onStepChange: onHandleStepChange,
@@ -82,7 +84,7 @@ const UpdateRestaurantsProfileForm = ({
               }}
             />
           </StepperPanel>
-          <StepperPanel header={t('Update Timings')}>
+          <StepperPanel header={getTranslation('update_timings')}>
             <UpdateTiming
               stepperProps={{
                 onStepChange: onHandleStepChange,

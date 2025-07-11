@@ -16,11 +16,12 @@ import { useApptheme } from "@/lib/context/global/theme.context";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function EarningDetailsHeader() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation:  t } = useLanguage();
 
   // States
   const [riderEarningsGrandTotal, setRiderEarningsGrandTotal] = useState({
@@ -79,12 +80,12 @@ export default function EarningDetailsHeader() {
         className="left-5 text-xl font-semibold"
         style={{ color: appTheme.fontMainColor }}
       >
-        {t("Summary")}
+        {t("summary")}
       </Text>
       <View className="flex flex-row justify-between items-center p-5">
         <View className="flex gap-2 items-center">
           <Text className="text-lg" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Earnings")}
+            {t("total_earnings")}
           </Text>
           <Text
             className="font-semibold text-lg text-start self-start"
@@ -98,7 +99,7 @@ export default function EarningDetailsHeader() {
           style={{ borderLeftColor: appTheme.borderLineColor }}
         >
           <Text className="text-lg" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Tips")}
+            {t("total_tips")}
           </Text>
           <Text
             className="font-semibold text-lg text-start self-start"
@@ -112,7 +113,7 @@ export default function EarningDetailsHeader() {
           style={{ borderLeftColor: appTheme.borderLineColor }}
         >
           <Text className="text-lg" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Deliveries")}
+            {t("total_deliveries")}
           </Text>
           <Text
             className="font-semibold text-lg text-start self-start"

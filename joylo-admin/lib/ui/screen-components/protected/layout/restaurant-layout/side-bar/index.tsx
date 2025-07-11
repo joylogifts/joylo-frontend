@@ -27,7 +27,8 @@ import {
 import SidebarItem from './side-bar-item';
 import { useUserContext } from '@/lib/hooks/useUser';
 import { onUseLocalStorage } from '@/lib/utils/methods';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 function AdminSidebar({ children }: IGlobalComponentProps) {
   // Context
@@ -52,7 +53,8 @@ function AdminSidebar({ children }: IGlobalComponentProps) {
 
 export default function MakeSidebar() {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   const { isRestaurantSidebarVisible } =
     useContext<LayoutContextProps>(LayoutContext);
@@ -66,7 +68,7 @@ export default function MakeSidebar() {
 
   const navBarItems: ISidebarMenuItem[] = [
     {
-      text: t('Dashboard'),
+      text: getTranslation('dashboard'),
       route: '/admin/store/dashboard',
       isParent: true,
       icon: faHome,
@@ -74,28 +76,28 @@ export default function MakeSidebar() {
     },
 
     {
-      text: t('Store'),
+      text: getTranslation('store'),
       route: '/admin/store/general',
       isParent: true,
       icon: faStore,
       subMenu: [
         {
-          text: t('Profile'),
+          text: getTranslation('profile'),
           route: '/admin/store/profile',
           isParent: false,
         },
         {
-          text: t('Timing'),
+          text: getTranslation('timing'),
           route: '/admin/store/general/timing',
           isParent: false,
         },
         {
-          text: t('Location'),
+          text: getTranslation('location'),
           route: '/admin/store/general/location',
           isParent: false,
         },
         {
-          text: t('Payment'),
+          text: getTranslation('payment'),
           route: '/admin/store/general/payment',
           isParent: false,
         },
@@ -103,13 +105,13 @@ export default function MakeSidebar() {
     },
 
     {
-      text: t('Product Management'),
+      text: getTranslation('product_management'),
       route: '/admin/store/product-management',
       isParent: true,
       icon: faCog,
       subMenu: [
         {
-          text: t('Products'),
+          text: getTranslation('products'),
           route: '/admin/store/product-management/food',
           isParent: false,
         },
@@ -119,12 +121,12 @@ export default function MakeSidebar() {
         //   isParent: false,
         // },
         {
-          text: t('Options'),
+          text: getTranslation('options'),
           route: '/admin/store/product-management/options',
           isParent: false,
         },
         {
-          text: t('Addons'),
+          text: getTranslation('addons'),
           route: '/admin/store/product-management/add-ons',
           isParent: false,
         },
@@ -132,23 +134,23 @@ export default function MakeSidebar() {
     },
 
     {
-      text: t('Wallet'),
+      text: getTranslation('wallet'),
       route: '/admin/store/wallets',
       isParent: true,
       icon: faWallet,
       subMenu: [
         {
-          text: t('Transaction History'),
+          text: getTranslation('transaction_history'),
           route: '/admin/store/wallets/transaction-history',
           isParent: false,
         },
         {
-          text: t('Withdrawal Request'),
+          text: getTranslation('withdrawal_request'),
           route: '/admin/store/wallets/withdrawal-request',
           isParent: false,
         },
         {
-          text: t('Earnings'),
+          text: getTranslation('earnings'),
           route: '/admin/store/wallets/earnings',
           isParent: false,
         },
@@ -156,28 +158,30 @@ export default function MakeSidebar() {
     },
 
     {
-      text: t('Orders'),
+      text: getTranslation('orders'),
       route: '/admin/store/orders',
       isParent: true,
       icon: faRectangleList,
       isClickable: true,
     },
     {
-      text: t('Marketing'),
+      text: getTranslation('marketing'),
       route: '/admin/store/coupons',
       isParent: true,
       icon: faMoneyBillTrendUp,
       isClickable: true,
     },
     {
-      text: t('Reviews'),
+      text: getTranslation('reviews'),
       route: '/admin/store/ratings',
       isParent: true,
       icon: faStar,
       isClickable: true,
     },
     {
-      text: lastRoute ? t(`Back to ${lastRoute}`) : 'Back',
+      text: lastRoute
+        ? getTranslation(`back_to_${lastRoute.toLowerCase()}`)
+        : getTranslation('back'),
       route: lastRoute == 'Vendor' ? `/admin/vendor/dashboard` : '/home',
       isParent: true,
       icon: faArrowLeft,

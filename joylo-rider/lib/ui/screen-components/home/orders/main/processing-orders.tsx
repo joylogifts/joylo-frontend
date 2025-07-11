@@ -20,6 +20,7 @@ import { useApptheme } from "@/lib/context/global/theme.context";
 import { ORDER_TYPE } from "@/lib/utils/types";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const { height } = Dimensions.get("window");
 
@@ -29,7 +30,7 @@ function HomeProcessingOrdersMain(props: IOrderTabsComponentProps) {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const {
     loadingAssigned,
     errorAssigned,
@@ -125,7 +126,7 @@ function HomeProcessingOrdersMain(props: IOrderTabsComponentProps) {
                   </Text>
                 ) : (
                   <Text style={{ color: appTheme.fontSecondColor }}>
-                    {t("Pull down to refresh")}
+                    {t("pull_down_to_refresh")}
                   </Text>
                 )}
               </View>
@@ -152,7 +153,7 @@ function HomeProcessingOrdersMain(props: IOrderTabsComponentProps) {
             </Text>
           ) : (
             <Text style={{ color: appTheme.fontSecondColor }}>
-              {t("Pull down to refresh")}
+              {t("pull_down_to_refresh")}
             </Text>
           )}
         </View>

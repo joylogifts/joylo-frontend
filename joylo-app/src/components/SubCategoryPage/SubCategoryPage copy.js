@@ -16,12 +16,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../utils/scaling'
 import { Text } from 'react-native-paper'
 import FoodItem from './FoodItem/FoodItem'
+import { useLanguage } from '@/src/context/Language'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 const CategoryPage = ({ route, navigation }) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const { restaurantName, deliveryTime, category, restaurantId } = route.params
   const [isSearchVisible, setIsSearchVisible] = useState(false)
   const { cartCount } = useContext(UserContext)
@@ -61,7 +62,7 @@ const CategoryPage = ({ route, navigation }) => {
   const { data: subcategoriesData, loading: subcategoriesLoading } = useQuery(GET_SUB_CATEGORIES)
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
@@ -74,7 +75,7 @@ const CategoryPage = ({ route, navigation }) => {
   }
 
   const scrollToTab = (index) => {
-    setTimeout(() => {}, 200)
+    setTimeout(() => { }, 200)
   }
 
   const changeTab = (i) => {
@@ -379,7 +380,7 @@ const CategoryPage = ({ route, navigation }) => {
               </Animated.View>
             </View>
             <TextDefault style={styles().buttonText} textColor={currentTheme.buttonTextPink} uppercase center bolder small>
-              {t('viewCart')}
+              {t('view_cart')}
             </TextDefault>
             <View style={styles().buttonTextRight} />
           </TouchableOpacity>

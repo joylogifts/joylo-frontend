@@ -1,8 +1,8 @@
 export const profileDefaultTabs = [
-  { label: "Personal info", path: "/profile" },
-  { label: "Addresses", path: "/profile/addresses" },
-  { label: "Order history", path: "/profile/order-history" },
-  { label: "Settings", path: "/profile/settings" },
-  { label: "Get Help", path: "/profile/getHelp" },
-  { label: "Tickets", path: "/profile/customerTicket" },
+  { label: "personal_info", path: "/profile" },
+  { label: "addresses", path: "/profile/addresses" },
+  { label: "order_history", path: "/profile/order-history" },
+  { label: "settings", path: "/profile/settings" },
+  { label: "get_help_label", path: "/profile/getHelp" },
+  { label: "tickets", path: "/profile/customerTicket" },
 ];

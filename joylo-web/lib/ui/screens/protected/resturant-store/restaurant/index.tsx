@@ -46,6 +46,8 @@ import { motion } from "framer-motion";
 import CustomDialog from "@/lib/ui/useable-components/custom-dialog";
 import Image from "next/image";
 
+import { useLangTranslation } from "@/lib/context/global/language.context";
+
 export default function RestaurantDetailsScreen() {
   // Access the UserContext via our custom hook
   const {

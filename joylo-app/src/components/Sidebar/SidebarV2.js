@@ -10,47 +10,47 @@ import styles from './styles'
 
 import analytics from '../../utils/analytics'
 
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const datas = [
   {
-    title: 'titleProfile',
+    title: 'profile',
     icon: 'user',
     navigateTo: 'Profile',
     isAuth: true
   },
   {
-    title: 'myAddresses',
+    title: 'my_addresses',
     icon: 'location-pin',
     navigateTo: 'Addresses',
     isAuth: true
   },
   {
-    title: 'titleFavourite',
+    title: 'favourite',
     icon: 'heart',
     navigateTo: 'Favourite',
     isAuth: true
   },
   {
-    title: 'titleOrders',
+    title: 'orders',
     icon: 'layers',
     navigateTo: 'MyOrders',
     isAuth: true
   },
   {
-    title: 'titleChat',
+    title: 'chat',
     icon: 'bubble',
     navigateTo: 'Chat',
     isAuth: false
   },
   {
-    title: 'titleSettings',
+    title: 'settings',
     icon: 'settings',
     navigateTo: 'Settings',
     isAuth: true
   },
   {
-    title: 'titleHelp',
+    title: 'help',
     icon: 'question',
     navigateTo: 'Help',
     isAuth: true
@@ -59,8 +59,7 @@ const datas = [
 
 function SidebBar(props) {
   const Analytics = analytics()
-
-  const { t } = useTranslation()
+  const { getTranslation } = useLanguage()
 
   const inset = useSafeAreaInsets()
   const { isLoggedIn, logout } = useContext(UserContext)
@@ -76,7 +75,8 @@ function SidebBar(props) {
           paddingBottom: inset.bottom,
           backgroundColor: currentTheme.themeBackground
         }
-      ]}>
+      ]}
+    >
       <View style={{ flexGrow: 1 }}>
         <View style={styles(currentTheme).topContainer}>
           <SideDrawerProfile navigation={props.navigation} />
@@ -94,7 +94,7 @@ function SidebBar(props) {
                   }
                 }}
                 icon={dataItem.icon}
-                title={t(dataItem.title)}
+                title={getTranslation(dataItem.title)}
               />
             </View>
           ))}
@@ -109,7 +109,7 @@ function SidebBar(props) {
                   props.navigation.closeDrawer()
                 }}
                 icon={'logout'}
-                title={t('titleLogout')}
+                title={getTranslation('title_logout')}
               />
             </View>
           )}

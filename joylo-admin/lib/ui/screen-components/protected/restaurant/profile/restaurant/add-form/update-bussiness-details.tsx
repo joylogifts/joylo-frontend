@@ -20,18 +20,20 @@ import {
   IUpdateBussinessDetailsForm,
 } from '@/lib/utils/interfaces';
 import { BussinessDetailsSchema } from '@/lib/utils/schema';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UpdateBusinessDetails({
   stepperProps,
 }: IUpdateProfileProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Contexts
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
@@ -46,11 +48,11 @@ export default function UpdateBusinessDetails({
       onError: ({ graphQLErrors, networkError }) => {
         showToast({
           type: 'error',
-          title: t('Edit Store'),
+          title: getTranslation('edit_store'),
           message:
             graphQLErrors[0]?.message ??
             networkError?.message ??
-            t('Store Edit Failed'),
+            getTranslation('store_edit_failed'),
           duration: 2500,
         });
       },
@@ -78,8 +80,8 @@ export default function UpdateBusinessDetails({
     if (!restaurantId) {
       showToast({
         type: 'error',
-        title: t('Edit Store'),
-        message: t('Store Edit Failed - Please select a vendor'),
+        title: getTranslation('edit_store'),
+        message: getTranslation('store_edit_failed_please_select_a_vendor'),
         duration: 2500,
       });
       return;
@@ -103,14 +105,14 @@ export default function UpdateBusinessDetails({
 
       showToast({
         type: 'success',
-        title: t('Store Details'),
-        message: t('Business details updated successfully'),
+        title: getTranslation('store_details'),
+        message: getTranslation('business_details_updated_successfully'),
       });
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('Store Details'),
-        message: t('Something went wrong'),
+        title: getTranslation('store_details'),
+        message: getTranslation('something_went_wrong'),
       });
     }
   };
@@ -120,7 +122,9 @@ export default function UpdateBusinessDetails({
       <div className="h-full w-full">
         <div className="flex flex-col gap-2">
           <div className="mb-2 flex flex-col">
-            <span className="text-lg">{t('Update Business Details')}</span>
+            <span className="text-lg">
+              {getTranslation('update_business_details')}
+            </span>
           </div>
 
           <Formik
@@ -146,7 +150,7 @@ export default function UpdateBusinessDetails({
                     <CustomTextField
                       type="text"
                       name="bankName"
-                      placeholder={t('Bank Name')}
+                      placeholder={getTranslation('bank_name')}
                       showLabel={true}
                       value={values.bankName}
                       onChange={handleChange}
@@ -163,7 +167,7 @@ export default function UpdateBusinessDetails({
 
                     <CustomTextField
                       type="text"
-                      placeholder={t('Account Name')}
+                      placeholder={getTranslation('account_name')}
                       name="accountName"
                       value={values.accountName}
                       showLabel={true}
@@ -182,7 +186,7 @@ export default function UpdateBusinessDetails({
                     <div>
                       <CustomTextField
                         type="text"
-                        placeholder="BSB / IBAN / Swift Code"
+                        placeholder={getTranslation('bsb_iban_swift_code')}
                         name="accountCode"
                         showLabel={true}
                         value={values.accountCode ?? ''}
@@ -202,7 +206,7 @@ export default function UpdateBusinessDetails({
                     <CustomNumberField
                       min={0}
                       useGrouping={false}
-                      placeholder={t('Account Number')}
+                      placeholder={getTranslation('account_name')}
                       name="accountNumber"
                       showLabel={true}
                       value={values.accountNumber}
@@ -221,7 +225,9 @@ export default function UpdateBusinessDetails({
                     <CustomNumberField
                       min={0}
                       useGrouping={false}
-                      placeholder={t('Business Registration No')}
+                      placeholder={getTranslation(
+                        'business_registration_number'
+                      )}
                       name="bussinessRegNo"
                       showLabel={true}
                       value={values.bussinessRegNo}
@@ -240,7 +246,9 @@ export default function UpdateBusinessDetails({
                     <CustomNumberField
                       min={0}
                       useGrouping={false}
-                      placeholder={t('Company Registration No')}
+                      placeholder={getTranslation(
+                        'company_registration_number'
+                      )}
                       name="companyRegNo"
                       showLabel={true}
                       value={values.companyRegNo}
@@ -260,7 +268,7 @@ export default function UpdateBusinessDetails({
                       min={0}
                       suffix="%"
                       useGrouping={false}
-                      placeholder={`${t('Tax Rate')} %`}
+                      placeholder={`${getTranslation('tax_charges')} %`}
                       name="taxRate"
                       showLabel={true}
                       value={values.taxRate}
@@ -279,7 +287,7 @@ export default function UpdateBusinessDetails({
                     <div className="mt-4 flex justify-end">
                       <CustomButton
                         className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                        label={t('Update')}
+                        label={getTranslation('update')}
                         type="submit"
                         loading={isSubmitting}
                       />

@@ -55,8 +55,8 @@ export interface Addon {
 export interface Item {
   _id: string;
   id: string;
-  title: string;
-  description?: string;
+  title: JSON;  
+  description?: JSON;
   image: string;
   quantity: number;
   variation: Variation;

@@ -1,4 +1,5 @@
 // Utils
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/theme.context";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
 import { Colors } from "@/lib/utils/constants";
@@ -11,7 +12,6 @@ import {
 
 // Icons
 import { Ionicons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, TouchableOpacity, View } from "react-native";
@@ -30,7 +30,7 @@ export default function EarningDetailsDateFilter({
   refetchDeafult,
 }: IEarningDetailsMainProps & IEarningsDateFilterProps) {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
 
   // Handlers
@@ -111,7 +111,7 @@ export default function EarningDetailsDateFilter({
           <View className="flex flex-row items-center gap-2">
             <Ionicons name="filter" color={Colors.light.primary} size={25} />
             <Text style={{ color: appTheme.fontMainColor }}>
-              {t("Date Filter")}
+              {getTranslation("date_filter")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -128,7 +128,7 @@ export default function EarningDetailsDateFilter({
             <View className="flex flex-row items-center gap-2">
               <Ionicons name="remove-sharp" color={"red"} size={25} />
               <Text style={{ color: appTheme.fontSecondColor }}>
-                {t("Clear Filters")}
+                {getTranslation("clear_filters")}
               </Text>
             </View>
           </TouchableOpacity>
@@ -145,7 +145,7 @@ export default function EarningDetailsDateFilter({
           />
           <CustomContinueButton
             onPress={() => handleFilterSubmit()}
-            title={isFiltering ? t("Please Wait") : t("Apply Filter")}
+            title={isFiltering ? getTranslation("please_wait") : getTranslation("apply_filter")}
             disabled={isFiltering}
           />
         </View>

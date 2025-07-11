@@ -29,7 +29,8 @@ import {
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'use-intl';
+import { } from 'use-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 // import { MAX_VIDEO_FILE_SIZE } from '@/lib/utils/constants';
 
 function CustomUploadImageComponent({
@@ -52,6 +53,7 @@ function CustomUploadImageComponent({
   // Context
   const configuration: IConfiguration | undefined =
     useContext(ConfigurationContext);
+
   const { showToast } = useContext(ToastContext);
 
   // States
@@ -64,7 +66,8 @@ function CustomUploadImageComponent({
   });
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Filter Files
   const filterFiles = (event: FileUploadSelectEvent): File | undefined => {
@@ -110,7 +113,7 @@ function CustomUploadImageComponent({
                   showToast({
                     type: 'error',
                     title: title,
-                    message: `${fileTypes.includes('video/webm') || fileTypes.includes('video/mp4') ? t('File') : t('Image')} ${t('Upload Failed')}`,
+                    message: `${fileTypes.includes('video/webm') || fileTypes.includes('video/mp4') ? getTranslation('file') : getTranslation('image')} ${getTranslation('upload_failed')}`,
                     duration: 2500,
                   });
                   setImageValidationErr({
@@ -123,7 +126,7 @@ function CustomUploadImageComponent({
                 showToast({
                   type: 'info',
                   title: title,
-                  message: `${fileTypes.includes('video/webm') || fileTypes.includes('video/mp4') ? t('File') : t('Image')} ${t('has been uploaded successfully')}.`,
+                  message: `${fileTypes.includes('video/webm') || fileTypes.includes('video/mp4') ? getTranslation('file') : getTranslation('image')} ${getTranslation('has_been_uploaded_successfully')}.`,
                   duration: 2500,
                 });
               })
@@ -132,7 +135,7 @@ function CustomUploadImageComponent({
                 showToast({
                   type: 'error',
                   title: title,
-                  message: `${fileTypes.includes('video/webm') || fileTypes.includes('video/mp4') ? t('File') : t('Image')} ${t('Upload Failed')}`,
+                  message: `${fileTypes.includes('video/webm') || fileTypes.includes('video/mp4') ? getTranslation('file') : getTranslation('image')} ${getTranslation('upload_failed')}`,
                   duration: 2500,
                 });
 
@@ -194,7 +197,7 @@ function CustomUploadImageComponent({
             ? `bg-transparnt`
             : `mx-auto flex h-48 w-48 flex-col items-center justify-start border-2 border-dashed ${imageValidationErr.bool ? 'border-red-900' : 'border-gray-300'}`
         }
-        // className="bg-transparnt"
+      // className="bg-transparnt"
       >
         <FileUpload
           accept={fileTypes?.join(',')}
@@ -212,7 +215,7 @@ function CustomUploadImageComponent({
                       <>
                         <FontAwesomeIcon icon={faUpload} size="sm" />
                         <p className="w-36 text-xs text-gray-600">
-                          {t('Drag & Drop Image Here')}
+                          {getTranslation('drag_drop_image_here')}
                         </p>
                       </>
                     )}
@@ -268,19 +271,19 @@ function CustomUploadImageComponent({
               </button>
             );
           }}
-          chooseLabel={t('Upload Image')}
+          chooseLabel={getTranslation('upload_image')}
           chooseOptions={
             page === 'vendor-profile-edit'
               ? {
-                  className: `z-50 bg-white max-[500px]:ml-[-20px] ${!imageFile ? 'text-gray-700' : imageValidationErr.bool && !imageFile ? 'text-[#E4E4E7]' : 'text-[#E4E4E7]'} border border-[#E4E4E7] rounded-md items-center justify-center relative left-[20%] translate-y-[45px] w-[173px] h-[40px] text-[14px] gap-[5px] font-medium`,
-                  label: t('Upload Image'),
-                  icon: () => <FontAwesomeIcon icon={faArrowUpFromBracket} />,
-                }
+                className: `z-50 bg-white max-[500px]:ml-[-20px] ${!imageFile ? 'text-gray-700' : imageValidationErr.bool && !imageFile ? 'text-[#E4E4E7]' : 'text-[#E4E4E7]'} border border-[#E4E4E7] rounded-md items-center justify-center relative left-[20%] translate-y-[45px] w-[173px] h-[40px] text-[14px] gap-[5px] font-medium`,
+                label: getTranslation('upload_image'),
+                icon: () => <FontAwesomeIcon icon={faArrowUpFromBracket} />,
+              }
               : {
-                  className: `z-50 bg-gray-200 ${!imageFile ? 'text-gray-700' : imageValidationErr.bool && !imageFile ? 'text-red-900' : 'text-gray-700'} border border-gray-500 rounded-md items-center justify-center relative left-[20%] translate-y-[45px] w-32 h-8 text-xs`,
-                  label: t('Browse Files'),
-                  icon: () => <></>,
-                }
+                className: `z-50 bg-gray-200 ${!imageFile ? 'text-gray-700' : imageValidationErr.bool && !imageFile ? 'text-red-900' : 'text-gray-700'} border border-gray-500 rounded-md items-center justify-center relative left-[20%] translate-y-[45px] w-32 h-8 text-xs`,
+                label: getTranslation('browse_files'),
+                icon: () => <></>,
+              }
           }
           cancelOptions={{
             className: 'text-xs',

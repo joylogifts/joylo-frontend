@@ -10,12 +10,14 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import { formatNumber } from '../../utils/formatNumber'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useLanguage } from '@/src/context/Language'
 
 const ItemCard = ({ item, onPressItem, restaurant, tagCart }) => {
 
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
   const configuration = useContext(ConfigurationContext)
+  const { selectedLanguage } = useLanguage();
 
   const handleAddToCart = () => {
     // if (item.isOutOfStock) {
@@ -41,9 +43,9 @@ const ItemCard = ({ item, onPressItem, restaurant, tagCart }) => {
   return (
     <TouchableOpacity
       onPress={handleAddToCart}
-      // Set opacity to 0.5 if item is out of stock, otherwise 1
-      // style={{ opacity: item.isOutOfStock ? 0.5 : 1 }}
-      // disabled={item.isOutOfStock}
+    // Set opacity to 0.5 if item is out of stock, otherwise 1
+    // style={{ opacity: item.isOutOfStock ? 0.5 : 1 }}
+    // disabled={item.isOutOfStock}
     >
       <LinearGradient
         style={styles(currentTheme).card}
@@ -59,7 +61,7 @@ const ItemCard = ({ item, onPressItem, restaurant, tagCart }) => {
           }}
           isRTL
         >
-          {item?.title}
+          {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
         </TextDefault>
         <View style={{ alignItems: 'center', marginTop: 'auto' }}>
           <Image

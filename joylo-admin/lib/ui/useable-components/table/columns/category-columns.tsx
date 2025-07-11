@@ -14,9 +14,8 @@ interface ColumnDefinition {
 
 export const CATEGORY_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
 
-
+  // const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Define base columns
   const columns: ColumnDefinition[] = [];

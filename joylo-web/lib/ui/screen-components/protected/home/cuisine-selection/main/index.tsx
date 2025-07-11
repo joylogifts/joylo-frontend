@@ -12,15 +12,18 @@ import HomeHeadingSection from "@/lib/ui/useable-components/home-heading-section
 import { IRestaurant } from "@/lib/utils/interfaces/restaurants.interface";
 // hooks
 import useNearByRestaurantsPreview from "@/lib/hooks/useNearByRestaurantsPreview";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 function CuisineSelectionSection() {
   const params = useParams();
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   const [isModalOpen, setIsModalOpen] = useState({value: false, id: ""});
-  
+  const { getTranslation } = useLangTranslation();
   let slugWithSpaces = slug.replaceAll("-", " ");
   let title =
-    slugWithSpaces?.replace(/^./, (str) => str.toUpperCase()) + " near you";
+    slugWithSpaces?.replace(/^./, (str) => str.toUpperCase()) +
+    " " +
+    getTranslation("near_you");
 
   const { queryData, loading, error } = useNearByRestaurantsPreview();
 
@@ -42,7 +45,7 @@ function CuisineSelectionSection() {
     return;
   }
 
-  if (!queryData?.length) return <div>No items found</div>;
+  if (!queryData?.length) return <div>{getTranslation("no_items_found")}</div>;
 
   return (
     <>

@@ -1,16 +1,13 @@
 /* eslint-disable react/display-name */
 import React from 'react'
-import {
-  RightButton,
-  BackButton
-} from '../components/Header/HeaderIcons/HeaderIcons'
+import { RightButton, BackButton } from '../components/Header/HeaderIcons/HeaderIcons'
 import { StyleSheet } from 'react-native'
 import { textStyles } from '../utils/textStyles'
 import { scale } from '../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
-const screenOptions = props => {
-  const { t } = useTranslation()
+const screenOptions = (props) => {
+  const { getTranslation } = useLanguage()
   return {
     headerTitleAlign: 'center',
     headerBackTitleVisible: false,
@@ -28,11 +25,8 @@ const screenOptions = props => {
     headerTitleContainerStyle: {
       marginHorizontal: scale(35)
     },
-    headerBackImage: () =>
-      BackButton({ iconColor: props.textColor, icon: 'leftArrow' }),
-    headerRight: () => (
-      <RightButton icon="cart" iconColor={props.iconColor} menuHeader={false} t={t}/>
-    )
+    headerBackImage: () => BackButton({ iconColor: props.textColor, icon: 'leftArrow' }),
+    headerRight: () => <RightButton icon='cart' iconColor={props.iconColor} menuHeader={false} t={getTranslation} />
   }
 }
 export default screenOptions

@@ -10,13 +10,15 @@ import {
   IQueryResult,
 } from '@/lib/utils/interfaces';
 import DashboardUsersByYearStatsSkeleton from '@/lib/ui/useable-components/custom-skeletons/dasboard.user.year.stats.skeleton';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Dummy
 
 export default function GrowthOverView() {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [chartData, setChartData] = useState({});
@@ -57,22 +59,22 @@ export default function GrowthOverView() {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     const data = {
       labels: [
-        t('January'),
-        t('February'),
-        t('March'),
-        t('April'),
-        t('May'),
-        t('June'),
-        t('July'),
-        t('August'),
-        t('September'),
-        t('October'),
-        t('November'),
-        t('December'),
+        getTranslation('january'),
+        getTranslation('february'),
+        getTranslation('march'),
+        getTranslation('april'),
+        getTranslation('may'),
+        getTranslation('june'),
+        getTranslation('july'),
+        getTranslation('august'),
+        getTranslation('september'),
+        getTranslation('october'),
+        getTranslation('november'),
+        getTranslation('december'),
       ],
       datasets: [
         {
-          label: t('Stores'),
+          label: getTranslation('stores'),
           data: dashboardUsersByYear?.restaurantsCount ?? [],
           fill: false,
           borderColor: documentStyle.getPropertyValue('--pink-500'),
@@ -80,7 +82,7 @@ export default function GrowthOverView() {
           tension: 0.5,
         },
         {
-          label: t('Vendors'),
+          label: getTranslation('vendors'),
           data: dashboardUsersByYear?.vendorsCount ?? [],
           fill: false,
           borderColor: documentStyle.getPropertyValue('--blue-500'),
@@ -88,7 +90,7 @@ export default function GrowthOverView() {
           tension: 0.5,
         },
         {
-          label: t('Riders'),
+          label: getTranslation('riders'),
           data: dashboardUsersByYear?.ridersCount ?? [],
           fill: false,
           borderColor: documentStyle.getPropertyValue('--yellow-500'),
@@ -96,7 +98,7 @@ export default function GrowthOverView() {
           tension: 0.5,
         },
         {
-          label: t('Users'),
+          label: getTranslation('users'),
           data: dashboardUsersByYear?.usersCount ?? [],
           fill: true,
 
@@ -151,9 +153,11 @@ export default function GrowthOverView() {
 
   return (
     <div className={`w-full p-3`}>
-      <h2 className="text-lg font-semibold">{t('Growth Overview')}</h2>
+      <h2 className="text-lg font-semibold">
+        {getTranslation('growth_overview')}
+      </h2>
       <p className="text-gray-500">
-        {t('Tracking Stakeholders Growth Over the Year')}
+        {getTranslation('tracking_stakeholders_growth_over_the_year')}
       </p>
       <div className="mt-4">
         {loading ? (

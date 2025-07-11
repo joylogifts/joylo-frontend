@@ -25,8 +25,9 @@ import { useContext, useEffect, useState } from 'react';
 import { COMMISSION_RATE_ACTIONS } from '@/lib/utils/constants';
 
 import CommissionRateHeader from '../header/table-header';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { COMMISSION_RATE_COLUMNS } from '@/lib/ui/useable-components/table/columns/comission-rate-columns';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface RestaurantsData {
   restaurants: IRestaurantResponse[];
@@ -34,7 +35,8 @@ interface RestaurantsData {
 
 export default function CommissionRateMain() {
   //Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [restaurants, setRestaurants] = useState<IRestaurantResponse[]>([]);
@@ -67,8 +69,8 @@ export default function CommissionRateMain() {
     if (!restaurant?.commissionRate) {
       return showToast({
         type: 'error',
-        title: t('Commission Updated'),
-        message: `${t('Commission')} ${t('Update')} ${t('failed')}`,
+        title: getTranslation('commission_updated'),
+        message: `${getTranslation('commission')} ${getTranslation('update')} ${getTranslation('failed')}`,
       });
     }
     if (restaurant) {
@@ -77,9 +79,9 @@ export default function CommissionRateMain() {
         setLoadingRestaurant(null);
         return showToast({
           type: 'error',
-          title: t('Commission Updated'),
-          message: t(
-            'As commission rate is a %age value so it cannot exceed a max value of 100'
+          title: getTranslation('commission_updated'),
+          message: getTranslation(
+            'as_commission_rate_is_a_age_value_so_it_cannot_exceed_a_max_value_of_100'
           ),
         });
       }
@@ -92,8 +94,8 @@ export default function CommissionRateMain() {
         });
         showToast({
           type: 'success',
-          title: t('Commission Updated'),
-          message: `${t('Commission rate updated for')} ${restaurant.name}`,
+          title: getTranslation('commission_updated'),
+          message: `${getTranslation('commission_rate_updated_for')} ${restaurant.name}`,
           duration: 2000,
         });
         setEditingRestaurantIds((prev) => {
@@ -105,8 +107,8 @@ export default function CommissionRateMain() {
       } catch (error) {
         showToast({
           type: 'error',
-          title: t('Error'),
-          message: `${t('Error updating commission rate for')} ${restaurant.name}`,
+          title: getTranslation('error'),
+          message: `${getTranslation('error_updating_commission_rate_for')} ${restaurant.name}`,
           duration: 2000,
         });
       } finally {
@@ -181,9 +183,9 @@ export default function CommissionRateMain() {
     } else if (error) {
       showToast({
         type: 'error',
-        title: t('Error Fetching Restaurants'),
-        message: t(
-          'An error occurred while fetching restaurants. Please try again later.'
+        title: getTranslation('error_fetching_restaurants'),
+        message: getTranslation(
+          'an_error_occurred_while_fetching_restaurants_please_try_again_later'
         ),
         duration: 2000,
       });

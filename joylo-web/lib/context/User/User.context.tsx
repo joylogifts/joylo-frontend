@@ -32,6 +32,7 @@ import {
   IRestaurant,
   IVariation,
 } from "@/lib/utils/interfaces";
+import { useLangTranslation } from "../global/language.context";
 
 const SUBSCRIPTION_ORDERS = gql`
   ${orderStatusChanged}
@@ -194,6 +195,7 @@ export interface UserContextType {
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
+  const {selectedLanguage} = useLangTranslation()
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const client = useApolloClient();
   const [token, setToken] = useState<string | null>(
@@ -264,10 +266,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
         if (!variationItem) return cartItem;
 
         // Create the full title
-        const foodTitle = foodItem.title;
-        const variationTitle = variationItem.title;
-        const title = `${foodTitle}(${variationTitle})`;
+        const foodTitle = typeof foodItem.title === "object"
+        ? foodItem.title[selectedLanguage]
+        : foodItem.title;
+        const variationTitle = typeof variationItem.title === "object"
+        ? variationItem.title[selectedLanguage]
+        : variationItem.title;
 
+        const title = `${foodTitle} (${foodTitle})`;
+        
         // Calculate price
         let totalPrice = variationItem.price;
 

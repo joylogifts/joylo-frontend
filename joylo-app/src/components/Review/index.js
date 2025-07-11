@@ -12,24 +12,26 @@ import gql from 'graphql-tag'
 import { useApolloClient, useMutation } from '@apollo/client'
 import { reviewOrder } from '../../apollo/mutations'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const SCREEN_HEIGHT = Dimensions.get('screen').height
 const MODAL_HEIGHT = Math.floor(SCREEN_HEIGHT / 4)
 const SNAP_HEIGHT = MODAL_HEIGHT
 
-const ORDER = gql`${order}`
+const ORDER = gql`
+  ${order}
+`
 const REVIEWORDER = gql`
   ${reviewOrder}
 `
 
 function Review({ onOverlayPress, theme, orderId, rating }, ref) {
-
-  const { t } = useTranslation()
+  const { getTranslation: t, selectedLanguage } = useLanguage()
 
   const ratingRef = useRef()
   const [description, setDescription] = useState('')
   const [mutate] = useMutation(REVIEWORDER, { variables: { order: orderId, description, rating: ratingRef.current }, onCompleted, onError })
- 
+
   function onCompleted() {
     setDescription('')
     ref?.current?.close()
@@ -39,13 +41,15 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
   }
   const client = useApolloClient()
   const [showSection, setShowSection] = useState(false)
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [order, setOrder] = useState()
   const onSelectRating = (rating) => {
-    if (!showSection) { setShowSection(true) }
+    if (!showSection) {
+      setShowSection(true)
+    }
     ratingRef.current = rating
   }
-  const fetchOrder = async() => {
+  const fetchOrder = async () => {
     const result = await client.query({ query: ORDER, variables: { id: orderId } })
     setOrder(result?.data?.order)
   }
@@ -55,19 +59,19 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
   }, [orderId])
 
   const onSubmit = async () => {
-    if (loading) return; 
-    setLoading(true); 
-  
+    if (loading) return
+    setLoading(true)
+
     try {
       await mutate({
         variables: { order: orderId, description, rating: ratingRef.current }
-      });
+      })
     } catch (error) {
-      console.error("Error submitting review:", error);
+      console.error('Error submitting review:', error)
     } finally {
-      setLoading(false); 
+      setLoading(false)
     }
-  };
+  }
   return (
     <Modalize snapPoint={SNAP_HEIGHT} handlePosition='inside' ref={ref} withHandle={false} adjustToContentHeight modalStyle={{ borderWidth: StyleSheet.hairlineWidth }} onOverlayPress={onOverlayPress}>
       <View style={styles.container(theme)}>
@@ -76,18 +80,26 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
             {t('howWasOrder')}
           </TextDefault>
           <TouchableOpacity onPress={onCompleted}>
-            <CrossCirleIcon stroke={theme.newIconColor}/>
+            <CrossCirleIcon stroke={theme.newIconColor} />
           </TouchableOpacity>
         </View>
         <View style={styles.itemContainer(theme)}>
           <View style={{ justifyContent: 'space-evenly' }}>
-            {order?.items?.slice(0, 2).map((item, index) => (<TextDefault key={`${item.food}-${index}`} H5 bold textColor={theme.gray900} isRTL >{item.title}</TextDefault>))}
+            {order?.items?.slice(0, 2).map((item, index) => (
+              <TextDefault key={`${item.food}-${index}`} H5 bold textColor={theme.gray900} isRTL>
+                {typeof item.title === "object" ? item.title[selectedLanguage] : item.title}
+              </TextDefault>
+            ))}
             <View>
-              {order?.deliveredAt && <TextDefault textColor={theme.gray500} isRTL>{(new Date(order?.deliveredAt).toString())}</TextDefault>}
+              {order?.deliveredAt && (
+                <TextDefault textColor={theme.gray500} isRTL>
+                  {new Date(order?.deliveredAt).toString()}
+                </TextDefault>
+              )}
             </View>
           </View>
           <View>
-            <Image source={order?.restaurant?.image ? { uri: order?.restaurant?.image }: require('../../assets/images/food_placeholder.png') } style={styles.image}/>
+            <Image source={order?.restaurant?.image ? { uri: order?.restaurant?.image } : require('../../assets/images/food_placeholder.png')} style={styles.image} />
           </View>
         </View>
 
@@ -95,11 +107,14 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
           <StarRating numberOfStars={5} onSelect={onSelectRating} defaultRating={rating} theme={theme} />
         </View>
 
-        {(showSection || rating>0) && <View>
-          <TextDefault textColor={theme.gray900} H4 bolder style={{ marginVertical: scale(8) }} isRTL >{t('tellAboutExp')} {order?.restaurant?.name}</TextDefault>
-          {/* <OutlinedTextField
+        {(showSection || rating > 0) && (
+          <View>
+            <TextDefault textColor={theme.gray900} H4 bolder style={{ marginVertical: scale(8) }} isRTL>
+              {t('tellAboutExp')} {order?.restaurant?.name}
+            </TextDefault>
+            {/* <OutlinedTextField
             label={t('review')}
-            placeholder={t('typeHere')}
+            placeholder={t('type_here')}
             fontSize={scale(12)}
             maxLength={200}
             textAlignVertical="top"
@@ -109,41 +124,34 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
             placeholderTextColor={theme.newFontcolor}
             textColor={theme.newFontcolor}
           /> */}
-          <TextInput
-            label={t('review')}
-            placeholder={t('typeHere')}
-            placeholderTextColor={theme.placeholderColor}
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-            style={styles.modalInput(theme)}
-          />
-          <Button text={t('submit')}
-            buttonProps={{ onPress: onSubmit,disabled: loading }}
-            buttonStyles={{ borderRadius: 15, backgroundColor: theme.primary, margin: 10, opacity: loading ? 0.6 : 1, }} textStyles={{ margin: 10, alignSelf: 'center' }}
-            textProps={{ H4: true, bold: true, textColor: theme.black }}/>
-        </View>}
+            <TextInput label={t('review')} placeholder={t('type_here')} placeholderTextColor={theme.placeholderColor} value={description} onChangeText={(text) => setDescription(text)} style={styles.modalInput(theme)} />
+            <Button text={t('submit')} buttonProps={{ onPress: onSubmit, disabled: loading }} buttonStyles={{ borderRadius: 15, backgroundColor: theme.primary, margin: 10, opacity: loading ? 0.6 : 1 }} textStyles={{ margin: 10, alignSelf: 'center' }} textProps={{ H4: true, bold: true, textColor: theme.black }} />
+          </View>
+        )}
       </View>
     </Modalize>
   )
 }
 
-const StarRating = ({ numberOfStars = 5, onSelect, defaultRating=0, theme }) => {
+const StarRating = ({ numberOfStars = 5, onSelect, defaultRating = 0, theme }) => {
   const stars = Array.from({ length: numberOfStars }, (_, index) => index + 1)
   const [selected, setSelected] = useState(defaultRating)
-  useEffect(()=>{
-    if(defaultRating) onSelect(defaultRating)
-  },[])
-  const onPress = index => {
+  useEffect(() => {
+    if (defaultRating) onSelect(defaultRating)
+  }, [])
+  const onPress = (index) => {
     onSelect(index)
     setSelected(index)
   }
   return (
     <View style={styles.starContainer(theme)}>
-      {stars.map(index => <TouchableWithoutFeedback key={`star-${index}`} onPress={() => onPress(index)}>
-        <View style={{ flex: 1 }}>
-          <StarIcon isFilled={index <= selected}/>
-        </View>
-      </TouchableWithoutFeedback>)}
+      {stars.map((index) => (
+        <TouchableWithoutFeedback key={`star-${index}`} onPress={() => onPress(index)}>
+          <View style={{ flex: 1 }}>
+            <StarIcon isFilled={index <= selected} />
+          </View>
+        </TouchableWithoutFeedback>
+      ))}
     </View>
   )
 }

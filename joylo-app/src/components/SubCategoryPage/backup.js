@@ -19,12 +19,13 @@ import FoodItem from './FoodItem/FoodItem'
 import LottieView from 'lottie-react-native'
 import Spinner from '../../components/Spinner/Spinner'
 import { FOOD_TEMPLATE } from '../../utils/constants'
+import { useLanguage } from '@/src/context/Language'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
 const CategoryPage = ({ route, navigation }) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const { restaurantName, deliveryTime, category, restaurantId } = route.params
   const [isSearchVisible, setIsSearchVisible] = useState(false)
   const [isDataLoading, setIsDataLoading] = useState(false)
@@ -54,7 +55,7 @@ const CategoryPage = ({ route, navigation }) => {
   const { data: subcategoriesData, loading: subcategoriesLoading } = useQuery(GET_SUB_CATEGORIES)
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
@@ -67,7 +68,7 @@ const CategoryPage = ({ route, navigation }) => {
   }
 
   const scrollToTab = (index) => {
-    setTimeout(() => {}, 200)
+    setTimeout(() => { }, 200)
   }
 
   const changeTab = (i) => {
@@ -375,7 +376,7 @@ const CategoryPage = ({ route, navigation }) => {
                             }}
                             ListEmptyComponent={
                               <View style={stylesb.emptyContainer}>
-                                <Text style={stylesb.emptyText}>No food items available</Text>
+                                <Text style={stylesb.emptyText}>{t("no_food_item_available")}</Text>
                               </View>
                             }
                             contentContainerStyle={{ paddingHorizontal: 10 }}
@@ -463,7 +464,7 @@ const CategoryPage = ({ route, navigation }) => {
                               autoPlay
                               loop
                             />
-                            <TextDefault>No Item Available at the moment</TextDefault>
+                            <TextDefault>{t("no_item_available_at_the_moment")}</TextDefault>
                           </View>
                         }
                         // contentContainerStyle={{ paddingHorizontal: 10 }}
@@ -503,7 +504,7 @@ const CategoryPage = ({ route, navigation }) => {
               </Animated.View>
             </View>
             <TextDefault style={styles().buttonText} textColor={currentTheme.buttonTextPink} uppercase center bolder small>
-              {t('viewCart')}
+              {t('view-cart')}
             </TextDefault>
             <View style={styles().buttonTextRight} />
           </TouchableOpacity>

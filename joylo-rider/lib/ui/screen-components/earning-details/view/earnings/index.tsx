@@ -10,6 +10,7 @@ import NoRecordFound from "@/lib/ui/useable-components/no-record-found";
 import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native-gesture-handler";
 import EarningStack from "../../../earnings/view/earnings-stack";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function EarningsDetailStacks({
   riderEarningsData,
@@ -18,7 +19,7 @@ export default function EarningsDetailStacks({
 }: IRiderEarningsDetailProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const {  getTranslation:t } = useLanguage();
 
   // If Loading
   if (isRiderEarningsLoading) return <NoRecordFound />;
@@ -34,7 +35,7 @@ export default function EarningsDetailStacks({
           className="block mx-auto font-bold text-center w-full my-12 "
           style={{ color: appTheme.fontSecondColor }}
         >
-          {t("No record found")}
+          {t("no_records_found")}
         </Text>
       }
       renderItem={(info) => {

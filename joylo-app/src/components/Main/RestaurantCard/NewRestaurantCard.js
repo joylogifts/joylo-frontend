@@ -9,6 +9,7 @@ import TextDefault from '../../Text/TextDefault/TextDefault'
 import styles from './styles'
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { addFavouriteRestaurant } from '../../../apollo/mutations'
 import UserContext from '../../../context/User'
 import { useMutation } from '@apollo/client'
@@ -31,13 +32,12 @@ const FAVOURITERESTAURANTS = gql`
 `
 
 function NewRestaurantCard(props) {
-
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
   const configuration = useContext(ConfigurationContext)
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const { profile } = useContext(UserContext)
@@ -53,14 +53,14 @@ function NewRestaurantCard(props) {
   const isRestaurantClosed = !isRestaurantOpen || !isAvailable
 
   function onCompleted() {
-    FlashMessage({ message: t('favouritelistUpdated') })
+    FlashMessage({ message: t('favourite_list_updated') })
   }
 
   const handleAddToFavorites = () => {
     if (!loadingMutation && profile) {
       mutate({ variables: { id: props?._id } })
     } else if (!profile) {
-      FlashMessage({ message: t('loginRequired') })
+      FlashMessage({ message: t('login_required') })
       navigation.navigate('Profile')
     }
   }
@@ -69,15 +69,15 @@ function NewRestaurantCard(props) {
     if (isRestaurantClosed) {
       Alert.alert(
         '',
-        t('restaurantClosed'),
+        t('restaurant_closed_at_the_moment'),
         [
           {
             text: t('close'),
-            onPress: () => {},
+            onPress: () => { },
             style: 'cancel'
           },
           {
-            text: t('seeMenu'),
+            text: t('see_menu'),
             onPress: () => {
               if (props.shopType === 'grocery') {
                 navigation.navigate('NewRestaurantDetailDesign', { ...props })
@@ -101,25 +101,10 @@ function NewRestaurantCard(props) {
     }
   }
   return (
-    <Ripple
-      rippleColor={'#F5F5F5'}
-      style={[
-        styles(currentTheme).offerContainer,
-        props?.fullWidth && { width: '100%' }
-      ]}
-      activeOpacity={1}
-      onPress={handleRestaurantClick}
-    >
+    <Ripple rippleColor={'#F5F5F5'} style={[styles(currentTheme).offerContainer, props?.fullWidth && { width: '100%' }]} activeOpacity={1} onPress={handleRestaurantClick}>
       <View style={styles().container}>
         <View style={styles().imageContainer}>
-          <Image
-            resizeMode='cover'
-            source={{ uri: props?.image }}
-            style={[
-              styles().restaurantImage,
-              props?.fullWidth && { width: '100%' }
-            ]}
-          />
+          <Image resizeMode='cover' source={{ uri: props?.image }} style={[styles().restaurantImage, props?.fullWidth && { width: '100%' }]} />
           {isRestaurantClosed && (
             <View style={styles(currentTheme).closedOverlay}>
               <TextDefault H4 textColor={currentTheme.white} bold>
@@ -130,61 +115,30 @@ function NewRestaurantCard(props) {
         </View>
         <View style={styles().descriptionContainer}>
           <View style={styles(currentTheme).aboutRestaurant}>
-            <TextDefault
-              H4
-              numberOfLines={1}
-              textColor={currentTheme.fontThirdColor}
-              bolder
-            >
+            <TextDefault H4 numberOfLines={1} textColor={currentTheme.fontThirdColor} bolder>
               {props?.name}
             </TextDefault>
           </View>
-          <TextDefault
-            textColor={currentTheme.gray600}
-            numberOfLines={1}
-            bold
-            Normal
-            style={styles(currentTheme).offerCategoty}
-          >
-            {props?.categories
-              ? props?.categories.map((category) => category?.title + ', ')
-              : props?.tags?.join(',')}
+          <TextDefault textColor={currentTheme.gray600} numberOfLines={1} bold Normal style={styles(currentTheme).offerCategoty}>
+            {props?.categories ? props?.categories.map((category) => typeof category?.title === "object" ? category?.title[selectedLanguage] : category?.title + ', ') : typeof props?.tags === "object" ? props?.tags[selectedLanguage]?.join(',') : props?.tags?.join(',')}
           </TextDefault>
           <View style={styles().border} />
           <View style={styles(currentTheme).deliveryInfo}>
             <View style={styles(currentTheme).deliveryTime}>
-              <AntDesign
-                name='clockcircleo'
-                size={14}
-                color={currentTheme.editProfileButton}
-              />
-              <TextDefault
-                textColor={currentTheme.editProfileButton}
-                numberOfLines={1}
-                bold
-                Normal
-              >
+              <AntDesign name='clockcircleo' size={14} color={currentTheme.editProfileButton} />
+              <TextDefault textColor={currentTheme.editProfileButton} numberOfLines={1} bold Normal>
                 {props?.deliveryTime + ' '}
                 {t('min')}
               </TextDefault>
             </View>
             <View style={styles(currentTheme).deliveryTime}>
               <Bicycle color={currentTheme.newFontcolor} />
-              <TextDefault
-                textColor={currentTheme.newFontcolor}
-                numberOfLines={1}
-                bold
-                Normal
-              >
+              <TextDefault textColor={currentTheme.newFontcolor} numberOfLines={1} bold Normal>
                 {configuration.currencySymbol} {configuration.deliveryRate}
               </TextDefault>
             </View>
             <View style={styles(currentTheme).aboutRestaurant}>
-              <FontAwesome5
-                name='star'
-                size={14}
-                color={currentTheme.newFontcolor}
-              />
+              <FontAwesome5 name='star' size={14} color={currentTheme.newFontcolor} />
               <TextDefault textColor={currentTheme.newFontcolor} bold Normal>
                 {props?.reviewAverage}
               </TextDefault>
@@ -195,32 +149,9 @@ function NewRestaurantCard(props) {
           </View>
         </View>
       </View>
-      <View
-        style={[
-          styles().overlayContainer,
-          props?.fullWidth && { width: '100%' }
-        ]}
-      >
-        <TouchableOpacity
-          activeOpacity={0.7}
-          disabled={loadingMutation}
-          onPress={handleAddToFavorites}
-        >
-          <View style={styles(currentTheme).favouriteOverlay}>
-            {loadingMutation ? (
-              <Spinner
-                size={'small'}
-                backColor={'transparent'}
-                spinnerColor={currentTheme.iconColorDark}
-              />
-            ) : (
-              <AntDesign
-                name={heart ? 'heart' : 'hearto'}
-                size={scale(15)}
-                color={currentTheme.iconColor}
-              />
-            )}
-          </View>
+      <View style={[styles().overlayContainer, props?.fullWidth && { width: '100%' }]}>
+        <TouchableOpacity activeOpacity={0.7} disabled={loadingMutation} onPress={handleAddToFavorites}>
+          <View style={styles(currentTheme).favouriteOverlay}>{loadingMutation ? <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} /> : <AntDesign name={heart ? 'heart' : 'hearto'} size={scale(15)} color={currentTheme.iconColor} />}</View>
         </TouchableOpacity>
       </View>
     </Ripple>

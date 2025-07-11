@@ -1,3 +1,5 @@
+// translation
+import { useLangTranslation } from "@/lib/context/global/language.context";
 // Interface
 import { IMultiSelectComponentProps } from '@/lib/utils/interfaces';
 
@@ -22,6 +24,8 @@ const CustomMultiSelectComponent = ({
   onChange,
   ...props
 }: IMultiSelectComponentProps) => {
+  const { getTranslation } = useLangTranslation();
+
   const itemTemplate = (option: { label: string }) => {
     return (
       <div className="align-items-center flex">
@@ -40,12 +44,12 @@ const CustomMultiSelectComponent = ({
             className="w-full h-fit rounded  text-black"
             icon={faAdd}
             iconStyles={{ color: 'black' }}
-            title={`${extraFooterButton.title} (${length} Selected)`}
+            title={`${extraFooterButton.title} (${length} ${getTranslation("selected")})`}
             onClick={extraFooterButton.onChange}
           />
         ) : (
           <div className="px-3 py-2">
-            <b>{length}</b> item{length > 1 ? 's' : ''} selected.
+            <b>{length}</b> {getTranslation(length > 1 ? "items" : "item")} {getTranslation("selected")}
           </div>
         )}
       </div>

@@ -15,6 +15,7 @@ import { ProgressBar, checkStatus } from './ProgressBar'
 import styles from './styles'
 import { ORDER_STATUS_ENUM } from '../../../utils/enums'
 import { calulateRemainingTime } from '../../../utils/customFunctions'
+import { useLanguage } from '@/src/context/Language'
 
 const SCREEN_HEIGHT = Dimensions.get('screen').height
 const MODAL_HEIGHT = Math.floor(SCREEN_HEIGHT / 4)
@@ -22,21 +23,17 @@ const MODAL_HEIGHT = Math.floor(SCREEN_HEIGHT / 4)
 const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
 
 const ActiveOrders = ({ onActiveOrdersChange }) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const { loadingOrders, errorOrders, orders } = useContext(OrdersContext)
   const configuration = useContext(ConfigurationContext)
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
-  const activeOrders = orders.filter(
-    (o) =>
-      orderStatusActive.includes(o.orderStatus) &&
-      (o?.paymentStatus === 'PAID' || o?.paymentMethod == 'COD')
-  )
+  const activeOrders = orders.filter((o) => orderStatusActive.includes(o.orderStatus) && (o?.paymentStatus === 'PAID' || o?.paymentMethod == 'COD'))
 
   const onPressDetails = (order) => {
     navigation.navigate('OrderDetail', {
@@ -66,12 +63,7 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
   }
 
   return (
-    <Modalize
-      alwaysOpen={MODAL_HEIGHT}
-      withHandle={false}
-      modalHeight={MODAL_HEIGHT}
-      modalStyle={modalStyle}
-    >
+    <Modalize alwaysOpen={MODAL_HEIGHT} withHandle={false} modalHeight={MODAL_HEIGHT} modalStyle={modalStyle}>
       <View style={{ marginTop: scale(20), marginHorizontal: scale(10) }}>
         <View
           style={{
@@ -80,7 +72,7 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
           }}
         >
           <TextDefault Regular textColor={currentTheme.fontGrayNew}>
-            {t('estimatedDeliveryTime')}
+            {t('estimated_delivery_time')}
           </TextDefault>
           <TouchableOpacity onPress={() => onPressDetails(order)}>
             <TextDefault textColor={currentTheme.gray700} bolder>
@@ -94,19 +86,9 @@ const ActiveOrders = ({ onActiveOrdersChange }) => {
           </TextDefault>
         </View>
         <View>
-          <ProgressBar
-            configuration={configuration}
-            currentTheme={currentTheme}
-            item={order}
-            navigation={navigation}
-            isPicked={order?.isPickedUp}
-          />
+          <ProgressBar configuration={configuration} currentTheme={currentTheme} item={order} navigation={navigation} isPicked={order?.isPickedUp} />
           <View style={{ marginTop: scale(10) }}>
-            <TextDefault
-              numberOfLines={2}
-              style={styles(currentTheme).statusText}
-              isRTL
-            >
+            <TextDefault numberOfLines={2} style={styles(currentTheme).statusText} isRTL>
               {t(checkStatus(order.orderStatus).statusText)}
             </TextDefault>
           </View>

@@ -39,7 +39,8 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 
 // Utils & Constants
 import { SELECTED_VENDOR_EMAIL } from '@/lib/utils/constants';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorCard({
   _id,
@@ -51,21 +52,21 @@ export default function VendorCard({
   isLast = false,
 }: IVendorCardProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { vendorId, onSetVendorId, vendorResponse, onResetVendor } =
     useContext(VendorContext);
   const { onSetVendorFormVisible } = useContext(VendorContext);
   const { showToast } = useContext(ToastContext);
-  const {  ISPAID_VERSION } = useConfiguration();
-  
+  const { ISPAID_VERSION } = useConfiguration();
+
   // States
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
   const [isDeletePopupOpen, setDeletePopupOpen] = useState<boolean>(false);
 
   const router = useRouter();
-
 
   // API
   const [deleteVendor, { loading }] = useMutation(DELETE_VENDOR, {
@@ -73,8 +74,8 @@ export default function VendorCard({
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Vendor Delete'),
-        message: t('Vendor has been deleted successfully'),
+        title: getTranslation('vendor_delete'),
+        message: getTranslation('vendor_has_been_deleted_successfully'),
       });
 
       onResetVendor(true); // so after refetching is vendor can be selected.
@@ -83,11 +84,11 @@ export default function VendorCard({
     onError: ({ networkError, graphQLErrors }: ApolloError) => {
       showToast({
         type: 'error',
-        title: t('Vendor Delete'),
+        title: getTranslation('vendor_delete'),
         message:
           graphQLErrors[0]?.message ??
           networkError?.message ??
-          t('Vendor Deletion  Failed'),
+          getTranslation('vendor_deletion_failed'),
         duration: 2500,
       });
     },
@@ -110,21 +111,21 @@ export default function VendorCard({
       if (ISPAID_VERSION) {
         await deleteVendor({ variables: { id: vendorId } });
         setDeletePopupOpen(false);
-       
       } else {
         setDeletePopupOpen(false);
         showToast({
           type: 'error',
-          title: t('You are using free version'),
-          message: t('This Feature is only Available in Paid Version'),
-        });  
+          title: getTranslation('you_are_using_free_version'),
+          message: getTranslation(
+            'this_feature_is_only_available_in_paid_version'
+          ),
+        });
       }
-      
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('Vendor Delete'),
-        message: t('Vendor delete failed'),
+        title: getTranslation('vendor_delete'),
+        message: getTranslation('vendor_deletion_failed'),
       });
     }
   };
@@ -171,7 +172,7 @@ export default function VendorCard({
         <div className="flex flex-1 flex-col gap-y-1">
           <TextComponent
             className={`text-card-h3 flex flex-1 text-xs text-${vendorId === _id ? 'white' : 'black'}`}
-            text={name ?? t('Vendor')}
+            text={name ?? getTranslation('vendor')}
           />
           <TextComponent
             className={`text-card-h3 flex flex-1 text-xs text-${vendorId === _id ? 'white' : 'black'}`}
@@ -202,9 +203,8 @@ export default function VendorCard({
           {vendorId === _id && (
             <FontAwesomeIcon
               icon={faEllipsisVertical}
-              className={`p-1 ${
-                isPopupOpen ? 'text-gray-400' : 'text-white'
-              } cursor-pointer hover:scale-105`}
+              className={`p-1 ${isPopupOpen ? 'text-gray-400' : 'text-white'
+                } cursor-pointer hover:scale-105`}
               onClick={(e) => {
                 e.stopPropagation();
                 setPopupOpen(!isPopupOpen);
@@ -219,21 +219,21 @@ export default function VendorCard({
                 close={() => setPopupOpen(false)}
                 items={[
                   {
-                    title: t('View'),
+                    title: getTranslation('view'),
                     icon: faEye,
                     fn: onHandlerView,
                     data: vendorId,
                     color: 'text-gray-600',
                   },
                   {
-                    title: t('Edit'),
+                    title: getTranslation('edit'),
                     icon: faEdit,
                     fn: onHandlerEdit,
                     data: vendorId,
                     color: 'text-gray-600',
                   },
                   {
-                    title: t('Delete'),
+                    title: getTranslation('delete'),
                     icon: faTrash,
                     fn: onHandlerDelete,
                     data: null,

@@ -29,13 +29,14 @@ import { ApolloError, useMutation, useQuery } from "@apollo/client";
 import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { setItem } from "../services/async-storage";
+import { useLanguage } from "../context/global/language.context";
 
 const useLogin = () => {
   const [creds, setCreds] = useState({ username: "", password: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation:t } = useLanguage();
 
   // Context
   const { setTokenAsync } = useContext(AuthContext);
@@ -80,7 +81,7 @@ const useLogin = () => {
       message:
         error?.graphQLErrors[0]?.message ??
         error?.networkError?.message ??
-        t("Something went wrong"),
+        t("something_went_wrong"),
     });
   }
   const onLogin = async (username: string, password: string) => {
@@ -137,7 +138,7 @@ const useLogin = () => {
       //   message:
       //     error?.graphQLErrors[0]?.message ??
       //     error?.networkError?.message ??
-      //     t("Something went wrong"),
+      //     t("something_went_wrong"),
       // });
       console.log("login error", error);
     }

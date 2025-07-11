@@ -28,11 +28,12 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 import { generateDummyCategories } from '@/lib/utils/dummy';
 import CategoryTableHeader from '../header/table-header';
 import SubCategoriesPreiwModal from '../modal';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryMain() {
   // Hooks
-  const t = useTranslations();
+
 
   // Context
   const {
@@ -47,6 +48,7 @@ export default function CategoryMain() {
 
   // Hooks
   const { showToast } = useToast();
+  const { getTranslation } = useLangTranslation();
 
   const [selectedProducts, setSelectedProducts] = useState<ICategory[]>([]);
   const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -83,12 +85,11 @@ export default function CategoryMain() {
   function onErrorFetchCategoriesByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Category Fetch'),
-      message: t('Categories fetch failed'),
+      title: getTranslation('category_fetch'),
+      message: getTranslation('categories_fetch_failed'),
       duration: 2500,
     });
   }
-
 
   return (
     <div className="p-3">

@@ -10,6 +10,7 @@ import Ripple from 'react-native-material-ripple'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
+import { useLanguage } from '@/src/context/Language'
 
 const HEADING = {
   Restaurants: 'I feel like eating',
@@ -48,7 +49,7 @@ const Collection = ({ navigation, route }) => {
   const currentTheme = theme[themeContext.ThemeValue]
   const data = route?.params?.data ?? []
   const collectionType = route?.params?.collectionType ?? 'default'
-  const { t } = useTranslation()
+  const { getTranslation: t, selectedLanguage } = useLanguage()
 
   useLayoutEffect(() => {
     navigation.setOptions(
@@ -78,7 +79,7 @@ const Collection = ({ navigation, route }) => {
               style={styles(currentTheme).collectionCard}
               onPress={() => {
                 navigation.navigate(collectionType ?? 'Restaurants', {
-                  collection: item?.name
+                  collection: typeof item?.name === "object" ? item?.name[selectedLanguage] : item?.name,
                 })
               }}
             >
@@ -90,7 +91,7 @@ const Collection = ({ navigation, route }) => {
                 />
               </View>
               <TextDefault Normal bold style={{ padding: 8 }} isRTL>
-                {item.name}
+                {typeof item?.name === "object" ? item?.name[selectedLanguage] : item?.name}
               </TextDefault>
             </Ripple>
           </CustomItem>

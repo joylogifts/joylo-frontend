@@ -1,3 +1,4 @@
+import { useLangTranslation } from "@/lib/context/global/language.context";
 // Interface
 import { SectionProps, Option } from "@/lib/utils/interfaces";
 
@@ -22,92 +23,108 @@ import { SectionProps, Option } from "@/lib/utils/interfaces";
  */
 
 export const ItemDetailSection = <
-  T extends {
-    _id: string;
-    title?: string | undefined;
-    price: number;
-    isOutOfStock?: boolean;
-  },
->({
-  title,
-  options,
-  name,
-  multiple = false,
-  singleSelected,
-  onSingleSelect,
-  multiSelected,
-  onMultiSelect,
-  requiredTag,
-  showTag = false,
-}: SectionProps<T>) => {
-  const handleSelect = (option: T) => {
-    if (option.isOutOfStock) {
-      return;
-    }
-    if (multiple) {
-      onMultiSelect &&
-        onMultiSelect((prevSelected) => {
-          const exists = (prevSelected as T[]).some(
-            (o) => o._id === option._id
-          );
-          return exists
-            ? (prevSelected as T[]).filter((o) => o._id !== option._id)
-            : [...(prevSelected as T[]), option];
-        });
-    } else {
-      onSingleSelect && onSingleSelect(option);
-    }
-  };
-  const filteredMultiSelected = multiSelected
-    ? (multiSelected as T[]).filter((item) => !item.isOutOfStock)
-    : [];
+    T extends {
+        _id: string;
+        title?: string | undefined;
+        price: number;
+        isOutOfStock?: boolean;
+    },
+>(
+    props: SectionProps<T>
+) => {
+    const {
+        title,
+        options,
+        multiple = false,
+        singleSelected,
+        onSingleSelect,
+        multiSelected,
+        onMultiSelect,
+        requiredTag,
+        showTag = false,
+    } = props;
+    const { getTranslation, selectedLanguage } = useLangTranslation();
+    const handleSelect = (option: T) => {
+        if (option.isOutOfStock) {
+            return;
+        }
+        if (multiple) {
+            onMultiSelect &&
+                onMultiSelect((prevSelected) => {
+                    const exists = (prevSelected as T[]).some(
+                        (o) => o._id === option._id
+                    );
+                    return exists
+                        ? (prevSelected as T[]).filter(
+                            (o) => o._id !== option._id
+                        )
+                        : [...(prevSelected as T[]), option];
+                });
+        } else {
+            onSingleSelect && onSingleSelect(option);
+        }
+    };
+    const filteredMultiSelected = multiSelected
+        ? (multiSelected as T[]).filter((item) => !item.isOutOfStock)
+        : [];
 
-  return (
-    <div className="mb-4">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="font-inter font-bold text-[14px] md:text-[16px] lg:text-[18px] leading-[20px] md:leading-[22px]">
-          {title}
-        </h3>
+    return (
+        <div className="mb-4">
+            <div className="flex justify-between items-center mb-2">
+                <h3 className="font-inter font-bold text-[14px] md:text-[16px] lg:text-[18px] leading-[20px] md:leading-[22px]">
+                    {typeof title === "object" ? title[selectedLanguage] : title}
+                </h3>
 
-        {/* Required/Optional Tag - Only shown when showTag is true */}
-        {showTag && requiredTag && (
-          <span className="text-xs px-2 py-1 rounded-full bg-gray-200 text-gray-800">
-            {requiredTag}
-          </span>
-        )}
-      </div>
-      <div className="mt-2 space-y-2">
-        {options.map((option) => (
-          <label
-            key={option._id}
-            className="flex items-center gap-x-2 w-full cursor-pointer"
-          >
-            {/* Input Radio/Checkbox */}
-            <input
-              type={multiple ? "checkbox" : "radio"}
-              name={name}
-              checked={
-                multiple
-                  ? filteredMultiSelected.some((o) => o._id === option._id)
-                  : singleSelected && !option.isOutOfStock
-                    ? (singleSelected as Option | null)?._id === option._id
-                    : false
-              }
-              onChange={() => handleSelect(option)}
-              disabled={option.isOutOfStock}
-            />
-
-            {/* Label & Price */}
-            <div className="flex justify-between items-center w-full">
-              <span className="text-sm text-gray-900">
-                {option.title}{" "}
-                {option.isOutOfStock ?<span className="text-red-500">(Out of stock)</span> : ""}{" "}
-              </span>
-              <span className="text-sm text-gray-700">${option.price}</span>
+                {/* Required/Optional Tag - Only shown when showTag is true */}
+                {showTag && requiredTag && (
+                    <span className="text-xs px-2 py-1 rounded-full bg-gray-200 text-gray-800">
+                        {requiredTag}
+                    </span>
+                )}
             </div>
-          </label>
-        ))}
-      </div>
-    </div>
-  );
+            <div className="mt-2 space-y-2">
+                {options.map((option) => (
+                    <label
+                        key={option._id}
+                        className="flex items-center gap-x-2 w-full cursor-pointer"
+                    >
+                        {/* Input Radio/Checkbox */}
+                        <input
+                            type={multiple ? "checkbox" : "radio"}
+                            name={typeof option?.title === "object" ? option?.title[selectedLanguage] : option?.title}
+                            checked={
+                                multiple
+                                    ? filteredMultiSelected.some(
+                                        (o) => o._id === option._id
+                                    )
+                                    : singleSelected && !option.isOutOfStock
+                                        ? (singleSelected as Option | null)
+                                            ?._id === option._id
+                                        : false
+                            }
+                            onChange={() => handleSelect(option)}
+                            disabled={option.isOutOfStock}
+                        />
+
+                        {/* Label & Price */}
+                        <div className="flex justify-between items-center w-full">
+                            <span className="text-sm text-gray-900">
+                                {typeof option?.title === "object" ? option?.title[selectedLanguage] : option?.title}
+                                {option.isOutOfStock ? (
+                                    <span className="text-red-500">
+                                        {getTranslation("out_of_stock_label")}
+                                    </span>
+                                ) : (
+                                    ""
+                                )}{" "}
+                            </span>
+                            <span className="text-sm text-gray-700">
+                                ${option.price}
+                            </span>
+                        </div>
+                    </label>
+                ))}
+            </div>
+        </div>
+    );
 };

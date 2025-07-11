@@ -110,7 +110,7 @@ export default function EarningDetailsDateFilter({
           <View className="flex flex-row items-center gap-2">
             <Ionicons name="filter" color={appTheme.primary} size={25} />
             <Text style={{ color: appTheme.fontMainColor }}>
-              {t("Date Filter")}
+              {t("date_filter")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -127,7 +127,7 @@ export default function EarningDetailsDateFilter({
             <View className="flex flex-row items-center gap-2">
               <Ionicons name="remove-sharp" color={"red"} size={25} />
               <Text style={{ color: appTheme.fontSecondColor }}>
-                {t("Clear Filters")}
+                {t("clear_filter")}
               </Text>
             </View>
           </TouchableOpacity>
@@ -154,7 +154,7 @@ export default function EarningDetailsDateFilter({
           <CustomContinueButton
             onPress={() => handleFilterSubmit()}
             style={{ marginTop: 12 }}
-            title={isFiltering ? t("Please Wait") : t("Apply Filter")}
+            title={isFiltering ? t("please_wait") : t("apply_filter")}
             disabled={isFiltering}
           />
         </View>

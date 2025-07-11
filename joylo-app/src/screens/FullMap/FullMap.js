@@ -43,7 +43,7 @@ export default function FullMap(props) {
   useLayoutEffect(() => {
     props?.navigation.setOptions({
       headerRight: null,
-      title: t('addAddress')
+      title: t('add_address')
     })
   }, [props?.navigation])
 
@@ -67,32 +67,13 @@ export default function FullMap(props) {
           {
             backgroundColor: currentTheme.themeBackground
           }
-        ]}>
-        <MapView
-          style={[styles().container, { marginTop: mapMargin }]}
-          initialRegion={region}
-          loadingEnabled={true}
-          onRegionChangeComplete={setRegion}
-          showsUserLocation={true}
-          provider={PROVIDER_DEFAULT}
-          customMapStyle={mapStyle}
-          showsMyLocationButton
-          onMapReady={setMargin}
-          showsTraffic={false}
-          region={region}
-        />
+        ]}
+      >
+        <MapView style={[styles().container, { marginTop: mapMargin }]} initialRegion={region} loadingEnabled={true} onRegionChangeComplete={setRegion} showsUserLocation={true} provider={PROVIDER_DEFAULT} customMapStyle={mapStyle} showsMyLocationButton onMapReady={setMargin} showsTraffic={false} region={region} />
         <View style={styles().customMarkerContainer}>
-          <CustomMarker
-            width={40}
-            height={40}
-            transform={[{ translateY: -20 }]}
-            translateY={-20}
-          />
+          <CustomMarker width={40} height={40} transform={[{ translateY: -20 }]} translateY={-20} />
         </View>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles(currentTheme).button}
-          onPress={onSave}>
+        <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).button} onPress={onSave}>
           <TextDefault textColor={currentTheme.buttonText} H4 bold>
             Save
           </TextDefault>

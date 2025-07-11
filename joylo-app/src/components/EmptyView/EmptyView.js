@@ -8,9 +8,10 @@ import styles from './styles'
 import { useTranslation } from 'react-i18next'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
+import { useLanguage } from '@/src/context/Language'
 
 const EmptyView = ({ title, description, buttonText, navigateTo = 'Main' }) => {
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
@@ -38,13 +39,7 @@ const EmptyView = ({ title, description, buttonText, navigateTo = 'Main' }) => {
             })
           }
         >
-          <TextDefault
-            textColor={currentTheme.black}
-            bolder
-            B700
-            center
-            uppercase
-          >
+          <TextDefault textColor={currentTheme.black} bolder B700 center uppercase>
             {t(buttonText)}
           </TextDefault>
         </TouchableOpacity>

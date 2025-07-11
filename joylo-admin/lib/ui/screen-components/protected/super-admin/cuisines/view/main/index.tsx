@@ -28,7 +28,8 @@ import Table from '@/lib/ui/useable-components/table';
 import CuisineTableHeader from '../header/table-header';
 import { generateDummyCuisines } from '@/lib/utils/dummy';
 import { CUISINE_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/cuisine-columns';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CuisinesMain({
   setVisible,
@@ -50,7 +51,8 @@ export default function CuisinesMain({
   }) as ILazyQueryResult<IGetCuisinesData | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   // States
@@ -85,7 +87,7 @@ export default function CuisinesMain({
   // Menu Items
   const menuItems: IActionMenuItem<ICuisine>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: ICuisine) => {
         if (data) {
           setIsEditing({
@@ -107,7 +109,7 @@ export default function CuisinesMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: ICuisine) => {
         if (data) {
           setIsDeleting({
@@ -135,17 +137,17 @@ export default function CuisinesMain({
     try {
       await deleteCuisine({ variables: { id: isDeleting?.data?._id } });
       showToast({
-        title: t('Delete Cuisine'),
+        title: getTranslation('delete_cuisine'),
         type: 'success',
-        message: t('Cuisine has been deleted successfully'),
+        message: getTranslation('cuisine_has_been_deleted_successfully'),
         duration: 2000,
       });
       setIsDeleting({ bool: false, data: { ...isDeleting.data } });
     } catch (err) {
       showToast({
-        title: t('Delete Cuisine'),
+        title: getTranslation('delete_cuisine'),
         type: 'error',
-        message: t('Cuisine Deletion Failed'),
+        message: getTranslation('cuisine_deletion_failed'),
         duration: 2000,
       });
     }
@@ -191,7 +193,7 @@ export default function CuisinesMain({
         }}
         visible={isDeleting.bool}
         loading={deleteCuisineLoading}
-        message={t('Are you sure to delete the cuisine?')}
+        message={getTranslation('are_you_sure_to_delete_the_cuisine')}
       />
     </div>
   );

@@ -105,7 +105,7 @@
 //   useLayoutEffect(() => {
 //     navigation.setOptions(
 //       screenOptions({
-//         title: t('addAddress'),
+//         title: t('add_address'),
 //         fontColor: currentTheme.fontMainColor,
 //         backColor: currentTheme.white,
 //         iconColor: currentTheme.black,
@@ -279,7 +279,7 @@
 //             bolder
 //             Left
 //             style={styles().addressHeading}>
-//             {t('addAddress')}
+//             {t('add_address')}
 //           </TextDefault>
 //           <View style={styles().dropdownContainer}>
 //             <TouchableOpacity style={styles().button1} onPress={openModal}>

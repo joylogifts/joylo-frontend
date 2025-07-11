@@ -55,8 +55,10 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
+import { useLangTranslation } from '@/lib/context/global/language.context';
+
 
 const initialValues: IRestaurantForm = {
   name: '',
@@ -79,13 +81,14 @@ export default function RestaurantDetails({
   stepperProps,
 }: IAddRestaurantComponentProps) {
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -103,8 +106,8 @@ export default function RestaurantDetails({
     }) => {
       showToast({
         type: 'success',
-        title: t('New Store'),
-        message: t(`Store has been added successfully`),
+        title: getTranslation('new_store'),
+        message: getTranslation(`store_has_been_added_successfully`),
         duration: 3000,
       });
 
@@ -126,7 +129,15 @@ export default function RestaurantDetails({
   const cuisinesDropdown = useMemo(
     () =>
       cuisineResponse.data?.cuisines?.map((cuisin: ICuisine) => {
-        return { label: toTextCase(cuisin.name, 'title'), code: cuisin.name };
+        return {
+          label: toTextCase(
+            typeof cuisin.name === 'object'
+              ? cuisin.name[selectedLanguage]
+              : cuisin.name,
+            'title'
+          ),
+          code: cuisin.name,
+        };
       }),
     [cuisineResponse.data?.cuisines]
   );
@@ -137,12 +148,20 @@ export default function RestaurantDetails({
       if (!vendorId) {
         showToast({
           type: 'error',
-          title: `${vendorId ? t('Edit') : t('Create')} ${t('Vendor')}`,
-          message: `${t('Store Creation Failed, Please select a vendor')}.`,
+          title: `${vendorId ? getTranslation('edit') : getTranslation('create')} ${getTranslation('vendor')}`,
+          message: `${getTranslation('store_creation_failed_please_select_a_vendor')}.`,
           duration: 2500,
         });
         return;
       }
+
+      console.log(
+        data.cuisines
+          .map((cuisin: IDropdownSelectItem) => cuisin.code)
+          .map((cuisine) =>
+            typeof cuisine === 'object' ? cuisine[selectedLanguage] : cuisine
+          )
+      );
 
       await createRestaurant({
         variables: {
@@ -159,17 +178,21 @@ export default function RestaurantDetails({
             password: data.password,
             shopType: data.shopType?.code,
             salesTax: data.salesTax,
-            cuisines: data.cuisines.map(
-              (cuisin: IDropdownSelectItem) => cuisin.code
-            ),
+            cuisines: data.cuisines
+              .map((cuisin: IDropdownSelectItem) => cuisin.code)
+              .map((cuisine) =>
+                typeof cuisine === 'object'
+                  ? cuisine[selectedLanguage]
+                  : cuisine
+              ),
           },
         },
       });
     } catch (error) {
       showToast({
         type: 'error',
-        title: `${vendorId ? t('Edit') : t('Create')} ${t('Vendor')}`,
-        message: t(`Store Creation Failed`),
+        title: `${vendorId ? getTranslation('edit') : getTranslation('create')} ${getTranslation('vendor')}`,
+        message: getTranslation(`store_create_failed`),
         duration: 2500,
       });
     }
@@ -178,11 +201,11 @@ export default function RestaurantDetails({
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: t('Create Store'),
+      title: getTranslation('create_store'),
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        t(`Store Creation Failed`),
+        getTranslation(`store_create_failed`),
       duration: 2500,
     });
   }
@@ -217,7 +240,7 @@ export default function RestaurantDetails({
       <div className="h-full w-full">
         <div className="flex flex-col gap-2">
           <div className="mb-2 flex flex-col">
-            <span className="text-lg">{t('Add Store')}</span>
+            <span className="text-lg">{getTranslation('add_store')}</span>
           </div>
 
           <div>
@@ -244,7 +267,7 @@ export default function RestaurantDetails({
                         <CustomTextField
                           type="text"
                           name="name"
-                          placeholder={t('Name')}
+                          placeholder={getTranslation('name')}
                           maxLength={35}
                           value={values.name}
                           onChange={handleChange}
@@ -265,7 +288,7 @@ export default function RestaurantDetails({
                         <CustomIconTextField
                           type="email"
                           name="username"
-                          placeholder={t('Email')}
+                          placeholder={getTranslation('email')}
                           maxLength={35}
                           showLabel={true}
                           iconProperties={{
@@ -289,7 +312,7 @@ export default function RestaurantDetails({
 
                       <div>
                         <CustomPasswordTextField
-                          placeholder={t('Password')}
+                          placeholder={getTranslation('password')}
                           name="password"
                           maxLength={20}
                           value={values.password}
@@ -309,7 +332,7 @@ export default function RestaurantDetails({
 
                       <div>
                         <CustomPasswordTextField
-                          placeholder={t('Confirm Password')}
+                          placeholder={getTranslation('confirm_password')}
                           name="confirmPassword"
                           maxLength={20}
                           showLabel={true}
@@ -329,7 +352,7 @@ export default function RestaurantDetails({
                       </div>
                       <div>
                         <label className="mb-[4px] text-[14px] font-medium text-[#09090B]">
-                          {t('Phone')}
+                          {getTranslation('phone')}
                         </label>
                         <CustomPhoneTextField
                           mask="999-999-9999"
@@ -359,7 +382,7 @@ export default function RestaurantDetails({
 
                       <div>
                         <CustomTextField
-                          placeholder={t('Address')}
+                          placeholder={getTranslation('address')}
                           name="address"
                           type="text"
                           maxLength={100}
@@ -383,7 +406,7 @@ export default function RestaurantDetails({
                           suffix="m"
                           min={1}
                           max={500}
-                          placeholder={t('Delivery Time')}
+                          placeholder={getTranslation('delivery_time')}
                           name="deliveryTime"
                           showLabel={true}
                           value={values.deliveryTime}
@@ -404,7 +427,7 @@ export default function RestaurantDetails({
                         <CustomNumberField
                           min={1}
                           max={99999}
-                          placeholder={t('Min Order')}
+                          placeholder={getTranslation('min_order')}
                           name="minOrder"
                           showLabel={true}
                           value={values.minOrder}
@@ -425,7 +448,7 @@ export default function RestaurantDetails({
                           prefix="%"
                           min={0}
                           max={100}
-                          placeholder={t('Service Charges')}
+                          placeholder={getTranslation('service_charges')}
                           minFractionDigits={2}
                           maxFractionDigits={2}
                           name="salesTax"
@@ -446,7 +469,7 @@ export default function RestaurantDetails({
                       <div>
                         <CustomDropdownComponent
                           name="shopType"
-                          placeholder={t('Shop Category')}
+                          placeholder={getTranslation('shop_category')}
                           selectedItem={values.shopType}
                           setSelectedItem={setFieldValue}
                           options={SHOP_TYPE}
@@ -466,7 +489,7 @@ export default function RestaurantDetails({
                       <div>
                         <CustomMultiSelectComponent
                           name="cuisines"
-                          placeholder={t('Cuisines')}
+                          placeholder={getTranslation('cuisines')}
                           options={cuisinesDropdown ?? []}
                           selectedItems={values.cuisines}
                           setSelectedItems={setFieldValue}
@@ -486,7 +509,7 @@ export default function RestaurantDetails({
                         <CustomUploadImageComponent
                           key="logo"
                           name="logo"
-                          title={t('Upload Profile Image')}
+                          title={getTranslation('upload_profile_image')}
                           onSetImageUrl={setFieldValue}
                           style={{
                             borderColor: onErrorMessageMatcher(
@@ -508,7 +531,7 @@ export default function RestaurantDetails({
                         <CustomUploadImageComponent
                           key={'image'}
                           name="image"
-                          title={t('Upload Image')}
+                          title={getTranslation('upload_image')}
                           onSetImageUrl={setFieldValue}
                           style={{
                             borderColor: onErrorMessageMatcher(
@@ -532,7 +555,7 @@ export default function RestaurantDetails({
                       <div className="mt-4 flex justify-end">
                         <CustomButton
                           className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                          label={t('Add')}
+                          label={getTranslation('add')}
                           type="submit"
                           loading={isSubmitting}
                         />

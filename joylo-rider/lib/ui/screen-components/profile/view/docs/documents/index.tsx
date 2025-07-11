@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction } from "react";
 // Core
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { Text, TouchableOpacity, View } from "react-native";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function DocumentsSection({
   setIsFormOpened,
@@ -17,7 +18,7 @@ export default function DocumentsSection({
 }) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { dataProfile } = useUserContext();
   return (
     <View
@@ -27,11 +28,11 @@ export default function DocumentsSection({
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
           <Text className="font-bold" style={{ color: appTheme.mainTextColor }}>
-            {t("Driving License")}
+            {t("driving_license")}
           </Text>
           <TouchableOpacity onPress={() => setIsFormOpened("LICENSE_FORM")}>
             <Text className="font-semibold text-[#0EA5E9]">
-              {dataProfile?.licenseDetails ? t("Update") : t("Add")}
+              {dataProfile?.licenseDetails ? t("update") : t("add")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -42,19 +43,19 @@ export default function DocumentsSection({
             className={`${dataProfile?.licenseDetails ? "text-[#0D99FF]" : "text-[#991B1B]"} font-semibold`}
           >
             {dataProfile?.licenseDetails
-              ? t("Submitted Data")
-              : t("Missing Data")}
+              ? t("submitted_data")
+              : t("missing_data")}
           </Text>
         </View>
       </View>
       <View className="flex flex-col gap-3 items-start justify-center px-5 w-full border-b-2  border-b-gray-200 py-3">
         <View className="flex flex-row w-full justify-between">
           <Text className="font-bold" style={{ color: appTheme.mainTextColor }}>
-            {t("Vehicle Plate")}
+            {t("vehicle_plate")}
           </Text>
           <TouchableOpacity onPress={() => setIsFormOpened("VEHICLE_FORM")}>
             <Text className="font-semibold text-[#0EA5E9]">
-              {dataProfile?.vehicleDetails ? t("Update") : t("Add")}
+              {dataProfile?.vehicleDetails ? t("update") : t("add")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -65,8 +66,8 @@ export default function DocumentsSection({
             className={`${dataProfile?.vehicleDetails ? "text-[#0D99FF]" : "text-[#991B1B]"} font-semibold`}
           >
             {dataProfile?.vehicleDetails
-              ? t("Submitted Data")
-              : t("Missing Data")}
+              ? t("submitted_data")
+              : t("missing_data")}
           </Text>
         </View>
       </View>

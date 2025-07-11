@@ -24,7 +24,8 @@ import useToast from '@/lib/hooks/useToast';
 import { CREATE_TIPPING, EDIT_TIPPING, GET_TIPPING } from '@/lib/api/graphql';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const TippingAddForm = () => {
   // Query
@@ -33,7 +34,8 @@ const TippingAddForm = () => {
   }) as IQueryResult<ITippingResponse | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // State
   const initialValues: ITippingsForm = {
@@ -66,8 +68,8 @@ const TippingAddForm = () => {
         onCompleted: () => {
           showToast({
             type: 'success',
-            title: t('Success'),
-            message: t('Tipping updated'),
+            title: getTranslation('success'),
+            message: getTranslation('tipping_updated'),
             duration: 3000,
           });
           resetForm();
@@ -77,11 +79,11 @@ const TippingAddForm = () => {
           try {
             message = error.graphQLErrors[0]?.message;
           } catch (err) {
-            message = t('ActionFailedTryAgain');
+            message = getTranslation('action_failed_try_again');
           }
           showToast({
             type: 'error',
-            title: t('Error'),
+            title: getTranslation('error'),
             message,
             duration: 3000,
           });
@@ -105,7 +107,7 @@ const TippingAddForm = () => {
             <div className="relative">
               <CustomNumberTextField
                 name="tip1"
-                placeholder={t('Tip 1 eg 10')}
+                placeholder={getTranslation('tip_1_eg_10')}
                 min={1}
                 max={100}
                 value={values.tip1}
@@ -123,7 +125,7 @@ const TippingAddForm = () => {
             <div className="relative">
               <CustomNumberTextField
                 name="tip2"
-                placeholder={t('Tip 2 eg 20')}
+                placeholder={getTranslation('tip_2_eg_20')}
                 min={1}
                 max={100}
                 isLoading={loading}
@@ -143,7 +145,7 @@ const TippingAddForm = () => {
                 name="tip3"
                 min={1}
                 max={100}
-                placeholder={t('Tip 3 eg 30')}
+                placeholder={getTranslation('tip_3_eg_30')}
                 isLoading={loading}
                 showLabel={true}
                 value={values.tip3}
@@ -158,7 +160,11 @@ const TippingAddForm = () => {
             </div>
             <CustomButton
               className="mb-[2px] mt-auto flex h-11 rounded-md border-gray-300 bg-[black] px-10 text-white"
-              label={data?.tips._id ? t('Update') : t('Add')}
+              label={
+                data?.tips._id
+                  ? getTranslation('update')
+                  : getTranslation('add')
+              }
               rounded={false}
               type="submit"
               loading={mutationLoading}

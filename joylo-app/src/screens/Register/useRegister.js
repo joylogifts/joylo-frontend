@@ -3,7 +3,7 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import { emailRegex, passRegex, nameRegex, phoneRegex } from '../../utils/regex'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/client'
 import { phoneExist } from '../../apollo/mutations'
@@ -15,7 +15,7 @@ const PHONE = gql`
 
 const useRegister = () => {
   const navigation = useNavigation()
-  const { t, i18n } = useTranslation()
+  const { getTranslation, dir } = useLanguage()
   const route = useRoute()
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
@@ -37,7 +37,7 @@ const useRegister = () => {
     name: 'Israel',
     region: 'Asia',
     subregion: 'Western Asia'
-  });
+  })
 
   const [phoneExist, { loading }] = useMutation(PHONE, {
     onCompleted,
@@ -50,7 +50,7 @@ const useRegister = () => {
   }
 
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
 
   function validateCredentials() {
     let result = true
@@ -62,68 +62,71 @@ const useRegister = () => {
     setLastnameError(null)
 
     if (!email) {
-      setEmailError(t('emailErr1'))
+      setEmailError(getTranslation('email_err_1'))
       result = false
     } else if (!emailRegex.test(email.trim())) {
-      setEmailError(t('emailErr2'))
+      setEmailError(getTranslation('email_err_2'))
       result = false
     }
 
     if (!password) {
-      setPasswordError(t('passErr1'))
+      setPasswordError(getTranslation('pass_err_1'))
       result = false
     } else if (passRegex.test(password) !== true) {
-      setPasswordError(t('passErr2'))
+      setPasswordError(getTranslation('pass_err_2'))
       result = false
     }
 
     if (!phone) {
-      setPhoneError(t('mobileErr1'))
+      setPhoneError(getTranslation('mobile_err_1'))
       result = false
     } else if (!phoneRegex.test(phone)) {
-      setPhoneError(t('mobileErr2'))
+      setPhoneError(getTranslation('mobile_err_2'))
       result = false
     }
 
     if (!firstname) {
-      setFirstnameError(t('firstnameErr1'))
+      setFirstnameError(getTranslation('firstname_err_1'))
       result = false
     } else if (!nameRegex.test(firstname)) {
-      setFirstnameError(t('firstnameErr2'))
+      setFirstnameError(getTranslation('firstname_err_2'))
       result = false
     }
 
     if (!lastname) {
-      setLastnameError(t('lastnameErr1'))
+      setLastnameError(getTranslation('lastname_err_1'))
       result = false
     } else if (!nameRegex.test(lastname)) {
-      setLastnameError(t('lastnameErr2'))
+      setLastnameError(getTranslation('lastname_err_2'))
       result = false
     }
     return result
   }
 
-  function registerAction() {
+  async function registerAction() {
     if (validateCredentials()) {
-      phoneExist({
-        variables: { phone: ''.concat('+', country.callingCode[0], phone) }
-      })
+      phoneExist({ variables: { phone: country.callingCode[0] + phone } })
     }
   }
 
-  function onCompleted({ phoneExist }) {
-    if (phoneExist && phoneExist.phoneExist && phoneExist.phoneExist.phone) {
+  function onCompleted(data) {
+    const { phoneExist } = data
+    try {
+      if (phoneExist && phoneExist.phone) {
+        FlashMessage({
+          message: getTranslation('phone_number_exist')
+        })
+      } else {
+        navigation.navigate('Otp', {
+          email,
+          password,
+          name: `${firstname} ${lastname}`,
+          phone: `+${country.callingCode[0]}${phone}`
+        })
+      }
+    } catch (e) {
       FlashMessage({
-        message: t('phoneNumberExist')
-      })
-    } else {
-      navigation.navigate('EmailOtp', {
-        user: {
-          phone: '+'.concat(country.callingCode[0]).concat(phone),
-          email: email.toLowerCase().trim(),
-          password: password,
-          name: firstname + ' ' + lastname
-        }
+        message: getTranslation('phone_checking_error')
       })
     }
   }
@@ -135,7 +138,7 @@ const useRegister = () => {
       })
     } catch (e) {
       FlashMessage({
-        message: t('phoneCheckingError')
+        message: getTranslation('phone_checking_error')
       })
     }
   }
@@ -163,7 +166,8 @@ const useRegister = () => {
     registerAction,
     onCountrySelect,
     themeContext,
-    currentTheme
+    currentTheme,
+    loading
   }
 }
 

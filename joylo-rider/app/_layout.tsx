@@ -33,6 +33,7 @@ import UnavailableStatus from "@/lib/ui/useable-components/unavailable-status";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useEffect } from "react";
 import "../global.css";
+import { LanguageProvider } from "@/lib/context/global/language.context";
 
 initSentry();
 
@@ -74,6 +75,7 @@ function RootLayout() {
       <AppThemeProvidor>
         <ApolloProvider client={client}>
           <AuthProvider client={client}>
+            <LanguageProvider>
             <UserProvider>
               <InternetProvider>
                 <ConfigurationProvider>
@@ -90,6 +92,7 @@ function RootLayout() {
                 </ConfigurationProvider>
               </InternetProvider>
             </UserProvider>
+            </LanguageProvider>
           </AuthProvider>
         </ApolloProvider>
       </AppThemeProvidor>

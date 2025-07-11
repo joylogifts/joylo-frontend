@@ -6,6 +6,7 @@ import { theme } from '../../../utils/themeColors.js'
 import TextDefault from '../../Text/TextDefault/TextDefault.js'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { HeaderBackButton } from '@react-navigation/elements'
 import { scale } from '../../../utils/scaling.js'
 import navigationService from '../../../routes/navigationService.js'
@@ -20,9 +21,9 @@ const UPDATEUSER = gql`
 `
 
 const EditName = (props) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const route = useRoute()
   const { name: initialName, phone } = route?.params
   const [mutate, { loading: loadingMutation }] = useMutation(UPDATEUSER, {
@@ -58,11 +59,7 @@ const EditName = (props) => {
           truncatedLabel=''
           backImage={() => (
             <View>
-              <MaterialIcons
-                name='arrow-back'
-                size={25}
-                color={currentTheme.newIconColor}
-              />
+              <MaterialIcons name='arrow-back' size={25} color={currentTheme.newIconColor} />
             </View>
           )}
           onPress={() => {
@@ -173,11 +170,7 @@ const EditName = (props) => {
               }}
             />
             {nameError !== '' && (
-              <TextDefault
-                style={styles().error}
-                bold
-                textColor={currentTheme.red600}
-              >
+              <TextDefault style={styles().error} bold textColor={currentTheme.red600}>
                 {nameError}
               </TextDefault>
             )}
@@ -197,7 +190,7 @@ const EditName = (props) => {
             >
               <View style={styles(currentTheme).contentContainer}>
                 <TextDefault bold H5>
-                  {t('saveBtn')}
+                  {t('save_btn')}
                 </TextDefault>
               </View>
             </TouchableOpacity>

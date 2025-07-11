@@ -12,13 +12,13 @@ import countryCallingCodes from './countryCodes'
 import { useIsFocused } from '@react-navigation/native'
 import ConfigurationContext from '../../context/Configuration'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const UPDATEUSER = gql`
   ${updateUser}
 `
 
 const useRegister = () => {
-  const { t, i18n } = useTranslation()
   const navigation = useNavigation()
   const route = useRoute()
   const [phone, setPhone] = useState('')
@@ -31,6 +31,7 @@ const useRegister = () => {
   const [countryCallingCode, setCountryCallingCode] = useState(null)
   const [count, setCount] = useState(0)
   const { name } = route?.params
+  const { getTranslation: t, dir } = useLanguage()
 
   const retryCount = 3 // Number of retries
   let currentRetry = 0
@@ -99,14 +100,14 @@ const useRegister = () => {
     initializeCountry()
   }, [count])
 
-  const onCountrySelect = country => {
+  const onCountrySelect = (country) => {
     setCountryCode(country.cca2)
     setCountry(country)
   }
   const { profile } = useContext(UserContext)
   const { refetchProfile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
 
   const [mutate, { loading }] = useMutation(UPDATEUSER, {
     onCompleted,
@@ -127,7 +128,7 @@ const useRegister = () => {
   }
 
   async function onCompleted(data) {
-    let concatPhone = '+'.concat(country.callingCode[0] ?? "").concat(phone ?? "")
+    let concatPhone = '+'.concat(country.callingCode[0] ?? '').concat(phone ?? '')
     if (navigation && route && profile) {
       if (configuration.twilioEnabled) {
         FlashMessage({
@@ -137,7 +138,7 @@ const useRegister = () => {
         navigation.navigate({
           name: 'PhoneOtp',
           merge: true,
-          params: {name, phone: concatPhone, screen: route?.params?.screen}
+          params: { name, phone: concatPhone, screen: route?.params?.screen }
         })
       } else {
         mutate({
@@ -171,7 +172,7 @@ const useRegister = () => {
     mutate({
       variables: {
         name: profile.name,
-        phone: '+'.concat(country.callingCode[0] ?? "").concat(phone ?? ""),
+        phone: '+'.concat(country.callingCode[0] ?? '').concat(phone ?? ''),
         phoneIsVerified: false
       }
     })

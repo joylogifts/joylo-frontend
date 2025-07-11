@@ -2,6 +2,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 
 // Contexts
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 
 // Interfaces
@@ -18,7 +19,6 @@ import { STORE_EARNINGS_GRAPH } from "@/lib/apollo/queries/earnings.query";
 
 // Hooks
 import { useLazyQuery } from "@apollo/client";
-import { useTranslation } from "react-i18next";
 
 // Expo
 import { router } from "expo-router";
@@ -64,7 +64,7 @@ export default function EarningsMain() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { userId, setModalVisible } = useUserContext();
 
   // Queries
@@ -176,7 +176,7 @@ export default function EarningsMain() {
             color: appTheme.fontMainColor,
           }}
         >
-          {t("Recent Activity")}
+          {getTranslation("recent_activity")}
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -201,7 +201,7 @@ export default function EarningsMain() {
               color: appTheme.linkColor,
             }}
           >
-            {t("See More")}
+            {getTranslation("see_more")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -217,7 +217,7 @@ export default function EarningsMain() {
               className="block mx-auto font-bold text-center w-full my-12 "
               style={{ color: appTheme.fontSecondColor }}
             >
-              {t("No record found")}
+              {getTranslation("no_record_found")}
             </Text>
           }
           renderItem={(info) => {
