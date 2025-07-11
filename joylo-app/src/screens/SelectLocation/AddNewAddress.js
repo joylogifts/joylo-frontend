@@ -36,7 +36,7 @@ const LONGITUDE_DELTA = 0.04
 export default function AddNewAddress(props) {
   const { isLoggedIn } = useContext(UserContext)
   const {getAddress} = useGeocoding()
-  const [searchModalVisible, setSearchModalVisible] = useState()
+  const [searchModalVisible, setSearchModalVisible] = useState(false)
   const [cityModalVisible, setCityModalVisible] = useState(false)
   const {  longitude, latitude, id, prevScreen } = props?.route.params || {}
   const [selectedValue, setSelectedValue] = useState({

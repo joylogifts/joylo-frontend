@@ -50,7 +50,7 @@ function RestaurantDetailHeader({
     })
   }, [navigation, restaurant])
 
-  const isOpen = restaurant?.isAvailable
+  const isOpen = restaurant?.isOpen
 
   return (
     <View style={styles(currentTheme).mainContainer}>

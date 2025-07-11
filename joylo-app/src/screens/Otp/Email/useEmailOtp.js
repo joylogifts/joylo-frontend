@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 import { sendOtpToEmail, createUser } from '../../../apollo/mutations'
 import gql from 'graphql-tag'
-import Constants  from 'expo-constants'
+import Constants from 'expo-constants'
 import { useMutation } from '@apollo/client'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
@@ -111,19 +111,25 @@ const useEmailOtp = () => {
     try {
       let notificationToken = null
       if (Device.isDevice) {
-        const { status } = await Notifications.requestPermissionsAsync()
-        if (status === 'granted') {
-          notificationToken = (await Notifications.getExpoPushTokenAsync({  projectId: Constants.expoConfig.extra.eas.projectId})).data
+        try {
+          const { status } = await Notifications.requestPermissionsAsync()
+          if (status === 'granted') {
+            notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data
+          }
+        } catch (error) {
+          console.log('mutateRegister error=>', error)
+          notificationToken = null
         }
       }
       mutateUser({
         variables: {
-          phone: user?.phone ?? "",
+          phone: user?.phone ?? '',
           email: user.email,
           password: user.password,
           name: user.name,
           picture: '',
-          notificationToken: notificationToken
+          notificationToken: notificationToken,
+          phoneIsVerified: false
         }
       })
     } catch (error) {
@@ -131,7 +137,7 @@ const useEmailOtp = () => {
     }
   }
 
-  const onCodeFilled = code => {
+  const onCodeFilled = (code) => {
     if (configuration.skipEmailVerification || code === otpFrom.current) {
       mutateRegister()
     } else {

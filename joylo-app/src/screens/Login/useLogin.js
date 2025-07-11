@@ -34,7 +34,7 @@ export const useLogin = () => {
   const [passwordError, setPasswordError] = useState(null)
   const [registeredEmail, setRegisteredEmail] = useState(false)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
   const { setTokenAsync } = useContext(AuthContext)
 
   const [EmailEixst, { loading }] = useMutation(EMAIL, {
@@ -48,7 +48,7 @@ export const useLogin = () => {
   })
 
   // Debounce the setEmail function
-  const setEmail = (email)=>{
+  const setEmail = (email) => {
     emailRef.current = email
   }
   function validateCredentials() {
@@ -75,22 +75,16 @@ export const useLogin = () => {
   function onCompleted({ emailExist }) {
     if (validateCredentials()) {
       if (emailExist && emailExist._id) {
-        if (
-          emailExist.userType !== 'apple' &&
-          emailExist.userType !== 'google' &&
-          emailExist.userType !== 'facebook'
-        ) {
+        if (emailExist.userType !== 'apple' && emailExist.userType !== 'google' && emailExist.userType !== 'facebook') {
           setRegisteredEmail(true)
         } else {
           FlashMessage({
-            message: `${t('emailAssociatedWith')} ${emailExist.userType} ${t(
-              'continueWith'
-            )} ${emailExist.userType}`
+            message: `${t('emailAssociatedWith')} ${emailExist.userType} ${t('continueWith')} ${emailExist.userType}`
           })
           navigation.navigate({ name: 'Main', merge: true })
         }
       } else {
-        navigation.navigate('Register', { email:emailRef.current })
+        navigation.navigate('Register', { email: emailRef.current })
       }
     }
   }
@@ -148,16 +142,19 @@ export const useLogin = () => {
     try {
       if (validateCredentials()) {
         let notificationToken = null
-        if (Device.isDevice) {
-          const {
-            status: existingStatus
-          } = await Notifications.getPermissionsAsync()
-          if (existingStatus === 'granted') {
-            notificationToken = (await Notifications.getExpoPushTokenAsync({
-              projectId: Constants.expoConfig.extra.eas.projectId 
-            }))
-              .data
+        try {
+          if (Device.isDevice) {
+            const { status: existingStatus } = await Notifications.getPermissionsAsync()
+            if (existingStatus === 'granted') {
+              notificationToken = (
+                await Notifications.getExpoPushTokenAsync({
+                  projectId: Constants.expoConfig.extra.eas.projectId
+                })
+              ).data
+            }
           }
+        } catch (error) {
+          console.log(error)
         }
         LoginMutation({
           variables: {
@@ -177,7 +174,7 @@ export const useLogin = () => {
   }
 
   function checkEmailExist() {
-    EmailEixst({ variables: { email:emailRef.current } })
+    EmailEixst({ variables: { email: emailRef.current } })
   }
 
   function onBackButtonPressAndroid() {

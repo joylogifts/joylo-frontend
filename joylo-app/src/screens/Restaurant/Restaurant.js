@@ -224,7 +224,7 @@ function Restaurant(props) {
   }
 
   function wrapContentAfterWords(content, numWords) {
-    const words = content.split(' ')
+    const words = content?.split(' ')
     const wrappedContent = []
 
     for (let i = 0; i < words.length; i += numWords) {
