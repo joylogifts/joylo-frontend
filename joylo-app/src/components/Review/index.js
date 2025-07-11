@@ -26,7 +26,7 @@ const REVIEWORDER = gql`
 `
 
 function Review({ onOverlayPress, theme, orderId, rating }, ref) {
-  const { getTranslation: t } = useLanguage()
+  const { getTranslation: t, selectedLanguage } = useLanguage()
 
   const ratingRef = useRef()
   const [description, setDescription] = useState('')
@@ -87,7 +87,7 @@ function Review({ onOverlayPress, theme, orderId, rating }, ref) {
           <View style={{ justifyContent: 'space-evenly' }}>
             {order?.items?.slice(0, 2).map((item, index) => (
               <TextDefault key={`${item.food}-${index}`} H5 bold textColor={theme.gray900} isRTL>
-                {item.title}
+                {typeof item.title === "object" ? item.title[selectedLanguage] : item.title}
               </TextDefault>
             ))}
             <View>
