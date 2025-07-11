@@ -22,8 +22,8 @@ const styles = (props = null) =>
       borderWidth: 1
     },
     markerImage: {
-      height: 60,
-      width: 60,
+      height: 30,
+      width: 30,
       borderRadius: 30,
       overflow: 'hidden',
       borderWidth: 1

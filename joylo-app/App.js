@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
+import 'react-native-get-random-values';
 
 import { ApolloProvider } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -37,12 +38,15 @@ import * as SplashScreen from 'expo-splash-screen'
 import TextDefault from './src/components/Text/TextDefault/TextDefault'
 import { LanguageProvider } from './src/context/Language'
 
+
 // LogBox.ignoreLogs([
 //   // 'Warning: ...',
 //   // 'Sentry Logger ',
 //   'Constants.deviceYearClass'
 // ]) // Ignore log notification by message
 // LogBox.ignoreAllLogs() // Ignore all log notifications
+
+
 
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => {

@@ -86,6 +86,7 @@ export default function SearchModal({ visible = false, onClose = () => { }, onSu
             returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
             listViewDisplayed='auto' // true/false/undefined
             fetchDetails={true}
+            predefinedPlaces={[]}
             renderDescription={(row) => row.description} // custom description render
             renderRow={(data) => (
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>

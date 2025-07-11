@@ -121,7 +121,7 @@ export const UserProvider = (props) => {
     const cartIndex = cart.findIndex((c) => c.key === key)
     if (cartIndex > -1) {
       cart.splice(cartIndex, 1)
-      const items = [...cart.filter((c) => c.quantity > 0)]
+      const items = [...cart?.filter((c) => c.quantity > 0)]
       setCart(items)
       if (items.length === 0) setRestaurant(null)
       await AsyncStorage.setItem('cartItems', JSON.stringify(items))
@@ -129,16 +129,16 @@ export const UserProvider = (props) => {
   }
 
   const removeQuantity = async (key) => {
-    const cartIndex = cart.findIndex((c) => c.key === key)
+    const cartIndex = cart?.findIndex((c) => c.key === key)
     cart[cartIndex].quantity -= 1
-    const items = [...cart.filter((c) => c.quantity > 0)]
+    const items = [...cart?.filter((c) => c.quantity > 0)]
     setCart(items)
     if (items.length === 0) setRestaurant(null)
     await AsyncStorage.setItem('cartItems', JSON.stringify(items))
   }
 
   const checkItemCart = (itemId) => {
-    const cartIndex = cart.findIndex((c) => c._id === itemId)
+    const cartIndex = cart?.findIndex((c) => c._id === itemId)
     if (cartIndex < 0) {
       return {
         exist: false,
@@ -147,22 +147,21 @@ export const UserProvider = (props) => {
     } else {
       return {
         exist: true,
-        quantity: cart[cartIndex].quantity,
-        key: cart[cartIndex].key
+        quantity: cart?.[cartIndex]?.quantity,
+        key: cart?.[cartIndex]?.key
       }
     }
   }
   const numberOfCartItems = () => {
-    return cart
-      .map((c) => c.quantity)
-      .reduce(function (a, b) {
+    return cart?.map((c) => c?.quantity)
+      ?.reduce(function (a, b) {
         return a + b
       }, 0)
   }
 
   const addCartItem = async (_id, variation, quantity = 1, addons = [], clearFlag, specialInstructions = '') => {
     const cartItems = clearFlag ? [] : cart
-    cartItems.push({
+    cartItems?.push({
       key: uuidv1(v1options),
       _id,
       quantity: quantity,
