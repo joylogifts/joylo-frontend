@@ -236,10 +236,10 @@ function OrderDetail(props) {
                 justifyContent: 'space-between'
               }}
             >
-              {![ORDER_STATUS_ENUM.PENDING, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order?.orderStatus) && (
+              {![ORDER_STATUS_ENUM.PENDING, ORDER_STATUS_ENUM.CANCELLED, ORDER_STATUS_ENUM.CANCELLEDBYREST].includes(order?.orderStatus?.statusText?.toUpperCase()) && (
                 <>
                   <TextDefault style={{ ...alignment.MTxSmall }} textColor={currentTheme.gray500} H5>
-                    {getTranslation('estimatedDeliveryTime')}
+                    {getTranslation('estimated_delivery_time')}
                   </TextDefault>
                   <TextDefault style={{ ...alignment.MTxSmall }} Regular textColor={currentTheme.gray900} H1 bolder>
                     {remainingTimeState}-{remainingTimeState + 5} {getTranslation('mins')}
