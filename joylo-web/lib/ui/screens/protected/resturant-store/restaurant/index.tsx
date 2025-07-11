@@ -144,12 +144,18 @@ export default function RestaurantDetailsScreen() {
                 .filter((c: ICategory) => {
                     if (filter.trim() === "") return true;
 
-                    const categoryMatches = c.title
-                        .toLowerCase()
-                        .includes(filter.toLowerCase());
-                    const foodsMatch = c.foods.some((food: IFood) =>
-                        food.title.toLowerCase().includes(filter.toLowerCase())
-                    );
+                    // Safely get category title for selected language
+                    const categoryTitle = typeof c.title === "object"
+                        ? c.title[selectedLanguage] || ""
+                        : c.title || "";
+                    const categoryMatches =
+                        typeof categoryTitle === "string" && categoryTitle.toLowerCase().includes(filter.toLowerCase());
+                    const foodsMatch = c.foods.some((food: IFood) => {
+                        const foodTitle = typeof food.title === "object"
+                            ? food.title[selectedLanguage] || ""
+                            : food.title || "";
+                        return typeof foodTitle === "string" && foodTitle.toLowerCase().includes(filter.toLowerCase());
+                    });
 
                     return categoryMatches || foodsMatch;
                 })
@@ -160,15 +166,17 @@ export default function RestaurantDetailsScreen() {
                         // If filter is empty, include all foods
                         if (filter.trim() === "") return true;
 
-                        // Include food if title or description matches filter
+                        // Safely get title and description for selected language
+                        const foodTitle = typeof food.title === "object"
+                            ? food.title[selectedLanguage] || ""
+                            : food.title || "";
+                        const foodDescription = typeof food.description === "object"
+                            ? food.description[selectedLanguage] || ""
+                            : food.description || "";
+
                         return (
-                            food.title
-                                .toLowerCase()
-                                .includes(filter.toLowerCase()) ||
-                            (food.description &&
-                                food.description
-                                    .toLowerCase()
-                                    .includes(filter.toLowerCase()))
+                            (typeof foodTitle === "string" && foodTitle.toLowerCase().includes(filter.toLowerCase())) ||
+                            (typeof foodDescription === "string" && foodDescription.toLowerCase().includes(filter.toLowerCase()))
                         );
                     }),
                 }))
