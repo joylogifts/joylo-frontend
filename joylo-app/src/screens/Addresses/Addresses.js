@@ -23,7 +23,7 @@ import CustomHomeIcon from '../../assets/SVG/imageComponents/CustomHomeIcon'
 import CustomWorkIcon from '../../assets/SVG/imageComponents/CustomWorkIcon'
 import CustomOtherIcon from '../../assets/SVG/imageComponents/CustomOtherIcon'
 import CustomApartmentIcon from '../../assets/SVG/imageComponents/CustomApartmentIcon'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import CheckboxBtn from '../../ui/FdCheckbox/CheckboxBtn'
 import Spinner from '../../components/Spinner/Spinner'
 import DeleteEditModal from '../../components/DeleteEditModal/DeleteEditModal'
@@ -39,7 +39,7 @@ const DELETE_BULK_ADDRESSES = gql`
 `
 
 function Addresses() {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const Analytics = analytics()
 
   const navigation = useNavigation()
@@ -51,7 +51,7 @@ function Addresses() {
   })
   const { profile, refetchProfile, networkStatus } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const [isEditMode, setIsEditMode] = useState(false)
   const [selectedAddresses, setSelectedAddresses] = useState([])
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
@@ -61,7 +61,7 @@ function Addresses() {
   function onCompleted() {
     setdeleteAllModalVisible(false)
     setDeleteModalVisible(false)
-    FlashMessage({ message: t('addressDeletedMessage') })
+    FlashMessage({ message: t('address_deleted') })
   }
 
   useFocusEffect(() => {
@@ -79,7 +79,7 @@ function Addresses() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: t('savedAddresses'),
+      title: t('saved_addresses'),
       headerTitleAlign: 'center',
       headerTitleStyle: {
         color: currentTheme.newFontcolor,
@@ -167,14 +167,14 @@ function Addresses() {
           <View style={styles().descriptionEmpty}>
             <View style={styles().viewTitle}>
               <TextDefault textColor={currentTheme.fontMainColor} bolder>
-                {t('emptyHere')}
+                {t('empty_here')}
               </TextDefault>
             </View>
             <View>
               <TextDefault textColor={currentTheme.fontMainColor} bold>
-                {t('addressNotSaved')}
+                {t('address_not_saved')}
                 {'\n'}
-                {t('addNewAddress')}
+                {t('add_new_address')}
               </TextDefault>
             </View>
           </View>
@@ -262,11 +262,11 @@ function Addresses() {
                   <View style={[styles(currentTheme).homeIcon]}>
                     {addressIcons[address.label]
                       ? React.createElement(addressIcons[address.label], {
-                          fill: currentTheme.darkBgFont
-                        })
+                        fill: currentTheme.darkBgFont
+                      })
                       : React.createElement(addressIcons['Other'], {
-                          fill: currentTheme.darkBgFont
-                        })}
+                        fill: currentTheme.darkBgFont
+                      })}
                   </View>
 
                   {/* addresses */}
@@ -345,7 +345,7 @@ function Addresses() {
             }
           >
             <TextDefault H5 bold>
-              {t('addAddress')}
+              {t('add_address')}
             </TextDefault>
           </TouchableOpacity>
         </View>

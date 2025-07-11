@@ -3,7 +3,7 @@ import { View, Modal, TouchableOpacity, Pressable, ScrollView, Dimensions } from
 import * as Localization from 'expo-localization'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import i18next from 'i18next'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { Feather } from '@expo/vector-icons'
 
 import styles from './styles'
@@ -47,7 +47,7 @@ export const languageTypes = [
 ]
 
 const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossButton, dontClose }) => {
-  const { t } = useTranslation()
+  const { getTranslation: t, languages, languagesLoading, languagesError, selectedLanguage, setSelectedLanguage } = useLanguage()
   const [activeRadio, activeRadioSetter] = useState(0)
   const [loadinglang, setLoadingLang] = useState(false)
   const [languageName, languageNameSetter] = useState('English')
@@ -60,33 +60,33 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
 
   async function determineInitialLanguage() {
     try {
-      // First, check for stored language
-      const storedLanguageCode = await AsyncStorage.getItem('enatega-language')
+      // // First, check for stored language
+      // const storedLanguageCode = await AsyncStorage.getItem('enatega-language')
 
-      // Get system language
-      const systemLanguageCode = Localization.locale.split('-')[0]
+      // // Get system language
+      // const systemLanguageCode = Localization.locale.split('-')[0]
 
-      // Available language codes
-      const availableLanguageCodes = languageTypes.map((lang) => lang.code)
+      // // Available language codes
+      // const availableLanguageCodes = languageTypes.map((lang) => lang.code)
 
-      // Determine which language to use
-      let languageToUse = 'en' // Default to English
+      // // Determine which language to use
+      // let languageToUse = 'en' // Default to English
 
-      if (storedLanguageCode) {
-        // Use stored language if it's valid
-        languageToUse = storedLanguageCode
-      } else if (availableLanguageCodes.includes(systemLanguageCode)) {
-        // Use system language if it's available
-        languageToUse = systemLanguageCode
-      }
+      // if (storedLanguageCode) {
+      //   // Use stored language if it's valid
+      //   languageToUse = storedLanguageCode
+      // } else if (availableLanguageCodes.includes(systemLanguageCode)) {
+      //   // Use system language if it's available
+      //   languageToUse = systemLanguageCode
+      // }
 
-      // Find the index and name of the language
-      const selectedLanguage = languageTypes.find((lang) => lang.code === languageToUse)
+      // // Find the index and name of the language
+      // const selectedLanguage = languageTypes.find((lang) => lang.code === languageToUse)
 
-      if (selectedLanguage) {
-        activeRadioSetter(selectedLanguage.index)
-        languageNameSetter(selectedLanguage.value)
-      }
+      // if (selectedLanguage) {
+      //   activeRadioSetter(selectedLanguage.index)
+      //   languageNameSetter(selectedLanguage.value)
+      // }
     } catch (error) {
       console.error('Error determining initial language:', error)
     }
@@ -127,14 +127,14 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
         <View style={styles(currentTheme).modalContainer}>
           <View style={styles(currentTheme).flexRow}>
             <TextDefault textColor={currentTheme.fontMainColor} bolder H3 style={alignment.MBsmall}>
-              {t('selectLanguage')}
+              {t('select_language')}
             </TextDefault>
             {showCrossButton && <Feather name='x-circle' size={24} color={currentTheme.newFontcolor} onPress={handleClose} />}
           </View>
 
           <View style={styles(currentTheme).flexRow}>
             <TextDefault textColor={currentTheme.fontMainColor} style={alignment.MBsmall}>
-              {t('description0')}
+              {t('select_your_preferred_language')}
             </TextDefault>
           </View>
 
@@ -150,19 +150,50 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
             showsVerticalScrollIndicator={false} // hide scroll indicator
             keyboardShouldPersistTaps='handled' // Allows tapping items while keyboard is open
           >
-            {languageTypes.map((item, index) => (
+            {/* {languageTypes.map((item, index) => (
               <TouchableOpacity activeOpacity={0.7} key={index} onPress={() => activeRadioSetter(item.index)} style={[styles(currentTheme).radioContainer]}>
                 <RadioButton animation={'bounceIn'} size={13} outerColor={currentTheme.iconColorDark} innerColor={currentTheme.main} isSelected={activeRadio === item.index} onPress={() => activeRadioSetter(item.index)} />
                 <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} bold>
                   {item.value}
                 </TextDefault>
               </TouchableOpacity>
+            ))} */}
+            {!languagesLoading && !languagesLoading && languages.map((item, index) => (
+              <TouchableOpacity activeOpacity={0.7} key={index} onPress={() => setSelectedLanguage(item.code)} style={[styles(currentTheme).radioContainer]}>
+                <RadioButton animation={'bounceIn'} size={13} outerColor={currentTheme.iconColorDark} innerColor={currentTheme.main} isSelected={selectedLanguage === item.code} onPress={() => setSelectedLanguage(item.code)} />
+                {
+                  item?.flag && (
+                    <Image
+                      source={{ uri: item.flag }}
+                      style={styles(currentTheme).flagImage}
+                      resizeMode='contain'
+                    />
+                  )
+                }
+                <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} bold>
+                  {item.label}
+                </TextDefault>
+              </TouchableOpacity>
             ))}
+            {
+              languagesError && (
+                <TextDefault textColor={currentTheme.errorColor} center>
+                  {t('error_loading_languages')}
+                </TextDefault>
+              )
+            }
+            {
+              languagesLoading && (
+                <View style={styles(currentTheme).loadingContainer}>
+                  <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} />
+                </View>
+              )
+            }
           </ScrollView>
 
           <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).emptyButton} onPress={onSelectedLanguage}>
             <TextDefault textColor={currentTheme.fontMainColor} center H5>
-              {loadinglang ? <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} /> : t('continueBtn')}
+              {loadinglang ? <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} /> : t('continue_btn')}
             </TextDefault>
           </TouchableOpacity>
         </View>

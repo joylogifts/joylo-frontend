@@ -7,12 +7,12 @@ import { theme } from '../../utils/themeColors'
 import { FILTER_TYPE } from '../../utils/enums'
 import styles from './styles'
 import { useTranslation } from 'react-i18next'
-
+import { useLanguage } from '@/src/context/Language'
 
 const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
 
   const handleValueSelection = (filterTitle, filterValue) => {
     const selectedFilter = filters[filterTitle]
@@ -21,9 +21,7 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
     } else {
       const index = selectedFilter.selected.indexOf(filterValue)
       if (index > -1) {
-        selectedFilter.selected = selectedFilter.selected.filter(
-          (a) => a !== filterValue
-        )
+        selectedFilter.selected = selectedFilter.selected.filter((a) => a !== filterValue)
       } else selectedFilter.selected.push(filterValue)
     }
     setFilters({ ...filters, [filterTitle]: selectedFilter })
@@ -35,17 +33,12 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
         {t('filters')}
       </TextDefault>
       {Object.keys(filters).map((filter, index) => (
-        <View style={{ gap: 12 }}key={'filters-'+filter+index} >
-          <TextDefault H4 bolder style={{ paddingHorizontal: 15}} isRTL>
-            {t(filter)}
+        <View style={{ gap: 12 }} key={'filters-' + filter + index}>
+          <TextDefault H4 bolder style={{ paddingHorizontal: 15 }} isRTL>
+            {t(filter.toLocaleLowerCase())}
           </TextDefault>
           {filter === 'Cuisines' ? (
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              directionalLockEnabled={true}
-              alwaysBounceVertical={false}
-            >
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} directionalLockEnabled={true} alwaysBounceVertical={false}>
               <FlatList
                 contentContainerStyle={styles().flatlist}
                 showsVerticalScrollIndicator={false}
@@ -60,25 +53,13 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
                       style={[
                         styles().filterBtn,
                         {
-                          borderColor: filters[filter].selected.includes(item)
-                            ? currentTheme.main
-                            : currentTheme.color7,
-  
-                          backgroundColor: filters[filter].selected.includes(item)
-                            ? currentTheme.main
-                            : currentTheme.color1
+                          borderColor: filters[filter].selected.includes(item) ? currentTheme.main : currentTheme.color7,
+
+                          backgroundColor: filters[filter].selected.includes(item) ? currentTheme.main : currentTheme.color1
                         }
                       ]}
                     >
-                      <TextDefault
-                        Normal
-                        bolder
-                        textColor={
-                          filters[filter].selected.includes(item)
-                            ? currentTheme.white
-                            : currentTheme.fontMainColor
-                        }
-                      >
+                      <TextDefault Normal bolder textColor={filters[filter].selected.includes(item) ? currentTheme.white : currentTheme.fontMainColor}>
                         {item}
                       </TextDefault>
                     </TouchableOpacity>
@@ -101,25 +82,13 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
                     style={[
                       styles().filterBtn,
                       {
-                        borderColor: filters[filter].selected.includes(item)
-                          ? currentTheme.main
-                          : currentTheme.color7,
+                        borderColor: filters[filter].selected.includes(item) ? currentTheme.main : currentTheme.color7,
 
-                        backgroundColor: filters[filter].selected.includes(item)
-                          ? currentTheme.main
-                          : currentTheme.color1
+                        backgroundColor: filters[filter].selected.includes(item) ? currentTheme.main : currentTheme.color1
                       }
                     ]}
                   >
-                    <TextDefault
-                      Normal
-                      bolder
-                      textColor={
-                        filters[filter].selected.includes(item)
-                          ? currentTheme.white
-                          : currentTheme.fontMainColor
-                      }
-                    >
+                    <TextDefault Normal bolder textColor={filters[filter].selected.includes(item) ? currentTheme.white : currentTheme.fontMainColor}>
                       {t(item)}
                     </TextDefault>
                   </TouchableOpacity>
@@ -130,22 +99,12 @@ const Filters = ({ filters, setFilters, applyFilters, onClose }) => {
           <View style={{ height: 1, backgroundColor: '#D1D5DB' }} />
         </View>
       ))}
-      <TouchableOpacity
-        style={styles(currentTheme).applyBtn}
-        activeOpacity={0.8}
-        onPress={applyFilters}
-      >
+      <TouchableOpacity style={styles(currentTheme).applyBtn} activeOpacity={0.8} onPress={applyFilters}>
         <TextDefault center bold H4 textColor={currentTheme.black}>
           {t('apply')}
         </TextDefault>
       </TouchableOpacity>
-      <Feather
-        name='x-circle'
-        size={24}
-        color={currentTheme.newIconColor}
-        style={styles(currentTheme).closeBtn}
-        onPress={onClose}
-      />
+      <Feather name='x-circle' size={24} color={currentTheme.newIconColor} style={styles(currentTheme).closeBtn} onPress={onClose} />
     </View>
   )
 }

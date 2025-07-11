@@ -1,4 +1,5 @@
 // Expo
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { Stack } from "expo-router";
 
@@ -11,7 +12,7 @@ import { Platform } from "react-native";
 export default function LoginLayour() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation:  t } = useLanguage();
   return (
     <Stack
       screenOptions={{
@@ -35,7 +36,7 @@ export default function LoginLayour() {
         name="index"
         options={{
           headerShown: false,
-          title: t("Chat"),
+          title: t("chat"),
           headerTitleAlign: "center",
           headerShadowVisible: false,
         }}

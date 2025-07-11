@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons'
 import styles from './styles'
 import ShimmerImage from '../../ShimmerImage/ShimmerImage'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const CARD_SPACING = scale(10)
 
@@ -201,7 +202,7 @@ const RestaurantSections = ({
   currentTheme,
   restaurant // Restaurant details including isOpen, isAvailable
 }) => {
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const { popularItems, categories } = useRestaurantQueries(restaurantId)
   // let popularItems={}
   // let categories={}
@@ -232,16 +233,16 @@ const RestaurantSections = ({
       // Show alert if restaurant is closed
       Alert.alert(
         '',
-        t('restaurantClosed'),
+        t('restaurant_closed'),
         [
           {
             text: t('close'),
-            onPress: () => {},
+            onPress: () => { },
             style: 'cancel'
           },
           {
-            text: t('seeMenu'),
-            onPress: () => {}
+            text: t('see_menu'),
+            onPress: () => { }
           }
         ],
         { cancelable: true }
@@ -266,16 +267,16 @@ const RestaurantSections = ({
       // Show alert if restaurant is closed
       Alert.alert(
         '',
-        t('restaurantClosed'),
+        t('restaurant_closed'),
         [
           {
             text: t('close'),
-            onPress: () => {},
+            onPress: () => { },
             style: 'cancel'
           },
           {
-            text: t('seeMenu'),
-            onPress: () => {}
+            text: t('see_menu'),
+            onPress: () => { }
           }
         ],
         { cancelable: true }
@@ -351,7 +352,7 @@ const RestaurantSections = ({
           <View style={styles(currentTheme).section}>
             <View style={styles(currentTheme).sectionHeader}>
               <TextDefault H4 bolder textColor={currentTheme.fontMainColor}>
-                Popular
+                {t("popular")}
               </TextDefault>
             </View>
 
@@ -379,7 +380,7 @@ const RestaurantSections = ({
       ) : (
         <View style={styles(currentTheme).section}>
           <TextDefault H4 bolder textColor={currentTheme.fontMainColor} style={{ marginBottom: scale(15) }}>
-            Find what you want
+            {t("find_what_you_want")}
           </TextDefault>
 
           <View style={styles(currentTheme).categoriesGrid}>

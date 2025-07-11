@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps'
 import styles from './styles'
 import { Image, View, FlatList, TouchableOpacity, Platform } from 'react-native'
@@ -17,18 +11,21 @@ import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import ConfigurationContext from '../../context/Configuration'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 export default function MapSection() {
-  const { i18n } = useTranslation()
-  const mapRef = useRef()
+  const mapRef = useRef(null)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const { getTranslation, dir, selectedLanguage } = useLanguage()
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const route = useRoute()
   const navigation = useNavigation()
-  const location = route?.params?.location
+  const { latitude, longitude } = route?.params?.location
   const restaurants = route?.params?.restaurants
   const [visibleMarkerIndex, setVisibleMarkerIndex] = useState(0)
   const configuration = useContext(ConfigurationContext)
+
+  console.log("location", { latitude, longitude })
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,7 +34,7 @@ export default function MapSection() {
   }, [navigation, currentTheme])
 
   const handleMarkerAnimate = (coord) => {
-    mapRef.current.animateToRegion({
+    mapRef?.current?.animateToRegion({
       ...coord,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421
@@ -58,32 +55,39 @@ export default function MapSection() {
       longitude: parseFloat(rest.location.coordinates[0])
     }
     handleMarkerAnimate(coord)
-}, [visibleMarkerIndex])
+  }, [visibleMarkerIndex])
+
+  console.log("Initial region ", {
+    latitude: restaurants?.length ? parseFloat(restaurants[0].location?.coordinates[1]) : location.latitude,
+    longitude: restaurants?.length ? parseFloat(restaurants[0].location?.coordinates[0]) : location.longitude,
+  })
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <MapView
         ref={mapRef}
+        provider={PROVIDER_DEFAULT}
         style={styles().map}
         showsUserLocation
         zoomEnabled={true}
         zoomControlEnabled={true}
         rotateEnabled={false}
-        // provider={PROVIDER_DEFAULT}
         // customMapStyle={mapStyle}
         initialRegion={{
-          latitude: restaurants?.length
-            ? parseFloat(restaurants[0].location?.coordinates[1])
-            : location.latitude,
-          longitude: restaurants?.length
-            ? parseFloat(restaurants[0].location?.coordinates[0])
-            : location.longitude,
+          latitude: restaurants?.length ? parseFloat(restaurants[0].location?.coordinates[1]) : location.latitude,
+          longitude: restaurants?.length ? parseFloat(restaurants[0].location?.coordinates[0]) : location.longitude,
           latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
+          longitudeDelta: 0.0421,
         }}
       >
-        <Marker coordinate={location} title='Current Address'>
-          <Image source={require('../../assets/images/user.png')} width={20} />
+        <Marker coordinate={{ latitude, longitude }} title="Current Address">
+          <View style={styles().markerContainer}>
+            <Image
+              source={require('../../assets/images/user.png')}
+              style={{ width: 20, height: 20 }}
+              resizeMode="contain"
+            />
+          </View>
         </Marker>
         {restaurants &&
           restaurants?.map((rest, index) => {
@@ -100,22 +104,13 @@ export default function MapSection() {
                 }}
                 style={styles().markerContainer}
               >
-                <View
-                  style={styles(currentTheme).greenDot}
-                />
-                <Image
-                  source={{uri: rest?.image}}
-                  width={20}
-                  style={styles().markerImage}
-                />
-                
+                <View style={styles(currentTheme).greenDot} />
+                <Image source={{ uri: rest?.image }} width={20} height={20} resizeMode="contain" style={styles().markerImage} />
               </Marker>
             )
           })}
       </MapView>
-      <View
-        style={styles().restContainer}
-      >
+      <View style={styles().restContainer}>
         <FlatList
           data={restaurants}
           renderItem={({ item }) => {
@@ -127,70 +122,31 @@ export default function MapSection() {
                 }}
                 activeOpacity={0.8}
               >
-                <Image
-                  resizeMode='cover'
-                  source={{ uri: item?.image }}
-                  style={styles().restImg}
-                />
+                <Image resizeMode='cover' source={{ uri: item?.image }} style={styles().restImg} />
                 <View style={{ gap: 3 }}>
-                  <TextDefault
-                    H5
-                    bolder
-                    textColor={currentTheme.buttonText}
-                  >
+                  <TextDefault H5 bolder textColor={currentTheme.buttonText}>
                     {item.name}
                   </TextDefault>
-                  <TextDefault
-                    numberOfLines={1}
-                    bold
-                    Normal
-                    textColor={currentTheme.subText}
-                  >
-                    {item?.tags?.slice(0, 2)?.join(', ')}
+                  <TextDefault numberOfLines={1} bold Normal textColor={currentTheme.subText}>
+                    {typeof item?.tags === "object" ? item?.tags[selectedLanguage]?.slice(0, 2)?.join(', ') : item?.tags?.slice(0, 2)?.join(', ')}
                   </TextDefault>
-                  <View
-                    style={styles().restInfo}
-                  >
-                    <View
-                      style={styles().deliveryTime}
-                    >
+                  <View style={styles().restInfo}>
+                    <View style={styles().deliveryTime}>
                       <Bicycle color={currentTheme.color2} />
 
-                      <TextDefault
-                        textColor={currentTheme.color2}
-                        numberOfLines={1}
-                        bold
-                        Small
-                      >
-                        {configuration.currencySymbol}{' '}{configuration.deliveryRate}
+                      <TextDefault textColor={currentTheme.color2} numberOfLines={1} bold Small>
+                        {configuration.currencySymbol} {configuration.deliveryRate}
                       </TextDefault>
                     </View>
-                    <View
-                      style={styles().deliveryTime}
-                    >
-                      <AntDesign
-                        name='clockcircleo'
-                        size={14}
-                        color={currentTheme.editProfileButton}
-                      />
+                    <View style={styles().deliveryTime}>
+                      <AntDesign name='clockcircleo' size={14} color={currentTheme.editProfileButton} />
 
-                      <TextDefault
-                        textColor={currentTheme.editProfileButton}
-                        numberOfLines={1}
-                        bold
-                        Small
-                      >
+                      <TextDefault textColor={currentTheme.editProfileButton} numberOfLines={1} bold Small>
                         {item.deliveryTime + ' '} min
                       </TextDefault>
                     </View>
-                    <View
-                      style={styles().deliveryTime}
-                    >
-                      <FontAwesome5
-                        name='star'
-                        size={14}
-                        color={currentTheme.color2}
-                      />
+                    <View style={styles().deliveryTime}>
+                      <FontAwesome5 name='star' size={14} color={currentTheme.color2} />
 
                       <TextDefault bold Small>
                         {item.reviewAverage}

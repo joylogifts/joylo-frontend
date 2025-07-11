@@ -1,4 +1,5 @@
 // Constants
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import {
   CustomContinueButton,
@@ -20,7 +21,7 @@ export default function LanguageMain() {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t, languages, languagesLoading, languagesError, selectedLanguage, setSelectedLanguage } = useLanguage();
 
   // Handlers
   const handleLanguageSelection = async (selectedLanguage: string) => {
@@ -29,25 +30,25 @@ export default function LanguageMain() {
   };
   const handleSetCurrentLanguage = async () => {
     try {
-      const lng = await AsyncStorage.getItem("lang");
-      console.log("🚀 ~ handleSetCurrentLanguage ~ lng:", lng);
+      // const lng = await AsyncStorage.getItem("lang");
+      // console.log("🚀 ~ handleSetCurrentLanguage ~ lng:", lng);
+      // // if (lng) {
+      // //   changeLanguage(lng);
+      // //   changeLanguage(isSelected);
+      // // }
       // if (lng) {
-      //   changeLanguage(lng);
-      //   changeLanguage(isSelected);
+      //   setIsSelected(lng);
       // }
-      if (lng) {
-        setIsSelected(lng);
-      }
     } catch (error) {
       console.log({ error });
     }
   };
   const handleSubmission = async () => {
     try {
-      setIsChangingLang(true);
-      await AsyncStorage.setItem("lang", isSelected);
-      changeLanguage(isSelected);
-      setIsChangingLang(false);
+      // setIsChangingLang(true);
+      // await AsyncStorage.setItem("lang", isSelected);
+      // changeLanguage(isSelected);
+      // setIsChangingLang(false);
     } catch (e) {
       console.log(e);
     }
@@ -57,12 +58,13 @@ export default function LanguageMain() {
   useEffect(() => {
     handleSetCurrentLanguage();
   }, [isSelected]);
+
   return (
     <View
       className="h-[85%] w-[90%] items-center justify-between mx-auto  p-4"
       style={{ backgroundColor: appTheme.screenBackground }}
     >
-      {LANGUAGES.map((lng, index) => {
+      {!languagesLoading && !languagesError && languages?.map((lng, index) => {
         return (
           <View
             key={`lng-${index}`}
@@ -70,22 +72,22 @@ export default function LanguageMain() {
             style={{ backgroundColor: appTheme.themeBackground }}
           >
             <View className="flex flex-row gap-3 items-center justify-center px-3">
-              <View className="overflow-hidden items-center justify-start w-8 h-6">
+              {lng?.flag && <View className="overflow-hidden items-center justify-start w-8 h-6">
                 <Image
-                  source={lng.icon}
+                  source={{ uri: lng?.flag }}
                   width={100}
                   height={100}
                   className="max-w-8 max-h-8"
                 />
-              </View>
-              <Text style={{ color: appTheme.fontMainColor }}>{lng.value}</Text>
+              </View>}
+              <Text style={{ color: appTheme.fontMainColor }}>{lng.label}</Text>
             </View>
             <View>
               <CustomRadioButton
                 label={lng.code}
-                isSelected={lng.code === isSelected}
+                isSelected={lng.code === selectedLanguage}
                 showLabel={false}
-                onPress={() => handleLanguageSelection(lng.code)}
+                onPress={() => setSelectedLanguage(lng.code)}
               />
             </View>
           </View>
@@ -93,7 +95,7 @@ export default function LanguageMain() {
       })}
       <View>
         <CustomContinueButton
-          title={isChangingLang ? t("Please wait") : t("Update Language")}
+          title={isChangingLang ? t("please_wait") : t("update_language")}
           onPress={() => handleSubmission()}
         />
       </View>

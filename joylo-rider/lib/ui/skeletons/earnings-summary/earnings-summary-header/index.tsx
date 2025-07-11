@@ -5,11 +5,12 @@ import { Skeleton } from "moti/skeleton";
 // Hooks
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function EarningSummaryHeader() {
   // Hooks
   const { appTheme, currentTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   return (
     <MotiView
       className="flex flex-col gap-3 p-3 w-full "
@@ -23,7 +24,7 @@ export default function EarningSummaryHeader() {
             backgroundColor: appTheme.themeBackground,
           }}
         >
-          {t("Summary")}
+          {t("summary")}
         </MotiText>
       </MotiView>
       <MotiView className="flex flex-row justify-between w-[95%]">
@@ -32,7 +33,7 @@ export default function EarningSummaryHeader() {
             className="text-lg "
             style={{ color: appTheme.fontSecondColor }}
           >
-            {t("Total Earnings")}
+            {t("total_earnings")}
           </MotiText>
           <Skeleton
             colorMode={currentTheme ?? "light"}
@@ -45,7 +46,7 @@ export default function EarningSummaryHeader() {
             className="text-lg "
             style={{ color: appTheme.fontSecondColor }}
           >
-            {t("Total Tips")}
+            {t("total_tips")}
           </MotiText>
           <Skeleton
             colorMode={currentTheme ?? "light"}
@@ -58,7 +59,7 @@ export default function EarningSummaryHeader() {
             className="text-lg "
             style={{ color: appTheme.fontSecondColor }}
           >
-            {t("Total Deliveries")}
+            {t("total_deliveries")}
           </MotiText>
           <Skeleton
             colorMode={currentTheme ?? "light"}

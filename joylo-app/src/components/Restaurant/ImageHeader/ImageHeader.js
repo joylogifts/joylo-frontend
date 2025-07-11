@@ -1,12 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { View, Dimensions, Text, Image, FlatList, Platform } from 'react-native'
-import {
-  Ionicons,
-  Entypo,
-  SimpleLineIcons,
-  MaterialCommunityIcons,
-  FontAwesome5
-} from '@expo/vector-icons'
+import { Ionicons, Entypo, SimpleLineIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
 import styles from './styles'
 import TextDefault from '../../Text/TextDefault/TextDefault'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
@@ -18,15 +12,11 @@ import { scale } from '../../../utils/scaling'
 import { alignment } from '../../../utils/alignment'
 import TextError from '../../Text/TextError/TextError'
 import { textStyles } from '../../../utils/textStyles'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import Search from '../../../components/Main/Search/Search'
 import { calculateDistance, isOpen } from '../../../utils/customFunctions'
 import { LocationContext } from '../../../context/Location'
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle
-} from 'react-native-reanimated'
+import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import FavoriteButton from '../../FavButton/FavouriteButton'
 import Bicycle from '../../../assets/SVG/Bicycle'
 import ConfigurationContext from '../../../context/Configuration'
@@ -36,19 +26,18 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
 
 const { height } = Dimensions.get('screen')
 const TOP_BAR_HEIGHT = height * 0.05
-const HEADER_MAX_HEIGHT =
-  Platform.OS === 'android' ? height * 0.65 : height * 0.61
+const HEADER_MAX_HEIGHT = Platform.OS === 'android' ? height * 0.65 : height * 0.61
 const HEADER_MIN_HEIGHT = height * 0.07 + TOP_BAR_HEIGHT
 const SCROLL_RANGE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT
 
 function ImageTextCenterHeader(props, ref) {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
   const { translationY } = props
   const flatListRef = ref
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const { location } = useContext(LocationContext)
@@ -57,12 +46,8 @@ function ImageTextCenterHeader(props, ref) {
   const cartContainer = currentTheme.gray500
 
   const aboutObject = {
-    latitude: props?.restaurant
-      ? props?.restaurant.location.coordinates[1]
-      : '',
-    longitude: props?.restaurant
-      ? props?.restaurant.location.coordinates[0]
-      : '',
+    latitude: props?.restaurant ? props?.restaurant.location.coordinates[1] : '',
+    longitude: props?.restaurant ? props?.restaurant.location.coordinates[0] : '',
     address: props?.restaurant ? props?.restaurant.address : '',
     restaurantId: props?.restaurantId,
     restaurantName: props?.restaurantName,
@@ -85,67 +70,35 @@ function ImageTextCenterHeader(props, ref) {
     reviewsAverage: props?.reviewAverage
   }
 
-  const currentDayShort = new Date()
-    .toLocaleString('en-US', { weekday: 'short' })
-    .toUpperCase()
+  const currentDayShort = new Date().toLocaleString('en-US', { weekday: 'short' }).toUpperCase()
 
-  const todayOpeningTimes = aboutObject?.openingTimes.find(
-    (opening) => opening.day === currentDayShort
-  )
+  const todayOpeningTimes = aboutObject?.openingTimes.find((opening) => opening.day === currentDayShort)
 
   const minutesOpacity = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        translationY.value,
-        [0, TOP_BAR_HEIGHT, SCROLL_RANGE / 2],
-        [0, 0.8, 1],
-        Extrapolation.CLAMP
-      )
+      opacity: interpolate(translationY.value, [0, TOP_BAR_HEIGHT, SCROLL_RANGE / 2], [0, 0.8, 1], Extrapolation.CLAMP)
     }
   })
 
   const headerHeight = useAnimatedStyle(() => {
     return {
-      height: interpolate(
-        translationY.value,
-        [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-        [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-        Extrapolation.CLAMP
-      )
+      height: interpolate(translationY.value, [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT], [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT], Extrapolation.CLAMP)
     }
   })
 
   const headerHeightWithoutTopbar = useAnimatedStyle(() => {
     return {
-      height: interpolate(
-        translationY.value,
-        [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-        [
-          HEADER_MAX_HEIGHT - TOP_BAR_HEIGHT,
-          HEADER_MIN_HEIGHT - TOP_BAR_HEIGHT
-        ],
-        Extrapolation.CLAMP
-      )
+      height: interpolate(translationY.value, [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT], [HEADER_MAX_HEIGHT - TOP_BAR_HEIGHT, HEADER_MIN_HEIGHT - TOP_BAR_HEIGHT], Extrapolation.CLAMP)
     }
   })
 
   const opacity = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        translationY.value,
-        [0, height * 0.05, SCROLL_RANGE / 2],
-        [1, 0.8, 0],
-        Extrapolation.CLAMP
-      )
+      opacity: interpolate(translationY.value, [0, height * 0.05, SCROLL_RANGE / 2], [1, 0.8, 0], Extrapolation.CLAMP)
     }
   })
 
-  const distance = calculateDistance(
-    aboutObject?.latitude,
-    aboutObject?.longitude,
-    location?.latitude,
-    location?.longitude
-  )
+  const distance = calculateDistance(aboutObject?.latitude, aboutObject?.longitude, location?.latitude, location?.longitude)
 
   const emptyView = () => {
     return (
@@ -180,11 +133,7 @@ function ImageTextCenterHeader(props, ref) {
                   ]}
                   onPress={props?.searchPopupHandler}
                 >
-                  <Entypo
-                    name='cross'
-                    color={currentTheme.newIconColor}
-                    size={scale(22)}
-                  />
+                  <Entypo name='cross' color={currentTheme.newIconColor} size={scale(22)} />
                 </AnimatedTouchable>
               ) : (
                 <AnimatedTouchable
@@ -199,20 +148,13 @@ function ImageTextCenterHeader(props, ref) {
                   ]}
                   onPress={() => navigation.goBack()}
                 >
-                  <Ionicons
-                    name='arrow-back'
-                    color={currentTheme.newIconColor}
-                    size={scale(22)}
-                  />
+                  <Ionicons name='arrow-back' color={currentTheme.newIconColor} size={scale(22)} />
                 </AnimatedTouchable>
               )}
             </View>
             <View style={styles().center}>
               {!props?.searchOpen && (
-                <AnimatedText
-                  numberOfLines={1}
-                  style={[styles(currentTheme).headerTitle, minutesOpacity]}
-                >
+                <AnimatedText numberOfLines={1} style={[styles(currentTheme).headerTitle, minutesOpacity]}>
                   {t('delivery')} {aboutObject.deliveryTime} {t('Min')}
                 </AnimatedText>
               )}
@@ -220,13 +162,7 @@ function ImageTextCenterHeader(props, ref) {
             <View style={styles().fixedIcons}>
               {props?.searchOpen ? (
                 <>
-                  <Search
-                    setSearch={props?.setSearch}
-                    search={props?.search}
-                    newheaderColor={newheaderColor}
-                    cartContainer={cartContainer}
-                    placeHolder={t('searchItems')}
-                  />
+                  <Search setSearch={props?.setSearch} search={props?.search} newheaderColor={newheaderColor} cartContainer={cartContainer} placeHolder={t('search_items')} />
                 </>
               ) : (
                 <>
@@ -247,11 +183,7 @@ function ImageTextCenterHeader(props, ref) {
                       })
                     }}
                   >
-                    <SimpleLineIcons
-                      name='info'
-                      size={scale(17)}
-                      color={currentTheme.newIconColor}
-                    />
+                    <SimpleLineIcons name='info' size={scale(17)} color={currentTheme.newIconColor} />
                   </TouchableOpacity>
                   <TouchableOpacity
                     activeOpacity={0.7}
@@ -280,26 +212,18 @@ function ImageTextCenterHeader(props, ref) {
           {!props?.search && !props?.loading && (
             <Animated.View style={[styles().restaurantDetails, opacity]}>
               <Animated.View>
-                <Image
-                  resizeMode='cover'
-                  source={{ uri: aboutObject?.restaurantImage }}
-                  style={[
-                    styles().mainRestaurantImg,
-                    props?.searchOpen ? { opacity: 0 } : {}
-                  ]}
-                />
+                <Image resizeMode='cover' source={{ uri: aboutObject?.restaurantImage }} style={[styles().mainRestaurantImg, props?.searchOpen ? { opacity: 0 } : {}]} />
                 <View style={styles(currentTheme).mainDetailsContainer}>
                   <View style={styles(currentTheme).subDetailsContainer}>
                     <TextDefault textColor={currentTheme.fontMainColor}>
-                      {t('deliveryCharges')} {configuration.currencySymbol}
+                      {t('delivery_charges')} {configuration.currencySymbol}
                       {configuration?.deliveryRate}
                     </TextDefault>
                   </View>
 
                   <View style={styles(currentTheme).subDetailsContainer}>
                     <TextDefault textColor={currentTheme.fontMainColor} isRTL>
-                      {t('minimumOrder')} {configuration.currencySymbol}{' '}
-                      {aboutObject?.restaurantMinOrder}
+                      {t('minimum_order')} {configuration.currencySymbol} {aboutObject?.restaurantMinOrder}
                     </TextDefault>
                   </View>
                 </View>
@@ -317,35 +241,14 @@ function ImageTextCenterHeader(props, ref) {
               >
                 <View style={[styles(currentTheme).subContainer]}>
                   <View style={styles(currentTheme).titleContainer}>
-                    <Image
-                      resizeMode='cover'
-                      source={
-                        aboutObject.restaurantLogo
-                          ? { uri: aboutObject.restaurantLogo }
-                          : require('../../../assets/images/defaultLogo.png')
-                      }
-                      style={[styles().restaurantImg]}
-                    />
-                    <TextDefault
-                      numberOfLines={2}
-                      H3
-                      bolder
-                      textColor={currentTheme.fontThirdColor}
-                    >
+                    <Image resizeMode='cover' source={aboutObject.restaurantLogo ? { uri: aboutObject.restaurantLogo } : require('../../../assets/images/defaultLogo.png')} style={[styles().restaurantImg]} />
+                    <TextDefault numberOfLines={2} H3 bolder textColor={currentTheme.fontThirdColor}>
                       {aboutObject?.restaurantName}
                     </TextDefault>
                   </View>
-                  <FavoriteButton
-                    iconSize={scale(24)}
-                    restaurantId={aboutObject.restaurantId}
-                  />
+                  <FavoriteButton iconSize={scale(24)} restaurantId={aboutObject.restaurantId} />
                 </View>
-                <TextDefault
-                  textColor={currentTheme.fontThirdColor}
-                  H5
-                  bold
-                  isRTL
-                >
+                <TextDefault textColor={currentTheme.fontThirdColor} H5 bold isRTL>
                   {aboutObject?.restaurantCuisines?.join(', ')}
                 </TextDefault>
               </Animated.View>
@@ -367,26 +270,12 @@ function ImageTextCenterHeader(props, ref) {
                     })
                   }}
                 >
-                  <FontAwesome5
-                    name='smile'
-                    size={scale(20)}
-                    color={currentTheme.newIconColor}
-                  />
+                  <FontAwesome5 name='smile' size={scale(20)} color={currentTheme.newIconColor} />
 
-                  <TextDefault
-                    textColor={currentTheme.fontNewColor}
-                    bold
-                    H5
-                    isRTL
-                  >
+                  <TextDefault textColor={currentTheme.fontNewColor} bold H5 isRTL>
                     {aboutObject?.average}
                   </TextDefault>
-                  <TextDefault
-                    textColor={currentTheme.fontNewColor}
-                    bold
-                    H5
-                    isRTL
-                  >
+                  <TextDefault textColor={currentTheme.fontNewColor} bold H5 isRTL>
                     {aboutObject?.reviewsCount ?? 0} review(s)
                   </TextDefault>
                 </AnimatedTouchable>
@@ -402,7 +291,7 @@ function ImageTextCenterHeader(props, ref) {
                   }}
                 >
                   <TextDefault bolder textColor={currentTheme.main}>
-                    {t('seeReviews')}
+                    {t('see_reviews')}
                   </TextDefault>
                 </AnimatedTouchable>
               </View>
@@ -414,23 +303,12 @@ function ImageTextCenterHeader(props, ref) {
                   marginTop: scale(5)
                 }}
               >
-                <View
-                  activeOpacity={0.7}
-                  style={styles(currentTheme).ratingBox}
-                >
-                  <MaterialCommunityIcons
-                    name='timer-outline'
-                    size={scale(20)}
-                    color={currentTheme.newIconColor}
-                  />
+                <View activeOpacity={0.7} style={styles(currentTheme).ratingBox}>
+                  <MaterialCommunityIcons name='timer-outline' size={scale(20)} color={currentTheme.newIconColor} />
 
                   {todayOpeningTimes && (
                     <View style={styles(currentTheme).timingRow}>
-                      <TextDefault
-                        textColor={currentTheme.fontThirdColor}
-                        bold
-                        isRTL
-                      >
+                      <TextDefault textColor={currentTheme.fontThirdColor} bold isRTL>
                         {t(todayOpeningTimes?.day)}{' '}
                       </TextDefault>
                       {todayOpeningTimes?.times?.length < 1 ? (
@@ -439,45 +317,26 @@ function ImageTextCenterHeader(props, ref) {
                         </TextDefault>
                       ) : (
                         todayOpeningTimes?.times?.map((timing, index) => (
-                          <TextDefault
-                            key={index}
-                            textColor={currentTheme.fontThirdColor}
-                            bold
-                            isRTL
-                          >
-                            {timing.startTime[0]}:{timing.startTime[1]} -{' '}
-                            {timing.endTime[0]}:{timing.endTime[1]}
+                          <TextDefault key={index} textColor={currentTheme.fontThirdColor} bold isRTL>
+                            {timing.startTime[0]}:{timing.startTime[1]} - {timing.endTime[0]}:{timing.endTime[1]}
                           </TextDefault>
                         ))
                       )}
                     </View>
                   )}
                 </View>
-                <AnimatedTouchable
-                  style={styles(currentTheme).seeReviewsBtn}
-                  disabled={true}
-                >
+                <AnimatedTouchable style={styles(currentTheme).seeReviewsBtn} disabled={true}>
                   <TextDefault bolder textColor={currentTheme.main}>
-                    {!aboutObject?.IsOpen ? t('Closed') : t('Open')}
+                    {!aboutObject?.IsOpen ? t('closed') : t('open')}
                   </TextDefault>
                 </AnimatedTouchable>
               </View>
 
-              <View
-                style={[
-                  styles(currentTheme).ratingBox,
-                  { marginTop: scale(5) }
-                ]}
-              >
+              <View style={[styles(currentTheme).ratingBox, { marginTop: scale(5) }]}>
                 <Bicycle size={20} color={currentTheme.newFontcolor} />
 
-                <TextDefault
-                  textColor={currentTheme.fontNewColor}
-                  bold
-                  H5
-                  isRTL
-                >
-                  {aboutObject.deliveryTime} {t('Min')}
+                <TextDefault textColor={currentTheme.fontNewColor} bold H5 isRTL>
+                  {aboutObject.deliveryTime} {t('min')}
                 </TextDefault>
               </View>
             </Animated.View>
@@ -500,34 +359,11 @@ function ImageTextCenterHeader(props, ref) {
               keyExtractor={(item, index) => index.toString()}
               inverted={currentTheme.isRTL ? true : false}
               renderItem={({ item, index }) => (
-                <View
-                  style={
-                    props?.selectedLabel === index
-                      ? styles(currentTheme).activeHeader
-                      : null
-                  }
-                >
-                  <RectButton
-                    rippleColor={currentTheme.rippleColor}
-                    onPress={() => props?.changeIndex(index)}
-                    style={styles(currentTheme).headerContainer}
-                  >
+                <View style={props?.selectedLabel === index ? styles(currentTheme).activeHeader : null}>
+                  <RectButton rippleColor={currentTheme.rippleColor} onPress={() => props?.changeIndex(index)} style={styles(currentTheme).headerContainer}>
                     <View style={styles().navbarTextContainer}>
-                      <TextDefault
-                        style={
-                          props?.selectedLabel === index
-                            ? textStyles.Bolder
-                            : textStyles.H5
-                        }
-                        textColor={
-                          props?.selectedLabel === index
-                            ? currentTheme.newButtonText
-                            : currentTheme.gray500
-                        }
-                        center
-                        H5
-                      >
-                        {t(item.title)}
+                      <TextDefault style={props?.selectedLabel === index ? textStyles.Bolder : textStyles.H5} textColor={props?.selectedLabel === index ? currentTheme.newButtonText : currentTheme.gray500} center H5>
+                        {typeof item.title === "object" ? item.title[selectedLanguage] : item.title}
                       </TextDefault>
                     </View>
                   </RectButton>

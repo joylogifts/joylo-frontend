@@ -17,8 +17,7 @@ import screenOptions from './screenOptions'
 import styles from './styles'
 import { useFocusEffect } from '@react-navigation/native'
 import analytics from '../../utils/analytics'
-
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 function calculatePrice(food) {
   var foodPrice = food.variation.price
@@ -32,8 +31,8 @@ function calculatePrice(food) {
 
 function OrderDetail(props) {
   const Analytics = analytics()
+  const { getTranslation } = useLanguage()
 
-  const { t } = useTranslation()
   const id = props?.route.params ? props?.route.params._id : null
   const restaurant = props?.route.params ? props?.route.params.restaurant : null
   const user = props?.route.params ? props?.route.params.user : null
@@ -104,7 +103,7 @@ function OrderDetail(props) {
     )
   }
   if (loadingOrders || !order) return <Spinner />
-  if (errorOrders) return <TextError text={t('error')} />
+  if (errorOrders) return <TextError text={getTranslation('error')} />
   // const remainingTime = Math.floor((order.completionTime - Date.now()) / 1000 / 60)
   return (
     <>
@@ -112,37 +111,41 @@ function OrderDetail(props) {
         <View>{order.orderStatus === 'PICKED' && order.rider && <TrackingRider deliveryAddress={order.deliveryAddress} id={order.rider._id} />}</View>
         <View style={styles().container}>
           <TextDefault textColor={currentTheme.fontMainColor} bolder H3 style={(alignment.MBsmall, { alignSelf: 'center' })}>
-            {t('thankYou')}!
+            {getTranslation('thank_you')}!
           </TextDefault>
           <TextDefault textColor={currentTheme.fontSecondColor} bold style={[alignment.MBsmall, alignment.MTsmall]}>
-            Your order status is:
+            {getTranslation('your_order_status_is')}:
           </TextDefault>
           <TextDefault textColor={currentTheme.iconColorPink} H2 bolder B700 style={[alignment.MBsmall, alignment.MTsmall]}>
             {order.orderStatus}
           </TextDefault>
-          {['ACCEPTED'].includes(order.orderStatus) && order.isPickedUp && (
+          {['PENDING', 'CANCELLED', 'DELIVERED'].includes(order.orderStatus) && (
             <TextDefault textColor={currentTheme.fontSecondColor} bold style={[alignment.MBsmall, alignment.MTsmall]}>
-              You can pick your order up at:
+              {order.orderStatus === 'PENDING' ? getTranslation('pending_text') : order.orderStatus === 'CANCELLED' ? getTranslation('cancelled_order_text') : getTranslation('delivered_order_text')}
             </TextDefault>
           )}
-          {['ACCEPTED'].includes(order.orderStatus) && (
-            <TextDefault textColor={currentTheme.iconColorPink} H3 bolder B700 style={[alignment.MBsmall, alignment.MTsmall]}>
-              {remainingTime <= 0 ? lastTime() : timeConvert(remainingTime)}
-              {order.isPickedUp ? '' : 'remaining'}
+          {['ACCEPTED'].includes(order.orderStatus) && order.isPickedUp && (
+            <TextDefault textColor={currentTheme.fontSecondColor} bold style={[alignment.MBsmall, alignment.MTsmall]}>
+              {getTranslation('you_can_pick_your_order_up_at')}:
+            </TextDefault>
+          )}
+          {['PICKED'].includes(order.orderStatus) && (
+            <TextDefault textColor={currentTheme.fontSecondColor} bold style={[alignment.MBsmall, alignment.MTsmall]}>
+              {getTranslation('rider_on_the_way')}
             </TextDefault>
           )}
           <TextDefault textColor={currentTheme.fontMainColor} H4 bolder style={alignment.MTsmall}>
-            Order Detail
+            {getTranslation('order_detail')}
           </TextDefault>
           {squareLine()}
           <TextDefault textColor={currentTheme.fontSecondColor} bold>
-            Your order from:
+            {getTranslation('your_order_from')}:
           </TextDefault>
           <TextDefault textColor={currentTheme.fontMainColor} bolder B700 style={alignment.MBsmall}>
             {order.restaurant.name}
           </TextDefault>
           <TextDefault textColor={currentTheme.fontSecondColor} bold>
-            Your order number:
+            {getTranslation('your_order_number')}:
           </TextDefault>
           <TextDefault textColor={currentTheme.fontMainColor} bolder B700 style={alignment.MBsmall}>
             {order.orderId}
@@ -150,19 +153,19 @@ function OrderDetail(props) {
           {order.isPickedUp ? (
             <>
               <TextDefault textColor={currentTheme.fontSecondColor} bold>
-                Pickup address:
+                {getTranslation('pickup_address')}:
               </TextDefault>
               <PickUpMap deliveryAddress={order.deliveryAddress} pickupAddress={order.restaurant} />
             </>
           ) : (
             <>
               <TextDefault textColor={currentTheme.fontSecondColor} bold>
-                Delivery address:
+                {getTranslation('delivery_address')}:
               </TextDefault>
               <TextDefault textColor={currentTheme.fontMainColor} H5 bolder>
                 {order.deliveryAddress.deliveryAddress}
               </TextDefault>
-              <TextDefault textColor={currentTheme.fontMainColor} bolder B700>
+              <TextDefault textColor={currentTheme.fontSecondColor} H5>
                 {order.deliveryAddress.details}
               </TextDefault>
             </>
@@ -194,7 +197,7 @@ function OrderDetail(props) {
           <View style={[styles(currentTheme).horizontalLine, styles().marginBottom10]} />
           <View style={[styles().marginBottom10, styles().floatView]}>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '40%' }}>
-              {t('subTotal')}
+              {getTranslation('sub_total')}
             </TextDefault>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '60%' }} right>
               {configuration.currencySymbol}
@@ -203,7 +206,7 @@ function OrderDetail(props) {
           </View>
           <View style={[styles().marginBottom10, styles().floatView]}>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '40%' }}>
-              {t('tip')}
+              {getTranslation('tip')}
             </TextDefault>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '60%' }} right>
               {configuration.currencySymbol}
@@ -212,7 +215,7 @@ function OrderDetail(props) {
           </View>
           <View style={[styles().marginBottom10, styles().floatView]}>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '40%' }}>
-              {t('taxFee')}
+              {getTranslation('tax_fee')}
             </TextDefault>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '60%' }} right>
               {configuration.currencySymbol}
@@ -222,7 +225,7 @@ function OrderDetail(props) {
           {!order.isPickedUp && (
             <View style={[styles().marginBottom20, styles().floatView]}>
               <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '40%' }}>
-                {t('delvieryCharges')}
+                {getTranslation('delviery_charges')}
               </TextDefault>
               <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '60%' }} right>
                 {configuration.currencySymbol}
@@ -232,7 +235,7 @@ function OrderDetail(props) {
           )}
           <View style={[styles().floatView]}>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '40%' }}>
-              {t('total')}
+              {getTranslation('total')}
             </TextDefault>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={{ width: '60%' }} right>
               {configuration.currencySymbol}
@@ -243,10 +246,10 @@ function OrderDetail(props) {
         {order.orderStatus === 'DELIVERED' && !order.review && (
           <View style={styles().orderReceipt}>
             <TextDefault textColor={currentTheme.fontMainColor} H4 bolder style={alignment.MBsmall}>
-              {t('anySuggestion')}
+              {getTranslation('any_suggestion')}
             </TextDefault>
             <TextDefault textColor={currentTheme.fontSecondColor} bold small style={[alignment.MBsmall, alignment.MTsmall]}>
-              {t('reviewRegardingOrder')}
+              {getTranslation('review_regarding_order')}
             </TextDefault>
             <TouchableOpacity
               activeOpacity={0.7}
@@ -261,7 +264,7 @@ function OrderDetail(props) {
             >
               <MaterialIcons name='rate-review' size={scale(15)} color={currentTheme.iconColorPink} />
               <TextDefault textColor={currentTheme.iconColorPink} style={[alignment.MBsmall, alignment.MTsmall, alignment.ML10]} bold center>
-                {t('writeAReview')}
+                {getTranslation('write_a_review')}
               </TextDefault>
             </TouchableOpacity>
           </View>

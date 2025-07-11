@@ -9,7 +9,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useTransition,
 } from 'react';
 import Image from 'next/image';
 
@@ -61,14 +60,14 @@ import classes from './app-bar.module.css';
 import { AppLogo } from '@/lib/utils/assets/svgs/logo';
 import { useQuery } from '@apollo/client';
 import { GET_VENDOR_BY_ID } from '@/lib/api/graphql';
-import { useLocale, useTranslations } from 'next-intl';
-import { setUserLocale } from '@/lib/utils/methods/locale';
-import { TLocale } from '@/lib/utils/types/locale';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
+import { MenuItem } from 'primereact/menuitem';
 
 const VendorAppTopbar = () => {
   // Hooks
-  const t = useTranslations();
-  const currentLocale = useLocale();
+
+
 
   // Local Storage
   const vendorId = onUseLocalStorage('get', 'vendorId');
@@ -86,10 +85,17 @@ const VendorAppTopbar = () => {
   // Context
   const { showVendorSidebar } = useContext<LayoutContextProps>(LayoutContext);
   const { user, setUser } = useUserContext();
+  const {
+    languagesLoading,
+    languagesError,
+    selectedLanguage,
+    setSelectedLanguage,
+    languages,
+    getTranslation,
+  } = useLangTranslation();
 
   // Hooks
   const router = useRouter();
-  const [, startTransition] = useTransition();
 
   // Queries
   const { data: vendorData } = useQuery<
@@ -125,12 +131,12 @@ const VendorAppTopbar = () => {
     router.push('/authentication/login');
   };
 
-  function onLocaleChange(value: string) {
-    const locale = value as TLocale;
-    startTransition(() => {
-      setUserLocale(locale);
-    });
-  }
+  // function onLocaleChange(value: string) {
+  //   const locale = value as TLocale;
+  //   startTransition(() => {
+  //     setUserLocale(locale);
+  //   });
+  // }
 
   const onRedirectToPage = (_route: string) => {
     router.push(_route);
@@ -156,6 +162,28 @@ const VendorAppTopbar = () => {
       setVendorName(vendorData?.getVendor?.name);
     }
   }, [vendorData?.getVendor?.name]);
+
+
+  const menuItems: MenuItem[] =
+    !languagesLoading && !languagesError
+      ? languages.map<MenuItem>((lang) => ({
+        label: lang.label,
+        // PrimeReact’s MenuItem.template signature is (item, options) => ReactNode
+        template: () => (
+          <div
+            className={`${selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
+              } p-2 cursor-pointer`}
+            onClick={() => setSelectedLanguage(lang.code)}
+          >
+            {lang.label}
+          </div>
+        ),
+        command: () => {
+          setSelectedLanguage(lang.code);
+        },
+      }))
+      : [];
+
   return (
     <div className={`${classes['layout-topbar']}`}>
       <div className="flex items-center cursor-pointer">
@@ -178,104 +206,107 @@ const VendorAppTopbar = () => {
           <FontAwesomeIcon icon={faGlobe} />
 
           <Menu
-             model={[
-              {
-                label: 'ENGLISH',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
-                      onClick={()=>onLocaleChange('en')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('en');
-                },
-              },
-              {
-                label: 'ARABIC',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
-                      onClick={()=>onLocaleChange('ar')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('ar');
-                },
-              },
-              {
-                label: 'FRENCH',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
-                      onClick={()=>onLocaleChange('fr')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('fr');
-                },
-              },
-              {
-                label: 'KHMER',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
-                      onClick={()=>onLocaleChange('km')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('km');
-                },
-              },
-              {
-                label: 'CHINESE',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
-                      onClick={()=>onLocaleChange('zh')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('zh');
-                },
-              },
-              {
-                label: 'HEBREW',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
-                      onClick={()=>onLocaleChange('he')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('he');
-                },
-              },
-            ]}
+            model={
+              menuItems
+            }
+            //  model={[
+            //   {
+            //     label: 'ENGLISH',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
+            //           onClick={()=>onLocaleChange('en')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('en');
+            //     },
+            //   },
+            //   {
+            //     label: 'ARABIC',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
+            //           onClick={()=>onLocaleChange('ar')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('ar');
+            //     },
+            //   },
+            //   {
+            //     label: 'FRENCH',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
+            //           onClick={()=>onLocaleChange('fr')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('fr');
+            //     },
+            //   },
+            //   {
+            //     label: 'KHMER',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
+            //           onClick={()=>onLocaleChange('km')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('km');
+            //     },
+            //   },
+            //   {
+            //     label: 'CHINESE',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
+            //           onClick={()=>onLocaleChange('zh')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('zh');
+            //     },
+            //   },
+            //   {
+            //     label: 'HEBREW',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2 cursor-pointer`}
+            //           onClick={()=>onLocaleChange('he')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('he');
+            //     },
+            //   },
+            // ]}
             popup
             ref={languageMenuRef}
             id="popup_menu_right"
@@ -308,7 +339,7 @@ const VendorAppTopbar = () => {
           <Menu
             model={[
               {
-                label: t('Logout'),
+                label: getTranslation('logout'),
                 command: () => {
                   setLogoutModalVisible(true);
                 },
@@ -343,15 +374,21 @@ const VendorAppTopbar = () => {
         </div>
       )}
       <CustomDialog
-        title={t('Logout Confirmation')}
-        message={t('Are you sure you want to logout?')}
+        title={getTranslation('logout_confirmation')}
+        message={getTranslation('are_you_sure_you_want_to_logout')}
         visible={isLogoutModalVisible}
         onHide={() => setLogoutModalVisible(false)}
         onConfirm={onConfirmLogout}
         loading={false} // Set to true if you have a loading state for logout
         buttonConfig={{
-          primaryButtonProp: { label: t('Yes'), icon: 'pi pi-check' },
-          secondaryButtonProp: { label: t('Cancel'), icon: 'pi pi-times' },
+          primaryButtonProp: {
+            label: getTranslation('yes'),
+            icon: 'pi pi-check',
+          },
+          secondaryButtonProp: {
+            label: getTranslation('cancel'),
+            icon: 'pi pi-times',
+          },
         }}
       />
     </div>

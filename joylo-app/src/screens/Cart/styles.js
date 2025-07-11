@@ -152,12 +152,16 @@ const styles = (props = null) =>
       paddingTop: scale(28)
     },
     button: {
+      display: 'flex',
       backgroundColor: '#111827',
       justifyContent: 'center',
       alignItems: 'center',
       width: scale(140),
       height: scale(40),
       borderRadius: 40
+    },
+    checkoutBtn: {
+      textAlign: "center"
     },
     subContainerImage: {
       flex: 1,

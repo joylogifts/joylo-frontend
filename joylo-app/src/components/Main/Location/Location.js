@@ -9,33 +9,22 @@ import { useTranslation } from 'react-i18next'
 import { EvilIcons, Feather } from '@expo/vector-icons'
 import { alignment } from '../../../utils/alignment'
 import { scale } from '../../../utils/scaling'
+import { useLanguage } from '@/src/context/Language'
 
-function Location({
-  navigation,
-  addresses,
-  locationIconGray,
-  modalOn,
-  location: locationParam,
-  locationLabel,
-  forwardIcon = false,
-  screenName }) {
-  const { t, i18n } = useTranslation()
+function Location({ navigation, addresses, locationIconGray, modalOn, location: locationParam, locationLabel, forwardIcon = false, screenName }) {
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = {isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue]}
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const { location } = useContext(LocationContext)
 
   let translatedLabel
-  if (location?.label === 'Current Location') {
-    translatedLabel = t('currentLocation')
+  if (location?.label === 'Current Location' || location?.label === 'currentLocation') {
+    translatedLabel = t('current_location')
   } else {
     translatedLabel = t(location?.label)
   }
-  const translatedAddress =
-    location?.deliveryAddress === 'Current Location'
-      ? t('currentLocation')
-      : location?.deliveryAddress
+  const translatedAddress = location?.deliveryAddress === 'Current Location' ? t('current_location') : location?.deliveryAddress
   const onLocationPress = (event) => {
-
     if (screenName === 'checkout') {
       if (addresses && !addresses.length) {
         navigation.navigate('AddNewAddress', {
@@ -48,20 +37,14 @@ function Location({
           address: location
         })
       }
-    }
-    else
-      modalOn()
+    } else modalOn()
   }
   return (
-    <TouchableOpacity onPress={onLocationPress} >
+    <TouchableOpacity onPress={onLocationPress}>
       <View style={styles(currentTheme).headerTitleContainer}>
-        <View style={{ flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row' , alignItems: 'center', justifyContent: 'center', marginHorizontal: scale(10), gap: 5 }}>
+        <View style={{ flexDirection: currentTheme?.isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: scale(10), gap: 5 }}>
           <View style={[styles().locationIcon, locationIconGray]}>
-            <EvilIcons
-              name="location"
-              size={scale(20)}
-              color={currentTheme.secondaryText}
-            />
+            <EvilIcons name='location' size={scale(20)} color={currentTheme.secondaryText} />
           </View>
           <View style={styles(currentTheme).headerContainer}>
             <View>
@@ -75,11 +58,7 @@ function Location({
               {t(translatedLabel)}
             </TextDefault>
           </View>
-          {forwardIcon && <Feather
-            name= {currentTheme?.isRTL ? 'chevron-left' : 'chevron-right'}
-            size={20}
-            color={currentTheme.secondaryText}
-          />}
+          {forwardIcon && <Feather name={currentTheme?.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={currentTheme.secondaryText} />}
         </View>
       </View>
     </TouchableOpacity>

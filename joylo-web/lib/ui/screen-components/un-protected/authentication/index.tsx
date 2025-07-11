@@ -10,7 +10,7 @@ import {
 import { useAuth } from "@/lib/context/auth/auth.context";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRef, useState } from "react";
-// import { useTranslations } from "next-intl";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 //Prime React
 import { Dialog } from "primereact/dialog";
@@ -64,6 +64,7 @@ export default function AuthModal({
   const { showToast } = useToast();
   const { SKIP_EMAIL_VERIFICATION, SKIP_MOBILE_VERIFICATION } = useConfig();
 
+  const { getTranslation } = useLangTranslation();
   // Login With Google
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -99,8 +100,8 @@ export default function AuthModal({
 
           showToast({
             type: "success",
-            title: "Login",
-            message: "You have logged in successfully",
+            title: getTranslation("login_label"),
+            message: getTranslation("login_success_message"),
           });
         }
         setIsLoading(false);
@@ -133,8 +134,8 @@ export default function AuthModal({
     // setIsAuthModalVisible(false);
     showToast({
       type: "success",
-      title: "Password Recovery",
-      message: "Update your password now",
+      title: getTranslation("password_recovery_label"),
+      message: getTranslation("update_your_password_now_message"),
     });
   };
 

@@ -14,6 +14,7 @@ import {
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const RootLayout = () => {
   // States
@@ -21,7 +22,7 @@ const RootLayout = () => {
 
   // Hooks
   const pathName = usePathname();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { appTheme } = useApptheme();
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const RootLayout = () => {
         options={{
           href: "/(tabs)/home/orders",
 
-          title: t("Home"),
+          title: t("home"),
           tabBarIcon: ({ color }) => (
             // <IconSymbol size={28} name="home" color={color} />
             <HomeIcon
@@ -85,7 +86,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="wallet"
         options={{
-          title: t("Wallet"),
+          title: t("wallet"),
           tabBarIcon: ({ color }) => (
             <WalletIcon
               color={color}
@@ -98,7 +99,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="earnings"
         options={{
-          title: t("Earnings"),
+          title: t("earnings"),
           tabBarIcon: ({ color }) => (
             <CurrencyIcon
               color={color}
@@ -111,7 +112,7 @@ const RootLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
-          title: t("Profile"),
+          title: t("profile"),
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <PersonIcon
@@ -127,3 +128,6 @@ const RootLayout = () => {
 };
 
 export default RootLayout;
+
+
+

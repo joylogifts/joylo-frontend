@@ -49,6 +49,7 @@ import { RIDER_PROFILE } from "@/lib/apollo/queries";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { ICloudinaryResponse } from "@/lib/utils/interfaces/cloudinary.interface";
 import { TRiderProfileBottomBarBit } from "@/lib/utils/types/rider";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 type IOSMode = "date" | "time" | "datetime" | "countdown";
 type AndroidMode = "date" | "time";
@@ -58,7 +59,7 @@ export default function DrivingLicenseForm({
   setIsFormOpened: Dispatch<SetStateAction<TRiderProfileBottomBarBit>>;
 }) {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { userId, dataProfile } = useUserContext();
   const { appTheme } = useApptheme();
 
@@ -90,13 +91,13 @@ export default function DrivingLicenseForm({
   const [mutateLicense] = useMutation(UPDATE_LICENSE, {
     onError: (error) => {
       showMessage({
-        message: t("Failed to update license"),
+        message: t("failed_to_update_license"),
         type: "danger",
       });
-      console.log("Failed to update license", error);
+      console.log("failed_to_update_license", error);
       setError({
         field: "image",
-        message: t("Failed to upload image"),
+        message: t("failed_to_upload_image"),
       });
     },
     onCompleted: () => {
@@ -149,9 +150,9 @@ export default function DrivingLicenseForm({
         if (!response.ok) {
           setError({
             field: "image",
-            message: t("Failed to upload image"),
+            message: t("failed_to_upload_image"),
           });
-          throw new Error(data?.error?.message || t("Failed to upload image"));
+          throw new Error(data?.error?.message || t("failed_to_upload_image"));
         }
 
         setCloudinaryResponse(data);
@@ -160,7 +161,7 @@ export default function DrivingLicenseForm({
     } catch (error) {
       console.log(error);
       // showMessage({
-      //   message: t("Failed to upload image"),
+      //   message: t("failed_to_upload_image"),
       //   type: "danger",
       // });
     } finally {
@@ -210,28 +211,28 @@ export default function DrivingLicenseForm({
       if (!formData.expiryDate) {
         setError({
           field: "expiryDate",
-          message: t("Please select an expiry date"),
+          message: t("please_select_a_expiry_date"),
         });
         return showMessage({
-          message: t("Please select an expiry date"),
+          message: t("please_select_a_expiry_date"),
           type: "danger",
         });
       } else if (!formData.number) {
         setError({
           field: "number",
-          message: t("Please enter a license number"),
+          message: t("please_enter_a_valid_license_number"),
         });
         return showMessage({
-          message: t("Please enter a license number"),
+          message: t("please_enter_a_valid_license_number"),
           type: "danger",
         });
       } else if (!formData.image) {
         setError({
           field: "image",
-          message: t("Please upload an image"),
+          message: t("please_upload_an_image"),
         });
         return showMessage({
-          message: t("Please upload an image"),
+          message: t("please_upload_an_image"),
           type: "danger",
         });
       } else {
@@ -272,11 +273,11 @@ export default function DrivingLicenseForm({
           <View
             className={`flex flex-col justify-between w-full p-3 h-[95%] my-auto mt-0 -z-1`}
           >
-            <FormHeader title={t("Driving License")} />
+            <FormHeader title={t("driving_license")} />
             <View>
               <View className="flex flex-col w-full mb-2">
                 <Text style={{ color: appTheme.fontMainColor }}>
-                  {t("License No")}
+                  {t("license_number")}
                 </Text>
                 <TextInput
                   value={formData.number}
@@ -292,7 +293,7 @@ export default function DrivingLicenseForm({
               </View>
               <View className="flex flex-col w-full my-2">
                 <Text style={{ color: appTheme.fontMainColor }}>
-                  {t("License Expiry Date")}
+                  {t("license_expiry_date")}
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
@@ -334,7 +335,7 @@ export default function DrivingLicenseForm({
               </View>
               <View className="flex flex-col w-full my-2">
                 <Text style={{ color: appTheme.fontMainColor }}>
-                  {t("Add License Document")}
+                  {t("add_license_document")}
                 </Text>
                 {!cloudinaryResponse?.secure_url || !formData.image ? (
                   <TouchableOpacity
@@ -380,7 +381,7 @@ export default function DrivingLicenseForm({
               <View>
                 <CustomContinueButton
                   style={{ marginTop: 20 }}
-                  title={isLoading.isSubmitting ? t("Please wait") : t("Add")}
+                  title={isLoading.isSubmitting ? t("please_wait") : t("add")}
                   onPress={handleSubmit}
                 />
               </View>

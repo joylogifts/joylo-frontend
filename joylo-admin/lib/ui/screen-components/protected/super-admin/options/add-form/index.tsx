@@ -197,7 +197,7 @@ export default function OptionAddForm({
                                                   name={`options[${index}].title]`}
                                                   placeholder={t('Title')}
                                                   maxLength={35}
-                                                  value={value.title}
+                                                  value={value.title.toString()}
                                                   onChange={(e) =>
                                                     setFieldValue(
                                                       `options[${index}].title`,
@@ -247,7 +247,7 @@ export default function OptionAddForm({
                                                 <CustomTextAreaField
                                                   name={`[options[${index}].description]`}
                                                   placeholder={t('Description')}
-                                                  value={value.description}
+                                                  value={value.description.toString()}
                                                   onChange={handleChange}
                                                   showLabel={true}
                                                   className={''}

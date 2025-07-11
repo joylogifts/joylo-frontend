@@ -12,6 +12,7 @@ import { CustomContinueButton } from "@/lib/ui/useable-components";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function WithdrawModal({
   isBottomModalOpen,
@@ -24,7 +25,7 @@ export default function WithdrawModal({
 }: IWithdrawModalProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 
   // States
   const [withdrawAmount, setWithdrawAmount] = useState("");
@@ -72,7 +73,7 @@ export default function WithdrawModal({
             className="font-bold text-lg py-2"
             style={{ color: appTheme.fontMainColor }}
           >
-            {t("Available Amount")}
+            {t("available_amount")}
           </Text>
           <Text
             className="font-bold text-lg"
@@ -86,7 +87,7 @@ export default function WithdrawModal({
             className="font-bold text-lg"
             style={{ color: appTheme.fontMainColor }}
           >
-            {t("Enter Amount")}
+            {t("enter_amount")}
           </Text>
           <TextInput
             value={withdrawAmount}
@@ -107,7 +108,7 @@ export default function WithdrawModal({
         <View>
           <CustomContinueButton
             title={
-              !withdrawRequestLoading ? t("Confirm Withdraw") : t("Please wait")
+              !withdrawRequestLoading ? t("confirm_withdrawal") : t("please_wait")
             }
             disabled={withdrawRequestLoading}
             onPress={() =>

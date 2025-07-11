@@ -13,14 +13,17 @@ import { generateSkeletonTransactionHistory } from '@/lib/utils/dummy';
 import EarningRestaurantTableHeader from '../header/table-header';
 import { UserTypeEnum } from '@/lib/utils/interfaces';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import useDebounce from '@/lib/hooks/useDebounce';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function EarningsRestaurantMain({
   setTotalEarnings,
 }: IEarningsRestaurantMainComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [selectedEarnings, setSelectedEarnings] = useState<IEarning[]>([]);
@@ -88,7 +91,7 @@ export default function EarningsRestaurantMain({
 
   const menuItems = [
     {
-      label: t('View Details'),
+      label: getTranslation('view_details'),
       command: () => {
         // Handle view details action
         // console.log('View details for:', data); removing consoles please uncomment when continuing

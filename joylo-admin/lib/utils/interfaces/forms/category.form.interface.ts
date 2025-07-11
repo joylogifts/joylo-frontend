@@ -1,8 +1,8 @@
-
 export interface ICategoryForm {
   _id?: string;
   title: string;
-  isActive?: boolean
+  image?: string | null;
+  isActive?: boolean;
 }
 
 export interface ICategoryErrors {

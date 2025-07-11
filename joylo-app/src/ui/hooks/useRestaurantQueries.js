@@ -63,19 +63,19 @@ const getResult = (queryType, data, setRestaurantData, setAllData, selectedType)
 }
 
 const HEADING = {
-  orderAgain: 'Order Again',
-  topPicks: 'Top Picks',
-  topBrands: 'Top Brands',
-  grocery: 'All Grocery',
-  restaurant: 'All Restaurant'
+  orderAgain: 'order_again',
+  topPicks: 'top_picks',
+  topBrands: 'top_brands',
+  grocery: 'all_grocery',
+  restaurant: 'all_restaurant'
 }
 
 const SUB_HEADING = {
-  orderAgain: 'From your previous orders',
-  topPicks: 'Top picked restaurants for you',
-  topBrands: 'Top brands in your area',
-  grocery: 'Most ordered grocery stores',
-  restaurant: 'Most ordered restaurants'
+  orderAgain: 'from_your_previous_orders',
+  topPicks: 'top_picked_restaurants_for_you',
+  topBrands: 'top_brands_in_your_area',
+  grocery: 'most_ordered_grocery_stores',
+  restaurant: 'most_ordered_restaurants'
 }
 
 export const useRestaurantQueries = (queryType, location, selectedType) => {

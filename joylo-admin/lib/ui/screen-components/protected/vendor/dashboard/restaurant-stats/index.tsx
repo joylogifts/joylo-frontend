@@ -23,13 +23,15 @@ import {
 
 // Context
 import { VendorLayoutContext } from '@/lib/context/vendor/layout-vendor.context';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantStats({
   dateFilter,
 }: IDashboardOrderStatsComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -69,7 +71,7 @@ export default function RestaurantStats({
   return (
     <div className="grid grid-cols-1 items-center gap-6 p-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <StatsCard
-        label={t('Total Stores')}
+        label={getTranslation('total_stores')}
         total={dashboardStats?.totalRestaurants ?? 0}
         icon={faShop}
         route=""
@@ -78,7 +80,7 @@ export default function RestaurantStats({
       />
 
       <StatsCard
-        label={t('Total Sales')}
+        label={getTranslation('total_stores')}
         total={dashboardStats?.totalSales ?? 0}
         icon={faShop}
         route=""
@@ -87,7 +89,7 @@ export default function RestaurantStats({
       />
 
       <StatsCard
-        label={t('Total Orders')}
+        label={getTranslation('total_orders')}
         total={dashboardStats?.totalOrders ?? 0}
         icon={faShoppingCart}
         route=""
@@ -96,7 +98,7 @@ export default function RestaurantStats({
       />
 
       <StatsCard
-        label={t('Total Deliveries')}
+        label={getTranslation('total_deliveries')}
         total={dashboardStats?.totalDeliveries ?? 0}
         icon={faTruck}
         route=""

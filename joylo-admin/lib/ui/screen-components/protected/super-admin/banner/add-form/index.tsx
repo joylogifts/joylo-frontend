@@ -1,6 +1,7 @@
 // import { createBanner, editBanner } from '@/lib/api/graphql/mutation/banners';
 import { CREATE_BANNER, EDIT_BANNER, GET_RESTAURANTS } from '@/lib/api/graphql';
 import { GET_BANNERS } from '@/lib/api/graphql/queries/banners';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 // import useToast from '@/lib/hooks/useToast';
@@ -26,7 +27,7 @@ import { getLabelByCode } from '@/lib/utils/methods/label-by-code';
 import { BannerSchema } from '@/lib/utils/schema/banner';
 import { useMutation } from '@apollo/client';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { useTranslations } from 'next-intl';
+
 import { Sidebar } from 'primereact/sidebar';
 
 const BannersAddForm = ({
@@ -41,7 +42,8 @@ const BannersAddForm = ({
   }) as IQueryResult<IRestaurantsResponseGraphQL | undefined, undefined>;
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   const RESTAURANT_NAMES =
     data?.restaurants?.map((v) => {
@@ -50,25 +52,31 @@ const BannersAddForm = ({
 
   //State
   const initialValues: IBannersForm = {
-    title: banner?.title || '',
-    description: banner?.description || '',
+    title:
+      typeof banner?.title === 'object'
+        ? banner?.title?.[selectedLanguage]
+        : banner?.title || '',
+    description:
+      typeof banner?.description === 'object'
+        ? banner?.description?.[selectedLanguage]
+        : banner?.description || '',
     action: banner
       ? {
-          label: getLabelByCode(ACTION_TYPES, banner.action),
-          code: banner.action,
-        }
+        label: getLabelByCode(ACTION_TYPES, banner.action),
+        code: banner.action,
+      }
       : null,
     screen: banner
       ? banner.action === 'Navigate Specific Page'
         ? {
-            label: getLabelByCode(SCREEN_NAMES, banner.screen),
-            code: banner.screen,
-          }
+          label: getLabelByCode(SCREEN_NAMES, banner.screen),
+          code: banner.screen,
+        }
         : banner.action === 'Navigate Specific Restaurant'
           ? {
-              label: banner.screen,
-              code: banner.screen,
-            }
+            label: banner.screen,
+            code: banner.screen,
+          }
           : null
       : null,
     file: banner?.file || '',
@@ -102,8 +110,10 @@ const BannersAddForm = ({
         onCompleted: () => {
           showToast({
             type: 'success',
-            title: t('Success'),
-            message: banner ? t('Banner updated') : t('Banner added'),
+            title: getTranslation('success'),
+            message: banner
+              ? getTranslation('banner_updated')
+              : getTranslation('banner_added'),
             duration: 3000,
           });
           resetForm();
@@ -114,11 +124,11 @@ const BannersAddForm = ({
           try {
             message = error.graphQLErrors[0]?.message;
           } catch (err) {
-            message = t('ActionFailedTryAgain');
+            message = getTranslation('action_failed_try_again');
           }
           showToast({
             type: 'error',
-            title: t('Error'),
+            title: getTranslation('error'),
             message,
             duration: 3000,
           });
@@ -139,7 +149,8 @@ const BannersAddForm = ({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {banner ? t('Edit') : t('Add')} {t('Banner')}
+                {banner ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('banner')}
               </span>
             </div>
 
@@ -166,9 +177,9 @@ const BannersAddForm = ({
                           <CustomTextField
                             type="text"
                             name="title"
-                            placeholder={t('Title')}
+                            placeholder={getTranslation('title')}
                             maxLength={35}
-                            value={values.title}
+                            value={typeof values.title === "object" ? values.title[selectedLanguage] || '' : values.title || ''}
                             onChange={handleChange}
                             showLabel={true}
                             style={{
@@ -186,9 +197,9 @@ const BannersAddForm = ({
                           <CustomTextField
                             type="text"
                             name="description"
-                            placeholder={t('Description')}
+                            placeholder={getTranslation('description')}
                             maxLength={35}
-                            value={values.description}
+                            value={typeof values.description === "object" ? values.description[selectedLanguage] || '' : values.description || ''}
                             onChange={handleChange}
                             showLabel={true}
                             style={{
@@ -205,7 +216,7 @@ const BannersAddForm = ({
 
                         <div>
                           <CustomDropdownComponent
-                            placeholder={t('Actions')}
+                            placeholder={getTranslation('actions')}
                             options={ACTION_TYPES}
                             showLabel={true}
                             name="action"
@@ -226,13 +237,13 @@ const BannersAddForm = ({
 
                         <div>
                           <CustomDropdownComponent
-                            placeholder={t('Screen')}
+                            placeholder={getTranslation('screen')}
                             options={
                               values.action?.code ===
-                              'Navigate Specific Restaurant'
+                                'Navigate Specific Restaurant'
                                 ? RESTAURANT_NAMES
                                 : values.action?.code ===
-                                    'Navigate Specific Page'
+                                  'Navigate Specific Page'
                                   ? SCREEN_NAMES
                                   : []
                             }
@@ -254,16 +265,15 @@ const BannersAddForm = ({
                         </div>
 
                         <div
-                          className={`${
-                            errors.file && !values.file
-                              ? 'border-red-500'
-                              : 'border-gray-200'
-                          } rounded-lg border p-4`}
+                          className={`${errors.file && !values.file
+                            ? 'border-red-500'
+                            : 'border-gray-200'
+                            } rounded-lg border p-4`}
                         >
                           <CustomUploadImageComponent
                             key={'file'}
                             name="file"
-                            title={t('Upload file')}
+                            title={getTranslation('upload_file')}
                             fileTypes={[
                               'image/jpg',
                               'image/webp',
@@ -288,7 +298,11 @@ const BannersAddForm = ({
                         <div className="m-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={banner ? t('Update') : t('Add')}
+                            label={
+                              banner
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

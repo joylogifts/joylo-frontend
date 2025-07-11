@@ -5,11 +5,13 @@ import NoData from '@/lib/ui/useable-components/no-data';
 
 // Hooks
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ConfigurationsScreen() {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { ISPAID_VERSION } = useConfiguration();
   return (
     <div className="screen-container">
@@ -18,9 +20,9 @@ export default function ConfigurationsScreen() {
         <ConfigMain />
       ) : (
         <NoData
-          title={t('Payment Required')}
-          message={t(
-            'Please complete your purchase to gain full access to the product'
+          title={getTranslation('payment_required')}
+          message={getTranslation(
+            'please_complete_your_purchase_to_gain_full_access_to_the_product'
           )}
         />
       )}

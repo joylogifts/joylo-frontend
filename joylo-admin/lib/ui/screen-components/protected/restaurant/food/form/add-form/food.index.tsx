@@ -9,7 +9,7 @@ import { FoodsContext } from '@/lib/context/restaurant/foods.context';
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+
 
 // Interface and Types
 import {
@@ -44,6 +44,9 @@ import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 
+// Components
+import { useLangTranslation } from '@/lib/context/global/language.context';
+
 const initialValues: IFoodDetailsForm = {
   _id: null,
   title: '',
@@ -56,11 +59,12 @@ export default function FoodDetails({
   stepperProps,
 }: IFoodDetailsComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
@@ -95,19 +99,32 @@ export default function FoodDetails({
   const categoriesDropdown = useMemo(
     () =>
       data?.categories.map((category: ICategory) => {
-        return { label: category.title, code: category._id };
+        return {
+          label:
+            typeof category.title === 'object'
+              ? category.title[selectedLanguage]
+              : category.title,
+          code: category._id,
+        };
       }),
     [data?.categories]
   );
 
 
-
   // Handlers
   const onFoodSubmitHandler = (values: IFoodDetailsForm) => {
+    console.log('onFoodSubmitHandler', values);
     const foodData: IFoodNew = {
       _id: foodContextData?.food?.data?._id ?? '',
-      title: values.title,
-      description: values.description,
+      title:
+        typeof values.title === 'object'
+          ? values.title[selectedLanguage] || ''
+          : values.title || '',
+      description:
+        typeof values.description === 'object'
+          ? values.description[selectedLanguage] || ''
+          : values.description || '',
+
       category: values.category,
       subCategory: null,
       image: values.image,
@@ -120,6 +137,8 @@ export default function FoodDetails({
           : [],
       isReturnAble: values.isReturnAble
     };
+
+    console.log('foodData on submit', foodData);
 
     onSetFoodContextData({
       food: {
@@ -167,6 +186,7 @@ export default function FoodDetails({
               validationSchema={FoodSchema}
               enableReinitialize={true}
               onSubmit={async (values) => {
+                console.log('onSubmit values', values);
                 onFoodSubmitHandler(values);
               }}
               validateOnChange={false}
@@ -187,12 +207,12 @@ export default function FoodDetails({
                           htmlFor="category"
                           className="text-sm font-[500]"
                         >
-                          {t('Category')}
+                          {getTranslation('category')}
                         </label>
                         <Dropdown
                           name="category"
                           value={values.category}
-                          placeholder={t('Select Category')}
+                          placeholder={getTranslation('select_category')}
                           className="md:w-20rem p-dropdown-no-box-shadow m-0 h-10 w-full border border-gray-300 p-0 align-middle text-sm focus:shadow-none focus:outline-none"
                           panelClassName="border-gray-200 border-2"
                           onChange={(e: DropdownChangeEvent) => {
@@ -217,9 +237,13 @@ export default function FoodDetails({
                         <CustomTextField
                           type="text"
                           name="title"
-                          placeholder={t('Title')}
+                          placeholder={getTranslation('title')}
                           maxLength={35}
-                          value={values.title}
+                          value={
+                            typeof values.title === 'object'
+                              ? values.title[selectedLanguage] || ''
+                              : values.title || ''
+                          }
                           onChange={handleChange}
                           showLabel={true}
                           style={{
@@ -236,9 +260,13 @@ export default function FoodDetails({
                       <div>
                         <CustomTextAreaField
                           name="description"
-                          label={t('Description')}
-                          placeholder={t('Description')}
-                          value={values.description}
+                          label={getTranslation('description')}
+                          placeholder={getTranslation('description')}
+                          value={
+                            typeof values.description === 'object'
+                              ? values?.description?.[selectedLanguage] || ''
+                              : values?.description || ''
+                          }
                           onChange={handleChange}
                           showLabel={true}
                           className={''}
@@ -269,7 +297,7 @@ export default function FoodDetails({
                         <CustomUploadImageComponent
                           key="image"
                           name="image"
-                          title={t('Upload Image')}
+                          title={getTranslation('upload_image')}
                           fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                           maxFileHeight={841}
                           maxFileWidth={1980}
@@ -296,7 +324,7 @@ export default function FoodDetails({
                     <div className="flex justify-end mt-4">
                       <CustomButton
                         className="w-fit h-10 bg-black text-white border-gray-300 px-8"
-                        label={t('Next')}
+                        label={getTranslation('next')}
                         type="submit"
                         loading={isSubmitting}
                       />

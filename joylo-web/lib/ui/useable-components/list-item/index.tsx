@@ -28,7 +28,7 @@ const ListItem: React.FC<TileProps> = ({ item, loading = false, onClick }) => {
       >
         <div className="flex gap-6 items-center">
           {item?.flag && (
-            <Image src={item.flag} height={50} width={50} alt="Flag image" />
+            <Image src={item?.flag} height={50} width={50} alt="Flag image" />
           )}
           <p className="text-[#374151] text-[16px]  text-left">{item?.name}</p>
         </div>

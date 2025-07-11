@@ -1,13 +1,12 @@
 // Components
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
-
 
 // Interface
 import { IShopTypesTableHeaderProps } from '@/lib/utils/interfaces';
 
-
 // Icons
-import { useTranslations } from 'next-intl';
+
 
 // Prime react
 import { OverlayPanel } from 'primereact/overlaypanel';
@@ -18,14 +17,14 @@ export default function ShopTypesTableHeader({
   onGlobalFilterChange,
 }: IShopTypesTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   //Ref
   const overlayPanelRef = useRef<OverlayPanel>(null);
 
   // States
   const [searchValue, setSearchValue] = useState('');
-
 
   return (
     <div className="mb-4 flex flex-col gap-6">
@@ -38,7 +37,7 @@ export default function ShopTypesTableHeader({
             showLabel={false}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
           />
         </div>
         <div className="flex items-center">
@@ -48,18 +47,15 @@ export default function ShopTypesTableHeader({
                 <CustomTextField
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder={t('Search')}
+                  placeholder={getTranslation('search')}
                   className="h-8 w-full"
                   type="text"
                   name="search"
                   showLabel={false}
                 />
               </div>
-
             </div>
           </OverlayPanel>
-
-       
         </div>
       </div>
     </div>

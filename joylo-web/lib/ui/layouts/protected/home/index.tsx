@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 // context
 import { useSearchUI } from "@/lib/context/search/search.context";
 import TabItem from "@/lib/ui/useable-components/tab-item/TabItem";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 export default function HomeLayout({
   children,
@@ -18,6 +19,7 @@ export default function HomeLayout({
   const pathname = usePathname();
   const [stickyTop, setStickyTop] = useState(0);
   const { isSearchFocused, setIsSearchFocused } = useSearchUI();
+  const { getTranslation } = useLangTranslation();
 
   const onChangeScreen = (name: "Discovery" | "Restaurants" | "Store") => {
     switch (name) {
@@ -68,19 +70,19 @@ export default function HomeLayout({
         <div className="flex justify-center items-center space-x-4 md:space-x-6 p-2 md:p-4 overflow-x-auto">
           <TabItem
             active={isDiscovery}
-            label="Discovery"
+            label={getTranslation("tab_discovery")}
             onClick={() => onChangeScreen("Discovery")}
             Icon={HomeSvg}
           />
           <TabItem
             active={isRestaurants}
-            label="Restaurants"
+            label={getTranslation("tab_restaurants")}
             onClick={() => onChangeScreen("Restaurants")}
             Icon={CutlerySvg}
           />
           <TabItem
             active={isStore}
-            label="Store"
+            label={getTranslation("tab_store")}
             onClick={() => onChangeScreen("Store")}
             Icon={StoreSvg}
           />

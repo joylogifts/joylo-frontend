@@ -8,9 +8,11 @@ import { useSearchUI } from "@/lib/context/search/search.context";
 import { useParams } from "next/navigation";
 // heading component
 import HomeHeadingSection from "@/lib/ui/useable-components/home-heading-section";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 
 function SearchSeeAllSection() {
+  const { getTranslation } = useLangTranslation()
   // State to handle modal open
   const [isModalOpen, setIsModalOpen] = useState({value: false, id: ""});
 
@@ -34,7 +36,7 @@ function SearchSeeAllSection() {
   const { searchedData:data } = useSearchUI();
 
   // If no data returned, show empty state
-  if (!data?.length) return <div className="text-center text-2xl font-bold">No items found</div>;
+  if (!data?.length) return <div className="text-center text-2xl font-bold">{getTranslation("no_items_found")}</div>;
 
   return (
     <>

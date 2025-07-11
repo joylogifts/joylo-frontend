@@ -31,7 +31,8 @@ import { CREATE_STAFF, EDIT_STAFF } from '@/lib/api/graphql/mutations/staff';
 import { GET_STAFFS } from '@/lib/api/graphql/queries/staff';
 import { useMutation } from '@apollo/client';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function StaffAddForm({
   onHide,
@@ -40,7 +41,8 @@ export default function StaffAddForm({
   isAddStaffVisible,
 }: IStaffAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const initialValues: IStaffForm = {
@@ -53,8 +55,8 @@ export default function StaffAddForm({
     confirmPassword: staff ? staff.plainPassword : '',
     permissions: staff
       ? staff.permissions?.map((p) => {
-          return { label: p, code: p };
-        })
+        return { label: p, code: p };
+      })
       : [],
   };
 
@@ -90,8 +92,10 @@ export default function StaffAddForm({
         onCompleted: () => {
           showToast({
             type: 'success',
-            title: t('Success'),
-            message: staff ? t('Staff updated') : t('Staff added'),
+            title: getTranslation('success'),
+            message: staff
+              ? getTranslation('staff_updated')
+              : getTranslation('staff_added'),
             duration: 3000,
           });
           resetForm();
@@ -100,11 +104,11 @@ export default function StaffAddForm({
         onError: (error) => {
           showToast({
             type: 'error',
-            title: `${t('Staff')} ${staff ? t('Update') : t('Add')}`,
+            title: `${getTranslation('staff')} ${staff ? getTranslation('update') : getTranslation('add')}`,
             message:
               error.graphQLErrors[0].message ??
               error.networkError?.message ??
-              `${t('Failed to')} ${staff ? t('update') : t('Add')} ${t('staff')}`,
+              `${getTranslation('failed_to')} ${staff ? getTranslation('update') : getTranslation('add')} ${getTranslation('staff')}`,
             duration: 3000,
           });
         },
@@ -112,8 +116,8 @@ export default function StaffAddForm({
     } catch (e) {
       showToast({
         type: 'error',
-        title: `${t('Staff')} ${staff ? t('Update') : t('Add')}`,
-        message: t('Something went wrong'),
+        title: `${getTranslation('staff')} ${staff ? getTranslation('update') : getTranslation('add')}`,
+        message: getTranslation('something_went_wrong_please_try_again'),
       });
     }
   };
@@ -130,7 +134,8 @@ export default function StaffAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {staff ? t('Edit') : t('Add')} {t('Staff')}
+                {staff ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('staff')}
               </span>
             </div>
 
@@ -156,7 +161,7 @@ export default function StaffAddForm({
                           <CustomTextField
                             type="text"
                             name="name"
-                            placeholder={t('Name')}
+                            placeholder={getTranslation('name')}
                             maxLength={35}
                             value={values.name}
                             onChange={handleChange}
@@ -176,7 +181,7 @@ export default function StaffAddForm({
                           <CustomTextField
                             type="text"
                             name="email"
-                            placeholder={t('Email')}
+                            placeholder={getTranslation('email')}
                             maxLength={35}
                             value={values.email}
                             onChange={handleChange}
@@ -195,7 +200,7 @@ export default function StaffAddForm({
 
                         <div>
                           <CustomPasswordTextField
-                            placeholder={t('Password')}
+                            placeholder={getTranslation('password')}
                             name="password"
                             maxLength={20}
                             value={values.password}
@@ -215,7 +220,7 @@ export default function StaffAddForm({
 
                         <div>
                           <CustomPasswordTextField
-                            placeholder={t('Confirm Password')}
+                            placeholder={getTranslation('confirm_password')}
                             name="confirmPassword"
                             maxLength={20}
                             showLabel={true}
@@ -239,7 +244,7 @@ export default function StaffAddForm({
                             mask="999-999-9999"
                             name="phone"
                             type="text"
-                            placeholder={t('Phone Number')}
+                            placeholder={getTranslation('phone_number')}
                             showLabel={true}
                             value={values.phone?.toString()}
                             onChange={(code: string) => {
@@ -290,7 +295,7 @@ export default function StaffAddForm({
                               }
                             }}
                             name="permissions"
-                            placeholder={t('Permissions')}
+                            placeholder={getTranslation('permissions')}
                             options={PERMISSIONS}
                             selectedItems={values.permissions}
                             setSelectedItems={setFieldValue}
@@ -314,14 +319,18 @@ export default function StaffAddForm({
                               setFieldValue('isActive', !values.isActive);
                             }}
                             showLabel
-                            placeholder={t('Status')}
+                            placeholder={getTranslation('status')}
                           />
                         </div>
 
                         <div className="flex justify-end py-4">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={staff ? t('Update') : t('Add')}
+                            label={
+                              staff
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

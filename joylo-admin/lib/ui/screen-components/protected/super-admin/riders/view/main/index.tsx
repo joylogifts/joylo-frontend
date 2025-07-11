@@ -33,15 +33,17 @@ import { IQueryResult } from '@/lib/utils/interfaces';
 
 // Data
 import { generateDummyRiders } from '@/lib/utils/dummy';
-import { useTranslations } from 'next-intl';
+
 import { useRouter } from 'next/navigation';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RidersMain({
   setIsAddRiderVisible,
   setRider,
 }: IRidersMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
   const router = useRouter();
 
@@ -80,7 +82,7 @@ export default function RidersMain({
 
   const menuItems: IActionMenuItem<IRiderResponse>[] = [
     {
-      label: t('View'),
+      label: getTranslation('view'),
       command: (data?: IRiderResponse) => {
         if (data) {
           router.push(`/general/riders/${data._id}`);
@@ -88,7 +90,7 @@ export default function RidersMain({
       },
     },
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: IRiderResponse) => {
         if (data) {
           setIsAddRiderVisible(true);
@@ -97,7 +99,7 @@ export default function RidersMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IRiderResponse) => {
         if (data) {
           setDeleteId(data._id);
@@ -134,15 +136,15 @@ export default function RidersMain({
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Success'),
-                message: t('Rider Deleted'),
+                title: getTranslation('success'),
+                message: getTranslation('rider_deleted'),
                 duration: 3000,
               });
               setDeleteId('');
             },
           });
         }}
-        message={t('Are you sure you want to delete this item?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_item')}
       />
     </div>
   );

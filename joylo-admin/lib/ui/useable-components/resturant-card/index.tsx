@@ -36,7 +36,8 @@ import TextComponent from '../text-field';
 import CustomLoader from '../custom-progress-indicator';
 import { CarSVG } from '@/lib/utils/assets/svgs/Car';
 import { FrameSVG } from '@/lib/utils/assets/svgs/Frame';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
   // Props
@@ -52,11 +53,14 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
 
   const configuration = useContext(ConfigurationContext);
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   if (!configuration) {
-    throw new Error(t('Cannot get the value of the Configuration Context'));
+    throw new Error(
+      getTranslation('cannot_get_the_value_of_the_configuration_context')
+    );
   }
 
   const { deliveryRate, isPaidVersion } = configuration;
@@ -77,8 +81,8 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Store Delete'),
-          message: `${t('Store has been deleted successfully')}.`,
+          title: getTranslation('store_delete'),
+          message: `${getTranslation('store_has_been_deleted_successfully')}.`,
           duration: 2000,
         });
         restaurantByOwnerResponse.refetch();
@@ -86,11 +90,11 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
       onError: ({ networkError, graphQLErrors }: ApolloError) => {
         showToast({
           type: 'error',
-          title: t('Store Delete'),
+          title: getTranslation('store_delete'),
           message:
             graphQLErrors[0]?.message ??
             networkError?.message ??
-            t(`Store delete failed`),
+            getTranslation(`store_delete_failed`),
           duration: 2500,
         });
       },
@@ -100,8 +104,8 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Store Status'),
-        message: `${t('Store has been marked as')} ${isActive ? t('active') : t('in-active')}`,
+        title: getTranslation('store_delete_failed'),
+        message: `${getTranslation('store_has_been_marked_as')} ${isActive ? getTranslation('active') : getTranslation('in-active')}`,
         duration: 2000,
       });
       setRestaurantModifed(!isRestaurantModifed);
@@ -109,11 +113,11 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
     onError: ({ networkError, graphQLErrors }: ApolloError) => {
       showToast({
         type: 'error',
-        title: t('Store Status'),
+        title: getTranslation('store_status'),
         message:
           graphQLErrors[0]?.message ??
           networkError?.message ??
-          `${t('Store marked as')} ${isActive ? t('active') : t('in-active')} failed`,
+          `${getTranslation('store_has_been_marked_as')} ${isActive ? getTranslation('active') : getTranslation('in-active')} ${getTranslation('failed')}`,
         duration: 2500,
       });
     },
@@ -129,16 +133,18 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
   };
 
   const handleDelete = async () => {
-    if(isPaidVersion) {
-    hardDeleteRestaurant({ variables: { id: _id } });
-  }else {
-    showToast({
-      type: 'error',
-      title: t('You are using free version'),
-      message: t('This Feature is only Available in Paid Version'),
-    });
-  }
-}
+    if (isPaidVersion) {
+      hardDeleteRestaurant({ variables: { id: _id } });
+    } else {
+      showToast({
+        type: 'error',
+        title: getTranslation('you_are_using_free_version'),
+        message: getTranslation(
+          'this_feature_is_only_available_in_paid_version'
+        ),
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col rounded-lg border-2 border-[#F4F4F5] bg-white shadow-md">
@@ -146,7 +152,7 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
         {image ? (
           <Image
             src={image}
-            alt={t('Store logo')}
+            alt={getTranslation('store_logo')}
             className="mr-3 h-10 w-10 flex-shrink-0 rounded-full"
             width={40}
             height={40}
@@ -201,7 +207,7 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
         <div className="flex items-center gap-2 rounded-lg border border-gray-300 p-1 mb-2 text-sm">
           <FrameSVG width="24" height="24" />
           <span>
-            {restaurant?.deliveryTime} {t('min')}
+            {restaurant?.deliveryTime} {getTranslation('min')}
           </span>
         </div>
 
@@ -215,7 +221,7 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
 
         {/* Minimum Order */}
         <div className="flex items-center gap-1 rounded-lg border border-gray-300 p-2 mb-2 text-sm">
-          <span>{t('Min Order')}</span>
+          <span>{getTranslation('min_order')}</span>
           <span>
             {'₪'} {restaurant?.minimumOrder}
           </span>
@@ -224,10 +230,10 @@ export default function RestaurantCard({ restaurant }: IRestaurantCardProps) {
       <div className="mb-2 px-4">
         <CustomButton
           className="h-10 w-full bg-[#EBEDE6] text-black"
-          label={t('View Details')}
+          label={getTranslation('view_details')}
           onClick={() => {
             onUseLocalStorage('save', 'restaurantId', _id);
-            onUseLocalStorage('save', 'shopType', shopType)
+            onUseLocalStorage('save', 'shopType', shopType);
             const routeStack = ['Admin'];
             onUseLocalStorage('save', 'routeStack', JSON.stringify(routeStack));
             router.push(`/admin/store/`);

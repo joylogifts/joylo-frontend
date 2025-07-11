@@ -29,7 +29,8 @@ import {
   IVendorReponse,
   IVendorResponseGraphQL,
 } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantDuplicateDialog = ({
   restaurantId,
@@ -37,7 +38,8 @@ const RestaurantDuplicateDialog = ({
   onHide,
 }: IRestaurantDuplicateDialogComponentProps) => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -70,8 +72,8 @@ const RestaurantDuplicateDialog = ({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Store duplicate'),
-          message: t(`Store has been duplicated successfully`),
+          title: getTranslation('store_duplicate'),
+          message: getTranslation(`store_has_been_duplicated_successfully`),
           duration: 2000,
         });
         setSelectedVendor({ label: '', code: '' });
@@ -80,11 +82,11 @@ const RestaurantDuplicateDialog = ({
       onError: ({ networkError, graphQLErrors }: ApolloError) => {
         showToast({
           type: 'error',
-          title: t('Store duplicate'),
+          title: getTranslation('store_duplicate'),
           message:
             graphQLErrors[0]?.message ??
             networkError?.message ??
-            t(`Store duplicate  failed`),
+            getTranslation(`store_duplicate_failed`),
           duration: 2500,
         });
         setSelectedVendor({ label: '', code: '' });
@@ -108,8 +110,8 @@ const RestaurantDuplicateDialog = ({
       if (!vendor.code) {
         showToast({
           type: 'warn',
-          title: t('Store duplicate'),
-          message: t(`Please select a vendor`),
+          title: getTranslation('store_duplicate'),
+          message: getTranslation(`please_select_a_vendor`),
         });
         return;
       }
@@ -120,8 +122,8 @@ const RestaurantDuplicateDialog = ({
     } catch (err) {
       showToast({
         type: 'error',
-        title: t('Store duplicate'),
-        message: t(`Store duplicate  failed`),
+        title: getTranslation('store_duplicate'),
+        message: getTranslation(`store_duplicate_failed`),
       });
       setSelectedVendor({ label: '', code: '' });
       onHide();
@@ -131,14 +133,14 @@ const RestaurantDuplicateDialog = ({
   const footer = (
     <div className="space-x-2">
       <CustomButton
-        label={t('Cancel')}
+        label={getTranslation('cancel')}
         icon="pi pi-times"
         onClick={onHide}
         className="h-9 rounded border border-gray-300 bg-transparent px-5 text-black"
       />
       <CustomButton
         loading={loading}
-        label={t('Duplicate')}
+        label={getTranslation('duplicate')}
         className="h-9 rounded border-gray-300 bg-red-500 px-4 text-white"
         icon="pi pi-check"
         onClick={handleDuplicate}
@@ -151,14 +153,14 @@ const RestaurantDuplicateDialog = ({
       visible={visible}
       style={{ width: '32rem' }}
       breakpoints={{ '960px': '75vw', '641px': '90vw' }}
-      header={t('Duplicate Store')}
+      header={getTranslation('duplicate_store')}
       modal
       footer={footer}
       onHide={onHide}
     >
       <CustomDropdownComponent
         name="vendor"
-        placeholder={t('Select Vendor')}
+        placeholder={getTranslation('select_vendor')}
         showLabel={true}
         selectedItem={vendor}
         setSelectedItem={(key: string, item: IDropdownSelectItem) =>

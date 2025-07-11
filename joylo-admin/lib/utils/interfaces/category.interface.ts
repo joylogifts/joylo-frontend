@@ -42,7 +42,7 @@ export interface ISubCategoriesAddFormProps {
 /* API */
 export interface ICategory {
   _id: string;
-  title: string;
+  title: Record<string, string> | string;
   image?: string | null;
   isActive : boolean;
 }
@@ -62,7 +62,7 @@ export interface ICategoriesResponse {
 // Sub-Category
 export interface ISubCategory {
   _id?: string;
-  title: string;
+  title: Record<string, string> | string;
   parentCategoryId: string;
   __typename?: string;
 }

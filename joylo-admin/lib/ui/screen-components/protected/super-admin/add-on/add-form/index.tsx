@@ -120,7 +120,7 @@ export default function AddonAddForm({
   const categoriesDropdown = useMemo(
     () =>
       categoryData?.categories.map((category: ICategory) => {
-        return { label: toTextCase(category.title, 'title'), code: category._id };
+        return { label: toTextCase(category.title.toString(), 'title'), code: category._id };
       }),
     [categoryData?.categories]
   );
@@ -130,7 +130,7 @@ export default function AddonAddForm({
   const optionsDropdown = useMemo(
     () =>
       data?.options.map((option: IOptions) => {
-        return { label: toTextCase(option.title, 'title'), code: option._id };
+        return { label: toTextCase(option.title.toString(), 'title'), code: option._id };
       }),
     [data?.options]
   );

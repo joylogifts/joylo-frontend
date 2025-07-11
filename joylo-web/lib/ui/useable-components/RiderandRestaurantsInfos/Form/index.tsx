@@ -1,4 +1,5 @@
 "use client";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 // formik imports
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -27,204 +28,225 @@ import emailValidationSchema from "./validationSchema";
 import useToast from "@/lib/hooks/useToast";
 
 interface formProps {
-  heading: string;
-  role: string;
+    heading: string;
+    role: string;
 }
 
 const initialValues: VendorFormValues = {
-  firstName: "",
-  lastName: "",
-  phoneNumber: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  termsAccepted: false,
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    termsAccepted: false,
 };
 
 const EmailForm: React.FC<formProps> = ({ heading, role }) => {
-  const { showToast } = useToast();
-  const router = useRouter();
+    const { getTranslation } = useLangTranslation();
+    const { showToast } = useToast();
+    const router = useRouter();
 
-  const handleSubmit = async (formData: VendorFormValues) => {
-    const templateParams = {
-      ...formData,
-      role: role,
-      isRider: false,
+    const handleSubmit = async (formData: VendorFormValues) => {
+        const templateParams = {
+            ...formData,
+            role: role,
+            isRider: false,
+        };
+
+        try {
+            await sendEmail("template_eogfh2k", templateParams);
+
+            showToast({
+                type: "success",
+                title: getTranslation("toast_success"),
+                message: getTranslation("form_submitted_successfully"),
+                duration: 4000,
+            });
+
+            router.push("/");
+        } catch (error) {
+            console.error("Failed to send email:", error);
+
+            showToast({
+                type: "error",
+                title: getTranslation("toast_error"),
+                message: getTranslation(
+                    "failed_to_submit_form_please_try_again"
+                ),
+                duration: 4000,
+            });
+        }
     };
 
-    try {
-      await sendEmail("template_eogfh2k", templateParams);
+    return (
+        <div className="p-6 max-w-xl mx-auto bg-white shadow-lg rounded-m my-6">
+            <h2 className="text-[20px] font-semibold mb-6">{heading}</h2>
 
-      showToast({
-        type: "success",
-        title: "Success",
-        message: "Form submitted successfully!",
-        duration: 4000,
-      });
+            <Formik
+                initialValues={initialValues}
+                validationSchema={emailValidationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ values, setFieldValue, isSubmitting }) => (
+                    <Form className="grid gap-5">
+                        {/* First and Last Name */}
+                        <div className="gap-4 flex w-[100%] justify-between">
+                            <div className="w-[50%]">
+                                <Field name="firstName">
+                                    {({ field }: any) => (
+                                        <InputText
+                                            placeholder={getTranslation(
+                                                "first_name_label"
+                                            )}
+                                            {...field}
+                                            className="w-full text-sm border-2 border-gray-100 p-2 rounded-lg"
+                                        />
+                                    )}
+                                </Field>
+                                <ErrorMessage
+                                    name="firstName"
+                                    component="small"
+                                    className="p-error text-sm"
+                                />
+                            </div>
 
-      router.push("/");
-    } catch (error) {
-      console.error("Failed to send email:", error);
+                            <div className="w-[50%]">
+                                <Field name="lastName">
+                                    {({ field }: any) => (
+                                        <InputText
+                                            placeholder={getTranslation(
+                                                "last_name_label"
+                                            )}
+                                            {...field}
+                                            className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
+                                        />
+                                    )}
+                                </Field>
+                                <ErrorMessage
+                                    name="lastName"
+                                    component="small"
+                                    className="p-error text-sm"
+                                />
+                            </div>
+                        </div>
 
-      showToast({
-        type: "error",
-        title: "Error",
-        message: "Failed to submit the form. Please try again.",
-        duration: 4000,
-      });
-    }
-  };
+                        {/* Email */}
+                        <div>
+                            <label className="text-sm">
+                                {getTranslation("email_label")}
+                            </label>
+                            <Field name="email">
+                                {({ field }: any) => (
+                                    <InputText
+                                        placeholder={getTranslation(
+                                            "email_address_placeholder"
+                                        )}
+                                        {...field}
+                                        className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
+                                    />
+                                )}
+                            </Field>
+                            <ErrorMessage
+                                name="email"
+                                component="small"
+                                className="p-error text-sm"
+                            />
+                        </div>
 
-  return (
-    <div className="p-6 max-w-xl mx-auto bg-white shadow-lg rounded-m my-6">
-      <h2 className="text-[20px] font-semibold mb-6">{heading}</h2>
+                        {/* Phone Number */}
+                        <div>
+                            <PhoneNumberInput />
+                            <ErrorMessage
+                                name="phoneNumber"
+                                component="small"
+                                className="p-error text-sm  "
+                            />
+                        </div>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={emailValidationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue, isSubmitting }) => (
-          <Form className="grid gap-5">
-            {/* First and Last Name */}
-            <div className="gap-4 flex w-[100%] justify-between">
-              <div className="w-[50%]">
-                <Field name="firstName">
-                  {({ field }: any) => (
-                    <InputText
-                      placeholder="First Name"
-                      {...field}
-                      className="w-full text-sm border-2 border-gray-100 p-2 rounded-lg"
-                    />
-                  )}
-                </Field>
-                <ErrorMessage
-                  name="firstName"
-                  component="small"
-                  className="p-error text-sm"
-                />
-              </div>
+                        {/* Password */}
+                        <div>
+                            <Field name="password">
+                                {({ field }: any) => (
+                                    <Password
+                                        {...field}
+                                        placeholder={getTranslation(
+                                            "password_label"
+                                        )}
+                                        toggleMask
+                                        className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
+                                        feedback={false}
+                                    />
+                                )}
+                            </Field>
+                            <ErrorMessage
+                                name="password"
+                                component="small"
+                                className="p-error text-sm"
+                            />
+                        </div>
 
-              <div className="w-[50%]">
-                <Field name="lastName">
-                  {({ field }: any) => (
-                    <InputText
-                      placeholder="Last Name"
-                      {...field}
-                      className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
-                    />
-                  )}
-                </Field>
-                <ErrorMessage
-                  name="lastName"
-                  component="small"
-                  className="p-error text-sm"
-                />
-              </div>
-            </div>
+                        {/* Confirm Password */}
+                        <div>
+                            <label className="text-sm">
+                                {getTranslation("confirm_password_label")}
+                            </label>
+                            <Field name="confirmPassword">
+                                {({ field }: any) => (
+                                    <Password
+                                        placeholder={getTranslation(
+                                            "confirm_password_label"
+                                        )}
+                                        {...field}
+                                        toggleMask
+                                        className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
+                                        feedback={false}
+                                    />
+                                )}
+                            </Field>
+                            <ErrorMessage
+                                name="confirmPassword"
+                                component="small"
+                                className="p-error text-sm"
+                            />
+                        </div>
 
-            {/* Email */}
-            <div>
-              <label className="text-sm">Email</label>
-              <Field name="email">
-                {({ field }: any) => (
-                  <InputText
-                    placeholder="Email Address"
-                    {...field}
-                    className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
-                  />
+                        {/* Terms & Conditions */}
+                        <div className="flex items-center gap-2 h-[40px]">
+                            <Checkbox
+                                inputId="termsAccepted"
+                                checked={values.termsAccepted}
+                                onChange={(e) =>
+                                    setFieldValue("termsAccepted", e.checked)
+                                }
+                                className="border-gray-400 text-sm"
+                            />
+                            <label className="text-sm" htmlFor="termsAccepted">
+                                {getTranslation(
+                                    "i_accept_the_terms_and_conditions"
+                                )}
+                            </label>
+                        </div>
+                        <ErrorMessage
+                            name="termsAccepted"
+                            component="small"
+                            className="p-error text-sm"
+                        />
+
+                        {/* Submit Button */}
+                        <div className="flex justify-center items-center">
+                            <Button
+                                type="submit"
+                                label={getTranslation("send_button")}
+                                loading={isSubmitting}
+                                className="mt-4 bg-[#FFA500] text-[16px] font-medium w-[200px] p-2 rounded-full text-white  hover:bg-[#FFA500] transition-all"
+                            />
+                        </div>
+                    </Form>
                 )}
-              </Field>
-              <ErrorMessage
-                name="email"
-                component="small"
-                className="p-error text-sm"
-              />
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <PhoneNumberInput />
-              <ErrorMessage
-                name="phoneNumber"
-                component="small"
-                className="p-error text-sm  "
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <Field name="password">
-                {({ field }: any) => (
-                  <Password
-                    {...field}
-                    placeholder="Password"
-                    toggleMask
-                    className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
-                    feedback={false}
-                  />
-                )}
-              </Field>
-              <ErrorMessage
-                name="password"
-                component="small"
-                className="p-error text-sm"
-              />
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label className="text-sm">Confirm Password</label>
-              <Field name="confirmPassword">
-                {({ field }: any) => (
-                  <Password
-                    placeholder="Confirm Password"
-                    {...field}
-                    toggleMask
-                    className="w-full border-2 text-sm border-gray-100 p-2 rounded-lg"
-                    feedback={false}
-                  />
-                )}
-              </Field>
-              <ErrorMessage
-                name="confirmPassword"
-                component="small"
-                className="p-error text-sm"
-              />
-            </div>
-
-            {/* Terms & Conditions */}
-            <div className="flex items-center gap-2 h-[40px]">
-              <Checkbox
-                inputId="termsAccepted"
-                checked={values.termsAccepted}
-                onChange={(e) => setFieldValue("termsAccepted", e.checked)}
-                className="border-gray-400 text-sm"
-              />
-              <label className="text-sm" htmlFor="termsAccepted">
-                I accept the Terms and Conditions
-              </label>
-            </div>
-            <ErrorMessage
-              name="termsAccepted"
-              component="small"
-              className="p-error text-sm"
-            />
-
-            {/* Submit Button */}
-            <div className="flex justify-center items-center">
-              <Button
-                type="submit"
-                label="Send"
-                loading={isSubmitting}
-                className="mt-4 bg-[#FFA500] text-[16px] font-medium w-[200px] p-2 rounded-full text-white  hover:bg-[#FFA500] transition-all"
-              />
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
+            </Formik>
+        </div>
+    );
 };
 
 export default EmailForm;

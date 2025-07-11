@@ -7,10 +7,11 @@ import { Platform, Pressable, Text, View } from "react-native";
 // Hooks
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function Layout() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { appTheme } = useApptheme();
   return (
     <Tabs
@@ -95,19 +96,19 @@ export default function Layout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t("New Orders"),
+          title: t("new_orders"),
         }}
       />
       <Tabs.Screen
         name="processing"
         options={{
-          title: t("Processing"),
+          title: t("processing"),
         }}
       />
       <Tabs.Screen
         name="delivered"
         options={{
-          title: t("Delivered"),
+          title: t("delivered_title"),
         }}
       />
     </Tabs>

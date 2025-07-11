@@ -1,4 +1,5 @@
 import i18next from '../../../i18next'
+import { useLanguage } from '@/src/context/Language'
 import { scale } from '../../utils/scaling'
 import { HeaderBackButton } from '@react-navigation/elements'
 import { View } from 'react-native'
@@ -6,8 +7,8 @@ import { MaterialIcons } from '@expo/vector-icons'
 import navigationService from '../../routes/navigationService'
 import styles from './style'
 
-const navigationOptions = headerText => ({
-  headerTitle: i18next.t('titleOrders'),
+const navigationOptions = (headerText, t) => ({
+  headerTitle: t('orders'),
   headerTitleAlign: 'center',
   headerRight: null,
   headerTitleContainerStyle: {
@@ -26,10 +27,10 @@ const navigationOptions = headerText => ({
 
   headerLeft: () => (
     <HeaderBackButton
-      truncatedLabel=""
+      truncatedLabel=''
       backImage={() => (
         <View style={styles().backBtnContainer}>
-          <MaterialIcons name="arrow-back" size={30} color="black" />
+          <MaterialIcons name='arrow-back' size={30} color='black' />
         </View>
       )}
       onPress={() => {
