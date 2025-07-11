@@ -16,7 +16,7 @@ export const OPTION_TABLE_COLUMNS = ({
       headerName: t('Description'), 
       propertyName: 'description', 
       body: (option: IOptions) => (
-        <span>{option.description ?? '---'}</span>
+        <span>{option.description.toString() ?? '---'}</span>
       )
     },
     {

@@ -4,8 +4,7 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import HeaderText from '@/lib/ui/useable-components/header-text';
 
-// Icons
-import { useTranslations } from 'next-intl';
+
 
 const AddonHeader = () => {
   // Hooks

@@ -43,12 +43,8 @@ import { FoodSchema } from '@/lib/utils/schema';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
-// Icons
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
 
 // Components
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
-import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IFoodDetailsForm = {

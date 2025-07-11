@@ -45,7 +45,7 @@ export default function CategoryAddForm({
 
   // StateS
   const initialValues: ICategoryForm = {
-    title: category?.title ?? '',
+    title: category?.title.toString() ?? '',
     isActive : category?.isActive ?? true
   };
 
