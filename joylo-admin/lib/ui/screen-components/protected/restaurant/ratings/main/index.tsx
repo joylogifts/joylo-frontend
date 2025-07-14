@@ -6,11 +6,13 @@ import RatingsHeaderDataView from '../header/table-header';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import RatingSkeleton from '@/lib/ui/useable-components/custom-skeletons/rating.card.skeleton';
 import { IItem, IReview } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RatingMain: React.FC = () => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
@@ -77,7 +79,7 @@ const RatingMain: React.FC = () => {
   if (error)
     return (
       <p>
-        {t('Error')}: {error.message}
+        {getTranslation('error')}: {error.message}
       </p>
     );
 
@@ -85,7 +87,9 @@ const RatingMain: React.FC = () => {
     <div className="p-3">
       {!data || !data.reviews || data.reviews.length === 0 ? (
         <div className="text-center">
-          <p className="mt-8 text-gray-600">{t('No records found')}</p>
+          <p className="mt-8 text-gray-600">
+            {getTranslation('no_records_found')}
+          </p>
         </div>
       ) : (
         <CustomDataView

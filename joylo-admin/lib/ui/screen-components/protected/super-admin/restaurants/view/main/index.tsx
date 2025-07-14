@@ -42,12 +42,14 @@ import { onUseLocalStorage } from '@/lib/utils/methods';
 // Dummy
 import { generateDummyRestaurants } from '@/lib/utils/dummy';
 import { DataTableRowClickEvent } from 'primereact/datatable';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { RESTAURANT_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/restaurant-column';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function RestaurantsMain() {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -79,13 +81,11 @@ export default function RestaurantsMain() {
       debounceMs: 300,
     }
   ) as IQueryResult<IRestaurantsResponseGraphQL | undefined, undefined>;
-  
 
-  useEffect(()=>{
-    console.log("🚀 Store Screen Rendered")
-  })
- 
-  
+  useEffect(() => {
+    console.log('🚀 Store Screen Rendered');
+  });
+
   // API
   const [hardDeleteRestaurant, { loading: isHardDeleting }] = useMutation(
     HARD_DELETE_RESTAURANT,
@@ -93,8 +93,8 @@ export default function RestaurantsMain() {
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Store Delete'),
-          message: t(`Store has been deleted successfully`),
+          title: getTranslation('store_delete'),
+          message: getTranslation(`store_has_been_deleted_successfully`),
           duration: 2000,
         });
         setDeleteId('');
@@ -102,11 +102,11 @@ export default function RestaurantsMain() {
       onError: ({ networkError, graphQLErrors }: ApolloError) => {
         showToast({
           type: 'error',
-          title: t('Store Delete'),
+          title: getTranslation('store_delete'),
           message:
             graphQLErrors[0]?.message ??
             networkError?.message ??
-            t(`Store delete failed`),
+            getTranslation('store_delete_failed'),
           duration: 2500,
         });
         setDeleteId('');
@@ -156,8 +156,8 @@ export default function RestaurantsMain() {
     } catch (err) {
       showToast({
         type: 'error',
-        title: t('Store Delete'),
-        message: t(`Store delete failed`),
+        title: getTranslation('store_delete'),
+        message: getTranslation('store_delete_failed'),
       });
       setDeleteId('');
     }
@@ -166,11 +166,11 @@ export default function RestaurantsMain() {
   // Constants
   const menuItems: IActionMenuItem<IRestaurantResponse>[] = [
     {
-      label: t('View'),
+      label: getTranslation('view'),
       command: (data?: IRestaurantResponse) => {
         if (data) {
           onUseLocalStorage('save', 'restaurantId', data?._id);
-          onUseLocalStorage('save', 'shopType', data?.shopType)
+          onUseLocalStorage('save', 'shopType', data?.shopType);
           const routeStack = ['Admin'];
           onUseLocalStorage('save', 'routeStack', JSON.stringify(routeStack));
           router.push(`/admin/store/`);
@@ -178,7 +178,7 @@ export default function RestaurantsMain() {
       },
     },
     {
-      label: t('Duplicate'),
+      label: getTranslation('duplicate'),
       command: (data?: IRestaurantResponse) => {
         if (data) {
           setDuplicateId(data._id);
@@ -186,7 +186,7 @@ export default function RestaurantsMain() {
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IRestaurantResponse) => {
         if (data) {
           setDeleteId(data._id);
@@ -223,7 +223,7 @@ export default function RestaurantsMain() {
           }
 
           onUseLocalStorage('save', 'restaurantId', event.data._id);
-          onUseLocalStorage('save', 'shopType', event.data.shopType)
+          onUseLocalStorage('save', 'shopType', event.data.shopType);
           const routeStack = ['Admin'];
           onUseLocalStorage('save', 'routeStack', JSON.stringify(routeStack));
           router.push(`/admin/store/`);
@@ -239,7 +239,7 @@ export default function RestaurantsMain() {
         onConfirm={() => {
           handleDelete(deleteId);
         }}
-        message={t('Are you sure you want to delete this store?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_store')}
       />
 
       <RestaurantDuplicateDialog

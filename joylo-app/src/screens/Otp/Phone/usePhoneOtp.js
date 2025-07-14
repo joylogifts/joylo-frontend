@@ -10,7 +10,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 
 import useEnvVars from '../../../../environment'
 
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import ConfigurationContext from '../../../context/Configuration'
 
 const SEND_OTP_TO_PHONE = gql`
@@ -22,7 +22,7 @@ const UPDATEUSER = gql`
 
 const usePhoneOtp = () => {
   const { TEST_OTP } = useEnvVars()
-  const { t } = useTranslation()
+  const { getTranslation } = useLanguage()
   const navigation = useNavigation()
   const configuration = useContext(ConfigurationContext)
   const route = useRoute()
@@ -32,8 +32,7 @@ const usePhoneOtp = () => {
   const { profile, loadingProfile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
-  const [seconds, setSeconds] = useState(30)
-  const { name, phone, screen} = route?.params || {}
+  const { name, phone, screen } = route?.params || {}
 
   function onError(error) {
     if (error.networkError) {
@@ -49,7 +48,7 @@ const usePhoneOtp = () => {
 
   function onCompleted(data) {
     FlashMessage({
-      message: t('otpSentToPhone')
+      message: getTranslation('otp_sent_to_phone')
     })
   }
 
@@ -67,19 +66,19 @@ const usePhoneOtp = () => {
 
   function onUpdateUserCompleted(data) {
     FlashMessage({
-      message: t('numberVerified')
+      message: getTranslation('number_verified')
     })
-    if (!profile?.name) { navigation.navigate('Profile', { editName: true }) }
-    else if (screen === 'Checkout') {
-      navigation.navigate('Checkout');
-    }
-    else {
+    if (!profile?.name) {
+      navigation.navigate('Profile', { editName: true })
+    } else if (screen === 'Checkout') {
+      navigation.navigate('Checkout')
+    } else {
       route.params?.prevScreen
-      ? navigation.navigate(route.params.prevScreen)
-      : navigation.navigate({
-        name: 'Main',
-        merge: true
-      })
+        ? navigation.navigate(route.params.prevScreen)
+        : navigation.navigate({
+            name: 'Main',
+            merge: true
+          })
     }
   }
 
@@ -93,7 +92,7 @@ const usePhoneOtp = () => {
     onError: onUpdateUserError
   })
 
-  const onCodeFilled = code => {
+  const onCodeFilled = (code) => {
     if (configuration.skipMobileVerification || code === otpFrom.current || code === TEST_OTP) {
       mutateUser({
         variables: {
@@ -109,23 +108,20 @@ const usePhoneOtp = () => {
 
   const onSendOTPHandler = () => {
     try {
-
       if (!profile?.phone && !phone) {
         FlashMessage({
-          message: t('mobileErr1')
+          message: getTranslation('mobile_err_1')
         })
         return
       }
 
       mutate({ variables: { phone: profile?.phone ?? phone, otp: otpFrom.current } })
-    }
-    catch (err) {
+    } catch (err) {
       FlashMessage({
-        message: t('somethingWentWrong')
+        message: getTranslation('something_went_wrong')
       })
     }
   }
-
 
   const resendOtp = () => {
     otpFrom.current = Math.floor(100000 + Math.random() * 900000).toString()
@@ -165,8 +161,36 @@ const usePhoneOtp = () => {
       }, 3000)
     }
 
-    return () => { timer && clearTimeout(timer) }
+    return () => {
+      timer && clearTimeout(timer)
+    }
   }, [configuration, profile])
+
+  const phoneOtp = async () => {
+    try {
+      setOtpError(false)
+      // Works on both Android and iOS
+      if (otp === TEST_OTP) {
+        if (!profile?.phone && !phone) {
+          FlashMessage({
+            message: getTranslation('mobile_err_1')
+          })
+          return
+        }
+        mutateUser({
+          variables: {
+            name: name ?? profile?.name,
+            phone: phone ?? profile?.phone,
+            phoneIsVerified: true
+          }
+        })
+      }
+    } catch (err) {
+      FlashMessage({
+        message: getTranslation('something_went_wrong')
+      })
+    }
+  }
 
   return {
     otp,

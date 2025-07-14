@@ -1,16 +1,19 @@
 // Custom Components
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
 import { IStaffTableHeaderProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export default function StaffTableHeader({
   globalFilterValue,
   onGlobalFilterChange,
 }: IStaffTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
+
+  const { getTranslation } = useLangTranslation();
 
   return (
     <div className="mb-4 flex flex-col gap-6 pt-5">
@@ -23,7 +26,7 @@ export default function StaffTableHeader({
             showLabel={false}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
           />
         </div>
       </div>

@@ -5,11 +5,12 @@ import TextDefault from '../../Text/TextDefault/TextDefault'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import NewRestaurantCard from '../RestaurantCard/NewRestaurantCard'
 import MainLoadingUI from '../LoadingUI/MainLoadingUI'
 
 function TopPicks(props) {
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
 
@@ -21,7 +22,7 @@ function TopPicks(props) {
         {props?.title}
       </TextDefault>
       <TextDefault Normal textColor={currentTheme.secondaryText} style={styles().ItemDescription}>
-        {t('mostOrderedNow')}
+        {t('most_ordered_right_now')}
       </TextDefault>
       <FlatList
         style={styles().offerScroll}

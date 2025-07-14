@@ -7,13 +7,14 @@ import styles from './styles'
 import ShimmerImage from '../../ShimmerImage/ShimmerImage'
 import { useTranslation } from 'react-i18next'
 import { calculateDiscountedPrice } from '../../../utils/calculateDiscountedPrice'
+import { useLanguage } from '@/src/context/Language'
 
 const FoodItem = ({ item, currentTheme, configuration, onPress }) => {
   const variation = item.variations?.[0]
   const price = variation?.price || 0
   const discountedPrice = variation?.discounted
   const isOutOfStock = item.isOutOfStock === true
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
 
   const withoutDiscountPrice = calculateDiscountedPrice(price, discountedPrice)
 

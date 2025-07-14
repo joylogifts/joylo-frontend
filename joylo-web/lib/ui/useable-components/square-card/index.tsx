@@ -12,6 +12,7 @@ const SquareCard: React.FC<ICuisinesCardProps> = ({
   cuisines = false,
   showLogo = false,
 }) => {
+ 
   const router = useRouter();
   const getImgSrc = showLogo ? item?.logo : item?.image;
 

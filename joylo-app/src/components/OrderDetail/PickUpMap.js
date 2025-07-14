@@ -5,8 +5,8 @@ import { scale } from '../../utils/scaling'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { linkToMapsApp } from '../../utils/links'
 import { mapStyle } from '../../utils/mapStyle'
-import {useTranslation} from 'react-i18next'
-
+// import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,8 +18,7 @@ const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 }
 const PickUpMap = ({ deliveryAddress, pickupAddress }) => {
   const themeContext = useContext(ThemeContext)
   let map = null
-  const {t} = useTranslation()
-
+  const { getTranslation: t } = useLanguage()
   useEffect(() => {
     const destination = {
       latitude: parseFloat(pickupAddress.location.coordinates[1]),
@@ -31,7 +30,7 @@ const PickUpMap = ({ deliveryAddress, pickupAddress }) => {
     }
     fitMarkers([origin, destination])
   }, [])
-  const fitMarkers = markers => {
+  const fitMarkers = (markers) => {
     map.fitToCoordinates(markers, {
       edgePadding: DEFAULT_PADDING,
       animated: true
@@ -44,10 +43,11 @@ const PickUpMap = ({ deliveryAddress, pickupAddress }) => {
         width: '90%',
         alignSelf: 'center',
         height: scale(200),
-        marginTop: scale(20),
-      }}>
+        marginTop: scale(20)
+      }}
+    >
       <MapView
-        ref={ref => {
+        ref={(ref) => {
           map = ref
         }}
         customMapStyle={themeContext.ThemeValue === 'Dark' ? mapStyle : null}
@@ -67,17 +67,16 @@ const PickUpMap = ({ deliveryAddress, pickupAddress }) => {
             pickupAddress.label
           )
         }}
-        provider={PROVIDER_DEFAULT}>
+        provider={PROVIDER_DEFAULT}
+      >
         <Marker
-          title={t('pickUpAddress')}
+          title={t('pickup_address')}
           coordinate={{
             latitude: parseFloat(pickupAddress.location.coordinates[1]),
             longitude: parseFloat(pickupAddress.location.coordinates[0])
-          }}>
-          <Image
-            style={{ width: scale(30), height: scale(30) }}
-            source={require('../../assets/images/drop.png')}
-          />
+          }}
+        >
+          <Image style={{ width: scale(30), height: scale(30) }} source={require('../../assets/images/drop.png')} />
         </Marker>
       </MapView>
     </View>

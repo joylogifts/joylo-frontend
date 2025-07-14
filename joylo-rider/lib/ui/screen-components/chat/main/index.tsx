@@ -7,11 +7,12 @@ import { useChatScreen } from "@/lib/hooks/useChat";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function ChatMain() {
   // Hooks
   const { appTheme, currentTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation:t } = useLanguage();
   const {
     messages,
     onSend,
@@ -148,7 +149,7 @@ export default function ChatMain() {
             left: { color: appTheme.fontMainColor },
             right: { color: appTheme.primary },
           }}
-          placeholder={t("Chats Here")}
+          placeholder={t("chats_here")}
           // textInputStyle={{ paddingTop: 10 }}
           // renderAccessory={image.length > 0 ? renderAccessory : null}
           text={inputMessage ?? ""}

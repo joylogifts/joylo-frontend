@@ -9,6 +9,7 @@ import {
 } from "react-native";
 // UI
 import CustomTab from "@/lib/ui/useable-components/custom-tab";
+import { useLanguage } from "@/lib/context/global/language.context";
 // Constants
 import { NO_ORDER_PROMPT, ORDER_DISPATCH_TYPE } from "@/lib/utils/constants";
 
@@ -29,7 +30,6 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useTranslation } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const { height } = Dimensions.get("window");
@@ -39,7 +39,7 @@ function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
   const { route } = props;
 
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { appTheme } = useApptheme();
   const {
     loading,
@@ -159,10 +159,10 @@ function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
                     />
                     {orders?.length === 0 ? (
                       <Text className="font-[Inter] text-[18px] text-base font-[500] text-gray-600">
-                        {t(NO_ORDER_PROMPT[route.key])}
+                        {getTranslation(NO_ORDER_PROMPT[route.key])}
                       </Text>
                     ) : (
-                      <Text>{t("Pull down to refresh")}</Text>
+                      <Text>{getTranslation("pull_down_to_refresh")}</Text>
                     )}
                   </View>
                 );
@@ -185,10 +185,10 @@ function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
 
               {orders?.length === 0 ? (
                 <Text className="font-[Inter] text-[18px] text-base font-[500] text-gray-600">
-                  {t(NO_ORDER_PROMPT[route.key])}
+                  {getTranslation(NO_ORDER_PROMPT[route.key])}
                 </Text>
               ) : (
-                <Text>{t("Pull down to refresh")}</Text>
+                <Text>{getTranslation("pull_down_to_refresh")}</Text>
               )}
             </View>
           )}

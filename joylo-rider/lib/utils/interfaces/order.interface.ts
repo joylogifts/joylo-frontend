@@ -20,12 +20,12 @@ export interface IOrder {
     addons?: Array<{
       options: Array<{
         price: number;
-        title: string;
+        title: JSON|string;
       }>;
     }>;
-    description: ReactNode;
+    description: JSON|string;
     image: string;
-    title: string;
+    title: JSON|string;
     quantity: number;
   }>;
   user: {
@@ -35,7 +35,8 @@ export interface IOrder {
   };
   paymentStatus: string;
   createdAt: string;
-  acceptedAt: string;
+  acceptedAt?: string;
+  assignedAt?: string;
   deliveryAddress: {
     deliveryAddress: string;
     location: {
@@ -50,4 +51,5 @@ export interface IOrder {
   isRiderRinged: boolean;
   rider: IRiderProfile;
   restaurant: IRestaurantProfile;
+  
 }

@@ -13,11 +13,12 @@ import { useTranslation } from 'react-i18next'
 import { Ionicons } from '@expo/vector-icons'
 import { scale } from '../../utils/scaling'
 import SignUpSvg from '../../assets/SVG/imageComponents/SignUpSvg'
+import { useLanguage } from '@/src/context/Language'
 
 function PhoneNumber(props) {
   const { phone, setPhone, phoneError, country, countryCode, registerAction, onCountrySelect, currentTheme, loading } = usePhoneNumber()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
 
   useLayoutEffect(() => {
     props?.navigation.setOptions(
@@ -54,7 +55,7 @@ function PhoneNumber(props) {
                   }}
                   isRTL
                 >
-                  {t('yourPhoneNumber')}
+                  {t('your_phone_number')}
                 </TextDefault>
                 <TextDefault
                   H5
@@ -65,7 +66,7 @@ function PhoneNumber(props) {
                   }}
                   isRTL
                 >
-                  {t('secureAccountWithPhone')}
+                  {t('secure_account_with_phone')}
                 </TextDefault>
               </View>
               <View style={styles().form}>
@@ -81,7 +82,7 @@ function PhoneNumber(props) {
                       {/* <TextDefault textColor={currentTheme.newFontcolor}>+{country.callingCode[0]} </TextDefault> */}
                       <TextInput
                         style={styles(currentTheme).phoneNo}
-                        placeholder={t('phoneNumber')}
+                        placeholder={t('phone_number')}
                         placeholderTextColor={currentTheme.color6}
                         value={phone}
                         maxLength={16}
@@ -107,7 +108,7 @@ function PhoneNumber(props) {
             <View style={{ width: '100%', marginBottom: 20 }}>
               <TouchableOpacity onPress={() => registerAction()} activeOpacity={0.7} style={styles(currentTheme).btn}>
                 <TextDefault H4 textColor={currentTheme.color4} bold>
-                  {loading ? <Spinner size='small' backColor='transparent' spinnerColor={currentTheme.white} /> : t('textWithCodeBtn')}
+                  {loading ? <Spinner size='small' backColor='transparent' spinnerColor={currentTheme.white} /> : t('text_with_code_btn')}
                 </TextDefault>
               </TouchableOpacity>
             </View>

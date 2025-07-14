@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import UserContext from "@/lib/context/global/user.context";
 import Order from "@/lib/ui/useable-components/order";
@@ -22,7 +23,7 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const {
     dataProfile,
     loadingAssigned,
@@ -82,14 +83,14 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
               tab={route.key as ORDER_TYPE}
               _id={item._id}
               orderId={item.orderId}
-              orderStatus={item.orderStatus}
-              restaurant={item.restaurant}
-              deliveryAddress={item.deliveryAddress}
+              orderStatus={item?.orderStatus}
+              restaurant={item?.restaurant}
+              deliveryAddress={item?.deliveryAddress}
               paymentMethod={item.paymentMethod}
-              orderAmount={item.orderAmount}
-              paymentStatus={item.paymentStatus}
-              acceptedAt={item.acceptedAt}
-              user={item.user}
+              orderAmount={item?.orderAmount}
+              paymentStatus={item?.paymentStatus}
+              acceptedAt={item?.acceptedAt}
+              user={item?.user}
               key={item._id}
               isLast={index === orders.length - 1}
             />
@@ -121,7 +122,7 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
                   </Text>
                 ) : (
                   <Text style={{ color: appTheme.fontSecondColor }}>
-                    {t("Pull down to refresh")}
+                    {t("pull_down_to_refresh")}
                   </Text>
                 )}
               </View>
@@ -147,7 +148,7 @@ function HomeDeliveredOrdersMain(props: IOrderTabsComponentProps) {
               {t(NO_ORDER_PROMPT[route.key])}
             </Text>
           ) : (
-            <Text>{t("Pull down to refresh")}</Text>
+            <Text>{t("pull_down_to_refresh")}</Text>
           )}
         </View>
       )}

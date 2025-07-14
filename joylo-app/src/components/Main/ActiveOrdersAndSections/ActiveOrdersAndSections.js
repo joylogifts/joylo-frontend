@@ -5,11 +5,11 @@ import { alignment } from '../../../utils/alignment'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
 import { scale } from '../../../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import styles from './styles'
 
 function ActiveOrdersAndSections(props) {
-  const { t } = useTranslation()
+  const { getTranslation } = useLanguage()
 
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
@@ -17,7 +17,7 @@ function ActiveOrdersAndSections(props) {
   return (
     <View style={styles(currentTheme).menuPageHeading}>
       <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4 isRTL>
-        {t(props?.menuPageHeading)}
+        {getTranslation(props?.menuPageHeading)}
       </TextDefault>
       <TextDefault
         Normal
@@ -28,7 +28,7 @@ function ActiveOrdersAndSections(props) {
         }}
         isRTL
       >
-        {t(props?.subHeading)}
+        {getTranslation(props?.subHeading)}
       </TextDefault>
     </View>
   )

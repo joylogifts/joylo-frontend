@@ -1,14 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import {
-  AppState,
-  View,
-  TouchableOpacity,
-  Platform,
-  Linking,
-  StatusBar,
-  ActivityIndicator,
-  Text
-} from 'react-native'
+import { AppState, View, TouchableOpacity, Platform, Linking, StatusBar, ActivityIndicator, Text } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Updates from 'expo-updates'
 import * as Notifications from 'expo-notifications'
@@ -18,11 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { profile } from '../../apollo/queries'
 
-import {
-  pushToken,
-  updateNotificationStatus,
-  Deactivate
-} from '../../apollo/mutations'
+import { pushToken, updateNotificationStatus, Deactivate } from '../../apollo/mutations'
 
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/client'
@@ -47,8 +34,7 @@ import { HeaderBackButton } from '@react-navigation/elements'
 import navigationService from '../../routes/navigationService'
 import { MaterialIcons } from '@expo/vector-icons'
 import { scale } from '../../utils/scaling'
-import i18next from '../../../i18next'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const languageTypes = [
   { value: 'English', code: 'en', index: 0 },
@@ -76,17 +62,11 @@ function Settings(props) {
   const Analytics = analytics()
 
   const { token, setToken } = useContext(AuthContext)
-  const {
-    profile,
-    loadingProfile,
-    errorProfile,
-    logout,
-    isLoggedIn
-  } = useContext(UserContext)
+  const { profile, loadingProfile, errorProfile, logout, isLoggedIn } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
 
-  const { t } = useTranslation()
+  const { getTranslation } = useLanguage()
 
   const [languageName, languageNameSetter] = useState('English')
   const [orderNotification, orderNotificationSetter] = useState()
@@ -124,10 +104,10 @@ function Settings(props) {
       headerRight: null,
       headerLeft: () => (
         <HeaderBackButton
-          truncatedLabel=""
+          truncatedLabel=''
           backImage={() => (
             <View style={styles().backButton}>
-              <MaterialIcons name="arrow-back" size={30} color="black" />
+              <MaterialIcons name='arrow-back' size={30} color='black' />
             </View>
           )}
           onPress={() => {
@@ -135,7 +115,7 @@ function Settings(props) {
           }}
         />
       ),
-      headerTitle: t('titleSettings'),
+      headerTitle: getTranslation('settings'),
       headerTitleAlign: 'center',
       headerTitleContainerStyle: {
         marginTop: '1%',
@@ -165,19 +145,19 @@ function Settings(props) {
       navigation.reset({
         routes: [{ name: 'Main' }]
       })
-      FlashMessage({ message: t('accountDeactivated') })
+      FlashMessage({ message: getTranslation('account_deactivated') })
     } catch (error) {
       console.error('Error during deactivation mutation:', error)
     }
   }
 
-  const _handleAppStateChange = async nextAppState => {
+  const _handleAppStateChange = async (nextAppState) => {
     if (nextAppState === 'active') {
       let token = null
       const permission = await getPermission()
       if (permission === 'granted') {
         if (!profile.notificationToken) {
-          token = await Notifications.getExpoPushTokenAsync({  projectId: Constants.expoConfig.extra.eas.projectId})
+          token = await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })
           uploadToken({ variables: { token: token.data } })
         }
         offerNotificationSetter(profile.isOfferNotification)
@@ -222,7 +202,7 @@ function Settings(props) {
   async function selectLanguage() {
     const lang = await AsyncStorage.getItem('enatega-language')
     if (lang) {
-      const defLang = languageTypes.findIndex(el => el.code === lang)
+      const defLang = languageTypes.findIndex((el) => el.code === lang)
       const langName = languageTypes[defLang].value
       activeRadioSetter(defLang)
       languageNameSetter(langName)
@@ -235,18 +215,14 @@ function Settings(props) {
       setLoadingLang(true)
       const languageInd = activeRadio
       // if (Platform.OS === 'android') {
-      await AsyncStorage.setItem(
-        'enatega-language',
-        languageTypes[languageInd].code
-      )
+      await AsyncStorage.setItem('enatega-language', languageTypes[languageInd].code)
 
       var lang = await AsyncStorage.getItem('enatega-language')
       if (lang) {
-        const defLang = languageTypes.findIndex(el => el.code === lang)
+        const defLang = languageTypes.findIndex((el) => el.code === lang)
         const langName = languageTypes[defLang].value
         languageNameSetter(langName)
       }
-      i18next.changeLanguage(lang)
       modalVisibleSetter(false)
       //Updates.reloadAsync()
       // }
@@ -259,7 +235,7 @@ function Settings(props) {
 
   function onCompleted() {
     FlashMessage({
-      message: t('notificationStatusUpdated')
+      message: getTranslation('notification_status_updated')
     })
   }
 
@@ -275,7 +251,7 @@ function Settings(props) {
     let orderNotify, offerNotify
     if (!Device.isDevice) {
       FlashMessage({
-        message: t('notificationNotWork')
+        message: getTranslation('notification_do_not_work_on_simulator')
       })
       return
     }
@@ -304,34 +280,23 @@ function Settings(props) {
   }
   if (errorProfile) {
     FlashMessage({
-      message: t('errorInProfile')
+      message: getTranslation('error_in_profile')
     })
   }
   if (loadingProfile) return <Spinner />
   return (
-    <SafeAreaView
-      edges={['bottom', 'left', 'right']}
-      style={[styles().flex, styles(currentTheme).mainContainer]}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={[styles().flex, styles(currentTheme).mainContainer]}>
       <View style={styles().flex}>
         {/* {Platform.OS === 'android' && ( */}
         <View style={[styles(currentTheme).languageContainer, styles().shadow]}>
           <View style={styles().changeLanguage}>
             <View style={styles().width85}>
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.fontSecondColor}>
-                {t('languageSetting')}
+              <TextDefault numberOfLines={1} textColor={currentTheme.fontSecondColor}>
+                {getTranslation('language_setting')}
               </TextDefault>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => modalVisibleSetter(true)}
-              style={styles().button}>
-              <MaterialIcons
-                name="edit"
-                size={25}
-                color={currentTheme.tagColor}
-              />
+            <TouchableOpacity activeOpacity={0.7} onPress={() => modalVisibleSetter(true)} style={styles().button}>
+              <MaterialIcons name='edit' size={25} color={currentTheme.tagColor} />
             </TouchableOpacity>
           </View>
           <TextDefault textColor={currentTheme.fontMainColor} bolder H5 B700>
@@ -347,14 +312,12 @@ function Settings(props) {
               updateNotificationStatus('offer')
               setBtnText('offer')
             }}
-            style={[styles(currentTheme).notificationContainer]}>
+            style={[styles(currentTheme).notificationContainer]}
+          >
             <View style={styles(currentTheme).notificationChekboxContainer}>
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.darkBgFont}
-                style={alignment.MLsmall}>
+              <TextDefault numberOfLines={1} textColor={currentTheme.darkBgFont} style={alignment.MLsmall}>
                 {' '}
-                {t('receiveSpecialOffers')}{' '}
+                {getTranslation('receive_special_offer')}{' '}
               </TextDefault>
               <View>
                 <CheckboxBtn
@@ -368,7 +331,7 @@ function Settings(props) {
             </View>
             {loading && btnText === 'offer' && (
               <View>
-                <Spinner size="small" backColor="transparent" />
+                <Spinner size='small' backColor='transparent' />
               </View>
             )}
           </TouchableOpacity>
@@ -385,14 +348,12 @@ function Settings(props) {
               updateNotificationStatus('order')
               setBtnText('order')
             }}
-            style={[styles(currentTheme).notificationContainer]}>
+            style={[styles(currentTheme).notificationContainer]}
+          >
             <View style={styles().notificationChekboxContainer}>
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.darkBgFont}
-                style={alignment.MLsmall}>
+              <TextDefault numberOfLines={1} textColor={currentTheme.darkBgFont} style={alignment.MLsmall}>
                 {' '}
-                {t('getUpdates')}{' '}
+                {getTranslation('get_updates')}{' '}
               </TextDefault>
               <View>
                 <CheckboxBtn
@@ -406,7 +367,7 @@ function Settings(props) {
             </View>
             {loading && btnText === 'order' && (
               <View>
-                <Spinner size="small" backColor="transparent" />
+                <Spinner size='small' backColor='transparent' />
               </View>
             )}
           </TouchableOpacity>
@@ -417,23 +378,14 @@ function Settings(props) {
               alignSelf: 'center'
             }}
           />
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => toggleTheme()}
-            style={[styles(currentTheme).notificationContainer]}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => toggleTheme()} style={[styles(currentTheme).notificationContainer]}>
             <View style={styles().notificationChekboxContainer}>
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.darkBgFont}
-                style={alignment.MLsmall}>
+              <TextDefault numberOfLines={1} textColor={currentTheme.darkBgFont} style={alignment.MLsmall}>
                 {' '}
-                {t('turnOnDarkTheme')}{' '}
+                {getTranslation('turn_on_dark_theme')}{' '}
               </TextDefault>
               <View>
-                <CheckboxBtn
-                  checked={darkTheme}
-                  onPress={() => toggleTheme()}
-                />
+                <CheckboxBtn checked={darkTheme} onPress={() => toggleTheme()} />
               </View>
             </View>
           </TouchableOpacity>
@@ -444,101 +396,58 @@ function Settings(props) {
               alignSelf: 'center'
             }}
           />
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => toggleTheme()}
-            style={[styles(currentTheme).notificationContainer]}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => toggleTheme()} style={[styles(currentTheme).notificationContainer]}>
             <View style={styles().notificationChekboxContainer}>
               <View style={styles().buttonContainer}>
                 <TouchableOpacity
                   style={styles().deleteButton}
                   onPress={() => {
                     modalizeRef.current.open('top')
-                  }}>
-                  <Ionicons name="trash-outline" size={30} color={'white'} />
-                  <Text style={styles(currentTheme).deleteButtonText}>
-                    {t('DELETEACCOUNT')}
-                  </Text>
+                  }}
+                >
+                  <Ionicons name='trash-outline' size={30} color={'white'} />
+                  <Text style={styles(currentTheme).deleteButtonText}>{getTranslation('delete_account')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles().versionContainer}>
-          <TextDefault textColor={currentTheme.statusSecondColor}>
-            Version: {Constants.expoConfig.version}
-          </TextDefault>
+          <TextDefault textColor={currentTheme.statusSecondColor}>Version: {Constants.expoConfig.version}</TextDefault>
         </View>
       </View>
 
       {/* Modal for language Changes */}
 
-      <Modal
-        isVisible={modalVisible}
-        onBackdropPress={() => modalVisibleSetter(false)}
-        onBackButtonPress={() => modalVisibleSetter(false)}>
+      <Modal isVisible={modalVisible} onBackdropPress={() => modalVisibleSetter(false)} onBackButtonPress={() => modalVisibleSetter(false)}>
         <View style={styles().modalContainer}>
-          <TextDefault
-            textColor={currentTheme.fontMainColor}
-            bolder
-            H5
-            style={alignment.MBsmall}>
-            {t('selectLanguage')}
+          <TextDefault textColor={currentTheme.fontMainColor} bolder H5 style={alignment.MBsmall}>
+            {getTranslation('selected_language')}
           </TextDefault>
 
           {languageTypes.map((item, index) => (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              key={index}
-              onPress={() => activeRadioSetter(item.index)}
-              style={[styles().radioContainer]}>
-              <RadioButton
-                animation={'bounceIn'}
-                size={13}
-                outerColor={currentTheme.radioOuterColor}
-                innerColor={currentTheme.radioColor}
-                isSelected={activeRadio === item.index}
-                onPress={() => activeRadioSetter(item.index)}
-              />
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.fontMainColor}
-                bold
-                style={alignment.MLsmall}>
+            <TouchableOpacity activeOpacity={0.7} key={index} onPress={() => activeRadioSetter(item.index)} style={[styles().radioContainer]}>
+              <RadioButton animation={'bounceIn'} size={13} outerColor={currentTheme.radioOuterColor} innerColor={currentTheme.radioColor} isSelected={activeRadio === item.index} onPress={() => activeRadioSetter(item.index)} />
+              <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} bold style={alignment.MLsmall}>
                 {item.value}
               </TextDefault>
             </TouchableOpacity>
           ))}
           <View style={styles().modalButtonsContainer}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles().modalButtons}
-              onPress={() => modalVisibleSetter(false)}>
-              <TextDefault
-                numberOfLines={1}
-                textColor={currentTheme.tagColor}
-                small
-                bolder
-                uppercase>
-                {t('Cancel')}
+            <TouchableOpacity activeOpacity={0.7} style={styles().modalButtons} onPress={() => modalVisibleSetter(false)}>
+              <TextDefault numberOfLines={1} textColor={currentTheme.tagColor} small bolder uppercase>
+                {getTranslation('cancel')}
               </TextDefault>
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles().modalButtons}
-              onPress={() => onSelectedLanguage()}>
-              <TextDefault
-                textColor={currentTheme.tagColor}
-                bolder
-                uppercase
-                small>
-                {t('Select')}
+            <TouchableOpacity activeOpacity={0.7} style={styles().modalButtons} onPress={() => onSelectedLanguage()}>
+              <TextDefault textColor={currentTheme.tagColor} bolder uppercase small>
+                {getTranslation('select')}
               </TextDefault>
             </TouchableOpacity>
           </View>
           {loadinglang && (
             <View style={styles().loadingContainer}>
-              <ActivityIndicator size="large" color={currentTheme.tagColor} />
+              <ActivityIndicator size='large' color={currentTheme.tagColor} />
             </View>
           )}
         </View>
@@ -546,16 +455,17 @@ function Settings(props) {
       <Modalize
         ref={modalizeRef}
         adjustToContentHeight
-        handlePosition="inside"
+        handlePosition='inside'
         avoidKeyboardLikeIOS={Platform.select({
           ios: true,
           android: true
         })}
         keyboardAvoidingOffset={2}
-        keyboardAvoidingBehavior="height">
+        keyboardAvoidingBehavior='height'
+      >
         <View style={{ flex: 1, alignItems: 'center' }}>
           <TextDefault bolder H5 style={{ marginTop: 20 }}>
-            {t('DeleteConfirmation')}
+            {getTranslation('delete_confirmation')}
           </TextDefault>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -568,16 +478,14 @@ function Settings(props) {
               padding: 15,
               ...alignment.MTlarge
             }}
-            onPress={deactivatewithemail}>
+            onPress={deactivatewithemail}
+          >
             <TextDefault center bold>
-              {t('DeleteAccount')}
+              {getTranslation('delete_account')}
             </TextDefault>
           </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{ width: '100%', paddingTop: 30, paddingBottom: 40 }}
-            onPress={() => onClose()}>
-            <TextDefault center> {t('Cancel')}</TextDefault>
+          <TouchableOpacity activeOpacity={0.7} style={{ width: '100%', paddingTop: 30, paddingBottom: 40 }} onPress={() => onClose()}>
+            <TextDefault center> {getTranslation('cancel')}</TextDefault>
           </TouchableOpacity>
         </View>
       </Modalize>

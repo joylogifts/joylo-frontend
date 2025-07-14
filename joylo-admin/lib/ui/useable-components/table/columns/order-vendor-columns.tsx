@@ -1,5 +1,6 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IExtendedOrder } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',
@@ -12,26 +13,27 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 
 export const ORDER_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   return [
     {
-      headerName: t('Order ID'),
+      headerName: getTranslation('order_id'),
       propertyName: 'orderId',
     },
     {
       propertyName: 'itemsTitle',
-      headerName: t('Items'),
+      headerName: getTranslation('items'),
     },
     {
-      headerName: t('Payment'),
+      headerName: getTranslation('payment'),
       propertyName: 'paymentMethod',
     },
     {
-      headerName: t('Order Status'),
+      headerName: getTranslation('order_status'),
       propertyName: 'orderStatus',
     },
     {
-      headerName: t('Created At'),
+      headerName: getTranslation('created_at'),
       propertyName: 'DateCreated',
       body: (rowData: IExtendedOrder) => {
         const formatedDate = new Date(
@@ -41,7 +43,7 @@ export const ORDER_COLUMNS = () => {
       },
     },
     {
-      headerName: t('Delivery Address'),
+      headerName: getTranslation('delivery_address'),
       propertyName: 'OrderdeliveryAddress',
     },
   ];

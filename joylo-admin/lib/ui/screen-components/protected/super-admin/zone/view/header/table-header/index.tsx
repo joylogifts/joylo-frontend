@@ -1,6 +1,7 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import { IZoneTableHeaderProps } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import React from 'react';
 
 export default function ZoneTableHeader({
@@ -8,7 +9,8 @@ export default function ZoneTableHeader({
   onGlobalFilterChange,
 }: IZoneTableHeaderProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   return (
     <div className="mb-4 flex flex-col gap-6">
       <div className="flex-colm:flex-row flex w-fit items-center gap-2">
@@ -20,7 +22,7 @@ export default function ZoneTableHeader({
             showLabel={false}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('Keyword Search')}
+            placeholder={getTranslation('keyword_search')}
           />
         </div>
       </div>

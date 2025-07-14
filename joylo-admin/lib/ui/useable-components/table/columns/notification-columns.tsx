@@ -11,11 +11,13 @@ import { GET_NOTIFICATIONS, SEND_NOTIFICATION_USER } from '@/lib/api/graphql';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const NOTIFICATIONS_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   // Mutations
@@ -25,17 +27,19 @@ export const NOTIFICATIONS_TABLE_COLUMNS = () => {
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Resend Notification'),
-          message: t('The notification has been resent successfully'),
+          title: getTranslation('resend_notification'),
+          message: getTranslation(
+            'the_notification_has_been_resent_successfully'
+          ),
         });
       },
       onError: (err) => {
         showToast({
           type: 'error',
-          title: t('Resend Notification'),
+          title: getTranslation('resend_notification'),
           message:
             err?.cause?.message ||
-            t('An error occured while resending the notification'),
+            getTranslation('an_error_occured_while_resending_the_notification'),
         });
       },
       refetchQueries: [{ query: GET_NOTIFICATIONS }],
@@ -56,15 +60,15 @@ export const NOTIFICATIONS_TABLE_COLUMNS = () => {
   const notification_columns = useMemo(
     () => [
       {
-        headerName: t('Title'),
+        headerName: getTranslation('title'),
         propertyName: 'title',
       },
       {
-        headerName: t('Description'),
+        headerName: getTranslation('description'),
         propertyName: 'body',
       },
       {
-        headerName: t('Date'),
+        headerName: getTranslation('date'),
         propertyName: 'createdAt',
         body: (rowData: INotification) => {
           const seconds = parseInt(rowData.createdAt);
@@ -73,7 +77,7 @@ export const NOTIFICATIONS_TABLE_COLUMNS = () => {
         },
       },
       {
-        headerName: t('Change Status'),
+        headerName: getTranslation('change_status'),
         propertyName: 'status',
         body: (rowData: INotification) => (
           <CustomButton

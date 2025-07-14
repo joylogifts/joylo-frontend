@@ -24,14 +24,16 @@ import Table from '@/lib/ui/useable-components/table';
 import { DataTableRowClickEvent } from 'primereact/datatable';
 import { onUseLocalStorage } from '@/lib/utils/methods';
 import { generateVendorStoreDetails } from '@/lib/utils/dummy';
-import { useTranslations } from 'next-intl';
+
 import { VENDOR_STORE_DETAILS_COLUMN } from '@/lib/ui/useable-components/table/columns/store-details-by-vendor-columns';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Dummy
 
 const VendorGrowthOverViewGraph = () => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -79,22 +81,22 @@ const VendorGrowthOverViewGraph = () => {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     const data = {
       labels: [
-        t('January'),
-        t('February'),
-        t('March'),
-        t('April'),
-        t('May'),
-        t('June'),
-        t('July'),
-        t('August'),
-        t('September'),
-        t('October'),
-        t('November'),
-        t('December'),
+        getTranslation('january'),
+        getTranslation('february'),
+        getTranslation('march'),
+        getTranslation('april'),
+        getTranslation('may'),
+        getTranslation('june'),
+        getTranslation('july'),
+        getTranslation('august'),
+        getTranslation('september'),
+        getTranslation('october'),
+        getTranslation('november'),
+        getTranslation('december'),
       ],
       datasets: [
         {
-          label: t('Stores'),
+          label: getTranslation('stores'),
           data: dashboardVendorDetailsByYear?.totalRestaurants ?? [],
           fill: false,
           borderColor: documentStyle.getPropertyValue('--pink-500'),
@@ -102,7 +104,7 @@ const VendorGrowthOverViewGraph = () => {
           tension: 0.5,
         },
         {
-          label: t('Orders'),
+          label: getTranslation('orders'),
           data: dashboardVendorDetailsByYear?.totalOrders ?? [],
           fill: false,
           borderColor: documentStyle.getPropertyValue('--blue-500'),
@@ -110,7 +112,7 @@ const VendorGrowthOverViewGraph = () => {
           tension: 0.5,
         },
         {
-          label: t('Sales'),
+          label: getTranslation('sales'),
           data: dashboardVendorDetailsByYear?.totalSales ?? [],
           fill: false,
           borderColor: documentStyle.getPropertyValue('--yellow-500'),
@@ -164,9 +166,12 @@ const VendorGrowthOverViewGraph = () => {
 
   return (
     <div className={`w-full p-3`}>
-      <h2 className="text-lg font-semibold">{t('Growth Overview')}</h2>
+      <h2 className="text-lg font-semibold">
+        {getTranslation('growth_overview')}
+      </h2>
       <p className="text-gray-500">
-        {t('Tracking Vendor Growth Over the Year')} ({new Date().getFullYear()})
+        {getTranslation('tracking_vendor_growth_over_the_year')} (
+        {new Date().getFullYear()})
       </p>
       <div className="mt-4">
         {loading ? (
@@ -217,7 +222,7 @@ const VendorGrowthOverViewTabular = ({
           data?.getStoreDetailsByVendorId ||
           (loading ? generateVendorStoreDetails() : [])
         }
-        setSelectedData={() => {}}
+        setSelectedData={() => { }}
         selectedData={[]}
         columns={VENDOR_STORE_DETAILS_COLUMN()}
         loading={loading}

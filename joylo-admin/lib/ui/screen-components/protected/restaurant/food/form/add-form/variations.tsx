@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 import { Fieldset } from 'primereact/fieldset';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 // Context
 import { FoodsContext } from '@/lib/context/restaurant/foods.context';
@@ -10,7 +10,6 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 
 // Interface and Types
 import {
-  IAddon,
   IFoodNew,
   IFoodVariationsAddRestaurantComponentProps,
   IVariationForm,
@@ -24,7 +23,6 @@ import { VariationSchema } from '@/lib/utils/schema';
 // Components
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
-import AddonAddForm from '../../../add-on/add-form';
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import CustomButton from '@/lib/ui/useable-components/button';
 
@@ -43,7 +41,8 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Apollo
 import { useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialFormValuesTemplate: IVariationForm = {
   title: '',
@@ -57,16 +56,13 @@ export default function VariationAddForm({
 }: IFoodVariationsAddRestaurantComponentProps) {
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
   // Hooks
-  const t = useTranslations();
 
-  // State
-  const [isAddAddonVisible, setIsAddAddonVisible] = useState(false);
-  const [addon, setAddon] = useState<IAddon | null>(null);
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -74,21 +70,19 @@ export default function VariationAddForm({
     useContext(FoodsContext);
   const {
     restaurantLayoutContextData: { restaurantId },
-    option,
-    setOption
   } = useContext(RestaurantLayoutContext);
 
   // Constants
   const initialValues = {
     variations:
       foodContextData?.isEditing ||
-      (foodContextData?.food?.variations ?? [])?.length > 0
+        (foodContextData?.food?.variations ?? [])?.length > 0
         ? (foodContextData?.food?.variations ?? [])
         : [
-            {
-              ...initialFormValuesTemplate,
-            },
-          ],
+          {
+            ...initialFormValuesTemplate,
+          },
+        ],
   };
 
   // Query
@@ -115,8 +109,8 @@ export default function VariationAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: `${foodContextData?.isEditing ? t('Edit') : t('New')} ${t('Food')}`,
-          message: `${t('Food has been')} ${foodContextData?.isEditing ? t('edited') : t('added')} ${t('successfully')}.`,
+          title: `${foodContextData?.isEditing ? getTranslation('edit') : getTranslation('new')} ${getTranslation('food')}`,
+          message: `${getTranslation('food_has_been')} ${foodContextData?.isEditing ? getTranslation('edited') : getTranslation('added')} ${getTranslation('successfully')}.`,
         });
 
         onClearFoodData();
@@ -126,11 +120,11 @@ export default function VariationAddForm({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('Something went wrong');
+          message = getTranslation('something_went_wrong');
         }
         showToast({
           type: 'error',
-          title: t('New Food'),
+          title: getTranslation('new_food'),
           message,
         });
       },
@@ -141,7 +135,13 @@ export default function VariationAddForm({
 /*   const addonsDropdown = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
-        return { label: addon.title, code: addon._id };
+        return {
+          label:
+            typeof addon.title === 'object'
+              ? addon.title[selectedLanguage] || ''
+              : addon.title || '',
+          code: addon._id,
+        };
       }),
     [data?.restaurant?.addons]
   ); */
@@ -171,6 +171,10 @@ export default function VariationAddForm({
          
           return {
             ...item,
+            title:
+              typeof item.title === 'object'
+                ? item.title[selectedLanguage]
+                : item.title,
             discounted: discounted,
             // addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
           };
@@ -183,6 +187,7 @@ export default function VariationAddForm({
         category: foodContextData?.food?.data.category?.code,
         subCategory: foodContextData?.food?.data.subCategory?.code,
         variations: _variations,
+        isReturnAble: foodContextData?.food?.data.isReturnAble
       };
       delete foodInput.__typename;
       await createFood({
@@ -201,8 +206,8 @@ export default function VariationAddForm({
       console.log(err)
       showToast({
         type: 'error',
-        title: `${foodContextData?.isEditing ? t('Edit') : t('New')} ${t('Food')}`,
-        message: `${t('Food')} ${foodContextData?.isEditing ? t('edit') : t('creation')} ${t('failed')}`,
+        title: `${foodContextData?.isEditing ? getTranslation('edit') : getTranslation('new')} ${getTranslation('food')}`,
+        message: `${getTranslation('food')} ${foodContextData?.isEditing ? getTranslation('edit') : getTranslation('creation')} ${getTranslation('failed')}`,
         duration: 2500,
       });
     }
@@ -227,7 +232,7 @@ export default function VariationAddForm({
       <div className="h-full w-full">
         <div className="flex flex-col gap-2">
           <div className="mb-2 flex flex-col">
-            <span className="text-lg">{t('Add Variation')}</span>
+            <span className="text-lg">{getTranslation('add_variation')}</span>
           </div>
 
           <div className="mb-2">
@@ -263,20 +268,20 @@ export default function VariationAddForm({
                                       <div className="relative">
                                         {(foodContextData?.isEditing ||
                                           !!index) && (
-                                          <button
-                                            className="absolute -right-1 top-2"
-                                            onClick={() => remove(index)}
-                                            type="button"
-                                          >
-                                            <FontAwesomeIcon
-                                              icon={faTimes}
-                                              size="lg"
-                                              color="#FF6347"
-                                            />
-                                          </button>
-                                        )}
+                                            <button
+                                              className="absolute -right-1 top-2"
+                                              onClick={() => remove(index)}
+                                              type="button"
+                                            >
+                                              <FontAwesomeIcon
+                                                icon={faTimes}
+                                                size="lg"
+                                                color="#FF6347"
+                                              />
+                                            </button>
+                                          )}
                                         <Fieldset
-                                          legend={`${t('Variation')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+                                          legend={`${getTranslation('variation')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
                                           toggleable
                                         >
                                           <div className="grid grid-cols-12 gap-4">
@@ -284,9 +289,18 @@ export default function VariationAddForm({
                                               <CustomTextField
                                                 type="text"
                                                 name={`variations[${index}].title`}
-                                                placeholder={t('Title')}
+                                                placeholder={getTranslation(
+                                                  'title'
+                                                )}
                                                 maxLength={35}
-                                                value={value.title}
+                                                value={
+                                                  typeof value.title ===
+                                                    'object'
+                                                    ? value.title[
+                                                    selectedLanguage
+                                                    ] || ''
+                                                    : value.title || ''
+                                                }
                                                 onChange={(e) =>
                                                   setFieldValue(
                                                     `variations[${index}].title`,
@@ -314,7 +328,9 @@ export default function VariationAddForm({
                                                 max={MAX_PRICE}
                                                 minFractionDigits={0}
                                                 maxFractionDigits={2}
-                                                placeholder={t('Price')}
+                                                placeholder={getTranslation(
+                                                  'price'
+                                                )}
                                                 showLabel={true}
                                                 value={value.price}
                                                 onChangeFieldValue={
@@ -334,8 +350,10 @@ export default function VariationAddForm({
                                               {value.discounted > 0 && (
                                                 <div className="absolute bottom-[-15px] left-[2px] font-semibold text-[10px] flex gap-2">
                                                   <p>
-                                                    {t('Actual Price')}&nbsp;:
-                                                    &nbsp;
+                                                    {getTranslation(
+                                                      'actual_price'
+                                                    )}
+                                                    &nbsp;: &nbsp;
                                                     <span className="line-through">
                                                       {value.price +
                                                         value.discounted}
@@ -343,7 +361,9 @@ export default function VariationAddForm({
                                                   </p>
                                                   ,
                                                   <p>
-                                                    {t('Discounted Price')}
+                                                    {getTranslation(
+                                                      'discounted_price'
+                                                    )}
                                                     &nbsp;: &nbsp;
                                                     <span>{value.price}</span>
                                                   </p>
@@ -355,8 +375,8 @@ export default function VariationAddForm({
                                               <CustomNumberField
                                                 name={`variations[${index}].discounted`}
                                                 min={0}
-                                                placeholder={t(
-                                                  'Discount Price'
+                                                placeholder={getTranslation(
+                                                  'discounted_price'
                                                 )}
                                                 showLabel={true}
                                                 value={value.discounted}
@@ -380,7 +400,9 @@ export default function VariationAddForm({
                                           {/*   <div className="col-span-12 sm:col-span-12">
                                               <CustomMultiSelectComponent
                                                 name={`variations[${index}].addons`}
-                                                placeholder={t('Addons')}
+                                                placeholder={getTranslation(
+                                                  'addons'
+                                                )}
                                                 options={addonsDropdown ?? []}
                                                 selectedItems={
                                                   value.addons ?? [
@@ -390,7 +412,10 @@ export default function VariationAddForm({
                                                 setSelectedItems={setFieldValue}
                                                 showLabel={true}
                                                 extraFooterButton={{
-                                                  title: t('Add New Addon'),
+                                                  title:
+                                                    getTranslation(
+                                                      'add_new_addon'
+                                                    ),
                                                   onChange: () =>
                                                     setIsAddAddonVisible(true),
                                                 }}
@@ -410,7 +435,9 @@ export default function VariationAddForm({
 
                                               <div className="col-span-12 mt-4 flex justify-end sm:col-span-12">
                                                 <CustomInputSwitch
-                                                  label={t('Out of Stock')}
+                                                  label={getTranslation(
+                                                    'out_of_stock'
+                                                  )}
                                                   loading={false}
                                                   isActive={value.isOutOfStock}
                                                   onChange={() => {
@@ -434,7 +461,7 @@ export default function VariationAddForm({
                                 className="w-full rounded border border-black bg-transparent text-black"
                                 icon={faAdd}
                                 iconStyles={{ color: 'black' }}
-                                title={t('Add New Variation')}
+                                title={getTranslation('add_new_variation')}
                                 onClick={() => push(initialFormValuesTemplate)}
                               />
                             </div>
@@ -445,7 +472,7 @@ export default function VariationAddForm({
                       <div className="mt-4 flex justify-between">
                         <CustomButton
                           className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                          label={t('Back')}
+                          label={getTranslation('back')}
                           type="button"
                           onClick={() => {
                             onBackClickHandler(values);
@@ -454,7 +481,9 @@ export default function VariationAddForm({
                         <CustomButton
                           className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
                           label={
-                            foodContextData?.isEditing ? t('Update') : t('Add')
+                            foodContextData?.isEditing
+                              ? getTranslation('update')
+                              : getTranslation('add')
                           }
                           type="submit"
                           loading={isSubmitting}
@@ -469,19 +498,6 @@ export default function VariationAddForm({
         </div>
       </div>
       <div>
-        <AddonAddForm
-        className='z-[999]'
-          isAddOptionsVisible={isAddAddonVisible}
-          setIsAddOptionsVisible={setIsAddAddonVisible}
-          option={option}
-          setOption={setOption}
-          addon={addon}
-          onHide={() => {
-            setIsAddAddonVisible(false);
-            setAddon(null);
-          }}
-          isAddAddonVisible={isAddAddonVisible}
-        />
       </div>
     </div>
   );

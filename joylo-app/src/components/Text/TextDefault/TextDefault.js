@@ -3,20 +3,16 @@ import { Text, StyleSheet } from 'react-native'
 import color from './styles'
 import { textStyles } from '../../../utils/textStyles'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
-import { useTranslation } from 'react-i18next'
-import { theme } from '../../../utils/themeColors'
 
+import { theme } from '../../../utils/themeColors'
+import { useLanguage } from '@/src/context/Language'
 
 function TextDefault(props, ref) {
-  const { i18n } = useTranslation()
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === "rtl", ...theme[themeContext.ThemeValue] }
+  const currentTheme = { ...theme[themeContext.ThemeValue] }
+  // const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const textColor = props.textColor ? props.textColor : themeContext.ThemeValue === 'Dark' ? 'white' : 'black'
-  const defaultStyle = StyleSheet.flatten([
-    color(textColor).color,
-    textStyles.Regular,
-    textStyles.Normal
-  ])
+  const defaultStyle = StyleSheet.flatten([color(textColor).color, textStyles.Regular, textStyles.Normal])
   var customStyles = [defaultStyle]
 
   if (props.bold) customStyles.push(textStyles.Bold)
@@ -39,11 +35,7 @@ function TextDefault(props, ref) {
 
   customStyles = StyleSheet.flatten([customStyles, props.style])
   return (
-    <Text
-      numberOfLines={props.numberOfLines ? props.numberOfLines : 0}
-      style={customStyles}
-      ref={ref}
-      >
+    <Text numberOfLines={props.numberOfLines ? props.numberOfLines : 0} style={customStyles} ref={ref}>
       {props.children}
     </Text>
   )

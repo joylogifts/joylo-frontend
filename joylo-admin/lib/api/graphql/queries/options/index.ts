@@ -13,3 +13,14 @@ export const GET_OPTIONS_BY_RESTAURANT_ID = gql`
     }
   }
 `;
+
+export const GET_OPTIONS = gql`
+  query GetOptions($storeId: String)  {
+    options(storeId: $storeId) {
+        _id
+        title
+        description
+        price
+        isActive
+    }
+}`

@@ -10,7 +10,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useTransition,
 } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -41,6 +40,7 @@ import { LayoutContext } from '@/lib/context/global/layout.context';
 
 // Hooks
 import { useUserContext } from '@/lib/hooks/useUser';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Interface/Types
 import { LayoutContextProps } from '@/lib/utils/interfaces';
@@ -61,9 +61,7 @@ import { timeAgo } from '@/lib/utils/methods/timeAgo';
 // Styles
 import classes from './app-bar.module.css';
 import { AppLogo } from '@/lib/utils/assets/svgs/logo';
-import { useLocale, useTranslations } from 'next-intl';
-import { TLocale } from '@/lib/utils/types/locale';
-import { setUserLocale } from '@/lib/utils/methods/locale';
+
 
 // GraphQL
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
@@ -72,6 +70,7 @@ import {
   GET_WEB_NOTIFICATIONS,
   MARK_WEB_NOTIFICATIONS_AS_READ,
 } from '@/lib/api/graphql';
+import { MenuItem } from 'primereact/menuitem';
 
 const AppTopbar = () => {
   // States
@@ -81,11 +80,18 @@ const AppTopbar = () => {
   const [notifications, setNotifications] = useState<IWebNotification[]>([]);
 
   // Hooks
-  const t = useTranslations();
+
   const pathname = usePathname();
   const router = useRouter();
-  const [, startTransition] = useTransition();
-  const currentLocale = useLocale();
+
+  const {
+    selectedLanguage,
+    setSelectedLanguage,
+    languages,
+    languagesLoading,
+    languagesError,
+    getTranslation,
+  } = useLangTranslation();
 
   // Ref
   const containerRef = useRef<HTMLDivElement>(null);
@@ -162,12 +168,12 @@ const AppTopbar = () => {
     router.push('/authentication/login');
   };
 
-  function onLocaleChange(value: string) {
-    const locale = value as TLocale;
-    startTransition(() => {
-      setUserLocale(locale);
-    });
-  }
+  // function onLocaleChange(value: string) {
+  //   const locale = value as TLocale;
+  //   startTransition(() => {
+  //     setUserLocale(locale);
+  //   });
+  // }
 
   // Use Effects
   useEffect(() => {
@@ -202,6 +208,26 @@ const AppTopbar = () => {
     };
   }, [isNtfnOpen]);
 
+  const menuItems: MenuItem[] =
+    !languagesLoading && !languagesError
+      ? languages.map<MenuItem>((lang) => ({
+        label: lang.label,
+        // PrimeReact’s MenuItem.template signature is (item, options) => ReactNode
+        template: () => (
+          <div
+            className={`${selectedLanguage === lang.code ? 'bg-[#FFA500]' : ''
+              } p-2 cursor-pointer`}
+            onClick={() => setSelectedLanguage(lang.code)}
+          >
+            {lang.label}
+          </div>
+        ),
+        command: () => {
+          setSelectedLanguage(lang.code);
+        },
+      }))
+      : [];
+
   return (
     <div className={`${classes['layout-topbar']}`}>
       <div className="flex items-center cursor-pointer">
@@ -218,7 +244,7 @@ const AppTopbar = () => {
         {shouldShow('Zone') && (
           <TextIconClickable
             icon={faMap}
-            title={t('Zone')}
+            title={getTranslation('zone')}
             className={
               pathname === '/zone'
                 ? 'rounded bg-primary-color text-white'
@@ -233,7 +259,7 @@ const AppTopbar = () => {
         {shouldShow('Dispatch') && (
           <TextIconClickable
             icon={faTruck}
-            title={t('Dispatch')}
+            title={getTranslation('dispatch')}
             className={
               pathname === '/dispatch'
                 ? 'rounded bg-primary-color text-white'
@@ -290,11 +316,10 @@ const AppTopbar = () => {
                   notifications?.map((notification, index) => (
                     <Link
                       key={index}
-                      className={`p-2 mx-3 rounded-md text-sm cursor-pointer ${
-                        notification.read
-                          ? 'text-black'
-                          : 'text-[#484848] bg-[#d8e3a369]'
-                      } hover:bg-gray-300`}
+                      className={`p-2 mx-3 rounded-md text-sm cursor-pointer ${notification.read
+                        ? 'text-black'
+                        : 'text-[#484848] bg-[#d8e3a369]'
+                        } hover:bg-gray-300`}
                       href={`${notification.navigateTo}`}
                       onClick={() => {
                         markAllAsRead();
@@ -323,111 +348,114 @@ const AppTopbar = () => {
             <FontAwesomeIcon icon={faGlobe} />
 
             <Menu
-              model={[
-                {
-                  label: 'ENGLISH',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('en')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('en');
-                  },
-                },
-                {
-                  label: 'ARABIC',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('ar')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('ar');
-                  },
-                },
-                {
-                  label: 'FRENCH',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('fr')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('fr');
-                  },
-                },
-                {
-                  label: 'KHMER',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('km')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('km');
-                  },
-                },
-                {
-                  label: 'CHINESE',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('zh')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('zh');
-                  },
-                },
-                {
-                  label: 'HEBREW',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('he')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('he');
-                  },
-                },
-              ]}
+              model={
+                menuItems
+              }
+              //   [
+              //   {
+              //     label: 'ENGLISH',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('en')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('en');
+              //     },
+              //   },
+              //   {
+              //     label: 'ARABIC',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('ar')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('ar');
+              //     },
+              //   },
+              //   {
+              //     label: 'FRENCH',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('fr')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('fr');
+              //     },
+              //   },
+              //   {
+              //     label: 'KHMER',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('km')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('km');
+              //     },
+              //   },
+              //   {
+              //     label: 'CHINESE',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('zh')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('zh');
+              //     },
+              //   },
+              //   {
+              //     label: 'HEBREW',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('he')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('he');
+              //     },
+              //   },
+              // ]
+
               popup
               ref={languageMenuRef}
               id="popup_menu_right"
               popupAlignment="right"
             />
           </div>
-
           <div
             className="flex items-center space-x-2 rounded-md p-2 hover:bg-[#d8d8d837]"
             onClick={(event) => menuRef.current?.toggle(event)}
@@ -442,7 +470,7 @@ const AppTopbar = () => {
                   ? user.image
                   : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
               }
-              alt={t('profile-img')}
+              alt={getTranslation('profile-img')}
               height={32}
               width={32}
               className="h-8 w-8 select-none rounded-full"
@@ -452,7 +480,7 @@ const AppTopbar = () => {
             <Menu
               model={[
                 {
-                  label: t('Logout'),
+                  label: getTranslation('logout'),
                   command: () => {
                     setLogoutModalVisible(true);
                   },
@@ -464,104 +492,109 @@ const AppTopbar = () => {
               popupAlignment="right"
             />
             <Menu
-              model={[
-                {
-                  label: 'ENGLISH',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('en')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('en');
-                  },
-                },
-                {
-                  label: 'ARABIC',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('ar')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('ar');
-                  },
-                },
-                {
-                  label: 'FRENCH',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('fr')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('fr');
-                  },
-                },
-                {
-                  label: 'KHMER',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('km')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('km');
-                  },
-                },
-                {
-                  label: 'CHINESE',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('zh')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('zh');
-                  },
-                },
-                {
-                  label: 'HEBREW',
-                  template(item) {
-                    return (
-                      <div
-                        className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                        onClick={() => onLocaleChange('he')}
-                      >
-                        {item.label}
-                      </div>
-                    );
-                  },
-                  command: () => {
-                    onLocaleChange('he');
-                  },
-                },
-              ]}
+              model={
+                menuItems
+              }
+              // model={
+              //   [
+              //   {
+              //     label: 'ENGLISH',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('en')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('en');
+              //     },
+              //   },
+              //   {
+              //     label: 'ARABIC',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('ar')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('ar');
+              //     },
+              //   },
+              //   {
+              //     label: 'FRENCH',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('fr')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('fr');
+              //     },
+              //   },
+              //   {
+              //     label: 'KHMER',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('km')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('km');
+              //     },
+              //   },
+              //   {
+              //     label: 'CHINESE',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('zh')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('zh');
+              //     },
+              //   },
+              //   {
+              //     label: 'HEBREW',
+              //     template(item) {
+              //       return (
+              //         <div
+              //           className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+              //           onClick={() => onLocaleChange('he')}
+              //         >
+              //           {item.label}
+              //         </div>
+              //       );
+              //     },
+              //     command: () => {
+              //       onLocaleChange('he');
+              //     },
+              //   },
+              // ]
+              // }
               popup
               ref={languageMenuRef}
               id="popup_menu_right"
@@ -581,104 +614,108 @@ const AppTopbar = () => {
           <FontAwesomeIcon icon={faGlobe} />
 
           <Menu
-            model={[
-              {
-                label: 'ENGLISH',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                      onClick={() => onLocaleChange('en')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('en');
-                },
-              },
-              {
-                label: 'ARABIC',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                      onClick={() => onLocaleChange('ar')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('ar');
-                },
-              },
-              {
-                label: 'FRENCH',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                      onClick={() => onLocaleChange('fr')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('fr');
-                },
-              },
-              {
-                label: 'KHMER',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                      onClick={() => onLocaleChange('km')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('km');
-                },
-              },
-              {
-                label: 'CHINESE',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                      onClick={() => onLocaleChange('zh')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('zh');
-                },
-              },
-              {
-                label: 'HEBREW',
-                template(item) {
-                  return (
-                    <div
-                      className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
-                      onClick={() => onLocaleChange('he')}
-                    >
-                      {item.label}
-                    </div>
-                  );
-                },
-                command: () => {
-                  onLocaleChange('he');
-                },
-              },
-            ]}
+            model={
+              menuItems
+            }
+            // model={[
+            //   {
+            //     label: 'ENGLISH',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'en' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+            //           onClick={() => onLocaleChange('en')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('en');
+            //     },
+            //   },
+            //   {
+            //     label: 'ARABIC',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'ar' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+            //           onClick={() => onLocaleChange('ar')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('ar');
+            //     },
+            //   },
+            //   {
+            //     label: 'FRENCH',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'fr' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+            //           onClick={() => onLocaleChange('fr')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('fr');
+            //     },
+            //   },
+            //   {
+            //     label: 'KHMER',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'km' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+            //           onClick={() => onLocaleChange('km')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('km');
+            //     },
+            //   },
+            //   {
+            //     label: 'CHINESE',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'zh' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+            //           onClick={() => onLocaleChange('zh')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('zh');
+            //     },
+            //   },
+            //   {
+            //     label: 'HEBREW',
+            //     template(item) {
+            //       return (
+            //         <div
+            //           className={`${currentLocale === 'he' ? 'bg-[#FFA500]' : ''} p-2  cursor-pointer`}
+            //           onClick={() => onLocaleChange('he')}
+            //         >
+            //           {item.label}
+            //         </div>
+            //       );
+            //     },
+            //     command: () => {
+            //       onLocaleChange('he');
+            //     },
+            //   },
+            // ]}
+
             popup
             ref={languageMenuRef}
             id="popup_menu_right"
@@ -731,15 +768,21 @@ const AppTopbar = () => {
         </div>
       )}
       <CustomDialog
-        title={t('Logout Confirmation')}
-        message={t('Are you sure you want to logout?')}
+        title={getTranslation('logout_confirmation')}
+        message={getTranslation('are_you_sure_you_want_to_logout')}
         visible={isLogoutModalVisible}
         onHide={() => setLogoutModalVisible(false)}
         onConfirm={onConfirmLogout}
         loading={false} // Set to true if you have a loading state for logout
         buttonConfig={{
-          primaryButtonProp: { label: t('Yes'), icon: 'pi pi-check' },
-          secondaryButtonProp: { label: t('Cancel'), icon: 'pi pi-times' },
+          primaryButtonProp: {
+            label: getTranslation('yes'),
+            icon: 'pi pi-check',
+          },
+          secondaryButtonProp: {
+            label: getTranslation('cancel'),
+            icon: 'pi pi-times',
+          },
         }}
       />
     </div>

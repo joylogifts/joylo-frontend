@@ -49,7 +49,8 @@ import {
   GET_SUBCATEGORIES,
   GET_SUBCATEGORY,
 } from '@/lib/api/graphql/queries/sub-categories';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function FoodsMain() {
   // Context
@@ -58,8 +59,9 @@ export default function FoodsMain() {
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { showToast } = useToast();
+  const { getTranslation } = useLangTranslation();
 
   // State - Table
   const [foodItems, setFoodItems] = useState<IFoodNew[] | null>(null);
@@ -85,6 +87,7 @@ export default function FoodsMain() {
       onError: onErrorFetchFoodsByRestaurant,
     }
   ) as IQueryResult<IFoodByRestaurantResponse | undefined, undefined>;
+
 
  /*  const { data } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
@@ -124,8 +127,8 @@ export default function FoodsMain() {
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Delete Food'),
-        message: `${t('Food has been deleted successfully')}.`,
+        title: getTranslation('delete_food'),
+        message: `${getTranslation('food_has_been_deleted_successfully')}.`,
       });
       setDeleteId({ id: '', categoryId: '' });
       refetch();
@@ -165,7 +168,7 @@ export default function FoodsMain() {
           isOutOfStock: fd.isOutOfStock,
           subCategory: {
             code: fd.subCategory,
-            label: sub_categories?.subCategories.find(
+            label: typeof sub_categories?.subCategories.find(
               (sub_ctg) => sub_ctg._id === fd.subCategory
             )?.title,
           },
@@ -175,6 +178,7 @@ export default function FoodsMain() {
           },
           title: fd.title,
           variations: fd.variations,
+          isReturnAble: fd.isReturnAble
         });
       })
     );
@@ -185,8 +189,8 @@ export default function FoodsMain() {
   function onErrorFetchFoodsByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Foods Fetch'),
-      message: t('Foods fetch failed'),
+      title: getTranslation('foods_fetch'),
+      message: getTranslation('foods_fetch_failed'),
       duration: 2500,
     });
   }
@@ -194,7 +198,7 @@ export default function FoodsMain() {
   // Constants
   const menuItems: IActionMenuItem<IFoodNew>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: async (data?: IFoodNew) => {
         if (subCategoriesLoading) {
           return console.log({ subCategoriesLoading });
@@ -245,7 +249,7 @@ export default function FoodsMain() {
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IFoodNew) => {
         if (data) {
           setDeleteId({ id: data._id, categoryId: data?.category?.code ?? '' });
@@ -286,7 +290,7 @@ export default function FoodsMain() {
             variables: { ...deleteId, restaurant: restaurantId },
           });
         }}
-        message={t('Are you sure you want to delete this option?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_option')}
       />
     </div>
   );

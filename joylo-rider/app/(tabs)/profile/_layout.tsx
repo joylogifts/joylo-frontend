@@ -1,4 +1,5 @@
 // Expo
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { Stack } from "expo-router";
 
@@ -9,7 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileLayout() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { appTheme } = useApptheme();
   const {top} = useSafeAreaInsets()
 
@@ -21,7 +22,7 @@ export default function ProfileLayout() {
           options={{
             headerShown: true,
             headerTitleAlign: "center",
-            headerTitle: t("Profile"),
+            headerTitle: t("profile"),
             headerTitleStyle: { color: appTheme.mainTextColor },
             headerStyle: { backgroundColor: appTheme.themeBackground },
           }}

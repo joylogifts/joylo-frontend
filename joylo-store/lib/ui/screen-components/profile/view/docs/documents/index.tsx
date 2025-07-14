@@ -1,6 +1,6 @@
 // Hooks
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
-import { useTranslation } from "react-i18next";
 
 // Core
 import { Text, TouchableOpacity, View } from "react-native";
@@ -15,7 +15,7 @@ import { Switch } from "react-native-switch";
 export default function DocumentsSection() {
   // Hooks
   const { appTheme, currentTheme, toggleTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { dataProfile } = useUserContext();
   return (
     <View className="flex flex-col h-[20%] w-full justify-between items-center">
@@ -30,7 +30,7 @@ export default function DocumentsSection() {
               color: appTheme.fontMainColor,
             }}
           >
-            {t("Bank Details")}
+            {getTranslation("bank_details")}
           </Text>
           <TouchableOpacity
             className="top-6"
@@ -38,8 +38,8 @@ export default function DocumentsSection() {
           >
             <Text className="font-semibold text-[#0EA5E9]">
               {dataProfile?.bussinessDetails?.accountNumber
-                ? t("Update")
-                : t("Add")}
+                ? getTranslation("update")
+                : getTranslation("add")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -50,8 +50,8 @@ export default function DocumentsSection() {
             className={`${dataProfile?.bussinessDetails?.accountNumber ? "text-[#0D99FF]" : "text-[#991B1B]"} font-semibold`}
           >
             {dataProfile?.bussinessDetails?.accountNumber
-              ? t("Submitted Data")
-              : t("Missing Data")}
+              ? getTranslation("submitted_data")
+              : getTranslation("missing_data")}
           </Text>
         </View>
       </View>
@@ -62,7 +62,7 @@ export default function DocumentsSection() {
             color: appTheme.fontMainColor,
           }}
         >
-          {t("Other Details")}
+          {getTranslation("other_details")}
         </Text>
         <View
           className="flex flex-row gap-3 items-center justify-between px-5 w-full border-b-2 py-3"
@@ -73,7 +73,7 @@ export default function DocumentsSection() {
               color: appTheme.fontMainColor,
             }}
           >
-            {t("Address")}
+            {getTranslation("address")}
           </Text>
           {dataProfile?.address ? (
             <Text style={{ color: appTheme.fontSecondColor }}>
@@ -92,7 +92,7 @@ export default function DocumentsSection() {
               color: appTheme.fontMainColor,
             }}
           >
-            {t("Phone")}
+            {getTranslation("phone")}
           </Text>
           {dataProfile?.phone ? (
             <Text style={{ color: appTheme.fontSecondColor }}>
@@ -111,7 +111,7 @@ export default function DocumentsSection() {
               color: appTheme.fontMainColor,
             }}
           >
-            {t("Username")}
+            {getTranslation("username")}
           </Text>
           {dataProfile?.username ? (
             <Text style={{ color: appTheme.fontSecondColor }}>
@@ -130,7 +130,7 @@ export default function DocumentsSection() {
               color: appTheme.fontMainColor,
             }}
           >
-            {t("Password")}
+            {getTranslation("password")}
           </Text>
           {dataProfile?.password ? (
             <Text style={{ color: appTheme.fontSecondColor }}>
@@ -149,7 +149,7 @@ export default function DocumentsSection() {
               color: appTheme.fontMainColor,
             }}
           >
-            {t("Wallet Amount")}
+            {getTranslation("wallet_amount")}
           </Text>
           {dataProfile?.currentWalletAmount ? (
             <Text style={{ color: appTheme.fontSecondColor }}>
@@ -167,7 +167,7 @@ export default function DocumentsSection() {
             color: appTheme.fontMainColor,
           }}
         >
-          {t("Theme")}
+          {getTranslation("theme")}
         </Text>
         <View className="flex flex-row  items-center justify-center">
           <Switch
@@ -195,7 +195,7 @@ export default function DocumentsSection() {
             value={currentTheme === "dark"}
             onValueChange={() => toggleTheme(currentTheme as app_theme)}
           />
-        </View>
+        </View> 
       </View>
     </View>
   );

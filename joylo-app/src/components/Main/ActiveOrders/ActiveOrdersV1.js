@@ -16,53 +16,51 @@ import RandomShape from '../../../assets/SVG/RandomShape'
 import analytics from '../../../utils/analytics'
 import OrdersContext from '../../../context/Orders'
 import Spinner from '../../Spinner/Spinner'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const orderStatuses = [
   {
     key: 'PENDING',
     status: 1,
-    statusText: 'pendingOrder'
+    statusText: 'pending'
   },
   {
     key: 'ACCEPTED',
     status: 2,
-    statusText: 'acceptedOrder'
+    statusText: 'accepted'
   },
   {
     key: 'ASSIGNED',
     status: 3,
-    statusText: 'assignedOrder'
+    statusText: 'assigned'
   },
   {
     key: 'PICKED',
     status: 4,
-    statusText: 'pickedOrder'
+    statusText: 'picked'
   },
   {
     key: 'DELIVERED',
     status: 5,
-    statusText: 'deliveredOrder'
+    statusText: 'delivered'
   },
   {
     key: 'COMPLETED',
     status: 6,
-    statusText: 'completedOrder'
+    statusText: 'completed'
   }
 ]
 
 const orderStatusActive = ['PENDING', 'PICKED', 'ACCEPTED', 'ASSIGNED']
 
 const ActiveOrders = () => {
-
-  const {t} = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const { loadingOrders, errorOrders, orders } = useContext(OrdersContext)
   const configuration = useContext(ConfigurationContext)
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
-  const activeOrders = orders.filter(o =>
-    orderStatusActive.includes(o.orderStatus)
-  )
+  const activeOrders = orders.filter((o) => orderStatusActive.includes(o.orderStatus))
 
   const currentTheme = theme[themeContext.ThemeValue]
   const [showAll, setShowAll] = useState(false)
@@ -73,32 +71,13 @@ const ActiveOrders = () => {
   if (errorOrders && !orders) return <TextError text={errorOrders.message} />
   return (
     <>
-      <FlatList
-        contentContainerStyle={{ paddingRight: scale(10) }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={displayOrders}
-        keyExtractor={item => item._id}
-        renderItem={({ item, index }) => (
-          <Item
-            key={index}
-            navigation={navigation}
-            configuration={configuration}
-            currentTheme={currentTheme}
-            item={item}
-          />
-        )}
-      />
+      <FlatList contentContainerStyle={{ paddingRight: scale(10) }} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} data={displayOrders} keyExtractor={(item) => item._id} renderItem={({ item, index }) => <Item key={index} navigation={navigation} configuration={configuration} currentTheme={currentTheme} item={item} />} />
       <View style={styles().viewAllButton}>
         {activeOrders.length > 2 && (
           <>
             <View style={styles().btncontainer}>
-              <TouchableOpacity
-                onPress={() => setShowAll(!showAll)}
-                style={styles().button}>
-                <Text style={styles().buttonText}>
-                  {showAll ? t('viewLess') : t('viewAll')}
-                </Text>
+              <TouchableOpacity onPress={() => setShowAll(!showAll)} style={styles().button}>
+                <Text style={styles().buttonText}>{showAll ? t('view_less') : t('view_all')}</Text>
               </TouchableOpacity>
             </View>
           </>
@@ -115,9 +94,9 @@ const Item = ({ navigation, configuration, currentTheme, item }) => {
     `,
     { variables: { id: item._id } }
   )
-  const {t} = useTranslation()
-  const checkStatus = status => {
-    const obj = orderStatuses.filter(x => {
+  const { getTranslation: t } = useLanguage()
+  const checkStatus = (status) => {
+    const obj = orderStatuses.filter((x) => {
       return x.key === status
     })
     return obj[0]
@@ -133,7 +112,8 @@ const Item = ({ navigation, configuration, currentTheme, item }) => {
           _id: item._id,
           currencySymbol: configuration.currencySymbol
         })
-      }}>
+      }}
+    >
       <View>
         <View style={styles(currentTheme).statusContainer}>
           <View style={styles().randomShapeContainer}>
@@ -141,37 +121,19 @@ const Item = ({ navigation, configuration, currentTheme, item }) => {
           </View>
           <View style={styles().textContainer}>
             <View style={styles().textInnerContainer}>
-              <MaterialIcons
-                name="radio-button-checked"
-                size={30}
-                color="black"
-              />
-              <Text style={styles(currentTheme).description}>
-                {item.restaurant.name}
-              </Text>
+              <MaterialIcons name='radio-button-checked' size={30} color='black' />
+              <Text style={styles(currentTheme).description}>{item.restaurant.name}</Text>
             </View>
             <View style={styles().activeOrdersContainer}>
               {Array(checkStatus(item.orderStatus).status)
                 .fill(0)
                 .map((item, index) => (
-                  <FontAwesome
-                    key={index}
-                    name="circle"
-                    size={15}
-                    color={currentTheme.iconColorPink}
-                    style={styles().statusCircle}
-                  />
+                  <FontAwesome key={index} name='circle' size={15} color={currentTheme.iconColorPink} style={styles().statusCircle} />
                 ))}
               {Array(4 - checkStatus(item.orderStatus).status)
                 .fill(0)
                 .map((item, index) => (
-                  <FontAwesome
-                    key={index}
-                    name="circle"
-                    size={15}
-                    color={currentTheme.radioOuterColor}
-                    style={styles().statusCircle}
-                  />
+                  <FontAwesome key={index} name='circle' size={15} color={currentTheme.radioOuterColor} style={styles().statusCircle} />
                 ))}
             </View>
             <Text numberOfLines={1} style={styles(currentTheme).statusText}>

@@ -24,6 +24,7 @@ import CardSkeletonGrid from "@/lib/ui/useable-components/card-skelton-grid";
 import useDebounceFunction from "@/lib/hooks/useDebounceForFunction";
 import { useRouter } from "next/navigation";
 import AuthGuard from "@/lib/hoc/auth.guard";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 // import { ICuisinesData } from "@/lib/utils/interfaces";
 
 // Slugs for rendering cuisines-specific cards
@@ -54,6 +55,7 @@ function SeeAllSection() {
     fetchPolicy: "network-only",
   });
 
+  const { getTranslation } = useLangTranslation()
     // Fetch data using slug
   const { data, loading, error } = useQueryBySlug(slug);
   
@@ -108,11 +110,11 @@ const ProtectedFavRestaurants = AuthGuard(ProtectedLayout);
 
   // Handle query error silently (can be extended with an error UI)
   if (error) {
-    return <div>Error loading data</div>;
+    return <div>{getTranslation("error_loading_data")}</div>;
   }
 
   // If no data returned, show empty state
-  if (!data?.length) return <div>No items found</div>;
+  if (!data?.length) return <div>{getTranslation("no_items_found")}</div>;
 
   return (
     <>

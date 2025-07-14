@@ -1,4 +1,5 @@
 "use client";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 // Queries- Mutations
@@ -24,152 +25,156 @@ import { GET_USER_PROFILE } from "@/lib/api/graphql";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddressesMain() {
-  // states
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
-  const [isUserAddressModalOpen, setIsUserAddressModalOpen] = useState(false);
-  const [editAddress, setEditAddress] = useState<IUserAddress | null>(null);
+    const { getTranslation } = useLangTranslation();
+    // states
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+    const [isUserAddressModalOpen, setIsUserAddressModalOpen] = useState(false);
+    const [editAddress, setEditAddress] = useState<IUserAddress | null>(null);
 
-  // Hooks
-  const { showToast } = useToast();
+    // Hooks
+    const { showToast } = useToast();
 
-  //Queries and Mutations
-  const { data: profileData, loading: profileLoading } = useQuery(
-    GET_USER_PROFILE,
-    {
-      fetchPolicy: "cache-and-network",
-    }
-  );
+    //Queries and Mutations
+    const { data: profileData, loading: profileLoading } = useQuery(
+        GET_USER_PROFILE,
+        {
+            fetchPolicy: "cache-and-network",
+        }
+    );
 
-  const [
-    mutate,
-    { loading: loadingAddressMutation, error: deleteAddressError },
-  ] = useMutation(DELETE_ADDRESS, {
-    onCompleted,
-  });
-
-  function onCompleted() {
-    showToast({
-      type: "success",
-      title: "Address",
-      message: "Deleted Successfully",
-      duration: 3000,
+    const [
+        mutate,
+        { loading: loadingAddressMutation, error: deleteAddressError },
+    ] = useMutation(DELETE_ADDRESS, {
+        onCompleted,
     });
-    setDeleteTarget(null);
-  }
 
-  // variables
-  const addresses = profileData?.profile?.addresses || [];
-  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  // Handlers
-
-  // Handle Toggle Dropdown
-  // This function toggles the dropdown menu for a specific address.
-  const toggleDropdown = useCallback((addressId: string) => {
-    setActiveDropdown((prev) => (prev === addressId ? null : addressId));
-  }, []);
-
-  // Handle Delete Address
-  // This function sets the target address ID for deletion.
-  const handleDeleteAddress = useCallback((addressId: string) => {
-    setDeleteTarget(addressId);
-  }, []);
-
-  // Handle Confirm Delete
-  // This function confirms the deletion of the address.
-  // It calls the mutation to delete the address and resets the target.
-  const handleConfirmDelete = useCallback(async () => {
-    if (deleteTarget) {
-      await mutate({ variables: { id: deleteTarget } });
-      setDeleteTarget(null);
+    function onCompleted() {
+        showToast({
+            type: "success",
+            title: "Address",
+            message: "Deleted Successfully",
+            duration: 3000,
+        });
+        setDeleteTarget(null);
     }
-  }, [deleteTarget]);
 
-  const onEditAddress = (address: IUserAddress | null) => {
-    setEditAddress(address);
-    setIsUserAddressModalOpen(!!address);
-  };
+    // variables
+    const addresses = profileData?.profile?.addresses || [];
+    const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  // UseEffects
-  // Handle Address Deletion Error
-  // This effect shows a toast notification if there is an error deleting the address.
-  useEffect(() => {
-    if (deleteAddressError) {
-      showToast({
-        type: "error",
-        title: "Address",
-        message: "Failed to delete",
-        duration: 3000,
-      });
-    }
-  }, [deleteAddressError]);
+    // Handlers
 
-  // Handle Click Outside Dropdown
-  // This effect closes the dropdown menu if a click is detected outside of it.
-  // It uses a ref to check if the click target is outside of the dropdown.
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window === "undefined") return;
+    // Handle Toggle Dropdown
+    // This function toggles the dropdown menu for a specific address.
+    const toggleDropdown = useCallback((addressId: string) => {
+        setActiveDropdown((prev) => (prev === addressId ? null : addressId));
+    }, []);
 
-    const handleClickOutside = (event: MouseEvent) => {
-      const isOutside = addresses.every((address: ISingleAddress) => {
-        const ref = dropdownRefs.current[address?._id];
-        return !ref || !ref.contains(event.target as Node);
-      });
+    // Handle Delete Address
+    // This function sets the target address ID for deletion.
+    const handleDeleteAddress = useCallback((addressId: string) => {
+        setDeleteTarget(addressId);
+    }, []);
 
-      if (isOutside) {
-        setActiveDropdown(null);
-      }
+    // Handle Confirm Delete
+    // This function confirms the deletion of the address.
+    // It calls the mutation to delete the address and resets the target.
+    const handleConfirmDelete = useCallback(async () => {
+        if (deleteTarget) {
+            await mutate({ variables: { id: deleteTarget } });
+            setDeleteTarget(null);
+        }
+    }, [deleteTarget]);
+
+    const onEditAddress = (address: IUserAddress | null) => {
+        setEditAddress(address);
+        setIsUserAddressModalOpen(!!address);
     };
-    window.addEventListener("mousedown", handleClickOutside);
-    return () => window.removeEventListener("mousedown", handleClickOutside);
-  }, [addresses]);
 
-  // Return Skelton on Loading state
-  if (profileLoading) return <AddressesSkeleton />;
+    // UseEffects
+    // Handle Address Deletion Error
+    // This effect shows a toast notification if there is an error deleting the address.
+    useEffect(() => {
+        if (deleteAddressError) {
+            showToast({
+                type: "error",
+                title: "Address",
+                message: "Failed to delete",
+                duration: 3000,
+            });
+        }
+    }, [deleteAddressError]);
 
-  return (
-    <>
-      <div className="w-full mx-auto">
-        <CustomDialog
-          onConfirm={handleConfirmDelete}
-          onHide={() => setDeleteTarget(null)}
-          visible={!!deleteTarget}
-          loading={loadingAddressMutation}
-        />
-        {addresses?.map((address: IUserAddress) => (
-          <AddressItem
-            key={address?._id}
-            address={address}
-            activeDropdown={activeDropdown}
-            toggleDropdown={toggleDropdown}
-            handleDelete={handleDeleteAddress}
-            setDropdownRef={(id) => (el) => (dropdownRefs.current[id] = el)}
-            onEditAddress={onEditAddress}
-          />
-        ))}
-        {!addresses.length && <EmptyAddress />}
+    // Handle Click Outside Dropdown
+    // This effect closes the dropdown menu if a click is detected outside of it.
+    // It uses a ref to check if the click target is outside of the dropdown.
+    useEffect(() => {
+        // Only run on client side
+        if (typeof window === "undefined") return;
 
-        <div className="flex justify-center mt-16">
-          <CustomIconButton
-            title="Add New Address"
-            iconColor="black"
-            classNames="bg-[#FFA500] w-[content] px-4"
-            Icon={faPlus}
-            loading={false}
-            handleClick={() => {
-              setIsUserAddressModalOpen(true);
-            }}
-          />
-        </div>
-      </div>
+        const handleClickOutside = (event: MouseEvent) => {
+            const isOutside = addresses.every((address: ISingleAddress) => {
+                const ref = dropdownRefs.current[address?._id];
+                return !ref || !ref.contains(event.target as Node);
+            });
 
-      <UserAddressComponent
-        editAddress={editAddress}
-        visible={isUserAddressModalOpen}
-        onHide={() => setIsUserAddressModalOpen(false)}
-      />
-    </>
-  );
+            if (isOutside) {
+                setActiveDropdown(null);
+            }
+        };
+        window.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            window.removeEventListener("mousedown", handleClickOutside);
+    }, [addresses]);
+
+    // Return Skelton on Loading state
+    if (profileLoading) return <AddressesSkeleton />;
+
+    return (
+        <>
+            <div className="w-full mx-auto">
+                <CustomDialog
+                    onConfirm={handleConfirmDelete}
+                    onHide={() => setDeleteTarget(null)}
+                    visible={!!deleteTarget}
+                    loading={loadingAddressMutation}
+                />
+                {addresses?.map((address: IUserAddress) => (
+                    <AddressItem
+                        key={address?._id}
+                        address={address}
+                        activeDropdown={activeDropdown}
+                        toggleDropdown={toggleDropdown}
+                        handleDelete={handleDeleteAddress}
+                        setDropdownRef={(id) => (el) =>
+                            (dropdownRefs.current[id] = el)
+                        }
+                        onEditAddress={onEditAddress}
+                    />
+                ))}
+                {!addresses.length && <EmptyAddress />}
+
+                <div className="flex justify-center mt-16">
+                    <CustomIconButton
+                        title={getTranslation("add_new_address_button")}
+                        iconColor="black"
+                        classNames="bg-[#FFA500] w-[content] px-4"
+                        Icon={faPlus}
+                        loading={false}
+                        handleClick={() => {
+                            setIsUserAddressModalOpen(true);
+                        }}
+                    />
+                </div>
+            </div>
+
+            <UserAddressComponent
+                editAddress={editAddress}
+                visible={isUserAddressModalOpen}
+                onHide={() => setIsUserAddressModalOpen(false)}
+            />
+        </>
+    );
 }

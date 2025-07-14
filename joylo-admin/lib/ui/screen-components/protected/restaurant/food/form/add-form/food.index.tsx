@@ -6,22 +6,19 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 
 // Context
 import { FoodsContext } from '@/lib/context/restaurant/foods.context';
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+
 
 // Interface and Types
 import {
+  ICategoriesResponse,
   ICategory,
-  ICategoryByRestaurantResponse,
   IDropdownSelectItem,
   IFoodDetailsComponentProps,
   IFoodNew,
   IQueryResult,
-  ISubCategory,
-  ISubCategoryByParentIdResponse,
 } from '@/lib/utils/interfaces';
 import { IFoodDetailsForm } from '@/lib/utils/interfaces/forms/food.form.interface';
 
@@ -33,13 +30,11 @@ import { onErrorMessageMatcher } from '@/lib/utils/methods/error';
 import CategoryAddForm from '../../../category/add-form';
 import CustomButton from '@/lib/ui/useable-components/button';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
-import CustomDropdownComponent from '@/lib/ui/useable-components/custom-dropdown';
 import CustomTextAreaField from '@/lib/ui/useable-components/custom-text-area-field';
 import CustomUploadImageComponent from '@/lib/ui/useable-components/upload/upload-image';
 
 // API
-import { GET_CATEGORY_BY_RESTAURANT_ID } from '@/lib/api/graphql';
-import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
+import { GET_CATEGORIES } from '@/lib/api/graphql';
 
 // Schema
 import { FoodSchema } from '@/lib/utils/schema';
@@ -47,12 +42,10 @@ import { FoodSchema } from '@/lib/utils/schema';
 // Prime React
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
-// Icons
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
 
 // Components
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
-import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const initialValues: IFoodDetailsForm = {
   _id: null,
@@ -60,36 +53,26 @@ const initialValues: IFoodDetailsForm = {
   description: '',
   image: '',
   category: null,
-  subCategory: null,
+  isReturnAble: false 
 };
 export default function FoodDetails({
   stepperProps,
 }: IFoodDetailsComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Props
   const { onStepChange, order } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
     type: '',
     order: -1,
   };
 
   // Context
   const { onSetFoodContextData, foodContextData } = useContext(FoodsContext);
-  const { isAddSubCategoriesVisible, setIsAddSubCategoriesVisible } =
-    useContext(RestaurantLayoutContext);
-  const {
-    restaurantLayoutContextData: { restaurantId },
-  } = useContext(RestaurantLayoutContext);
 
-  // State
-  const [isAddCategoryVisible, setIsAddCategoryVisible] = useState(false);
-  const [subCategories] = useState<ISubCategory[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<
-    IDropdownSelectItem[]
-  >([]);
-  const [category, setCategory] = useState<ICategory | null>(null);
+
   const [categoryDropDown, setCategoryDropDown] =
     useState<IDropdownSelectItem>();
   const [foodInitialValues, setFoodInitialValues] = useState(
@@ -104,59 +87,46 @@ export default function FoodDetails({
     loading: categoriesLoading,
     refetch: refetchCategories,
   } = useQueryGQL(
-    GET_CATEGORY_BY_RESTAURANT_ID,
-    { id: restaurantId ?? '' },
+    GET_CATEGORIES,
+    {},
     {
       fetchPolicy: 'no-cache',
-      enabled: !!restaurantId,
     }
-  ) as IQueryResult<ICategoryByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<ICategoriesResponse | undefined, undefined>;
 
-  const {
-    data: subCategoriesData,
-    loading: subCategoriesLoading,
-    refetch: refetchSubCategories,
-  } = useQueryGQL(
-    GET_SUBCATEGORIES_BY_PARENT_ID,
-    {
-      parentCategoryId: categoryDropDown?.code,
-    },
-    {
-      enabled: !!categoryDropDown?.code,
-      fetchPolicy: 'cache-and-network',
-    }
-  ) as IQueryResult<
-    ISubCategoryByParentIdResponse | undefined,
-    { parentCategoryId: string }
-  >;
 
   // Memoized Data
   const categoriesDropdown = useMemo(
     () =>
-      data?.restaurant?.categories.map((category: ICategory) => {
-        return { label: category.title, code: category._id };
+      data?.categories.map((category: ICategory) => {
+        return {
+          label:
+            typeof category.title === 'object'
+              ? category.title[selectedLanguage]
+              : category.title,
+          code: category._id,
+        };
       }),
-    [data?.restaurant?.categories]
+    [data?.categories]
   );
 
-  const subCategoriesDropdown = useMemo(
-    () =>
-      subCategoriesData?.subCategoriesByParentId.map(
-        (sub_category: ISubCategory) => {
-          return { label: sub_category.title, code: sub_category._id };
-        }
-      ),
-    [categoryDropDown?.code, subCategoriesData]
-  );
 
   // Handlers
   const onFoodSubmitHandler = (values: IFoodDetailsForm) => {
+    console.log('onFoodSubmitHandler', values);
     const foodData: IFoodNew = {
       _id: foodContextData?.food?.data?._id ?? '',
-      title: values.title,
-      description: values.description,
+      title:
+        typeof values.title === 'object'
+          ? values.title[selectedLanguage] || ''
+          : values.title || '',
+      description:
+        typeof values.description === 'object'
+          ? values.description[selectedLanguage] || ''
+          : values.description || '',
+
       category: values.category,
-      subCategory: values.subCategory,
+      subCategory: null,
       image: values.image,
       isOutOfStock: false,
       isActive: true,
@@ -165,7 +135,10 @@ export default function FoodDetails({
         (foodContextData?.food?.variations ?? []).length > 0
           ? (foodContextData?.food?.variations ?? [])
           : [],
+      isReturnAble: values.isReturnAble
     };
+
+    console.log('foodData on submit', foodData);
 
     onSetFoodContextData({
       food: {
@@ -181,26 +154,9 @@ export default function FoodDetails({
   };
 
   useEffect(() => {
-    if (categoryDropDown) {
-      const selectedSubCategory: IDropdownSelectItem[] =
-        subCategoriesData?.subCategoriesByParentId
-          .filter((sub_ctg) => sub_ctg.parentCategoryId)
-          .map((sub_ctg_: ISubCategory) => ({
-            code: sub_ctg_?._id || '',
-            label: sub_ctg_?.title || '',
-          })) || [];
-      setSelectedSubCategories(selectedSubCategory);
-    }
-    // setFoodInitialValues((prev)=>({...prev, subCategory:foodContextData?.food?.data.subCategory||null}))
     refetchCategories();
-    refetchSubCategories({
-      parentCategoryId: categoryDropDown?.code ?? '',
-    });
   }, [
-    categoryDropDown,
-    setIsAddSubCategoriesVisible,
-    isAddSubCategoriesVisible,
-    subCategoriesData,
+    categoryDropDown
   ]);
 
   // UseEffects
@@ -211,19 +167,14 @@ export default function FoodDetails({
           _category.code === foodContextData?.food?.data.category?.code
       );
 
-      const editing_subCategory = subCategoriesDropdown?.find(
-        (_sub_category) =>
-          _sub_category.code === foodContextData?.food?.data.subCategory?.code
-      );
 
       setFoodInitialValues({
         ...JSON.parse(JSON.stringify(foodInitialValues)),
         category: editing_category,
-        subCategory: editing_subCategory
       });
       setCategoryDropDown(editing_category ?? ({} as IDropdownSelectItem));
     }
-  }, [categoriesDropdown, subCategoriesDropdown]);
+  }, [categoriesDropdown]);
 
   return (
     <div className="w-full h-full flex items-center justify-start">
@@ -235,6 +186,7 @@ export default function FoodDetails({
               validationSchema={FoodSchema}
               enableReinitialize={true}
               onSubmit={async (values) => {
+                console.log('onSubmit values', values);
                 onFoodSubmitHandler(values);
               }}
               validateOnChange={false}
@@ -255,12 +207,12 @@ export default function FoodDetails({
                           htmlFor="category"
                           className="text-sm font-[500]"
                         >
-                          {t('Category')}
+                          {getTranslation('category')}
                         </label>
                         <Dropdown
                           name="category"
                           value={values.category}
-                          placeholder={t('Select Category')}
+                          placeholder={getTranslation('select_category')}
                           className="md:w-20rem p-dropdown-no-box-shadow m-0 h-10 w-full border border-gray-300 p-0 align-middle text-sm focus:shadow-none focus:outline-none"
                           panelClassName="border-gray-200 border-2"
                           onChange={(e: DropdownChangeEvent) => {
@@ -269,19 +221,6 @@ export default function FoodDetails({
                           }}
                           options={categoriesDropdown ?? []}
                           loading={categoriesLoading}
-                          panelFooterTemplate={() => {
-                            return (
-                              <div className="flex justify-between space-x-2">
-                                <TextIconClickable
-                                  className="w-full h-fit rounded  text-black"
-                                  icon={faAdd}
-                                  iconStyles={{ color: 'black' }}
-                                  title={t('Add New Category')}
-                                  onClick={() => setIsAddCategoryVisible(true)}
-                                />
-                              </div>
-                            );
-                          }}
                           style={{
                             borderColor: onErrorMessageMatcher(
                               'category',
@@ -295,57 +234,16 @@ export default function FoodDetails({
                       </div>
 
                       <div>
-                        {!subCategoriesLoading ? (
-                          <CustomDropdownComponent
-                            name="subCategory"
-                            placeholder={t('Select Sub-Category')}
-                            showLabel={true}
-                            extraFooterButton={{
-                              onChange: () => {
-                                setIsAddSubCategoriesVisible((prev) => ({
-                                  bool: !prev.bool,
-                                  parentCategoryId:
-                                    values?.category?.code ?? '',
-                                }));
-                                refetchSubCategories({
-                                  parentCategoryId:
-                                    values?.category?.code ||
-                                    categoryDropDown?.code ||
-                                    '',
-                                });
-                              },
-                              title: t('Add Sub-Category'),
-                            }}
-                            selectedItem={values.subCategory}
-                            setSelectedItem={setFieldValue}
-                            options={
-                              subCategoriesDropdown ??
-                              selectedSubCategories ??
-                              []
-                            }
-                            isLoading={subCategoriesLoading}
-                            style={{
-                              borderColor: onErrorMessageMatcher(
-                                'subCategory',
-                                errors?.subCategory,
-                                FoodErrors
-                              )
-                                ? 'red'
-                                : '',
-                            }}
-                          />
-                        ) : (
-                          <InputSkeleton />
-                        )}
-                      </div>
-
-                      <div>
                         <CustomTextField
                           type="text"
                           name="title"
-                          placeholder={t('Title')}
+                          placeholder={getTranslation('title')}
                           maxLength={35}
-                          value={values.title}
+                          value={
+                            typeof values.title === 'object'
+                              ? values.title[selectedLanguage] || ''
+                              : values.title || ''
+                          }
                           onChange={handleChange}
                           showLabel={true}
                           style={{
@@ -362,9 +260,13 @@ export default function FoodDetails({
                       <div>
                         <CustomTextAreaField
                           name="description"
-                          label={t('Description')}
-                          placeholder={t('Description')}
-                          value={values.description}
+                          label={getTranslation('description')}
+                          placeholder={getTranslation('description')}
+                          value={
+                            typeof values.description === 'object'
+                              ? values?.description?.[selectedLanguage] || ''
+                              : values?.description || ''
+                          }
                           onChange={handleChange}
                           showLabel={true}
                           className={''}
@@ -381,10 +283,21 @@ export default function FoodDetails({
                       </div>
 
                       <div>
+                        <CustomInputSwitch
+                        label='Return Able'
+                        isActive={values.isReturnAble}
+                        loading={false}
+                        onChange={(e) => {
+                          setFieldValue('isReturnAble' , e.target.checked)
+                        }}
+                        />
+                      </div>
+
+                      <div>
                         <CustomUploadImageComponent
                           key="image"
                           name="image"
-                          title={t('Upload Image')}
+                          title={getTranslation('upload_image')}
                           fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                           maxFileHeight={841}
                           maxFileWidth={1980}
@@ -411,7 +324,7 @@ export default function FoodDetails({
                     <div className="flex justify-end mt-4">
                       <CustomButton
                         className="w-fit h-10 bg-black text-white border-gray-300 px-8"
-                        label={t('Next')}
+                        label={getTranslation('next')}
                         type="submit"
                         loading={isSubmitting}
                       />
@@ -425,13 +338,13 @@ export default function FoodDetails({
       </div>
 
       <CategoryAddForm
-        category={category}
-        onHide={() => {
-          setIsAddCategoryVisible(false);
-          setCategory(null);
-        }}
-        isAddCategoryVisible={isAddCategoryVisible}
-        subCategories={subCategories}
+        // category={category}
+        // onHide={() => {
+        //   setIsAddCategoryVisible(false);
+        //   setCategory(null);
+        // }}
+        // isAddCategoryVisible={isAddCategoryVisible}
+        // subCategories={subCategories}
       />
     </div>
   );

@@ -24,9 +24,10 @@ export interface IOptionsMainComponentsProps extends IGlobalComponentProps {
 /*  */
 export interface IOptions {
   _id: string;
-  title: string;
-  description: string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   price: number;
+  isActive? : boolean
   __typename: string;
 }
 export interface IOptionsByRestaurantResponse {
@@ -35,4 +36,8 @@ export interface IOptionsByRestaurantResponse {
     options: IOptions[];
     __typename: string;
   };
+}
+
+export interface IOptionsResponse {
+  options: IOptions[]
 }

@@ -16,3 +16,4 @@ export * from "./vendor.query";
 export * from "./version.query";
 export * from "./zone.query";
 export * from "./rider.query";
+export * from "./language.query";

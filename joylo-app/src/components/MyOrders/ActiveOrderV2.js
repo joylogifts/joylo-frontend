@@ -11,16 +11,10 @@ import TextError from '../Text/TextError/TextError'
 import { alignment } from '../../utils/alignment'
 import styles from './styles'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
-const ActiveOrders = ({
-  navigation,
-  loading,
-  error,
-  activeOrders,
-  showActiveHeader,
-  showPastHeader
-}) => {
-  const { t } = useTranslation()
+const ActiveOrders = ({ navigation, loading, error, activeOrders, showActiveHeader, showPastHeader }) => {
+  const { getTranslation } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
 
@@ -31,20 +25,11 @@ const ActiveOrders = ({
 
   return (
     <React.Fragment>
-      {showActiveHeader && (
-        <Heading headerName={t('ActiveOrder')} textWidth="90%" />
-      )}
+      {showActiveHeader && <Heading headerName={getTranslation('active_orders')} textWidth='90%' />}
       {activeOrders.map((item, index) => (
-        <Item
-          key={index.toString()}
-          item={item}
-          navigation={navigation}
-          currentTheme={currentTheme}
-        />
+        <Item key={index.toString()} item={item} navigation={navigation} currentTheme={currentTheme} />
       ))}
-      {showPastHeader && (
-        <Heading headerName={t('PastOrder')} textWidth="90%" />
-      )}
+      {showPastHeader && <Heading headerName={getTranslation('past_orders')} textWidth='90%' />}
     </React.Fragment>
   )
 }
@@ -56,34 +41,18 @@ const Item = ({ item, navigation, currentTheme }) => {
     `,
     { variables: { id: item._id } }
   )
-  const { t } = useTranslation()
+  const { getTranslation } = useLanguage()
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => navigation.navigate('OrderDetail', { _id: item._id })}>
+    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('OrderDetail', { _id: item._id })}>
       <View style={styles(currentTheme).container}>
-        <Image
-          style={styles(currentTheme).image}
-          resizeMode="cover"
-          source={{ uri: item.restaurant.image }}
-        />
+        <Image style={styles(currentTheme).image} resizeMode='cover' source={{ uri: item.restaurant.image }} />
         <View style={styles(currentTheme).textContainer}>
           <View style={styles().leftContainer}>
-            <TextDefault
-              textColor={currentTheme.fontMainColor}
-              large
-              bolder
-              style={alignment.MBxSmall}>
+            <TextDefault textColor={currentTheme.fontMainColor} large bolder style={alignment.MBxSmall}>
               {item.restaurant.name}
             </TextDefault>
-            <TextDefault
-              line={3}
-              textColor={currentTheme.fontMainColor}
-              small
-              bold>
-              {item.orderStatus === 'PENDING'
-                ? t('PenddingText')
-                : t('PenddingText1')}
+            <TextDefault line={3} textColor={currentTheme.fontMainColor} small bold>
+              {item.orderStatus === 'PENDING' ? getTranslation('pending') : getTranslation('pending')}
             </TextDefault>
           </View>
         </View>
@@ -91,7 +60,7 @@ const Item = ({ item, navigation, currentTheme }) => {
         <View style={styles().rightContainer}>
           <TextDefault textColor={currentTheme.iconColorPink} bold center>
             {' '}
-            {t(item.orderStatus)}
+            {getTranslation(item.orderStatus)}
           </TextDefault>
         </View>
       </View>

@@ -10,7 +10,7 @@ import TextError from '../Text/TextError/TextError'
 import { alignment } from '../../utils/alignment'
 import styles from './styles'
 import { scale } from '../../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import ConfigurationContext from '../../context/Configuration'
 import { ProgressBar } from '../Main/ActiveOrders/ProgressBar'
 import { calulateRemainingTime } from '../../utils/customFunctions'
@@ -18,125 +18,75 @@ import Spinner from '../Spinner/Spinner'
 import EmptyView from '../EmptyView/EmptyView'
 
 const ActiveOrders = ({ navigation, loading, error, activeOrders }) => {
-  const { i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const configuration = useContext(ConfigurationContext)
 
   const emptyView = () => {
-    return (
-      <EmptyView
-        title={'titleEmptyActiveOrders'}
-        description={'emptyActiveOrdersDesc'}
-        buttonText={'emptyActiveOrdersBtn'}
-        navigateTo='Discovery'
-      />
-    )
+    return <EmptyView title={'titleEmptyActiveOrders'} description={'emptyActiveOrdersDesc'} buttonText={'emptyActiveOrdersBtn'} navigateTo='Discovery' />
   }
 
-  const renderItem = ({ item }) => (
-    <Item
-      item={item}
-      navigation={navigation}
-      currentTheme={currentTheme}
-      configuration={configuration}
-    />
-  )
+  const renderItem = ({ item }) => <Item item={item} navigation={navigation} currentTheme={currentTheme} configuration={configuration} />
 
   if (loading) {
-    return (
-      <Spinner
-        size={'small'}
-        backColor={currentTheme.themeBackground}
-        spinnerColor={currentTheme.main}
-      />
-    )
+    return <Spinner size={'small'} backColor={currentTheme.themeBackground} spinnerColor={currentTheme.main} />
   }
   if (error) return <TextError text={error.message} />
 
-  return (
-    <FlatList
-      data={activeOrders}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      ListEmptyComponent={emptyView}
-    />
-  )
+  return <FlatList data={activeOrders} renderItem={renderItem} keyExtractor={(item, index) => index.toString()} ListEmptyComponent={emptyView} />
 }
 
-const getItems = (items) => {
-  return items
-    ?.map(
-      (item) =>
-        `${item.quantity}x ${item.title}${
-          item.variation.title ? `(${item.variation.title})` : ''
-        }`
-    )
-    .join('\n')
+const getItems = (items, selectedLanguage) => {
+  return items?.map((item) => `${item.quantity}x ${typeof item.title === "object" ? item?.title[selectedLanguage] : item?.title}${item.variation.title ? `(${typeof item.variation.title === 'object' ? item.variation.title[selectedLanguage] : item.variation.title})` : ''}`).join('\n')
 }
 
 const Item = ({ item, navigation, currentTheme, configuration }) => {
   const [remainingTimeState, setRemainingTimeState] = useState(calulateRemainingTime(item))
-  const { t } = useTranslation()
-  
+  const { getTranslation: t, selectedLanguage } = useLanguage()
+
   useSubscription(
     gql`
       ${subscriptionOrder}
     `,
     { variables: { id: item._id } }
   )
-  
+
   // Add useEffect to update the remaining time every second
   useEffect(() => {
     const intervalId = setInterval(() => {
       const updatedTime = calulateRemainingTime(item)
       setRemainingTimeState(updatedTime)
-      
+
       // Clear interval if time reaches zero
       if (updatedTime <= 0) {
         clearInterval(intervalId)
       }
     }, 1000)
-    
+
     // Clean up interval on unmount
     return () => clearInterval(intervalId)
   }, [item])
-  
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => navigation.navigate('OrderDetail', { _id: item?._id })}
-    >
+    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('OrderDetail', { _id: item?._id })}>
       <View style={{ flex: 1 }}>
         <View style={styles(currentTheme).subContainer}>
           <View style={styles().orderDescriptionContainer}>
             <TextDefault h5 bold textColor={currentTheme.gray500} isRTL>
-              {t('estimatedDeliveryTime')}
+              {t('estimated_delivery_time')}
             </TextDefault>
           </View>
           <View style={styles().orderDescriptionContainer}>
-            <TextDefault
-              Regular
-              textColor={currentTheme.gray900}
-              H1
-              bolder
-              isRTL
-            >
-              {remainingTimeState}-{remainingTimeState + 5} {t('mins')}
+            <TextDefault Regular textColor={currentTheme.gray900} H1 bolder isRTL>
+              {remainingTimeState}-{remainingTimeState + 5} {t('min')}
             </TextDefault>
           </View>
           <View style={{ flex: 1 }}>
-            <ProgressBar
-              configuration={configuration}
-              currentTheme={currentTheme}
-              item={item}
-              navigation={navigation}
-              customWidth={scale(65)}
-              isPicked={item?.isPickedUp}
-            />
+            <ProgressBar configuration={configuration} currentTheme={currentTheme} item={item} navigation={navigation} customWidth={scale(65)} isPicked={item?.isPickedUp} />
           </View>
           <View
             style={{
@@ -145,9 +95,7 @@ const Item = ({ item, navigation, currentTheme, configuration }) => {
             }}
           >
             <TextDefault h5 bold textColor={currentTheme.secondaryText} isRTL>
-              {item.orderStatus === 'PENDING'
-                ? t('PenddingText')
-                : t('PenddingText1')}
+              {item.orderStatus === 'PENDING' ? t('pending') : t('pending')}
             </TextDefault>
           </View>
           <View
@@ -161,21 +109,10 @@ const Item = ({ item, navigation, currentTheme, configuration }) => {
               ...alignment.PLmedium
             }}
           >
-            <Image
-              style={styles(currentTheme).restaurantImage1}
-              resizeMode='cover'
-              source={{ uri: item?.restaurant?.image }}
-            />
+            <Image style={styles(currentTheme).restaurantImage1} resizeMode='cover' source={{ uri: item?.restaurant?.image }} />
             <View style={styles(currentTheme).textContainer2}>
               <View style={styles().subContainerLeft}>
-                <TextDefault
-                  textColor={currentTheme.fontMainColor}
-                  uppercase
-                  bolder
-                  numberOfLines={2}
-                  style={styles(currentTheme).orderInfo}
-                  isRTL
-                >
+                <TextDefault textColor={currentTheme.fontMainColor} uppercase bolder numberOfLines={2} style={styles(currentTheme).orderInfo} isRTL>
                   {item?.restaurant?.name}
                 </TextDefault>
                 <TextDefault
@@ -187,7 +124,7 @@ const Item = ({ item, navigation, currentTheme, configuration }) => {
                   small
                   isRTL
                 >
-                  {getItems(item.items)}
+                  {getItems(item.items, selectedLanguage)}
                 </TextDefault>
               </View>
             </View>

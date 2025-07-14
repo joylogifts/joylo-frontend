@@ -2,7 +2,7 @@
 
 // Hooks
 import useToast from "@/lib/hooks/useToast";
-import { useTranslations } from "next-intl";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 import {
   createContext,
   Dispatch,
@@ -78,7 +78,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     TEST_OTP,
   } = useConfig();
   const { showToast } = useToast();
-  const t = useTranslations();
+  const { getTranslation } = useLangTranslation();
   const router = useRouter();
 
   // Mutations
@@ -120,10 +120,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Error while checking email:", error);
       showToast({
         type: "error",
-        title: t("Email Check Error"),
+        title: getTranslation("email_check_error"),
         message:
           error.cause?.message ||
-          t("An error occurred while checking the email"),
+          getTranslation("error_checking_email"),
       });
       return {} as IEmailExists;
     } finally {
@@ -140,12 +140,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       if (phoneResponse.data?.phoneExist?._id) {
         showToast({
           type: "error",
-          title: t("Phone Check Error"),
-          message: t(
-            t(
-              "This phone number is already registered please enter a different one"
-            ) // put a ","m after "registered" and "." at the end of the sentence in the translation
-          ),
+          title: getTranslation("phone_check_error"),
+          message: getTranslation("phone_already_registered"),
         });
         return true;
       } else {
@@ -156,10 +152,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Error while checking phone:", error);
       return showToast({
         type: "error",
-        title: t("Phone Check Error"),
+        title: getTranslation("phone_check_error"),
         message:
           error.cause?.message ||
-          t("An error occurred while checking the phone"),
+          getTranslation("error_checking_phone"),
       });
     } finally {
       setIsLoading(false);
@@ -177,12 +173,11 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       if (resetPasswordResponse?.data?.resetPassword?.result === true) {
         showToast({
           type: "success",
-          title: t("Password Reset"),
-          message: t("Your password has been reset successfully"),
+          title: getTranslation("password_reset"),
+          message: getTranslation("password_reset_success"),
         });
         setFormData({} as IAuthFormData);
         setActivePanel(0);
-        // setIsAuthModalVisible(false);
       }
     }
     catch (err) {
@@ -190,10 +185,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Error while resetting password:", error);
       showToast({
         type: "error",
-        title: t("Password Reset Error"),
+        title: getTranslation("password_reset_error"),
         message:
           error.cause?.message ||
-          t("An error occurred while resetting the password"),
+          getTranslation("error_resetting_password"),
       });
     }
     finally {
@@ -224,9 +219,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       );
       showToast({
         type: "error",
-        title: t("Login Error"),
+        title: getTranslation("login_error"),
         message:
-          error.cause?.message || t("An error occurred while logging in"),
+          error.cause?.message || getTranslation("error_logging_in"),
       });
     } finally {
       setIsLoading(false);
@@ -273,8 +268,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         }));
         showToast({
           type: "success",
-          title: t("Create User"),
-          message: t("You have successfully registered"),
+          title: getTranslation("create_user"),
+          message: getTranslation("registration_success"),
         });
         localStorage.setItem("token", userData.data.createUser.token);
         localStorage.setItem("userId", userData.data.createUser.userId);
@@ -287,9 +282,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("An error occured while creating the user", error);
       showToast({
         type: "error",
-        title: t("Create User"),
+        title: getTranslation("create_user"),
         message:
-          error.cause?.message || t("An error occured while creating the user"),
+          error.cause?.message || getTranslation("error_creating_user"),
       });
       return {} as ICreateUserData;
     } finally {
@@ -320,8 +315,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           setIsAuthModalVisible(false);
           showToast({
             type: "success",
-            title: t("Login Success"),
-            message: t("You have logged in successfully"),
+            title: getTranslation("login_success"),
+            message: getTranslation("login_success_message"),
           });
         } else {
           setActivePanel(4);
@@ -333,9 +328,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Error while logging in:", error);
       showToast({
         type: "error",
-        title: t("Login Error"),
+        title: getTranslation("login_error"),
         message:
-          error.cause?.message || t("An error occurred while logging in"),
+          error.cause?.message || getTranslation("error_logging_in"),
       });
     }
   }
@@ -344,8 +339,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     console.error("Error while logging in:", error);
     showToast({
       type: "error",
-      title: t("Login Error"),
-      message: error.cause?.message || t("An error occurred while logging in"),
+      title: getTranslation("login_error"),
+      message: error.cause?.message || getTranslation("error_logging_in"),
     });
   }
 
@@ -376,17 +371,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           }
           showToast({
             type: "info",
-            title: t("Email Verification"),
-            message: t(
-              `An OTP is sent at ${email} please verify your email address`
-            ),
+            title: getTranslation("email_verification"),
+            message: getTranslation(`otp_sent_email_verify_address", ${ email }`),
           });
           return;
         } else {
           showToast({
             type: "error",
-            title: t("Error Sending OTP"),
-            message: t("An error occurred while sending the OTP"),
+            title: getTranslation("error_sending_otp"),
+            message: getTranslation("error_sending_otp_message"),
           });
           return;
         }
@@ -396,10 +389,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Error while sending OTP to email:", error);
       showToast({
         type: "error",
-        title: t("Email OTP Error"),
+        title: getTranslation("email_otp_error"),
         message:
           error.cause?.message ||
-          t("An error occurred while sending the OTP to email"),
+          getTranslation("error_sending_otp_to_email"),
       });
     } finally {
       setIsLoading(false);
@@ -422,17 +415,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         if (!otpResponse.data?.sendOtpToPhoneNumber?.result) {
           showToast({
             type: "error",
-            title: t("Error Sending OTP"),
-            message: t("An error occurred while sending the OTP"),
+            title: getTranslation("error_sending_otp"),
+            message: getTranslation("error_sending_otp_message"),
           });
           return;
         } else {
           showToast({
             type: "info",
-            title: t("Phone Verification"),
-            message: t(
-              `An OTP is sent at ${phone} please verify your phone number`
-            ),
+            title: getTranslation("phone_verification"),
+            message: getTranslation(`otp_sent_phone_verify_number ${ phone }`),
           });
           setActivePanel(6);
         }
@@ -442,10 +433,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Error while sending OTP to phone:", error);
       showToast({
         type: "error",
-        title: t("Phone OTP Error"),
+        title: getTranslation("phone_otp_error"),
         message:
           error.cause?.message ||
-          t("An error occurred while sending the OTP to phone"),
+          getTranslation("error_sending_otp_to_phone"),
       });
     } finally {
       setIsLoading(false);
@@ -507,5 +498,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     </GoogleOAuthProvider>
   );
 }
+
+// export const useAuth = () => useContext(AuthContext);
+//         }}
+//       >
+//         {children}
+//       </AuthContext.Provider>
+//     </GoogleOAuthProvider>
+//   );
+// }
 
 export const useAuth = () => useContext(AuthContext);

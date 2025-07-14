@@ -32,7 +32,8 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 // CSS
 import classes from '@/lib/ui/screen-components/protected/super-admin/dispatch/view/main/index.module.css';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Status templates
 const valueTemplate = (option: IDropdownSelectItem) => (
@@ -74,40 +75,53 @@ function severityChecker(status: string | undefined) {
 
 export const DISPATCH_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useContext(ToastContext);
 
   // Status options
   const actionStatusOptions = [
     {
-      label: t('Pending'),
+      label: getTranslation('pending'),
       code: 'PENDING',
-      body: () => <Tag value={t('Pending')} severity="secondary" rounded />,
+      body: () => (
+        <Tag value={getTranslation('pending')} severity="secondary" rounded />
+      ),
     },
     {
-      label: t('Assigned'),
+      label: getTranslation('assigned'),
       code: 'ASSIGNED',
-      body: () => <Tag value={t('Assigned')} severity="warning" rounded />,
+      body: () => (
+        <Tag value={getTranslation('assigned')} severity="warning" rounded />
+      ),
     },
     {
-      label: t('Accepted'),
+      label: getTranslation('accepted'),
       code: 'ACCEPTED',
-      body: () => <Tag value={t('Accepted')} severity="info" rounded />,
+      body: () => (
+        <Tag value={getTranslation('accepted')} severity="info" rounded />
+      ),
     },
     {
-      label: t('Delivered'),
+      label: getTranslation('delivered'),
       code: 'DELIVERED',
-      body: () => <Tag value={t('Delivered')} severity="success" rounded />,
+      body: () => (
+        <Tag value={getTranslation('delivered')} severity="success" rounded />
+      ),
     },
     {
-      label: t('Picked'),
+      label: getTranslation('picked'),
       code: 'PICKED',
-      body: () => <Tag value={t('Picked')} severity="contrast" rounded />,
+      body: () => (
+        <Tag value={getTranslation('picked')} severity="contrast" rounded />
+      ),
     },
     {
-      label: t('Rejected'),
+      label: getTranslation('rejected'),
       code: 'CANCELLED',
-      body: () => <Tag value={t('Rejected')} severity="danger" rounded />,
+      body: () => (
+        <Tag value={getTranslation('rejected')} severity="danger" rounded />
+      ),
     },
   ];
 
@@ -171,10 +185,10 @@ export const DISPATCH_TABLE_COLUMNS = () => {
     onError: (error) => {
       showToast({
         type: 'error',
-        title: t('Assign Rider'),
+        title: getTranslation('assign_rider'),
         message:
           error.cause?.message ||
-          t('An error occured while assigning the job to rider'),
+          getTranslation('an_error_occured_while_assigning_the_job_to_rider'),
       });
     },
     onCompleted: () => {
@@ -193,15 +207,16 @@ export const DISPATCH_TABLE_COLUMNS = () => {
       showToast({
         type: 'error',
         message:
-          err.cause?.message || t('An error occured while updating the status'),
-        title: t('Edit Order Status'),
+          err.cause?.message ||
+          getTranslation('an_error_occured_while_updating_the_status'),
+        title: getTranslation('edit_order_status'),
       });
     },
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Order Status'),
-        message: t('Order status has been updated successfully'),
+        title: getTranslation('order_status'),
+        message: getTranslation('order_status_has_been_updated_successfully'),
       });
     },
     refetchQueries: [{ query: GET_ACTIVE_ORDERS }],
@@ -228,8 +243,8 @@ export const DISPATCH_TABLE_COLUMNS = () => {
       if (data) {
         showToast({
           type: 'success',
-          title: t('Assign Rider'),
-          message: `${t('The order')} ${rowData.orderId} ${t('has been successfully assigned to rider')} ${item.label}`,
+          title: getTranslation('assign_rider'),
+          message: `${getTranslation('the_order')} ${rowData.orderId} ${getTranslation('has_been_successfully_assigned_to_rider')} ${item.label}`,
         });
       }
     }
@@ -259,8 +274,8 @@ export const DISPATCH_TABLE_COLUMNS = () => {
       console.log(error);
       showToast({
         type: 'error',
-        title: t('Order Status'),
-        message: t('Something went wrong'),
+        title: getTranslation('order_status'),
+        message: getTranslation('something_went_wrong'),
       });
     } finally {
       // Set the loader to false after the mutation
@@ -274,32 +289,32 @@ export const DISPATCH_TABLE_COLUMNS = () => {
   return [
     {
       propertyName: 'orderId',
-      headerName: t('Order Id'),
+      headerName: getTranslation('order_id'),
     },
     {
       propertyName: 'deliveryAddress.deliveryAddress',
-      headerName: t('Order Information'),
+      headerName: getTranslation('order_information'),
       body: (rowData: IActiveOrders) => <OrderSubscription rowData={rowData} />,
     },
     {
       propertyName: 'restaurant.name',
-      headerName: t('Store'),
+      headerName: getTranslation('store'),
     },
     {
       propertyName: 'paymentMethod',
-      headerName: t('Payment'),
+      headerName: getTranslation('payment'),
     },
     {
       propertyName: 'user.name',
-      headerName: t('Customer'),
+      headerName: getTranslation('customer'),
     },
     {
       propertyName: 'user.phone',
-      headerName: t('Phone'),
+      headerName: getTranslation('phone'),
     },
     {
       propertyName: 'rider.name',
-      headerName: t('Rider'),
+      headerName: getTranslation('rider'),
       body: (rowData: IActiveOrders) => {
         const selectedRider: IDropdownSelectItem = {
           label: rowData?.rider?.name.toString() ?? '',
@@ -317,7 +332,7 @@ export const DISPATCH_TABLE_COLUMNS = () => {
                   isRiderLoading.orderId === rowData._id
                 }
                 value={selectedRider}
-                placeholder={t('Select Rider')}
+                placeholder={getTranslation('select_rider')}
                 onChange={(e: DropdownChangeEvent) =>
                   handleAssignRider(e.value, rowData)
                 }
@@ -333,7 +348,7 @@ export const DISPATCH_TABLE_COLUMNS = () => {
                 options={[
                   {
                     code: 'Pickup',
-                    label: t('Pickup'),
+                    label: getTranslation('pickup'),
                   },
                 ]}
                 loading={
@@ -341,7 +356,7 @@ export const DISPATCH_TABLE_COLUMNS = () => {
                 }
                 value={{
                   code: 'Pickup',
-                  label: t('Pickup'),
+                  label: getTranslation('pickup'),
                 }}
                 dropdownIcon={() => <></>}
                 disabled={true}
@@ -358,7 +373,7 @@ export const DISPATCH_TABLE_COLUMNS = () => {
     },
     {
       propertyName: 'createdAt',
-      headerName: t('Order Time'),
+      headerName: getTranslation('order_time'),
       body: (rowData: IActiveOrders) => (
         <span>
           {new Date(rowData.createdAt)
@@ -395,15 +410,15 @@ export const DISPATCH_TABLE_COLUMNS = () => {
     // },
     {
       propertyName: 'orderStatus',
-      headerName: t('Status'),
+      headerName: getTranslation('status'),
       body: (rowData: IActiveOrders) => {
         // CHANGE 2: Filter status options based on whether it's a pickup order
         const availableStatuses = rowData.isPickedUp
           ? actionStatusOptions.filter((status) =>
-              ['PENDING', 'ACCEPTED', 'DELIVERED', 'CANCELLED'].includes(
-                status.code
-              )
+            ['PENDING', 'ACCEPTED', 'DELIVERED', 'CANCELLED'].includes(
+              status.code
             )
+          )
           : actionStatusOptions;
 
         const currentStatus = availableStatuses.find(

@@ -25,13 +25,14 @@ import {
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
 ) {
   // Hooks
   const { appTheme, currentTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { logout } = useContext(AuthContext);
 
   return (
@@ -92,7 +93,7 @@ export default function CustomDrawerContent(
                       color: appTheme.buttonText,
                     }}
                   >
-                    {t("Profile")}
+                    {t("profile")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -172,7 +173,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("About Us")}
+              {t("about_us")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -196,7 +197,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("Privacy Policy")}
+              {t("privacy_policy")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -220,7 +221,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("Product Page")}
+              {t("product_page")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -246,7 +247,7 @@ export default function CustomDrawerContent(
                 color: appTheme.buttonText,
               }}
             >
-              {t("Logout")}
+              {t("logout")}
             </Text>
           </View>
         </TouchableOpacity>

@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 import UserContext from '../../context/User'
 import { FlashMessage } from '../../ui/FlashMessage/FlashMessage'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { addFavouriteRestaurant } from '../../apollo/mutations'
 import { profile } from '../../apollo/queries'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
@@ -24,7 +25,7 @@ const PROFILE = gql`
 const FavoriteButton = ({ restaurantId, iconSize }) => {
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const { profile } = useContext(UserContext)
   const heart = profile ? profile.favourite.includes(restaurantId) : false
   const navigation = useNavigation()
@@ -40,30 +41,14 @@ const FavoriteButton = ({ restaurantId, iconSize }) => {
     if (!loadingMutation && profile) {
       mutate({ variables: { id: restaurantId } })
     } else if (!profile) {
-      FlashMessage({ message: t('loginRequired') }) 
-      navigation.navigate('CreateAccount') 
+      FlashMessage({ message: t('loginRequired') })
+      navigation.navigate('CreateAccount')
     }
   }
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      disabled={loadingMutation}
-      onPress={handleAddToFavorites}
-    >
-      {loadingMutation ? (
-        <Spinner
-          size={'small'}
-          backColor={'transparent'}
-          spinnerColor={currentTheme.iconColorDark}
-        />
-      ) : (
-        <AntDesign
-          name={heart ? 'heart' : 'hearto'}
-          size={iconSize}
-          color={currentTheme.newIconColor}
-        />
-      )}
+    <TouchableOpacity activeOpacity={0.7} disabled={loadingMutation} onPress={handleAddToFavorites}>
+      {loadingMutation ? <Spinner size={'small'} backColor={'transparent'} spinnerColor={currentTheme.iconColorDark} /> : <AntDesign name={heart ? 'heart' : 'hearto'} size={iconSize} color={currentTheme.newIconColor} />}
     </TouchableOpacity>
   )
 }

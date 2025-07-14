@@ -13,13 +13,14 @@ import { useNavigation } from '@react-navigation/native'
 import ConfigurationContext from '../../context/Configuration'
 import { useTranslation } from 'react-i18next'
 import { IMAGE_LINK } from '../../utils/constants'
+import { useLanguage } from '@/src/context/Language'
 
 const RELATED_ITEMS = gql`${relatedItemsQuery}`
 const RESTAURANT = gql`${restaurantQuery}`
 const FOOD = gql`${food}`
 
 const Section = ({ itemId, restaurantId }) => {
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const navigation = useNavigation()
   const client = useApolloClient()
   const themeContext = useContext(ThemeContext)
@@ -98,7 +99,7 @@ const Section = ({ itemId, restaurantId }) => {
         textColor={currentTheme.fontNewColor}
         H5
         bolder>
-        {t('addMore')}
+        {t('add_more')}
       </TextDefault>
       <FlatList
         data={slicedItems}

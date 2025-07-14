@@ -21,7 +21,7 @@ import { FilterMatchMode } from 'primereact/api';
 
 // Hooks
 import { useContext, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+
 import { useMutation } from '@apollo/client';
 
 // Components
@@ -30,12 +30,12 @@ import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
 import ShopTypesTableHeader from '../header/table-header';
 import Table from '@/lib/ui/useable-components/table';
 
-
 // Constants
 import { generateDummyShopTypes } from '@/lib/utils/dummy';
 
 // Table COlumns
 import { SHOP_TYPES_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/shop-types-columns';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ShopTypesMain({
   setVisible,
@@ -43,7 +43,8 @@ export default function ShopTypesMain({
   setIsEditing,
 }: IShopTypesMainProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Toast
   const { showToast } = useContext(ToastContext);
@@ -56,7 +57,7 @@ export default function ShopTypesMain({
       __typename: '',
       _id: '',
       title: '',
-      image: "",
+      image: '',
       isActive: false,
     },
   });
@@ -82,18 +83,19 @@ export default function ShopTypesMain({
       refetchQueries: [{ query: GET_SHOP_TYPES }],
       onCompleted: () => {
         showToast({
-          title: t('Delete ShopType'),
+          title: getTranslation('delete_shop_type'),
           type: 'success',
-          message: t('ShopType has been deleted successfully'),
+          message: getTranslation('shop_type_has_been_deleted_successfully'),
           duration: 2000,
         });
       },
       onError: (err) => {
         showToast({
-          title: t('Delete ShopType'),
+          title: getTranslation('delete_shop_type'),
           type: 'error',
           message:
-            err.message || t('An unknown error occured, please try again'),
+            err.message ||
+            getTranslation('an_unknown_error_occurred_please_try_again'),
           duration: 2000,
         });
       },
@@ -113,7 +115,7 @@ export default function ShopTypesMain({
         __typename: '',
         _id: '',
         isActive: false,
-        image:"",
+        image: '',
         title: '',
       },
     });
@@ -122,7 +124,7 @@ export default function ShopTypesMain({
   // Menu Items
   const menuItems: IActionMenuItem<IShopType>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: IShopType) => {
         if (data) {
           setIsEditing({
@@ -137,7 +139,7 @@ export default function ShopTypesMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IShopType) => {
         if (data) {
           setIsDeleting({
@@ -170,7 +172,10 @@ export default function ShopTypesMain({
     <div className="p-3">
       <Table
         columns={SHOP_TYPES_TABLE_COLUMNS({ menuItems })}
-        data={data?.fetchShopTypes?.data || (isLoading ? generateDummyShopTypes() : [])}
+        data={
+          data?.fetchShopTypes?.data ||
+          (isLoading ? generateDummyShopTypes() : [])
+        }
         selectedData={selectedData}
         setSelectedData={(e) => setSelectedData(e)}
         loading={isLoading}
@@ -191,14 +196,14 @@ export default function ShopTypesMain({
               __typename: '',
               _id: '',
               isActive: false,
-              image:"",
+              image: '',
               title: '',
             },
           })
         }
         visible={isDeleting.bool}
         loading={deleteShopTypeLoading}
-        message={t('Are you sure to delete the coupon?')}
+        message={getTranslation('are_you_sure_to_delete_this_shop_type')}
       />
     </div>
   );

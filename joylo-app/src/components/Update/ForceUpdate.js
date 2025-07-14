@@ -1,17 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react'
-import {
-  View,
-  Text,
-  Modal,
-  Button,
-  Linking,
-  Platform,
-  StyleSheet
-} from 'react-native'
+import { View, Text, Modal, Button, Linking, Platform, StyleSheet } from 'react-native'
 import * as Application from 'expo-application'
 import { gql, useQuery } from '@apollo/client'
 import { getVersions } from '../../apollo/queries'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import styles from './styles'
@@ -40,7 +33,7 @@ const ForceUpdate = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [currentVersion, setCurrentVersion] = useState(null)
   const { loading, error, data } = useQuery(VERSIONS)
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
 
@@ -59,10 +52,7 @@ const ForceUpdate = () => {
         const { customerAppVersion } = data.getVersions
 
         // New Version
-        const new_version =
-          Platform.OS === 'ios'
-            ? customerAppVersion.ios
-            : customerAppVersion.android
+        const new_version = Platform.OS === 'ios' ? customerAppVersion.ios : customerAppVersion.android
 
         if (compareVersions(currentVersion, new_version) < 0) {
           setIsUpdateModalVisible(true)
@@ -75,10 +65,7 @@ const ForceUpdate = () => {
 
   const handleUpdate = async () => {
     try {
-      let storeUrl =
-        Platform.OS === 'ios'
-          ? 'https://apps.apple.com/pk/app/enatega-multivendor/id1526488093'
-          : 'https://play.google.com/store/apps/details?id=com.enatega.multivendor&pli=1'
+      let storeUrl = Platform.OS === 'ios' ? 'https://apps.apple.com/pk/app/enatega-multivendor/id1526488093' : 'https://play.google.com/store/apps/details?id=com.enatega.multivendor&pli=1'
 
       await Linking.openURL(storeUrl)
     } catch (err) {
@@ -89,25 +76,14 @@ const ForceUpdate = () => {
   if (loading) return <Text>Loading...</Text>
 
   return (
-    <Modal
-      visible={isUpdateModalVisible}
-      transparent={true}
-      animationType='fade'
-      onRequestClose={() => {}}
-    >
+    <Modal visible={isUpdateModalVisible} transparent={true} animationType='fade' onRequestClose={() => {}}>
       <View style={styles().modalContainer}>
         <View style={styles(currentTheme).modalContent}>
-          <TextDefault
-            bold
-            textColor={currentTheme.fontMainColor}
-            style={styles(currentTheme).title}
-          >
-            {t('UpdateAvailable')}
+          <TextDefault bold textColor={currentTheme.fontMainColor} style={styles(currentTheme).title}>
+            {t('update_available')}
           </TextDefault>
-          <TextDefault style={styles(currentTheme).message}>
-            {t('UpdateAvailableText')}
-          </TextDefault>
-          <Button title={t('UpdateNow')} onPress={handleUpdate} />
+          <TextDefault style={styles(currentTheme).message}>{t('a_new_version_of_the_app_is_available_please_update_to_continue_using_the_app')}</TextDefault>
+          <Button title={t('update_now')} onPress={handleUpdate} />
         </View>
       </View>
     </Modal>

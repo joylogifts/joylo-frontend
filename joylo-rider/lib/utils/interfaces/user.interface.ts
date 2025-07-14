@@ -98,7 +98,6 @@ export interface Order {
   createdAt: string;
   acceptedAt?: string;
   pickedAt?: string;
-  assignedAt?: string;
   isPickedUp: boolean;
   deliveredAt?: string;
   expectedTime?: string;

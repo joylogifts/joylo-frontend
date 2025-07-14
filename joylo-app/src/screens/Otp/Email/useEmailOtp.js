@@ -2,6 +2,7 @@ import { useState, useContext, useEffect, useRef } from 'react'
 import { sendOtpToEmail, createUser } from '../../../apollo/mutations'
 import gql from 'graphql-tag'
 import Constants from 'expo-constants'
+import Constants from 'expo-constants'
 import { useMutation } from '@apollo/client'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
@@ -15,6 +16,7 @@ import AuthContext from '../../../context/Auth'
 import { useTranslation } from 'react-i18next'
 import ConfigurationContext from '../../../context/Configuration'
 import useEnvVars from '../../../../environment'
+import { useLanguage } from '@/src/context/Language'
 
 const SEND_OTP_TO_EMAIL = gql`
   ${sendOtpToEmail}
@@ -26,7 +28,7 @@ const useEmailOtp = () => {
   const { TEST_OTP } = useEnvVars()
   const Analytics = analytics()
 
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const navigation = useNavigation()
   const configuration = useContext(ConfigurationContext)
   const route = useRoute()
@@ -54,7 +56,7 @@ const useEmailOtp = () => {
 
   function onCompleted(data) {
     FlashMessage({
-      message: t('otpSentToEmail')
+      message: t('otp_sent_to_email')
     })
   }
 
@@ -73,7 +75,7 @@ const useEmailOtp = () => {
   async function onCreateUserCompleted(data) {
     try {
       FlashMessage({
-        message: t('accountCreated')
+        message: t('account_created')
       })
       await Analytics.identify(
         {
@@ -133,7 +135,7 @@ const useEmailOtp = () => {
         }
       })
     } catch (error) {
-      FlashMessage({ message: t('somethingWentWrong') })
+      FlashMessage({ message: t('something_went_wrong') })
     }
   }
 

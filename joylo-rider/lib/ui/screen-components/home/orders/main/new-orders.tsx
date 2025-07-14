@@ -19,6 +19,7 @@ import { useApptheme } from "@/lib/context/global/theme.context";
 import { WalletIcon } from "@/lib/ui/useable-components/svg";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const { height } = Dimensions.get("window");
 
@@ -28,7 +29,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const {
     loadingAssigned,
     errorAssigned,
@@ -40,15 +41,17 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
   // States
   const [orders, setOrders] = useState<IOrder[]>([]);
 
+  console.log(orders, "orders");
+
   // Handlers
   const onInitOrders = () => {
     if (loadingAssigned || errorAssigned) return;
     if (!assignedOrders) return;
-
+    console.log("assignedOrders", assignedOrders);
     const _orders = assignedOrders?.filter(
       (o: IOrder) => o.orderStatus === "ACCEPTED" && !o.rider && !o.isPickedUp,
     );
-
+    console.log(_orders, "orders _orders");
     setOrders(_orders ?? []);
   };
 
@@ -124,7 +127,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
                   </Text>
                 ) : (
                   <Text style={{ color: appTheme.fontSecondColor }}>
-                    {t("Pull down to refresh")}
+                    {t("pull_down_to_refresh")}
                   </Text>
                 )}
               </View>
@@ -151,7 +154,7 @@ export default function HomeNewOrdersMain(props: IOrderTabsComponentProps) {
             </Text>
           ) : (
             <Text style={{ color: appTheme.fontSecondColor }}>
-              {t("Pull down to refresh")}
+              {t("pull_down_to_refresh")}
             </Text>
           )}
         </View>

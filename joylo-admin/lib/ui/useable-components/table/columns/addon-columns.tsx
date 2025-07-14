@@ -1,21 +1,17 @@
-import { IActionMenuProps, IAddon } from '@/lib/utils/interfaces';
-import ActionMenu from '../../action-menu';
+import { IAddon } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
 import CustomInputSwitch from '../../custom-input-switch';
 import { useContext, useState } from 'react';
 import {
-  GET_ADDONS_BY_RESTAURANT_ID,
-  TOGGLE_ADDON_STATUS,
+  ENABLE_STORE_ADDON,
+  GET_ADDONS
 } from '@/lib/api/graphql';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import { ApolloError, useMutation } from '@apollo/client';
 import useToast from '@/lib/hooks/useToast';
 
-export const ADDON_TABLE_COLUMNS = ({
-  menuItems,
-}: {
-  menuItems: IActionMenuProps<IAddon>['items'];
-}) => {
+
+export const ADDON_TABLE_COLUMNS = () => {
   // Hooks
   const t = useTranslations();
   const { showToast } = useToast();
@@ -23,23 +19,22 @@ export const ADDON_TABLE_COLUMNS = ({
   const {
     restaurantLayoutContextData: { restaurantId },
   } = useContext(RestaurantLayoutContext);
-
   // State
   const [isAddonLoading, setIsAddonLoading] = useState<string>('');
 
   // API
-  const [toggleAddonStatus] = useMutation(TOGGLE_ADDON_STATUS, {
+  const [toggleAddonStatus] = useMutation(ENABLE_STORE_ADDON, {
     refetchQueries: [
       {
-        query: GET_ADDONS_BY_RESTAURANT_ID,
-        variables: { id: restaurantId },
+        query: GET_ADDONS,
+        variables: { storeId : restaurantId },
       },
     ],
     onCompleted: () => {
       showToast({
         type: 'success',
         title: 'Addon Status',
-        message: 'Addon status can be updated.',
+        message: 'Addon status has been updated.',
       });
       setIsAddonLoading('');
     },
@@ -63,9 +58,9 @@ export const ADDON_TABLE_COLUMNS = ({
 
       await toggleAddonStatus({
         variables: {
-          status,
+          enabled: status,
           addonId,
-          restaurant: restaurantId,
+          storeId: restaurantId,
         },
       });
     } catch (err) {
@@ -80,11 +75,29 @@ export const ADDON_TABLE_COLUMNS = ({
 
   return [
     { headerName: t('Title'), propertyName: 'title' },
-    { headerName: t('Description'), propertyName: 'description' },
-    { headerName: t('Minimum'), propertyName: 'quantityMinimum' },
-    { headerName: t('Maximum'), propertyName: 'quantityMaximum' },
-    { headerName: t('Category'), propertyName: 'categoryId.title' },
-    { headerName: t('Sub-Category'), propertyName: 'subCategoryId.title' },
+    { 
+      headerName: t('Description'), 
+      propertyName: 'description',
+      body : (item : IAddon) => {
+        return (
+          <div>
+            {item?.description ?? '---'}
+          </div>
+        )
+      }
+    },
+    { 
+      headerName: t('Category'), 
+      propertyName: 'categoryIds',
+      body : (item : IAddon) => {
+        return (
+          <div className='flex flex-col gap-1'>
+            {item.categoryIds?.map((item :string) => <span key={item}>{item}</span>)}
+          </div>
+        )
+      }
+    },
+    // { headerName: t('Sub-Category'), propertyName: 'subCategoryId.title' },
     {
       headerName: 'Status',
       propertyName: 'isActive',
@@ -100,11 +113,11 @@ export const ADDON_TABLE_COLUMNS = ({
         );
       },
     },
-    {
-      propertyName: 'actions',
-      body: (option: IAddon) => (
-        <ActionMenu items={menuItems} data={option} onToggle={() => {}} />
-      ),
-    },
+    // {
+    //   propertyName: 'actions',
+    //   body: (option: IAddon) => (
+    //     <ActionMenu items={menuItems} data={option} onToggle={() => {}} />
+    //   ),
+    // },
   ];
 };

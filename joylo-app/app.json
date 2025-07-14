@@ -10,15 +10,10 @@
     "androidStatusBar": {
       "backgroundColor": "#000"
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "userInterfaceStyle": "automatic",
     "ios": {
       "entitlements": {
@@ -33,21 +28,14 @@
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to use location to determine the delivery address for your orders.",
-        "UIBackgroundModes": [
-          "remote-notification",
-          "remote-notification"
-        ],
+        "UIBackgroundModes": ["remote-notification", "remote-notification"],
         "NSUserTrackingUsageDescription": "Allow this app to collect app-related data that can be used for tracking you or your device.",
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.973765383129-qtjptpjnf0nessh58ogi32hqro3jv9ng"
-            ]
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.973765383129-qtjptpjnf0nessh58ogi32hqro3jv9ng"]
           },
           {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.973765383129-qtjptpjnf0nessh58ogi32hqro3jv9ng"
-            ]
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.973765383129-qtjptpjnf0nessh58ogi32hqro3jv9ng"]
           }
         ],
         "ITSAppUsesNonExemptEncryption": false
@@ -70,18 +58,9 @@
           "apiKey": "AIzaSyAqKUpCr0oLM9Xb51iPuMmiFytheuTim1o"
         }
       },
-      "permissions": [
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.FOREGROUND_SERVICE",
-        "com.google.android.gms.permission.AD_ID"
-      ],
+      "permissions": ["android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION", "android.permission.RECORD_AUDIO", "android.permission.FOREGROUND_SERVICE", "com.google.android.gms.permission.AD_ID"],
       "queries": {
-        "packages": [
-          "com.whatsapp",
-          "com.whatsapp.w4b"
-        ]
+        "packages": ["com.whatsapp", "com.whatsapp.w4b"]
       },
       "intentFilters": [
         {
@@ -91,10 +70,7 @@
               "scheme": "whatsapp"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },

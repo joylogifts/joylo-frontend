@@ -88,12 +88,13 @@ export interface IFood {
   isActive: boolean;
   __typename: string;
   isOutOfStock: boolean;
+  isReturnAble: boolean
 }
 
 export interface IFoodNew {
   _id: string;
-  title: string;
-  description: string;
+  title: Record<string, string> | string;
+  description: Record<string, string> | string;
   variations: IVariationForm[];
   category: IDropdownSelectItem | null;
   subCategory: IDropdownSelectItem | null;
@@ -101,6 +102,7 @@ export interface IFoodNew {
   isActive: boolean;
   __typename: string;
   isOutOfStock: boolean;
+  isReturnAble: boolean
 }
 
 export interface IFoodCategory {

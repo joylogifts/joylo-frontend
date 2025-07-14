@@ -105,14 +105,14 @@ function RestaurantDetailHeader({
         <View style={styles(currentTheme).deliveryDetailsOverlay}>
           <View style={styles(currentTheme).detailPill}>
             <TextDefault textColor={currentTheme.fontMainColor}>
-              {t('deliveryCharges')} {configuration.currencySymbol}
+              {t('delivery_charges')} {configuration.currencySymbol}
               {configuration?.deliveryRate}
             </TextDefault>
           </View>
 
           <View style={styles(currentTheme).detailPill}>
             <TextDefault textColor={currentTheme.fontMainColor}>
-              {t('minimumOrder')} {configuration.currencySymbol}{' '}
+              {t('minimum_order')} {configuration.currencySymbol}{' '}
               {restaurant?.minimumOrder}
             </TextDefault>
           </View>
@@ -181,7 +181,7 @@ function RestaurantDetailHeader({
             onPress={handleNavigateToReviews}
           >
             <TextDefault bolder textColor={currentTheme.main}>
-              {t('seeReviews')}
+              {t('see_reviews')}
             </TextDefault>
           </TouchableOpacity>
         </View>

@@ -17,7 +17,6 @@ import {
 // Context
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
 
-
 // UI Components
 import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
 import Table from '@/lib/ui/useable-components/table';
@@ -35,16 +34,18 @@ import { DELETE_ZONE, GET_ZONES } from '@/lib/api/graphql';
 
 // Data
 import { generateDummyZones } from '@/lib/utils/dummy';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ZoneMain({
   setIsAddZoneVisible,
   setZone,
 }: IZoneMainComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const { showToast } = useToast();
-  const {ISPAID_VERSION} =useConfiguration()
+  const { ISPAID_VERSION } = useConfiguration();
   // State - Table
   const [deleteId, setDeleteId] = useState('');
   const [selectedProducts, setSelectedProducts] = useState<IZoneResponse[]>([]);
@@ -77,7 +78,7 @@ export default function ZoneMain({
 
   const menuItems: IActionMenuItem<IZoneResponse>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: IZoneResponse) => {
         if (data) {
           setIsAddZoneVisible(true);
@@ -86,7 +87,7 @@ export default function ZoneMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: IZoneResponse) => {
         if (data) {
           setDeleteId(data._id);
@@ -95,30 +96,31 @@ export default function ZoneMain({
     },
   ];
 
-  const handleDeleteZone=async()=> {
-    if (ISPAID_VERSION){
-      await  mutateDelete({
+  const handleDeleteZone = async () => {
+    if (ISPAID_VERSION) {
+      await mutateDelete({
         variables: { id: deleteId },
         onCompleted: () => {
           showToast({
             type: 'success',
-            title: t('Delete Zone'),
-            message: t('Zone has been deleted successfully'),
+            title: getTranslation('delete_zone'),
+            message: getTranslation('zone_has_been_deleted_successfully'),
             duration: 3000,
           });
           setDeleteId('');
         },
       });
-    }else {
+    } else {
       showToast({
         type: 'error',
-        title: t('You are using free version'),
-        message: t('This Feature is only Available in Paid Version'),
+        title: getTranslation('you_are_using_free_version'),
+        message: getTranslation(
+          'this_feature_is_only_available_in_paid_version'
+        ),
       });
       setDeleteId('');
     }
-     
-  }
+  };
 
   return (
     <div className="pt-5">
@@ -143,9 +145,9 @@ export default function ZoneMain({
           setDeleteId('');
         }}
         onConfirm={() => {
-        handleDeleteZone()
+          handleDeleteZone();
         }}
-        message={t('Are you sure you want to delete this item?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_item')}
       />
     </div>
   );

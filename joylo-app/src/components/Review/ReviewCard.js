@@ -5,6 +5,7 @@ import SmallStarIcon from '../../assets/SVG/small-star-icon'
 import { styles } from './styles'
 import { alignment } from '../../utils/alignment'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const ReviewCard = ({ theme, name, rating, description, date }) => {
   return (
@@ -27,7 +28,7 @@ const ReviewCard = ({ theme, name, rating, description, date }) => {
 }
 
 const StarRating = ({ numberOfStars, rating }) => {
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const stars = Array.from({ length: numberOfStars }, (_, index) => index)
   return (
     <View style={styles.smallStarContainer}>

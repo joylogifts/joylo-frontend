@@ -5,6 +5,7 @@ import Loader from "./Loader";
 import DisplayError from "./DisplayError";
 import { useRouter } from "next/navigation";
 import './map.css'
+import { useLangTranslation } from "@/lib/context/global/language.context"; // added
 
 interface MapProps {
   apiKey: string;
@@ -21,6 +22,7 @@ interface MapProps {
 const Map: FC<MapProps> = ({ apiKey, data, center }) => {
   const router = useRouter();
   const mapRef = useRef<google.maps.Map | null>(null);
+  const { getTranslation } = useLangTranslation(); // added
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: apiKey,
@@ -46,9 +48,9 @@ const Map: FC<MapProps> = ({ apiKey, data, center }) => {
   }, [center]);
 
   return !isLoaded ? (
-    <Loader message="Loading Map" />
+    <Loader message={getTranslation("loading_map")} />
   ) : loadError ? (
-    <DisplayError />
+    <DisplayError message="error_loading_map" />
   ) : (
     <GoogleMap
       zoom={12} 

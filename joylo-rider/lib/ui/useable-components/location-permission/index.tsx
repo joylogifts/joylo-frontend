@@ -7,13 +7,14 @@ import { useTranslation } from "react-i18next";
 import { Alert, Linking, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import SpinnerComponent from "../spinner";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function LocationPermissionComponent({
   children,
 }: ILocationPermissionComponentProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { setLocationPermission } = useLocationContext();
 
   // States
@@ -103,14 +104,14 @@ export default function LocationPermissionComponent({
                 className="font-[Inter] font-semibold text-[20px] leading-[28px] tracking-[0px] text-center"
                 style={{ color: appTheme.fontMainColor }}
               >
-                {t("Enable Location For Better Experience")}
+                {t("enable_location_for_better_experience")}
               </Text>
               <Text
                 className="font-[Inter] font-[400] text-[14px] leading-[28px] tracking-[0px] text-center"
                 style={{ color: appTheme.fontSecondColor }}
               >
                 {t(
-                  "We need your location to find nearby restaurants, ensure accurate delivery, and provide the best service possible",
+                  "we_need_your_location_to_find_nearby_restaurnats_ensure_accurate_delivery_and_provide_best_sevice_possible",
                 )}
               </Text>
             </View>

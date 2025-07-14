@@ -29,6 +29,7 @@ import PopularIcon from '../../assets/SVG/popular'
 
 import { escapeRegExp } from '../../utils/regex'
 import { isOpen } from '../../utils/customFunctions'
+import { useLanguage } from '@/src/context/Language'
 
 const { height } = Dimensions.get('screen')
 
@@ -51,7 +52,6 @@ const FOOD = gql`
 function Restaurant(props) {
   const { _id: restaurantId } = props.route.params
   const Analytics = analytics()
-  const { t, i18n } = useTranslation()
   const scrollRef = useRef(null)
   const flatListRef = useRef(null)
   const navigation = useNavigation()
@@ -61,9 +61,10 @@ function Restaurant(props) {
   const translationY = useSharedValue(0)
   const circle = useSharedValue(0)
   const themeContext = useContext(ThemeContext)
+  const { getTranslation: t, dir, selectedLanguage } = useLanguage()
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const configuration = useContext(ConfigurationContext)
@@ -120,9 +121,11 @@ function Restaurant(props) {
       const filteredData = []
       deals.forEach((category) => {
         category.data.forEach((deals) => {
-          const title = deals.title.search(regex)
+          const _title = typeof deals.title === 'object' ? deals.title[selectedLanguage] : deals.title
+          const title = _title.search(regex)
           if (title < 0) {
-            const description = deals.description.search(regex)
+            const _description = typeof deals.description === 'object' ? deals.description[selectedLanguage] : deals.description
+            const description = _description.search(regex)
             if (description > 0) {
               filteredData.push(deals)
             }
@@ -152,17 +155,17 @@ function Restaurant(props) {
     if (data && data?.restaurant && (!data?.restaurant?.isAvailable || !isOpen(data?.restaurant))) {
       Alert.alert(
         '',
-        t('Restaurant Closed at the moment'),
+        t('restaurant_closed_at_the_moment'),
         [
           {
-            text: t('Go back to restaurants'),
+            text: t('go_back_to_restaurants'),
             onPress: () => {
               navigation.goBack()
             },
             style: 'cancel'
           },
           {
-            text: t('See Menu'),
+            text: t('see_menu'),
             onPress: () => console.log('see menu')
           }
         ],
@@ -181,17 +184,17 @@ function Restaurant(props) {
     if (!data?.restaurant?.isAvailable || !isOpen(data?.restaurant)) {
       Alert.alert(
         '',
-        t('restaurantClosed'),
+        t('restaurant_closed'),
         [
           {
-            text: t('backToRestaurants'),
+            text: t('back_to_restaurants'),
             onPress: () => {
               navigation.goBack()
             },
             style: 'cancel'
           },
           {
-            text: t('seeMenu'),
+            text: t('see_menu'),
             onPress: () => console.log('see menu')
           }
         ],
@@ -204,15 +207,15 @@ function Restaurant(props) {
     } else if (food.restaurant !== restaurantCart) {
       Alert.alert(
         '',
-        t('clearCartText'),
+        t('clear_cart_text'),
         [
           {
-            text: t('Cancel'),
+            text: t('cancel'),
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel'
           },
           {
-            text: t('okText'),
+            text: t('ok_text'),
             onPress: async () => {
               await addToCart(food, true)
             }
@@ -275,7 +278,7 @@ function Restaurant(props) {
           <>
             <View style={styles(currentTheme).triangleCorner} />
             <TextDefault style={styles(currentTheme).tagText} numberOfLines={1} textColor={currentTheme.fontWhite} bold small center>
-              {cartValue.quantity}
+              {/* {cartValue.quantity} */}
             </TextDefault>
           </>
         )
@@ -442,14 +445,14 @@ function Restaurant(props) {
   const updatedDeals =
     dataList?.length > 0
       ? [
-          {
-            title: 'Popular',
-            id: new Date().getTime(),
-            data: dataList?.slice(0, 4),
-            index: 0
-          },
-          ...deals
-        ]
+        {
+          title: 'Popular',
+          id: new Date().getTime(),
+          data: dataList?.slice(0, 4),
+          index: 0
+        },
+        ...deals
+      ]
       : [...deals]
 
   return (
@@ -471,9 +474,7 @@ function Restaurant(props) {
             topaBarData={updatedDeals}
             changeIndex={changeIndex}
             selectedLabel={selectedLabel}
-            minimumOrder={
-              propsData?.minimumOrder ?? data?.restaurant?.minimumOrder
-            }
+            minimumOrder={propsData?.minimumOrder ?? data?.restaurant?.minimumOrder}
             tax={propsData?.tax ?? data?.restaurant?.tax}
             updatedDeals={updatedDeals}
             searchOpen={searchOpen}
@@ -540,10 +541,10 @@ function Restaurant(props) {
                         <View style={styles(currentTheme).flex}>
                           <View style={styles(currentTheme).dealDescription}>
                             <TextDefault textColor={currentTheme.fontMainColor} style={styles(currentTheme).headerText} numberOfLines={1} bolder isRTL>
-                              {item?.title}
+                              {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                             </TextDefault>
                             <TextDefault style={styles(currentTheme).priceText} small isRTL>
-                              {wrapContentAfterWords(item?.description, 5)}
+                              {wrapContentAfterWords(typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description, 5)}
                             </TextDefault>
                             <View style={styles(currentTheme).dealPrice}>
                               <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
@@ -619,7 +620,7 @@ function Restaurant(props) {
                         }}
                         isRTL
                       >
-                        {t('mostOrderedNow')}
+                        {t('most_ordered_right_now')}
                       </TextDefault>
                       <View style={styles(currentTheme).popularItemCards}>
                         {data.map((item) => (
@@ -633,7 +634,7 @@ function Restaurant(props) {
                 return (
                   <View style={styles(currentTheme).sectionHeader}>
                     <TextDefault style={styles(currentTheme).sectionHeaderText} textColor={currentTheme.fontFourthColor} bolder isRTL>
-                      {title}
+                      {typeof title === "object" ? title[selectedLanguage] : title}
                     </TextDefault>
                   </View>
                 )
@@ -685,10 +686,10 @@ function Restaurant(props) {
                         <View style={styles(currentTheme).flex}>
                           <View style={styles(currentTheme).dealDescription}>
                             <TextDefault textColor={currentTheme.fontMainColor} style={styles(currentTheme).headerText} numberOfLines={1} bolder isRTL>
-                              {item?.title}
+                              {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                             </TextDefault>
                             <TextDefault style={styles(currentTheme).priceText} small isRTL>
-                              {wrapContentAfterWords(item?.description, 5)}
+                              {wrapContentAfterWords(typeof item?.description === "object" ? item?.description[selectedLanguage] : item.description, 5)}
                             </TextDefault>
                             <View style={styles(currentTheme).dealPrice}>
                               <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
@@ -735,7 +736,7 @@ function Restaurant(props) {
                   </Animated.View>
                 </View>
                 <TextDefault style={styles().buttonText} textColor={currentTheme.buttonTextPink} uppercase center bolder small>
-                  {t('viewCart')}
+                  {t('view_cart')}
                 </TextDefault>
                 <View style={styles().buttonTextRight} />
               </TouchableOpacity>
@@ -748,3 +749,4 @@ function Restaurant(props) {
 }
 
 export default Restaurant
+
