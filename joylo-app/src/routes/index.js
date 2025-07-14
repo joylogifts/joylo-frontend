@@ -68,6 +68,8 @@ import { SLIDE_RIGHT_WITH_CURVE_ANIM, SLIDE_UP_RIGHT_ANIMATION, AIMATE_FROM_CENT
 import { useLocation } from '../ui/hooks'
 import setupApolloClient from '@/src/apollo/index'
 import { ApolloProvider } from '@apollo/client'
+import RiderRatingAndReview from '../screens/RiderRatingReview/RiderRatingAndReview'
+import RiderRatingReviewDetail from '../screens/RiderRatingReviewDetail/RiderRatingReviewDetail'
 
 const NavigationStack = createStackNavigator()
 const Location = createStackNavigator()
@@ -158,6 +160,9 @@ function MainNavigator() {
       <NavigationStack.Screen name='Reviews' component={Reviews} options={SLIDE_RIGHT_WITH_CURVE_ANIM} />
       <NavigationStack.Screen name='Paypal' component={Paypal} />
       <NavigationStack.Screen name='RateAndReview' component={RateAndReview} />
+
+      <NavigationStack.Screen name='RateAndReviewRider' component={RiderRatingAndReview} options={{ header: () => null, ...SLIDE_RIGHT_WITH_CURVE_ANIM }} />
+      <NavigationStack.Screen name='RateAndReviewRiderDetail' component={RiderRatingReviewDetail} options={{ header: () => null, ...SLIDE_RIGHT_WITH_CURVE_ANIM }} />
 
       <NavigationStack.Screen name='StripeCheckout' component={StripeCheckout} />
 

@@ -408,3 +408,13 @@ export const createActivity = `
       )
     }
 `
+
+export const createRiderReview = `mutation CreateRiderReview($input: CreateRiderReviewInput!) {
+  createRiderReview(input: $input) {
+    _id
+    rating
+    description
+    createdAt
+    updatedAt
+  }
+}`;

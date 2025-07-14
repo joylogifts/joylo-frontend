@@ -11,9 +11,13 @@ const useEnvVars = (env = Updates.channel) => {
   const configuration = useContext(ConfigurationContext)
   if (env === 'production' || env === 'staging') {
     return {
-      GRAPHQL_URL: 'https://base.clobit.com/graphql',
-      WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
-      SERVER_URL: 'https://base.clobit.com/',
+
+      GRAPHQL_URL: 'http://192.168.18.28:8001/graphql',
+      WS_GRAPHQL_URL: 'ws://192.168.18.28:8001/graphql',
+      SERVER_URL: 'http://192.168.18.28:8001/',
+      // GRAPHQL_URL: 'https://base.clobit.com/graphql',
+      // WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
+      // SERVER_URL: 'https://base.clobit.com/',
       IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
       ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
       AMPLITUDE_API_KEY: configuration?.appAmplitudeApiKey,
@@ -28,12 +32,12 @@ const useEnvVars = (env = Updates.channel) => {
   }
 
   return {
-    // GRAPHQL_URL: 'http://192.168.1.42:8001/graphql',
-    // WS_GRAPHQL_URL: 'ws://192.168.1.42:8001/graphql',
-    // SERVER_URL: 'http://192.168.1.42:8001/',
-    GRAPHQL_URL: 'https://base.clobit.com/graphql',
-    WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
-    SERVER_URL: 'https://base.clobit.com/',
+    GRAPHQL_URL: 'http://192.168.18.28:8001/graphql',
+    WS_GRAPHQL_URL: 'ws://192.168.18.28:8001/graphql',
+    SERVER_URL: 'http://192.168.18.28:8001/',
+    // GRAPHQL_URL: 'https://base.clobit.com/graphql',
+    // WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
+    // SERVER_URL: 'https://base.clobit.com/',
     IOS_CLIENT_ID_GOOGLE: configuration?.iOSClientID,
     ANDROID_CLIENT_ID_GOOGLE: configuration?.androidClientID,
     AMPLITUDE_API_KEY: configuration?.appAmplitudeApiKey,
