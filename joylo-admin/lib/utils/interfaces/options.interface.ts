@@ -27,6 +27,7 @@ export interface IOptions {
   title: Record<string, string> | string;
   description: Record<string, string> | string;
   price: number;
+  isActive? : boolean
   __typename: string;
 }
 export interface IOptionsByRestaurantResponse {
@@ -35,4 +36,8 @@ export interface IOptionsByRestaurantResponse {
     options: IOptions[];
     __typename: string;
   };
+}
+
+export interface IOptionsResponse {
+  options: IOptions[]
 }

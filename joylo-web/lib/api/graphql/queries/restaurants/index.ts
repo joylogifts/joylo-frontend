@@ -273,3 +273,17 @@ export const GET_SUB_CATEGORIES = gql`
     }
   }
 `;
+
+
+export const GET_ADDONS_BY_CATEGORY = gql`
+  query GetAddonsByCategory($storeId: String!, $categoryId: String!) {
+    getAddonsByCategory(storeId: $storeId, categoryId: $categoryId) {
+      _id
+      options
+      title
+      description
+      categoryIds
+      isActive
+    }
+  }
+`

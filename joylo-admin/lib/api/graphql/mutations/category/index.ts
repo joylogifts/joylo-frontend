@@ -1,91 +1,31 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_CATEGORY = gql`
-  mutation CreateCategory($category: CategoryInput!) {
+  mutation CreateCategory($category: GlobalCategoryInput) {
     createCategory(category: $category) {
-      _id
-      categories {
         _id
         title
-        foods {
-          _id
-          title
-          description
-          variations {
-            _id
-            title
-            price
-            discounted
-            addons
-          }
-          image
-          isActive
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
     }
-  }
+ }
 `;
 
 export const EDIT_CATEGORY = gql`
-  mutation EditCategory($category: CategoryInput!) {
+  mutation EditCategory($category: GlobalCategoryInput) {
     editCategory(category: $category) {
       _id
-      categories {
-        _id
-        title
-        foods {
-          _id
-          title
-          description
-          variations {
-            _id
-            title
-            price
-            discounted
-            addons
-          }
-          image
-          isActive
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
+      title
+      isActive
     }
-  }
+ }
 `;
 
 export const DELETE_CATEGORY = gql`
-  mutation DeleteCategory($id: String!, $restaurant: String!) {
-    deleteCategory(id: $id, restaurant: $restaurant) {
+ mutation DeleteCategory($id: String! ) {
+    deleteCategory(id: $id) {
       _id
-      categories {
-        _id
-        title
-        foods {
-          _id
-          title
-          description
-          variations {
-            _id
-            title
-            price
-            discounted
-            addons
-          }
-          image
-          isActive
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
+      title
+      isActive
+      image
     }
-  }
+ }
 `;

@@ -5,6 +5,7 @@ import {
   IGlobalTableHeaderProps,
 } from './global.interface';
 import { IOptions } from './options.interface';
+import { ICategory } from './category.interface';
 
 export interface IAddonHeaderProps extends IGlobalComponentProps {
   setIsAddAddonVisible: (visible: boolean) => void;
@@ -28,19 +29,33 @@ export interface IAddonMainComponentsProps extends IGlobalComponentProps {
 }
 
 /*  */
+
 export interface IAddon {
   _id: string;
   options: string[];
-  title: Record<string, string> | string;
-  description: Record<string, string> | string;
-  quantityMinimum: number;
-  quantityMaximum: number;
-  __typename: string;
+  title: string;
+  description: string;
+  categoryIds?: string[] | null;
+  isActive: boolean;
 }
+
+export interface IAddonPopulated {
+  _id: string;
+  options: IOptions[];
+  title: string;
+  description: string;
+  categoryIds?: ICategory[] | null;
+  isActive: boolean;
+}
+
 export interface IAddonByRestaurantResponse {
   restaurant: {
     _id: string;
     addons: IAddon[];
     __typename: string;
   };
+}
+
+export interface IGetAddonsResponse {
+  addons: IAddon[];
 }

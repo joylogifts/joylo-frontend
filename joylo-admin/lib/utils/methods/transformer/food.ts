@@ -14,6 +14,7 @@ export const onTransformRetaurantsByIdToFoods = ({
   restaurant.categories.map((category: IFoodCategory) => {
     return category.foods.map((food: IFood) => {
       foods.push({
+        isReturnAble: food.isReturnAble ,
         __typename: food.__typename,
         isActive: food.isActive,
         _id: food._id,

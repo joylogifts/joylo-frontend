@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 import { Fieldset } from 'primereact/fieldset';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext } from 'react';
 
 // Context
 import { FoodsContext } from '@/lib/context/restaurant/foods.context';
@@ -10,12 +10,8 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 
 // Interface and Types
 import {
-  IAddon,
-  IAddonByRestaurantResponse,
-  IDropdownSelectItem,
   IFoodNew,
   IFoodVariationsAddRestaurantComponentProps,
-  IQueryResult,
   IVariationForm,
 } from '@/lib/utils/interfaces';
 
@@ -25,11 +21,8 @@ import { onErrorMessageMatcher } from '@/lib/utils/methods';
 import { VariationSchema } from '@/lib/utils/schema';
 
 // Components
-import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
-import CustomMultiSelectComponent from '@/lib/ui/useable-components/custom-multi-select';
 import CustomTextField from '@/lib/ui/useable-components/input-field';
 import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
-import AddonAddForm from '../../../add-on/add-form';
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import CustomButton from '@/lib/ui/useable-components/button';
 
@@ -40,16 +33,15 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 import {
   CREATE_FOOD,
   EDIT_FOOD,
-  GET_ADDONS_BY_RESTAURANT_ID,
-  GET_FOODS_BY_RESTAURANT_ID,
+  GET_PENDING_PRODUCTS,
 } from '@/lib/api/graphql';
 
 // Icons
 import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Apollo
-import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import { useMutation } from '@apollo/client';
+import { useSearchParams } from 'next/navigation';
 
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -57,7 +49,6 @@ const initialFormValuesTemplate: IVariationForm = {
   title: '',
   price: 0,
   discounted: 0,
-  addons: [],
   isOutOfStock: false,
 };
 
@@ -72,11 +63,10 @@ export default function VariationAddForm({
   };
   // Hooks
 
-  const { getTranslation, selectedLanguage } = useLangTranslation();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get('activeTab') || 'approved';
 
-  // State
-  const [isAddAddonVisible, setIsAddAddonVisible] = useState(false);
-  const [addon, setAddon] = useState<IAddon | null>(null);
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -84,8 +74,6 @@ export default function VariationAddForm({
     useContext(FoodsContext);
   const {
     restaurantLayoutContextData: { restaurantId },
-    option,
-    setOption,
   } = useContext(RestaurantLayoutContext);
 
   // Constants
@@ -102,7 +90,7 @@ export default function VariationAddForm({
   };
 
   // Query
-  const { data, loading } = useQueryGQL(
+/*   const { data, loading } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
     { id: restaurantId },
     {
@@ -111,15 +99,19 @@ export default function VariationAddForm({
       onCompleted: onFetchAddonsByRestaurantCompleted,
       onError: onErrorFetchAddonsByRestaurant,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>; */
 
   const [createFood] = useMutation(
     foodContextData?.isEditing ? EDIT_FOOD : CREATE_FOOD,
     {
       refetchQueries: [
         {
-          query: GET_FOODS_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
+          query: GET_PENDING_PRODUCTS,
+          variables: { 
+            filter : { 
+              storeId : restaurantId , status : activeTab 
+            } , 
+            pagination : { pageNo : 1 , pageSize : 10 } },
         },
       ],
       onCompleted: () => {
@@ -148,7 +140,7 @@ export default function VariationAddForm({
   );
 
   // Memoized Data
-  const addonsDropdown = useMemo(
+/*   const addonsDropdown = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
         return {
@@ -160,18 +152,18 @@ export default function VariationAddForm({
         };
       }),
     [data?.restaurant?.addons]
-  );
+  ); */
 
   // API Handlers
-  function onFetchAddonsByRestaurantCompleted() { }
-  function onErrorFetchAddonsByRestaurant() {
-    showToast({
-      type: 'error',
-      title: getTranslation('addons_fetch'),
-      message: getTranslation('addons_fetch_failed'),
-      duration: 2500,
-    });
-  }
+  // function onFetchAddonsByRestaurantCompleted() {}
+  // function onErrorFetchAddonsByRestaurant() {
+  //   showToast({
+  //     type: 'error',
+  //     title: t('Addons Fetch'),
+  //     message: t('Addons fetch failed'),
+  //     duration: 2500,
+  //   });
+  // }
 
   // Handlers
   const onHandleSubmit = async ({
@@ -179,10 +171,12 @@ export default function VariationAddForm({
   }: {
     variations: IVariationForm[];
   }) => {
+    
     try {
       const _variations = variations.map(
         ({ discounted, ...item }: IVariationForm) => {
           delete item.__typename;
+         
           return {
             ...item,
             title:
@@ -190,7 +184,7 @@ export default function VariationAddForm({
                 ? item.title[selectedLanguage]
                 : item.title,
             discounted: discounted,
-            addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
+            // addons: item?.addons?.map((item: IDropdownSelectItem) => item.code),
           };
         }
       );
@@ -201,6 +195,7 @@ export default function VariationAddForm({
         category: foodContextData?.food?.data.category?.code,
         subCategory: foodContextData?.food?.data.subCategory?.code,
         variations: _variations,
+        isReturnAble: foodContextData?.food?.data.isReturnAble
       };
       delete foodInput.__typename;
       await createFood({
@@ -216,6 +211,7 @@ export default function VariationAddForm({
         },
       });
     } catch (err) {
+      console.log(err)
       showToast({
         type: 'error',
         title: `${foodContextData?.isEditing ? getTranslation('edit') : getTranslation('new')} ${getTranslation('food')}`,
@@ -409,7 +405,7 @@ export default function VariationAddForm({
                                               />
                                             </div>
 
-                                            <div className="col-span-12 sm:col-span-12">
+                                          {/*   <div className="col-span-12 sm:col-span-12">
                                               <CustomMultiSelectComponent
                                                 name={`variations[${index}].addons`}
                                                 placeholder={getTranslation(
@@ -460,7 +456,7 @@ export default function VariationAddForm({
                                                   }}
                                                 />
                                               </div>
-                                            </div>
+                                            </div> */}
                                           </div>
                                         </Fieldset>
                                       </div>
@@ -510,19 +506,6 @@ export default function VariationAddForm({
         </div>
       </div>
       <div>
-        <AddonAddForm
-          className="z-[999]"
-          isAddOptionsVisible={isAddAddonVisible}
-          setIsAddOptionsVisible={setIsAddAddonVisible}
-          option={option}
-          setOption={setOption}
-          addon={addon}
-          onHide={() => {
-            setIsAddAddonVisible(false);
-            setAddon(null);
-          }}
-          isAddAddonVisible={isAddAddonVisible}
-        />
       </div>
     </div>
   );

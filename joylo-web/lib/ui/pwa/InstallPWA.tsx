@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 export default function InstallPWA() {
-  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
+  const [/* deferredPrompt */, setDeferredPrompt] = useState<Event | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
 
@@ -28,7 +28,7 @@ export default function InstallPWA() {
     };
   }, []);
 
-  const handleInstallClick = async () => {
+/*   const handleInstallClick = async () => {
     if (deferredPrompt && 'prompt' in deferredPrompt) {
       // @ts-ignore
       deferredPrompt.prompt();
@@ -40,14 +40,16 @@ export default function InstallPWA() {
       setDeferredPrompt(null);
     }
   };
-
-  const handleCloseClick = () => {
+ */
+/*   const handleCloseClick = () => {
     setShowPrompt(false);
   };
-
+ */
   if (isInstalled || !showPrompt) return null;
 
-  return (
+  return;
+
+/*   return (
     <div className="fixed bottom-4 right-4 bg-white shadow-lg border px-4 py-2 rounded-md z-50 max-w-xs w-full">
       <div className="flex justify-between items-center">
         <p className="text-sm font-medium">Install this app for a better experience!</p>
@@ -62,5 +64,5 @@ export default function InstallPWA() {
         Install App
       </button>
     </div>
-  );
+  ); */
 }

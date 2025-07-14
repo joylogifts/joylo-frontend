@@ -1,8 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext } from 'react';
 import { useJsApiLoader } from '@react-google-maps/api';
-import { ToastContext } from '@/lib/context/global/toast.context';
 import {
   IGoogleMapsContext,
   IGoogleMapsProviderProps,
@@ -17,10 +16,10 @@ export const GoogleMapsProvider: React.FC<IGoogleMapsProviderProps> = ({
   libraries,
   children,
 }) => {
-  const { showToast } = useContext(ToastContext);
+  // const { showToast } = useContext(ToastContext);
 
   // Add a state to track loading more explicitly
-  const [manualIsLoaded, setManualIsLoaded] = useState(false);
+  // const [manualIsLoaded, setManualIsLoaded] = useState(false);
 
   // Use the hook from @react-google-maps/api
   const { isLoaded: hookIsLoaded } = useJsApiLoader({
@@ -29,7 +28,7 @@ export const GoogleMapsProvider: React.FC<IGoogleMapsProviderProps> = ({
     libraries: libraries || ['places'],
   });
 
-  useEffect(() => {
+/*   useEffect(() => {
     console.log('GoogleMapsProvider - API Key:', apiKey);
     console.log('GoogleMapsProvider - Libraries:', libraries);
 
@@ -77,17 +76,11 @@ export const GoogleMapsProvider: React.FC<IGoogleMapsProviderProps> = ({
     } else {
       console.warn('No Google Maps API key provided');
     }
-  }, [apiKey, libraries]);
+  }, [apiKey, libraries]); */
 
   // Combine loading states
-  const isLoaded = hookIsLoaded || manualIsLoaded;
+  const isLoaded = hookIsLoaded;
 
-  useEffect(() => {
-    console.log('Google Maps Loading States:');
-    console.log('Hook isLoaded:', hookIsLoaded);
-    console.log('Manual isLoaded:', manualIsLoaded);
-    console.log('Combined isLoaded:', isLoaded);
-  }, [hookIsLoaded, manualIsLoaded, isLoaded]);
 
   const value: IGoogleMapsContext = {
     isLoaded,

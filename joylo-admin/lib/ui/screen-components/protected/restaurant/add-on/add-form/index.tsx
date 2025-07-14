@@ -1,512 +1,647 @@
-// Core
-import { FieldArray, Form, Formik, FormikErrors } from 'formik';
+// /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// Prime React
-import { Sidebar } from 'primereact/sidebar';
+// // Core
+// import { FieldArray, Form, Formik, FormikErrors, FormikProps } from 'formik';
 
-// Interface and Types
-import { IAddonForm } from '@/lib/utils/interfaces/forms';
+// // Prime React
+// import { Sidebar } from 'primereact/sidebar';
 
-// Components
-import CustomButton from '@/lib/ui/useable-components/button';
-import CustomMultiSelectComponent from '@/lib/ui/useable-components/custom-multi-select';
-import CustomTextAreaField from '@/lib/ui/useable-components/custom-text-area-field';
-import CustomTextField from '@/lib/ui/useable-components/input-field';
-import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
-import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
-import OptionsAddForm from '@/lib/ui/screen-components/protected/restaurant/options/add-form';
+// // Interface and Types
+// import { IAddonForm } from '@/lib/utils/interfaces/forms';
 
-// Utilities and Constants
-import { AddonsErrors, OptionErrors } from '@/lib/utils/constants';
+// // Components
+// import CustomButton from '@/lib/ui/useable-components/button';
+// import CustomMultiSelectComponent from '@/lib/ui/useable-components/custom-multi-select';
+// import CustomTextAreaField from '@/lib/ui/useable-components/custom-text-area-field';
+// import CustomTextField from '@/lib/ui/useable-components/input-field';
+// import CustomNumberField from '@/lib/ui/useable-components/number-input-field';
+// import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
+// import OptionsAddForm from '@/lib/ui/screen-components/protected/restaurant/options/add-form';
 
-//Toast
-import useToast from '@/lib/hooks/useToast';
+// // Utilities and Constants
+// import { AddonsErrors, OptionErrors } from '@/lib/utils/constants';
 
-//GraphQL
-import {
-  CREATE_ADDONS,
-  EDIT_ADDON,
-  GET_ADDONS_BY_RESTAURANT_ID,
-  GET_OPTIONS_BY_RESTAURANT_ID,
-} from '@/lib/api/graphql';
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import {
-  IAddonAddFormComponentProps,
-  IDropdownSelectItem,
-  IOptions,
-  IOptionsByRestaurantResponse,
-  IQueryResult,
-} from '@/lib/utils/interfaces';
-import {
-  omitExtraAttributes,
-  onErrorMessageMatcher,
-  toTextCase,
-} from '@/lib/utils/methods';
-import { AddonSchema } from '@/lib/utils/schema';
-import { useMutation } from '@apollo/client';
-import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Fieldset } from 'primereact/fieldset';
-import { useContext, useEffect, useMemo, useState } from 'react';
+// //Toast
+// import useToast from '@/lib/hooks/useToast';
 
-import { useLangTranslation } from '@/lib/context/global/language.context';
+// //GraphQL
+// import {
+//   CREATE_ADDONS,
+//   EDIT_ADDON,
+//   GET_ADDONS_BY_RESTAURANT_ID,
+//   GET_CATEGORY_BY_RESTAURANT_ID,
+//   GET_OPTIONS_BY_RESTAURANT_ID,
+// } from '@/lib/api/graphql';
+// import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
+// import { useQueryGQL } from '@/lib/hooks/useQueryQL';
+// import {
+//   IAddonAddFormComponentProps,
+//   ICategory,
+//   ICategoryByRestaurantResponse,
+//   IDropdownSelectItem,
+//   IOptions,
+//   IOptionsByRestaurantResponse,
+//   IQueryResult,
+//   ISubCategory,
+//   ISubCategoryByParentIdResponse,
+// } from '@/lib/utils/interfaces';
+// import {
+//   omitExtraAttributes,
+//   onErrorMessageMatcher,
+//   toTextCase,
+// } from '@/lib/utils/methods';
+// import { AddonSchema } from '@/lib/utils/schema';
+// import { useMutation } from '@apollo/client';
+// import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { Fieldset } from 'primereact/fieldset';
+// import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+// import { useTranslations } from 'next-intl';
+// import { GET_SUBCATEGORIES_BY_PARENT_ID } from '@/lib/api/graphql/queries/sub-categories';
+// import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+// import InputSkeleton from '@/lib/ui/useable-components/custom-skeletons/inputfield.skeleton';
+// import CustomDropdownComponent from '@/lib/ui/useable-components/custom-dropdown';
 
-// State
-const initialFormValuesTemplate: IAddonForm = {
-  title: '',
-  description: '',
-  quantityMinimum: 1,
-  quantityMaximum: 1,
-  options: null,
-};
-const initialEditFormValuesTemplate: IAddonForm = {
-  _id: '',
-  title: '',
-  description: '',
-  quantityMinimum: 1,
-  quantityMaximum: 1,
-  options: null,
-};
+// // State
+// const initialFormValuesTemplate: IAddonForm = {
+//   title: '',
+//   description: '',
+//   options: null,
+//   categoryId: null,
+//   subCategoryId: null,
+// };
+// const initialEditFormValuesTemplate: IAddonForm = {
+//   _id: '',
+//   title: '',
+//   description: '',
+//   options: null,
+//   categoryId: null,
+//   subCategoryId: null,
+// };
 
-export default function AddonAddForm({
-  onHide,
-  addon,
-  position = 'right',
-  isAddAddonVisible,
-}: IAddonAddFormComponentProps) {
-  // Hooks
+// export default function AddonAddForm({
+//   onHide,
+//   addon,
+//   position = 'right',
+//   isAddAddonVisible,
+// }: IAddonAddFormComponentProps) {
+//   // Hooks
+//   const t = useTranslations();
+//   const { showToast } = useToast();
+//   // Context
 
-  const { getTranslation, selectedLanguage } = useLangTranslation();
-  const { showToast } = useToast();
-  // Context
+//   const {
+//     restaurantLayoutContextData,
+//     setIsAddOptionsVisible,
+//     option,
+//     setOption,
+//     isAddOptionsVisible,
+//   } = useContext(RestaurantLayoutContext);
+//   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
+//   const shopType = restaurantLayoutContextData?.shopType || '';
 
-  const {
-    restaurantLayoutContextData,
-    setIsAddOptionsVisible,
-    option,
-    setOption,
-    isAddOptionsVisible,
-  } = useContext(RestaurantLayoutContext);
-  const restaurantId = restaurantLayoutContextData?.restaurantId || '';
+//   const formikRef = useRef<FormikProps<any>>(null);
 
-  const [initialValues, setInitialValues] = useState({
-    addons: [
-      {
-        ...initialFormValuesTemplate,
-      },
-    ],
-  });
+//   // States
+//   const [initialValues, setInitialValues] = useState({
+//     addons: [
+//       {
+//         ...initialFormValuesTemplate,
+//       },
+//     ],
+//   });
+//   const [categoryDropDown, setCategoryDropDown] =
+//     useState<IDropdownSelectItem>();
 
-  // Query
-  const { data } = useQueryGQL(
-    GET_OPTIONS_BY_RESTAURANT_ID,
-    { id: restaurantId },
-    {
-      fetchPolicy: 'network-only',
-      enabled: !!restaurantId,
-      onCompleted: onFetchAddonsByRestaurantCompleted,
-      onError: onErrorFetchAddonsByRestaurant,
-    }
-  ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
+//   // Query
+//   const { data } = useQueryGQL(
+//     GET_OPTIONS_BY_RESTAURANT_ID,
+//     { id: restaurantId },
+//     {
+//       fetchPolicy: 'network-only',
+//       enabled: !!restaurantId,
+//       onCompleted: onFetchAddonsByRestaurantCompleted,
+//       onError: onErrorFetchAddonsByRestaurant,
+//     }
+//   ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
 
-  // Memoized Constants
-  const optionsDropdown = useMemo(
-    () =>
-      data?.restaurant?.options.map((option: IOptions) => {
-        return {
-          label: toTextCase(
-            typeof option.title === 'object'
-              ? option?.title[selectedLanguage] || ''
-              : option?.title || '',
-            'title'
-          ),
-          code: option._id,
-        };
-      }),
-    [data?.restaurant?.options]
-  );
+//   // Queries
+//   const {
+//     data: categoriesData,
+//     loading: categoriesLoading
+//   } = useQueryGQL(
+//     GET_CATEGORY_BY_RESTAURANT_ID,
+//     { id: restaurantId ?? '' },
+//     {
+//       fetchPolicy: 'no-cache',
+//       enabled: !!restaurantId,
+//     }
+//   ) as IQueryResult<ICategoryByRestaurantResponse | undefined, undefined>;
 
-  // Mutation
-  const [createAddons, { loading: mutationLoading }] = useMutation(
-    addon ? EDIT_ADDON : CREATE_ADDONS,
-    {
-      refetchQueries: [
-        {
-          query: GET_ADDONS_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
-        },
-      ],
-      onCompleted: () => {
-        showToast({
-          type: 'success',
-          title: getTranslation('new_addon'),
-          message: `${getTranslation('addon_have_been')} ${addon ? getTranslation('edited') : getTranslation('added')} ${getTranslation('successfully')}.`,
-        });
+//   const {
+//     data: subCategoriesData,
+//     loading: subCategoriesLoading,
+//   } = useQueryGQL(
+//     GET_SUBCATEGORIES_BY_PARENT_ID,
+//     {
+//       parentCategoryId: categoryDropDown?.code,
+//     },
+//     {
+//       enabled: !!categoryDropDown?.code,
+//       fetchPolicy: 'cache-and-network',
+//     }
+//   ) as IQueryResult<
+//     ISubCategoryByParentIdResponse | undefined,
+//     { parentCategoryId: string }
+//   >;
 
-        onHide();
-      },
-      onError: (error) => {
-        let message = '';
-        try {
-          message = error.graphQLErrors[0]?.message;
-        } catch (err) {
-          message = `${getTranslation('something_went_wrong')}.`;
-        }
-        showToast({
-          type: 'error',
-          title: getTranslation('new_addon'),
-          message,
-        });
-      },
-    }
-  );
+//   // Memoized Data
+//   const categoriesDropdown = useMemo(
+//     () =>
+//       categoriesData?.restaurant?.categories.map((category: ICategory) => {
+//         return { label: category.title, code: category._id };
+//       }),
+//     [categoriesData?.restaurant?.categories]
+//   );
 
-  // Handlers
-  // Complete and Error
-  function onFetchAddonsByRestaurantCompleted() { }
-  function onErrorFetchAddonsByRestaurant() {
-    showToast({
-      type: 'error',
-      title: getTranslation('addons_fetch'),
-      message: getTranslation('addons_fetch_failed'),
-      duration: 2500,
-    });
-  }
+//   const subCategoriesDropdown = useMemo(
+//     () =>
+//       subCategoriesData?.subCategoriesByParentId.map(
+//         (sub_category: ISubCategory) => {
+//           return { label: sub_category.title, code: sub_category._id };
+//         }
+//       ),
+//     [categoryDropDown?.code, subCategoriesData]
+//   );
 
-  function mapOptions(addons: IAddonForm[]) {
-    return addons.map((addon) => ({
-      ...addon,
-      options: addon?.options?.map(
-        (option: IDropdownSelectItem) => option.code
-      ),
-    }));
-  }
-  // Form Submission
-  const handleSubmit = ({ addons }: { addons: IAddonForm[] }) => {
-    createAddons({
-      variables: {
-        addonInput: {
-          restaurant: restaurantId,
-          addons: addon
-            ? mapOptions([
-              omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
-            ])[0]
-            : mapOptions(addons),
-        },
-      },
-    });
-  };
+//   // Memoized Constants
+//   const optionsDropdown = useMemo(
+//     () =>
+//       data?.restaurant?.options.map((option: IOptions) => {
+//         return { label: toTextCase(option.title, 'title'), code: option._id };
+//       }),
+//     [data?.restaurant?.options]
+//   );
 
-  const mapOptionIds = (
-    optionIds: string[],
-    optionsData: { label: string; code: string }[]
-  ) => {
-    if (!addon) return;
+//   // Mutation
+//   const [createAddons, { loading: mutationLoading }] = useMutation(
+//     addon ? EDIT_ADDON : CREATE_ADDONS,
+//     {
+//       refetchQueries: [
+//         {
+//           query: GET_ADDONS_BY_RESTAURANT_ID,
+//           variables: { id: restaurantId },
+//         },
+//       ],
+//       onCompleted: () => {
+//         showToast({
+//           type: 'success',
+//           title: t('New Addon'),
+//           message: `${t('Addon have been')} ${addon ? t('edited') : t('added')} ${t('successfully')}.`,
+//         });
 
-    const matched_options = optionIds.map((id) => {
-      const matchedOption = optionsData.find((op) => op.code === id);
-      return { label: matchedOption?.label, code: matchedOption?.code };
-    });
+//         onHide();
+//       },
+//       onError: (error) => {
+//         let message = '';
+//         try {
+//           message = error.graphQLErrors[0]?.message;
+//         } catch (err) {
+//           message = `${t('Something went wrong')}.`;
+//         }
+//         showToast({
+//           type: 'error',
+//           title: t('New Addon'),
+//           message,
+//         });
+//       },
+//     }
+//   );
 
-    const updated_addon = addon
-      ? JSON.parse(JSON.stringify(addon))
-      : ({} as IAddonForm);
-    delete updated_addon.options;
+//   // Handlers
+//   // Complete and Error
+//   function onFetchAddonsByRestaurantCompleted() {}
+//   function onErrorFetchAddonsByRestaurant() {
+//     showToast({
+//       type: 'error',
+//       title: t('Addons Fetch'),
+//       message: t('Addons fetch failed'),
+//       duration: 2500,
+//     });
+//   }
 
-    setInitialValues({
-      addons: [
-        {
-          ...initialFormValuesTemplate,
-          ...updated_addon,
-          options: matched_options,
-        },
-      ],
-    });
-  };
+//   function mapOptions(addons: IAddonForm[]) {
+//     return addons.map((addon) => ({
+//       ...addon,
+//       categoryId: addon.categoryId?.code,
+//       subCategoryId: addon.subCategoryId?.code,
+//       options: addon?.options?.map(
+//         (option: IDropdownSelectItem) => option.code
+//       ),
+//     }));
+//   }
+//   // Form Submission
+//   const handleSubmit = ({ addons }: { addons: IAddonForm[] }) => {
+//     createAddons({
+//       variables: {
+//         addonInput: {
+//           restaurant: restaurantId,
+//           addons: addon
+//             ? mapOptions([
+//                 omitExtraAttributes(addons[0], initialEditFormValuesTemplate),
+//               ])[0]
+//             : mapOptions(addons),
+//         },
+//       },
+//     });
+//   };
 
-  // UseEffects
-  useEffect(() => {
-    mapOptionIds((addon?.options as string[]) ?? [], optionsDropdown ?? []);
-  }, [addon, optionsDropdown]);
+//   const mapOptionIds = (
+//     optionIds: string[],
+//     optionsData: { label: string; code: string }[]
+//   ) => {
+//     if (!addon) return;
 
-  return (
-    <Sidebar
-      visible={isAddAddonVisible}
-      position={position}
-      onHide={onHide}
-      className="w-full sm:w-[500px]"
-    >
-      <div className="flex h-full w-full items-center justify-start">
-        <div className="h-full w-full">
-          <div className="flex flex-col gap-2">
-            <div className="mb-2 flex flex-col">
-              <span className="text-lg">
-                {addon ? getTranslation('edit') : getTranslation('add')}{' '}
-                {getTranslation('addons')}
-              </span>
-            </div>
+//     const matched_options = optionIds.map((id) => {
+//       const matchedOption = optionsData.find((op) => op.code === id);
+//       return { label: matchedOption?.label, code: matchedOption?.code };
+//     });
 
-            <div className="mb-2">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={AddonSchema}
-                onSubmit={handleSubmit}
-                enableReinitialize
-              >
-                {({
-                  values,
-                  errors,
-                  handleChange,
-                  setFieldValue,
-                  handleSubmit,
-                }) => {
-                  const _errors: FormikErrors<IAddonForm>[] =
-                    (errors?.addons as FormikErrors<IAddonForm>[]) ?? [];
+//     const updated_addon = addon
+//       ? JSON.parse(JSON.stringify(addon))
+//       : ({} as IAddonForm);
+//     delete updated_addon.options;
 
-                  return (
-                    <Form onSubmit={handleSubmit}>
-                      <div>
-                        <FieldArray name="addons">
-                          {({ remove, push }) => (
-                            <div>
-                              {values.addons.length > 0 &&
-                                values.addons.map(
-                                  (value: IAddonForm, index: number) => {
-                                    return (
-                                      <div
-                                        className="mb-2"
-                                        key={`addon-${index}`}
-                                      >
-                                        <div className="relative">
-                                          {!!index && (
-                                            <button
-                                              className="absolute -right-1 top-2"
-                                              onClick={() => remove(index)}
-                                            >
-                                              <FontAwesomeIcon
-                                                icon={faTimes}
-                                                size="lg"
-                                                color="#FF6347"
-                                              />
-                                            </button>
-                                          )}
-                                          <Fieldset
-                                            legend={`${getTranslation('addons')} ${index + 1} ${typeof value.title === 'object' ? `(${value.title[selectedLanguage]})` || '' : `(${value.title})` || ''}`}
-                                            toggleable
-                                          >
-                                            <div className="grid grid-cols-12 gap-4">
-                                              <div className="col-span-12 sm:col-span-12">
-                                                <CustomTextField
-                                                  type="text"
-                                                  name={`addons[${index}].title`}
-                                                  placeholder={getTranslation(
-                                                    'title'
-                                                  )}
-                                                  maxLength={35}
-                                                  value={
-                                                    typeof value.title ===
-                                                      'object'
-                                                      ? value.title[
-                                                      selectedLanguage
-                                                      ] || ''
-                                                      : value.title || ''
-                                                  }
-                                                  onChange={(e) =>
-                                                    setFieldValue(
-                                                      `addons[${index}].title`,
-                                                      e.target.value
-                                                    )
-                                                  }
-                                                  showLabel={true}
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'title',
-                                                        _errors[index]?.title,
-                                                        AddonsErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
-                                              <div className="col-span-6 sm:col-span-6">
-                                                <CustomNumberField
-                                                  name={`addons[${index}].quantityMinimum`}
-                                                  min={1}
-                                                  max={99999}
-                                                  minFractionDigits={0}
-                                                  maxFractionDigits={0}
-                                                  placeholder={getTranslation(
-                                                    'minimum_quantity'
-                                                  )}
-                                                  showLabel={true}
-                                                  value={value.quantityMinimum}
-                                                  onChangeFieldValue={
-                                                    setFieldValue
-                                                  }
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'quantityMinimum',
-                                                        _errors[index]
-                                                          ?.quantityMinimum,
-                                                        AddonsErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
-                                              <div className="col-span-6 sm:col-span-6">
-                                                <CustomNumberField
-                                                  name={`addons[${index}].quantityMaximum`}
-                                                  min={1}
-                                                  max={99999}
-                                                  minFractionDigits={0}
-                                                  maxFractionDigits={0}
-                                                  placeholder={getTranslation(
-                                                    'maximum_quantity'
-                                                  )}
-                                                  showLabel={true}
-                                                  value={value.quantityMaximum}
-                                                  onChangeFieldValue={
-                                                    setFieldValue
-                                                  }
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'quantityMaximum',
-                                                        _errors[index]
-                                                          ?.quantityMaximum,
-                                                        AddonsErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
+//     // Categories/Sub-Catgories
+//     const editing_category = categoriesDropdown?.find(
+//       (_category) => _category.code === addon.categoryId?._id
+//     );
+//     setCategoryDropDown(editing_category);
+//     const editing_subCategory = subCategoriesDropdown?.find(
+//       (_category) => _category.code === addon.subCategoryId?._id
+//     );
 
-                                              <div className="col-span-12 sm:col-span-12">
-                                                <CustomTextAreaField
-                                                  name={`addons[${index}].description`}
-                                                  placeholder={getTranslation(
-                                                    'description'
-                                                  )}
-                                                  value={
-                                                    typeof value.description ===
-                                                      'object'
-                                                      ? value.description[
-                                                      selectedLanguage
-                                                      ] || ''
-                                                      : value.description || ''
-                                                  }
-                                                  onChange={handleChange}
-                                                  showLabel={true}
-                                                  maxLength={40}
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'description',
-                                                        _errors[index]
-                                                          ?.description,
-                                                        OptionErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
+//     setInitialValues({
+//       addons: [
+//         {
+//           ...initialFormValuesTemplate,
+//           ...updated_addon,
+//           categoryId: editing_category,
+//           subCategoryId: editing_subCategory,
+//           options: matched_options,
+//         },
+//       ],
+//     });
+//   };
 
-                                              <div className="col-span-12 sm:col-span-12">
-                                                <CustomMultiSelectComponent
-                                                  name={`addons[${index}].options`}
-                                                  placeholder={getTranslation(
-                                                    'options'
-                                                  )}
-                                                  options={
-                                                    optionsDropdown ?? []
-                                                  }
-                                                  selectedItems={value.options}
-                                                  setSelectedItems={
-                                                    setFieldValue
-                                                  }
-                                                  extraFooterButton={{
-                                                    onChange: () => {
-                                                      setIsAddOptionsVisible(
-                                                        true
-                                                      );
-                                                    },
-                                                    title: 'Add Options',
-                                                  }}
-                                                  showLabel={true}
-                                                  style={{
-                                                    borderColor:
-                                                      onErrorMessageMatcher(
-                                                        'options',
-                                                        _errors[index]
-                                                          ?.options as string,
-                                                        AddonsErrors
-                                                      )
-                                                        ? 'red'
-                                                        : '',
-                                                  }}
-                                                />
-                                              </div>
-                                            </div>
-                                          </Fieldset>
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-                                )}
-                              {!addon && (
-                                <div className="mt-4 flex justify-end">
-                                  <TextIconClickable
-                                    className="w-full rounded border border-black bg-transparent text-black"
-                                    icon={faAdd}
-                                    iconStyles={{ color: 'black' }}
-                                    title={getTranslation('add_new_addon')}
-                                    onClick={() =>
-                                      push(initialFormValuesTemplate)
-                                    }
-                                  />
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </FieldArray>
+//   // UseEffects
+//   useEffect(() => {
+//     mapOptionIds((addon?.options as string[]) ?? [], optionsDropdown ?? []);
+//   }, [addon, optionsDropdown]);
 
-                        <div className="mt-4 flex justify-end">
-                          <CustomButton
-                            className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={
-                              addon
-                                ? getTranslation('edit')
-                                : getTranslation('add')
-                            }
-                            type="submit"
-                            loading={mutationLoading}
-                          />
-                        </div>
-                      </div>
-                    </Form>
-                  );
-                }}
-              </Formik>
-            </div>
-          </div>
-        </div>
-      </div>
-      <OptionsAddForm
-        option={option}
-        onHide={() => {
-          setIsAddOptionsVisible(false);
-          setOption(null);
-        }}
-        isAddOptionsVisible={isAddOptionsVisible}
-      />
-    </Sidebar>
-  );
+//   return (
+//     <Sidebar
+//       visible={isAddAddonVisible}
+//       position={position}
+//       onHide={onHide}
+//       className="w-full sm:w-[500px]"
+//     >
+//       <div className="flex h-full w-full items-center justify-start">
+//         <div className="h-full w-full">
+//           <div className="flex flex-col gap-2">
+//             <div className="mb-2 flex flex-col">
+//               <span className="text-lg">
+//                 {addon ? t('Edit') : t('Add')} {t('Addons')}
+//               </span>
+//             </div>
+
+//             <div className="mb-2">
+//               <Formik
+//                 innerRef={formikRef}
+//                 initialValues={initialValues}
+//                 validationSchema={AddonSchema}
+//                 onSubmit={handleSubmit}
+//                 enableReinitialize
+//               >
+//                 {({
+//                   values,
+//                   errors,
+//                   handleChange,
+//                   setFieldValue,
+//                   handleSubmit,
+//                 }) => {
+//                   const _errors: FormikErrors<IAddonForm>[] =
+//                     (errors?.addons as FormikErrors<IAddonForm>[]) ?? [];
+
+//                   return (
+//                     <Form onSubmit={handleSubmit}>
+//                       <div>
+//                         <FieldArray name="addons">
+//                           {({ remove, push }) => (
+//                             <div>
+//                               {values.addons.length > 0 &&
+//                                 values.addons.map(
+//                                   (value: IAddonForm, index: number) => {
+//                                     return (
+//                                       <div
+//                                         className="mb-2"
+//                                         key={`addon-${index}`}
+//                                       >
+//                                         <div className="relative">
+//                                           {!!index && (
+//                                             <button
+//                                               className="absolute -right-1 top-2"
+//                                               onClick={() => remove(index)}
+//                                             >
+//                                               <FontAwesomeIcon
+//                                                 icon={faTimes}
+//                                                 size="lg"
+//                                                 color="#FF6347"
+//                                               />
+//                                             </button>
+//                                           )}
+//                                           <Fieldset
+//                                             legend={`${t('Addons')} ${index + 1} ${value.title ? `(${value.title})` : ''}`}
+//                                             toggleable
+//                                           >
+//                                             <div className="grid grid-cols-12 gap-4">
+//                                               <div className="col-span-12 sm:col-span-12">
+//                                                 <CustomTextField
+//                                                   type="text"
+//                                                   name={`addons[${index}].title`}
+//                                                   placeholder={t('Title')}
+//                                                   maxLength={35}
+//                                                   value={value.title}
+//                                                   onChange={(e) =>
+//                                                     setFieldValue(
+//                                                       `addons[${index}].title`,
+//                                                       e.target.value
+//                                                     )
+//                                                   }
+//                                                   showLabel={true}
+//                                                   style={{
+//                                                     borderColor:
+//                                                       onErrorMessageMatcher(
+//                                                         'title',
+//                                                         _errors[index]?.title,
+//                                                         AddonsErrors
+//                                                       )
+//                                                         ? 'red'
+//                                                         : '',
+//                                                   }}
+//                                                 />
+//                                               </div>
+
+//                                               <div className="col-span-12 sm:col-span-12">
+//                                                 <label
+//                                                   htmlFor="category"
+//                                                   className="text-sm font-[500]"
+//                                                 >
+//                                                   {t('Category')}
+//                                                 </label>
+//                                                 <Dropdown
+//                                                   name={`addons[${index}].categoryId`}
+//                                                   value={value.categoryId}
+//                                                   placeholder={t(
+//                                                     'Select Category'
+//                                                   )}
+//                                                   className="md:w-20rem p-dropdown-no-box-shadow m-0 h-10 w-full border border-gray-300 p-0 align-middle text-sm focus:shadow-none focus:outline-none"
+//                                                   panelClassName="border-gray-200 border-2"
+//                                                   onChange={(
+//                                                     e: DropdownChangeEvent
+//                                                   ) => {
+//                                                     handleChange(e);
+//                                                     setCategoryDropDown(
+//                                                       e.value
+//                                                     );
+//                                                   }}
+//                                                   options={
+//                                                     categoriesDropdown ?? []
+//                                                   }
+//                                                   loading={categoriesLoading}
+//                                                   style={{
+//                                                     borderColor:
+//                                                       onErrorMessageMatcher(
+//                                                         'categoryId',
+//                                                         _errors[index]
+//                                                           ?.categoryId,
+//                                                         AddonsErrors
+//                                                       )
+//                                                         ? 'red'
+//                                                         : '',
+//                                                   }}
+//                                                 />
+//                                               </div>
+
+//                                               {shopType == 'grocery' && (
+//                                                 <div className="col-span-12 sm:col-span-12">
+//                                                   {!subCategoriesLoading ? (
+//                                                     <CustomDropdownComponent
+//                                                       name={`addons[${index}].subCategoryId`}
+//                                                       placeholder={t(
+//                                                         'Select Sub-Category'
+//                                                       )}
+//                                                       showLabel={true}
+//                                                       selectedItem={
+//                                                         value.subCategoryId ??
+//                                                         null
+//                                                       }
+//                                                       setSelectedItem={
+//                                                         setFieldValue
+//                                                       }
+//                                                       options={
+//                                                         subCategoriesDropdown ??
+//                                                         []
+//                                                       }
+//                                                       isLoading={
+//                                                         subCategoriesLoading
+//                                                       }
+//                                                       style={{
+//                                                         borderColor:
+//                                                           onErrorMessageMatcher(
+//                                                             'subCategoryId',
+//                                                             _errors[index]
+//                                                               ?.subCategoryId
+//                                                               ? _errors[index]
+//                                                                   ?.subCategoryId
+//                                                               : [],
+//                                                             AddonsErrors
+//                                                           )
+//                                                             ? 'red'
+//                                                             : '',
+//                                                       }}
+//                                                     />
+//                                                   ) : (
+//                                                     <InputSkeleton />
+//                                                   )}
+//                                                 </div>
+//                                               )}
+
+//                                               <div className="col-span-6 sm:col-span-6">
+//                                                 <CustomNumberField
+//                                                   name={`addons[${index}].quantityMinimum`}
+//                                                   min={1}
+//                                                   max={99999}
+//                                                   minFractionDigits={0}
+//                                                   maxFractionDigits={0}
+//                                                   placeholder={t(
+//                                                     'Minimum Quantity'
+//                                                   )}
+//                                                   showLabel={true}
+//                                                   value={value.quantityMinimum}
+//                                                   onChangeFieldValue={
+//                                                     setFieldValue
+//                                                   }
+//                                                   style={{
+//                                                     borderColor:
+//                                                       onErrorMessageMatcher(
+//                                                         'quantityMinimum',
+//                                                         _errors[index]
+//                                                           ?.quantityMinimum,
+//                                                         AddonsErrors
+//                                                       )
+//                                                         ? 'red'
+//                                                         : '',
+//                                                   }}
+//                                                 />
+//                                               </div>
+//                                               <div className="col-span-6 sm:col-span-6">
+//                                                 <CustomNumberField
+//                                                   name={`addons[${index}].quantityMaximum`}
+//                                                   min={1}
+//                                                   max={99999}
+//                                                   minFractionDigits={0}
+//                                                   maxFractionDigits={0}
+//                                                   placeholder={t(
+//                                                     'Maximum Quantity'
+//                                                   )}
+//                                                   showLabel={true}
+//                                                   value={value.quantityMaximum}
+//                                                   onChangeFieldValue={
+//                                                     setFieldValue
+//                                                   }
+//                                                   style={{
+//                                                     borderColor:
+//                                                       onErrorMessageMatcher(
+//                                                         'quantityMaximum',
+//                                                         _errors[index]
+//                                                           ?.quantityMaximum,
+//                                                         AddonsErrors
+//                                                       )
+//                                                         ? 'red'
+//                                                         : '',
+//                                                   }}
+//                                                 />
+//                                               </div>
+
+//                                               <div className="col-span-12 sm:col-span-12">
+//                                                 <CustomTextAreaField
+//                                                   name={`addons[${index}].description`}
+//                                                   placeholder={t('Description')}
+//                                                   value={value.description}
+//                                                   onChange={handleChange}
+//                                                   showLabel={true}
+//                                                   maxLength={40}
+//                                                   style={{
+//                                                     borderColor:
+//                                                       onErrorMessageMatcher(
+//                                                         'description',
+//                                                         _errors[index]
+//                                                           ?.description,
+//                                                         OptionErrors
+//                                                       )
+//                                                         ? 'red'
+//                                                         : '',
+//                                                   }}
+//                                                 />
+//                                               </div>
+
+//                                               <div className="col-span-12 sm:col-span-12">
+//                                                 <CustomMultiSelectComponent
+//                                                   name={`addons[${index}].options`}
+//                                                   placeholder={t('Options')}
+//                                                   options={
+//                                                     optionsDropdown ?? []
+//                                                   }
+//                                                   selectedItems={value.options}
+//                                                   setSelectedItems={
+//                                                     setFieldValue
+//                                                   }
+//                                                   extraFooterButton={{
+//                                                     onChange: () => {
+//                                                       setIsAddOptionsVisible(
+//                                                         true
+//                                                       );
+//                                                     },
+//                                                     title: 'Add Options',
+//                                                   }}
+//                                                   showLabel={true}
+//                                                   style={{
+//                                                     borderColor:
+//                                                       onErrorMessageMatcher(
+//                                                         'options',
+//                                                         _errors[index]
+//                                                           ?.options as string,
+//                                                         AddonsErrors
+//                                                       )
+//                                                         ? 'red'
+//                                                         : '',
+//                                                   }}
+//                                                 />
+//                                               </div>
+//                                             </div>
+//                                           </Fieldset>
+//                                         </div>
+//                                       </div>
+//                                     );
+//                                   }
+//                                 )}
+//                               {!addon && (
+//                                 <div className="mt-4 flex justify-end">
+//                                   <TextIconClickable
+//                                     className="w-full rounded border border-black bg-transparent text-black"
+//                                     icon={faAdd}
+//                                     iconStyles={{ color: 'black' }}
+//                                     title={t('Add New Addon')}
+//                                     onClick={() =>
+//                                       push(initialFormValuesTemplate)
+//                                     }
+//                                   />
+//                                 </div>
+//                               )}
+//                             </div>
+//                           )}
+//                         </FieldArray>
+
+//                         <div className="mt-4 flex justify-end">
+//                           <CustomButton
+//                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
+//                             label={addon ? t('Edit') : t('Add')}
+//                             type="submit"
+//                             loading={mutationLoading}
+//                           />
+//                         </div>
+//                       </div>
+//                     </Form>
+//                   );
+//                 }}
+//               </Formik>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//       <OptionsAddForm
+//         option={option}
+//         onHide={() => {
+//           setIsAddOptionsVisible(false);
+//           setOption(null);
+//         }}
+//         isAddOptionsVisible={isAddOptionsVisible}
+//       />
+//     </Sidebar>
+//   );
+// }
+
+export default function AddonAddForm () {
+  return <div></div>
 }

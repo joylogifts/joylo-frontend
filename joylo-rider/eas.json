@@ -20,7 +20,10 @@
       }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "SENTRY_AUTH_TOKEN": "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"
+      }
     }
   },
   "submit": {
@@ -30,9 +33,9 @@
         "track": "production"
       },
       "ios": {
-        "appleId": "sharan.gohar@icloud.com",
-        "ascAppId": "1526674511",
-        "appleTeamId": "GDFK7MVY6P"
+        "appleId": "developer@ninjascode.com",
+        "ascAppId": "6747885733",
+        "appleTeamId": "UWG35VKRM5"
       }
     }
   },

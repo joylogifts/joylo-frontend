@@ -18,7 +18,7 @@ export const CancelModal = ({ theme, modalVisible, setModalVisible, cancelOrder,
     if (orderStatus === ORDER_STATUS_ENUM.CANCELLED) {
       setIsCancelling(false)
     }
-  }, [orderStatus])
+  }, [orderStatus]);
 
   const handleCancelOrder = async () => {
     setIsCancelling(true)

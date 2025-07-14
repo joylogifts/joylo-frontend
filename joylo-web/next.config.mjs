@@ -127,8 +127,13 @@ const nextConfig = {
       {
         protocol:'https',
         hostname:"images.deliveryhero.io"
+      },
+      {
+        protocol:'https',
+        hostname:"www.shutterstock.com"
       }
     ], // Add placehold.co as an allowed domain
   },
 };
-export default withPWA(withNextIntl(nextConfig));
+export default withNextIntl(nextConfig);
+// export default withPWA(withNextIntl(nextConfig));

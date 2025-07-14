@@ -255,6 +255,7 @@ export const generateDummyCategories = (count: number = 10): ICategory[] => {
     categories.push({
       _id: `category_${i + 1}`,
       title: `Category ${i + 1}`,
+      isActive: true
     });
   }
 
@@ -285,10 +286,9 @@ export const generateDummyAddons = (count: number = 10): IAddon[] => {
       _id: `addon_${i + 1}`,
       title: `Addon ${i + 1}`,
       description: `Description for Addon ${i + 1}`,
-      quantityMinimum: 1,
-      quantityMaximum: 1,
-      __typename: 'Addon',
+      categoryIds: [],
       options: [],
+      isActive: false
     });
   }
 
@@ -505,10 +505,10 @@ export const generateDummyFoods = (count: number = 10): IFoodNew[] => {
         code: `sub-category-${i + 1}`,
         label: `sub-category-${i + 2}`,
       },
+      isReturnAble: false ,
       variations: [
         {
           _id: `food_${i + 1}`,
-          addons: [] as IDropdownSelectItem[],
           discounted: 0,
           isOutOfStock: false,
           price: i + 23,

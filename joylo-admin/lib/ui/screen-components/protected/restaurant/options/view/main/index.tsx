@@ -12,20 +12,18 @@ import { OPTION_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/
 
 // Utilities and Data
 import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
-import { IActionMenuItem } from '@/lib/utils/interfaces/action-menu.interface';
 
 //Toast
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 import {
   IOptions,
-  IOptionsByRestaurantResponse,
-  IOptionsMainComponentsProps,
+  IOptionsResponse,
   IQueryResult,
 } from '@/lib/utils/interfaces';
 
 // GraphQL
-import { DELETE_OPTION, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
+import { DELETE_OPTION, GET_OPTIONS, GET_OPTIONS_BY_RESTAURANT_ID } from '@/lib/api/graphql';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import { generateDummyOptions } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
@@ -33,10 +31,7 @@ import CategoryTableHeader from '../header/table-header';
 import { } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
-export default function OptionMain({
-  setIsAddOptionsVisible,
-  setOption,
-}: IOptionsMainComponentsProps) {
+export default function OptionMain() {
   // Context
   const { restaurantLayoutContextData } = useContext(RestaurantLayoutContext);
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
@@ -56,15 +51,15 @@ export default function OptionMain({
 
   // Query
   const { data, loading } = useQueryGQL(
-    GET_OPTIONS_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    GET_OPTIONS,
+    { storeId: restaurantId },
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
       onCompleted: onFetchCategoriesByRestaurantCompleted,
       onError: onErrorFetchCategoriesByRestaurant,
     }
-  ) as IQueryResult<IOptionsByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IOptionsResponse | undefined, undefined>;
 
   //Mutation
   const [deleteCategory, { loading: mutationLoading }] = useMutation(
@@ -103,26 +98,6 @@ export default function OptionMain({
     });
   }
 
-  // Constants
-  const menuItems: IActionMenuItem<IOptions>[] = [
-    {
-      label: getTranslation('edit'),
-      command: (data?: IOptions) => {
-        if (data) {
-          setIsAddOptionsVisible(true);
-          setOption(data);
-        }
-      },
-    },
-    {
-      label: getTranslation('delete'),
-      command: (data?: IOptions) => {
-        if (data) {
-          setDeleteId(data._id);
-        }
-      },
-    },
-  ];
 
   return (
     <div className="p-3">
@@ -134,14 +109,14 @@ export default function OptionMain({
           />
         }
         data={
-          data?.restaurant?.options.slice().reverse() ||
+          data?.options.slice().reverse() ||
           (loading ? generateDummyOptions() : [])
         }
         filters={filters}
         setSelectedData={setSelectedProducts}
         selectedData={selectedProducts}
         loading={loading}
-        columns={OPTION_TABLE_COLUMNS({ menuItems })}
+        columns={OPTION_TABLE_COLUMNS()}
       />
       <CustomDialog
         loading={mutationLoading}

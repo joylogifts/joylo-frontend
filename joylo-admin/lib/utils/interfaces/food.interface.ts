@@ -88,6 +88,7 @@ export interface IFood {
   isActive: boolean;
   __typename: string;
   isOutOfStock: boolean;
+  isReturnAble: boolean
 }
 
 export interface IFoodNew {
@@ -101,6 +102,7 @@ export interface IFoodNew {
   isActive: boolean;
   __typename: string;
   isOutOfStock: boolean;
+  isReturnAble: boolean
 }
 
 export interface IFoodCategory {
@@ -118,4 +120,39 @@ export interface IRestaurant {
 
 export interface IFoodByRestaurantResponse {
   restaurant: IRestaurant;
+}
+
+export interface IProductsPagination {
+    currentPage : number;
+    totalPages : number;
+    totalItems: number;
+    pageSize: number;
+    hasPrevPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export interface PendingProductResponse {
+  getPendingProducts: {
+    pagination : IProductsPagination ,
+    data : IPendingProduct[]
+  };
+}
+
+export interface IPendingProduct {
+  _id? : string;
+  id: string;
+  storeId: {
+    _id: string;
+    name: string;
+  };
+  categoryId: {
+    _id: string;
+    title: string;
+  };
+  productId: string | null;
+  status: 'pending' | 'approved' | 'rejected'; 
+  reason: string | null;
+  approvalType: 'CREATE' | 'UPDATE'; 
+  previousProductData: null;
+  productData: IFood;
 }

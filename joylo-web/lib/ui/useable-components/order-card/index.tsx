@@ -27,7 +27,7 @@ const OrderCard: FC<IOrderCardProps> = ({
     handleReOrderClicked,
     handleRateOrderClicked,
 }) => {
-    const { getTranslation } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const handleTrackOrder = (order: IOrder) => {
         // Implement tracking functionality
         // The ?. (optional chaining) operator is used to safely call the function handleTrackOrderClicked only if it is defined.
@@ -75,7 +75,11 @@ const OrderCard: FC<IOrderCardProps> = ({
                         </h3>
                         {type === "active" && (
                             <h1 className="text-gray-600 text-sm">
-                                {(order?.items && order?.items[0]?.title) || ""}
+                                {order?.items && order?.items[0]?.title
+                                    ? typeof order?.items[0]?.title === "object"
+                                        ? order?.items[0]?.title[selectedLanguage]
+                                        : order?.items[0]?.title
+                                    : ""}
                             </h1>
                         )}
                         {type === "active" ? (

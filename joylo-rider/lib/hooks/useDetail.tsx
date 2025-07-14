@@ -16,6 +16,7 @@ import { GET_CONFIGURATION } from "../api/graphql/query/configuration";
 import {
   ASSIGN_ORDER,
   UPDATE_ORDER_STATUS_RIDER,
+  UPDATE_ORDER_STATUS_BY_RIDER
 } from "../apollo/mutations/order.mutation";
 import { RIDER_EARNINGS_GRAPH } from "../apollo/queries/earnings.query";
 import {
@@ -85,7 +86,7 @@ const useDetails = (orderData: IOrder) => {
   );
 
   const [mutateOrderStatus, { loading: loadingOrderStatus }] = useMutation(
-    UPDATE_ORDER_STATUS_RIDER,
+    UPDATE_ORDER_STATUS_BY_RIDER,
     {
       onCompleted,
       onError,
