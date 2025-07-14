@@ -225,6 +225,12 @@ export default function MakeSidebar() {
       icon: faCog,
       subMenu: [
         {
+          text: 'Products',
+          label: getTranslation('products'),
+          route: '/store-settings/products',
+          isParent: false,
+        },
+        {
           text: getTranslation('Categories'),
           route: '/store-settings/category',
           isParent: false,

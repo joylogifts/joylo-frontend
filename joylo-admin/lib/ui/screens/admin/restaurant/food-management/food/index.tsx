@@ -2,39 +2,27 @@
 import FoodForm from '@/lib/ui/screen-components/protected/restaurant/food/form/add-form';
 import FoodHeader from '@/lib/ui/screen-components/protected/restaurant/food/view/header/screen-header';
 import FoodsMain from '@/lib/ui/screen-components/protected/restaurant/food/view/main';
+import PendingProductsTable from '@/lib/ui/screen-components/protected/restaurant/food/view/main/PendingProductsTable';
+import FoodTabs from '@/lib/ui/screen-components/protected/restaurant/food/view/tabs/FoodTabs';
+import { useSearchParams } from 'next/navigation';
 
-// Hooks
-import { useContext } from 'react';
-
-// Contexts
-import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import SubCategoriesAddForm from '@/lib/ui/screen-components/protected/restaurant/category/add-subcategories';
+type TabKey = 'pending' | 'approved' | 'rejected';
 
 export default function FoodScreen() {
-  // Contexts
-  const {
-    isAddSubCategoriesVisible,
-    setIsAddSubCategoriesVisible,
-    category,
-    setCategory,
-    setSubCategories,
-  } = useContext(RestaurantLayoutContext);
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get('activeTab') as TabKey || 'approved';
+
+
   return (
     <div className="screen-container">
       <FoodHeader />
-      <SubCategoriesAddForm
-        onHide={() => {
-          setIsAddSubCategoriesVisible({
-            bool: false,
-            parentCategoryId: '',
-          });
-          setCategory(null);
-          setSubCategories([]);
-        }}
-        isAddSubCategoriesVisible={isAddSubCategoriesVisible}
-        category={category}
-      />
-      <FoodsMain />
+      <FoodTabs />
+
+      <div className="">
+        {activeTab === 'approved' && <FoodsMain />}
+        {activeTab === 'pending' && <PendingProductsTable status='pending' />}
+        {activeTab === 'rejected' && <PendingProductsTable status='rejected' />}
+      </div>
       <FoodForm />
     </div>
   );
