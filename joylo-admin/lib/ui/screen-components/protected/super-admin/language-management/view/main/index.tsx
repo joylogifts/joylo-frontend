@@ -2,7 +2,7 @@
 
 // Core
 import { useContext, useEffect, useState } from 'react';
-import { } from 'next-intl';
+import {} from 'next-intl';
 import { Chip } from 'primereact/chip';
 import ReactJson from 'react18-json-view';
 import { ApolloError, useMutation } from '@apollo/client';
@@ -107,7 +107,6 @@ export default function LanguageManagementMain({
 
     // Remove from deleted if re-added
     setRemovedKeys((prev) => prev.filter((k) => k !== key));
-
     // Track as added or updated
     setAddedOrUpdated((prev) => ({
       ...prev,
@@ -118,7 +117,6 @@ export default function LanguageManagementMain({
   };
 
   const handleDelete = (e: any) => {
-    console.log(e);
     const key = getKey(e);
 
     // Block deletion of the entire root object
@@ -180,8 +178,9 @@ export default function LanguageManagementMain({
   return (
     <div className="flex flex-grow flex-col overflow-hidden sm:flex-row">
       <div
-        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/6 ${activeTab === 'language' ? '' : 'hidden sm:block'
-          }`}
+        className={`w-full overflow-y-auto border-gray-200 bg-white sm:w-1/6 ${
+          activeTab === 'language' ? '' : 'hidden sm:block'
+        }`}
       >
         {/* Mobile-only header for Vendors section */}
         <div className="mt-3  border-b p-3 sm:hidden">
@@ -192,7 +191,7 @@ export default function LanguageManagementMain({
               icon={faAdd}
               iconStyles={{ color: 'white' }}
               title={getTranslation('add_vendor')}
-              onClick={() => { }}
+              onClick={() => {}}
             />
           </div>
         </div>
@@ -220,8 +219,9 @@ export default function LanguageManagementMain({
       </div>
 
       <div
-        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${activeTab === 'translations' ? '' : 'hidden sm:block'
-          }`}
+        className={`flex-1 overflow-y-auto border-l border-gray-200 px-2 ${
+          activeTab === 'translations' ? '' : 'hidden sm:block'
+        }`}
       >
         {/* Header for Restaurants section */}
         <div className="border-b  pt-3">
@@ -237,46 +237,57 @@ export default function LanguageManagementMain({
                 className="w-full"
               />
             </div>
+
+            <button
+              className="float-end my-2 block"
+              onClick={handleSubmit}
+              style={{
+                marginTop: 20,
+                padding: '10px 20px',
+                backgroundColor: '#000',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 6,
+                cursor: 'pointer',
+              }}
+            >
+              {loading ? (
+                <ProgressSpinner
+                  className="m-0 h-6 w-6 items-center self-center p-0"
+                  strokeWidth="5"
+                  style={{ fill: 'white', accentColor: 'white' }}
+                  color="white"
+                />
+              ) : (
+                'Update'
+              )}
+            </button>
           </div>
         </div>
 
-        <ReactJson
-          src={data}
-          displaySize
-          onAdd={handleAddOrEdit}
-          onEdit={handleAddOrEdit}
-          onDelete={handleDelete}
-          editable={
-            language?.isDefault
-              ? { add: true, edit: true, delete: true }
-              : undefined
-          }
-          collapsed={false}
-        />
-        <button
-          className="float-end my-2 block"
-          onClick={handleSubmit}
-          style={{
-            marginTop: 20,
-            padding: '10px 20px',
-            backgroundColor: '#000',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 6,
-            cursor: 'pointer',
-          }}
-        >
-          {loading ? (
-            <ProgressSpinner
-              className="m-0 h-6 w-6 items-center self-center p-0"
-              strokeWidth="5"
-              style={{ fill: 'white', accentColor: 'white' }}
-              color="white"
-            />
-          ) : (
-            'Update'
-          )}
-        </button>
+        {/* <div className="w-full max-w-full sm:max-w-[600px] md:max-w-[800px] h-[400px] overflow-auto p-4"> */}
+        <div className="w-full max-w-[90vw] sm:max-w-[95vw] md:max-w-[85vw] lg:max-w-[80vw] xl:max-w-[75vw] 2xl:max-w-[70vw] h-[50vh] overflow-auto mb-10">
+          <ReactJson
+            src={data}
+            displaySize
+            onAdd={handleAddOrEdit}
+            onEdit={handleAddOrEdit}
+            onDelete={handleDelete}
+            collapsed={false}
+            // Prevent its *own* internal div from growing wider than 100%
+            // style={{
+            //   width: '100%',
+            //   wordBreak: 'break-word',
+            //   whiteSpace: 'pre-wrap',
+            // }}
+            editable={
+              language?.isDefault
+                ? { add: true, edit: true, delete: true }
+                : undefined
+            }
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
       </div>
     </div>
   );
