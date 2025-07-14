@@ -85,6 +85,24 @@ function OrderDetail(props) {
   const cancelModalToggle = () => {
     setCancelModalVisible(!cancelModalVisible)
   }
+
+  const handleRatingYourRiderBtn = () => {
+    let order_data = orders?.find((o) => {
+      return o?._id === id
+    })
+
+    if (!order_data) {
+      order_data = orderData
+    }
+    console.log(order_data?._id, order_data.rider, order_data?.restaurant?._id)
+    navigation.navigate('RateAndReviewRider', {
+      orderId: order_data?._id,
+      riderId: order_data?.rider?._id,
+      riderName: order_data?.rider?.name,
+      restaurantId: order_data?.restaurant?._id
+    });
+  }
+
   function onError(error) {
     console.log({ error })
     FlashMessage({
@@ -266,6 +284,18 @@ function OrderDetail(props) {
       </ScrollView>
       <View style={styles().bottomContainer(currentTheme)}>
         <PriceRow theme={currentTheme} title={getTranslation('total')} currency={configuration.currencySymbol} price={total.toFixed(2)} />
+
+        {
+          ORDER_STATUS_ENUM.DELIVERED &&
+          <View style={{ marginTop: scale(20), marginRight: scale(20), marginLeft: scale(20), marginBottom: scale(3) }}>
+            <Button text={getTranslation('rate_your_rider')} buttonProps={{ onPress: handleRatingYourRiderBtn }} buttonStyles={styles().ratingButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.black }} textStyles={{ ...alignment.Pmedium }}></Button>
+          </View>
+        }
+        <View style={{ margin: scale(20) }}>
+          <Button disabled={isOrderCancelable ? false : true} text={getTranslation('cancel')} buttonProps={{ onPress: cancelModalToggle }} buttonStyles={styles().cancelButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.red600 }} textStyles={{ ...alignment.Pmedium }} />
+        </View>
+
+
           
           {
             (
