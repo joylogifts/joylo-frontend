@@ -31,11 +31,12 @@ import EarningStack from "../earnings-stack";
 
 // Helpers
 import formatNumber from "@/lib/utils/methods/num-formatter";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function EarningsMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 
   // Contexts
   const { userId, setModalVisible } = useUserContext();
@@ -102,7 +103,7 @@ export default function EarningsMain() {
           className="text-xl font-bold"
           style={{ color: appTheme.fontMainColor }}
         >
-          {t("Recent Activity")}
+          {t("recent_activity")}
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -119,7 +120,7 @@ export default function EarningsMain() {
           }}
         >
           <Text className="text-sm text-[#3B82F6] font-bold">
-            {t("See More")}
+            {t("see_more")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -134,7 +135,7 @@ export default function EarningsMain() {
               className="block mx-auto font-bold text-center w-full my-12 "
               style={{ color: appTheme.fontSecondColor }}
             >
-              {t("No record found")}
+              {t("no_records_found")}
             </Text>
           }
           renderItem={(info) => {

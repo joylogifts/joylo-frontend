@@ -1,4 +1,5 @@
 import { GET_VENDOR_LIVE_MONITOR } from '@/lib/api/graphql';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { VendorLayoutContext } from '@/lib/context/vendor/layout-vendor.context';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import {
@@ -7,14 +8,15 @@ import {
   IVendorLiveMonitorProps,
   IVendorLiveMonitorResponseGraphQL,
 } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
+
 import React, { useContext } from 'react';
 
 export default function VendorLiveMonitor({
   dateFilter,
 }: IVendorLiveMonitorProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Contexts
   const {
@@ -48,10 +50,10 @@ export default function VendorLiveMonitor({
   return (
     <div className="mx-auto max-w-md p-2 lg:p-4">
       <h1 className="text-base font-semibold lg:text-lg">
-        {t('Live Monitor')}
+        {getTranslation('live_monitor')}
       </h1>
       <p className="mb-2 text-sm text-gray-500 lg:mb-4 lg:text-base">
-        {t('Track the health of your business')}
+        {getTranslation('track_the_health_of_your_business')}
       </p>
       <div className="grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-4">
         <div className="flex items-center rounded-lg border p-2 lg:p-4">
@@ -61,7 +63,9 @@ export default function VendorLiveMonitor({
             </span>
           </div>
           <div className="ml-2 lg:ml-4">
-            <h2 className="lg:text-md text-sm font-semibold">{t('Stores')}</h2>
+            <h2 className="lg:text-md text-sm font-semibold">
+              {getTranslation('stores')}
+            </h2>
             <p className="text-xs text-gray-500 lg:text-sm">
               {dateFilter.dateKeyword}
             </p>
@@ -75,7 +79,7 @@ export default function VendorLiveMonitor({
           </div>
           <div className="ml-2 lg:ml-4">
             <h2 className="lg:text-md text-sm font-semibold">
-              {t('Cancelled Orders')}
+              {getTranslation('cancelled_orders')}
             </h2>
             <p className="text-xs text-gray-500 lg:text-sm">
               {dateFilter.dateKeyword}
@@ -90,7 +94,7 @@ export default function VendorLiveMonitor({
           </div>
           <div className="ml-2 lg:ml-4">
             <h2 className="lg:text-md text-sm font-semibold">
-              {t('Delayed Orders')}
+              {getTranslation('delayed_orders')}
             </h2>
             <p className="text-xs text-gray-500 lg:text-sm">
               {dateFilter.dateKeyword}
@@ -104,7 +108,9 @@ export default function VendorLiveMonitor({
             </span>
           </div>
           <div className="ml-2 lg:ml-4">
-            <h2 className="lg:text-md text-sm font-semibold">{t('Ratings')}</h2>
+            <h2 className="lg:text-md text-sm font-semibold">
+              {getTranslation('ratings')}
+            </h2>
             <p className="text-xs text-gray-500 lg:text-sm">
               {dateFilter.dateKeyword}
             </p>

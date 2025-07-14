@@ -5,7 +5,7 @@ import TextDefault from '../../Text/TextDefault/TextDefault'
 import { alignment } from '../../../utils/alignment'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { LocationContext } from '../../../context/Location'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { topRatedVendorsInfo } from '../../../apollo/queries'
@@ -18,10 +18,10 @@ import { isOpen, sortRestaurantsByOpenStatus } from '../../../utils/customFuncti
 
 const { height } = Dimensions.get('window')
 function TopBrands(props) {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const { location } = useContext(LocationContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const navigation = useNavigation()
 
   const { loading, error, data } = useQuery(topRatedVendorsInfo, {
@@ -65,7 +65,7 @@ function TopBrands(props) {
         <View style={styles().topbrandsSec}>
           <View style={styles(currentTheme).header}>
             <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
-              {t('Our brands')}
+              {t('our_brands')}
             </TextDefault>
             <TouchableOpacity
               style={styles(currentTheme).seeAllBtn}
@@ -78,7 +78,7 @@ function TopBrands(props) {
               }}
             >
               <TextDefault H5 bolder textColor={currentTheme.main}>
-                {t('SeeAll')}
+                {t('see_all')}
               </TextDefault>
             </TouchableOpacity>
           </View>
@@ -103,7 +103,7 @@ function TopBrands(props) {
         <View style={styles().topbrandsSec}>
           <View style={styles(currentTheme).header}>
             <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
-              {t('Top Restaurant Brands')}
+              {t('top_restaurant_brands')}
             </TextDefault>
             <TouchableOpacity
               style={styles(currentTheme).seeAllBtn}
@@ -116,7 +116,7 @@ function TopBrands(props) {
               }}
             >
               <TextDefault H5 bolder textColor={currentTheme.main}>
-                {t('SeeAll')}
+                {t('see_all')}
               </TextDefault>
             </TouchableOpacity>
           </View>
@@ -142,7 +142,7 @@ function TopBrands(props) {
         <View style={styles().topbrandsSec}>
           <View style={styles(currentTheme).header}>
             <TextDefault numberOfLines={1} textColor={currentTheme.fontFourthColor} bolder H4>
-              {t('Top Grocery Brands')}
+              {t('top_grocery_brands')}
             </TextDefault>
             <TouchableOpacity
               style={styles(currentTheme).seeAllBtn}
@@ -155,7 +155,7 @@ function TopBrands(props) {
               }}
             >
               <TextDefault H5 bolder textColor={currentTheme.main}>
-                {t('SeeAll')}
+                {t('see_all')}
               </TextDefault>
             </TouchableOpacity>
           </View>

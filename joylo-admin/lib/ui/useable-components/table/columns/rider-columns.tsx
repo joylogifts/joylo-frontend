@@ -13,8 +13,9 @@ import { IRiderResponse } from '@/lib/utils/interfaces/rider.interface';
 import { GET_RIDERS, TOGGLE_RIDER } from '@/lib/api/graphql';
 import { useMutation } from '@apollo/client';
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { toTextCase } from '@/lib/utils/methods';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 // import { toTextCase } from '@/lib/utils/methods';
 
 export const RIDER_TABLE_COLUMNS = ({
@@ -23,7 +24,8 @@ export const RIDER_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IRiderResponse>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [isLoading, setIsLoading] = useState(false);
@@ -42,16 +44,16 @@ export const RIDER_TABLE_COLUMNS = ({
       setIsLoading(false);
       showToast({
         type: 'success',
-        title: t('Banner Status'),
-        message: t('Status Changed Successfully'),
+        title: getTranslation('banner_status'),
+        message: getTranslation('status_change_successfully'),
       });
     },
     onError: () => {
       setIsLoading(false);
       showToast({
         type: 'error',
-        title: t('Banner Status'),
-        message: t('Status Change Failed'),
+        title: getTranslation('banner_status'),
+        message: getTranslation('status_change_failed'),
       });
     },
   });
@@ -65,8 +67,8 @@ export const RIDER_TABLE_COLUMNS = ({
     } catch (error) {
       showToast({
         type: 'error',
-        title: t('Banner Status'),
-        message: t('Something went wrong'),
+        title: getTranslation('banner_status'),
+        message: getTranslation('something_went_wrong'),
       });
     } finally {
       setSelectedRider({ id: '', isActive: false });
@@ -75,22 +77,22 @@ export const RIDER_TABLE_COLUMNS = ({
   };
 
   return [
-    { headerName: t('Name'), propertyName: 'name' },
-    { headerName: t('Username'), propertyName: 'username' },
-    { headerName: t('Phone'), propertyName: 'phone' },
+    { headerName: getTranslation('name'), propertyName: 'name' },
+    { headerName: getTranslation('username'), propertyName: 'username' },
+    { headerName: getTranslation('phone'), propertyName: 'phone' },
     {
-      headerName: t('Zone'),
+      headerName: getTranslation('zone'),
       propertyName: 'zone',
       body: (rider: IRiderResponse) => rider.zone.title,
     },
     {
-      headerName: 'Vehicle Type',
+      headerName: getTranslation('vehicle_type'),
       propertyName: 'vehicleType',
       body: (rider: IRiderResponse) =>
         toTextCase(rider.vehicleType.replaceAll('_', ' '), 'title'),
     },
     {
-      headerName: t('Available'),
+      headerName: getTranslation('available'),
       propertyName: 'available',
       body: (rider: IRiderResponse) => (
         <CustomInputSwitch

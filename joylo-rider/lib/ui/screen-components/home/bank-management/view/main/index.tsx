@@ -1,6 +1,7 @@
 // Components
 import { UPDATE_BUSINESS_DETAILS } from "@/lib/apollo/mutations/rider.mutation";
 import { RIDER_PROFILE } from "@/lib/apollo/queries";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { CustomContinueButton } from "@/lib/ui/useable-components";
@@ -24,7 +25,7 @@ import { showMessage } from "react-native-flash-message";
 export default function BankManagementMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { userId, dataProfile } = useUserContext();
 
   // states
@@ -45,10 +46,10 @@ export default function BankManagementMain() {
     {
       onError: (error) => {
         showMessage({
-          message: t("Failed to update bank details"),
+          message: t("failed_to_update_bank_details"),
           type: "danger",
         });
-        console.log("Failed to update bank details", error);
+        console.log("failed_to_update_bank_details", error);
       },
       onCompleted: () => {
         setFormData({
@@ -75,37 +76,37 @@ export default function BankManagementMain() {
       if (!formData.bankName) {
         setIsError({
           field: "bankName",
-          message: t("Bank Name is required"),
+          message: t("bank_name_is_required"),
         });
         return showMessage({
-          message: t("Bank Name is required"),
+          message: t("bank_name_is_required"),
           type: "danger",
         });
       } else if (!formData.accountName) {
         setIsError({
           field: "accountName",
-          message: t("Account Name is required"),
+          message: t("account_name_is_required"),
         });
         return showMessage({
-          message: t("Account Name is required"),
+          message: t("account_name_is_required"),
           type: "danger",
         });
       } else if (!formData.accountNumber) {
         setIsError({
           field: "accountNumber",
-          message: t("Account Number is required"),
+          message: t("account_number_is_required"),
         });
         return showMessage({
-          message: t("Account Number is required"),
+          message: t("account_number_is_required"),
           type: "danger",
         });
       } else if (!formData.accountCode) {
         setIsError({
           field: "accountCode",
-          message: t("Account Code is required"),
+          message: t("account_code_is_required"),
         });
         return showMessage({
-          message: t("Account Code is required"),
+          message: t("account_code_is_required"),
           type: "danger",
         });
       }
@@ -121,8 +122,8 @@ export default function BankManagementMain() {
         },
       });
       Alert.alert(
-        t("Bank Details Updated"),
-        t("Your bank details have been updated successfully"),
+        t("bank_details_updated_successfully"),
+        t("your_bank_details_have_been_updated_successfully"),
       );
     } catch (error) {
       console.log(error);
@@ -155,13 +156,13 @@ export default function BankManagementMain() {
               className="text-lg font-normal"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Bank Name")}
+              {t("bank_name")}
             </Text>
             <TextInput
               className={`min-w-[100%] rounded-md border ${isError.field === "bankName" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
               style={{ color: appTheme.fontSecondColor }}
               value={formData.bankName}
-              placeholder={t("Swiss Bank")}
+              placeholder={t("swiss_bank")}
               onChangeText={(val) => {
                 setIsError({ field: "", message: "" });
                 handleChange("bankName", val);
@@ -173,7 +174,7 @@ export default function BankManagementMain() {
               className="text-lg font-normal"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Account holder name")}
+              {t("account_holder_name")}
             </Text>
             <TextInput
               className={`min-w-[100%] rounded-md border ${isError.field === "accountName" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
@@ -209,7 +210,7 @@ export default function BankManagementMain() {
               className="text-lg font-normal"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Account Number")}
+              {t("account_number")}
             </Text>
             <TextInput
               className={`min-w-[100%] rounded-md border ${isError.field === "accountNumber" ? "border-red-600 border-2" : "border-2 border-gray-300"} p-3 my-2`}
@@ -224,7 +225,7 @@ export default function BankManagementMain() {
           </View>
           <View>
             <CustomContinueButton
-              title={areBankDetailsLoading ? t("Please wait") : t("Confirm")}
+              title={areBankDetailsLoading ? t("please_wait") : t("confirm")}
               onPress={handleSubmit}
             />
           </View>

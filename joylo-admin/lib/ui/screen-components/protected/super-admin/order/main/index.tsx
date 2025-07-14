@@ -1,6 +1,6 @@
 // Hooks
 import { useState, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 
 // Interfaces & Types
@@ -22,10 +22,12 @@ import DashboardDateFilter from '@/lib/ui/useable-components/date-filter';
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
 import { DataTableRowClickEvent } from 'primereact/datatable';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OrderSuperAdminMain() {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [selectedData, setSelectedData] = useState<IExtendedOrder[]>([]);
@@ -161,7 +163,7 @@ export default function OrderSuperAdminMain() {
 
       {error && (
         <p className="text-red-500">
-          {t('Error')}: {error.message}
+          {getTranslation('error')}: {error.message}
         </p>
       )}
     </div>

@@ -8,12 +8,13 @@ import EarningBottomBar from "@/lib/ui/screen-components/earnings/view/bottom-ba
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { View } from "react-native";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function StackLayout() {
   // Hooks
   const { modalVisible, setModalVisible } = useUserContext();
   const pathname = usePathname();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { appTheme } = useApptheme();
   const {top} = useSafeAreaInsets()
 
@@ -24,10 +25,10 @@ export default function StackLayout() {
           screenOptions={{
             headerTitle:
               pathname.startsWith("/earnings/earnings-detail") ?
-                t("Earnings Summary")
+                t("earnings_summary")
               : pathname.startsWith("/earnings/earnings-order-details") ?
-                t("Deliveries")
-              : t("Earnings"),
+                t("deliveries")
+              : t("earnings"),
 
             headerTitleAlign: "center",
             headerShadowVisible: false,
@@ -41,14 +42,14 @@ export default function StackLayout() {
         >
           <Stack.Screen
             name="index"
-            options={{ headerShown: true, headerTitle: t("Earnings") }}
+            options={{ headerShown: true, headerTitle: t("earnings") }}
           />
           <Stack.Screen
             name="(routes)"
             options={{
               headerShown: true,
-              headerTitle: t("Earnings Order Details"),
-              headerBackTitle: t("Earnings"),
+              headerTitle: t("earnings_order_details"),
+              headerBackTitle: t("earnings"),
             }}
           />
         </Stack>

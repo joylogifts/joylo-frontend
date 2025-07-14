@@ -10,20 +10,21 @@ import { ThemedView } from '@/lib/ui/useable-components/ThemedView'
 
 // Hooks
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/lib/context/global/language.context'
 
 export default function NotFoundScreen() {
   // Hooks
-  const { t } = useTranslation()
+  const { getTranslation: t } = useLanguage()
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
       <ThemedView style={styles.container}>
-        <ThemedText type="title">{t('This screen does not exist')}</ThemedText>
+        <ThemedText type="title">{t('this_screen_does_not_exist')}</ThemedText>
         <Link
           href="/"
           style={styles.link}
         >
-          <ThemedText type="link">{t('Go to home screen')}</ThemedText>
+          <ThemedText type="link">{t('go_to_home_screen')}</ThemedText>
         </Link>
       </ThemedView>
     </>

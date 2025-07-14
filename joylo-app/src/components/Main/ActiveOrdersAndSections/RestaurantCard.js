@@ -9,11 +9,10 @@ import { theme } from '../../../utils/themeColors'
 import TextDefault from '../../Text/TextDefault/TextDefault'
 import styles from './styles'
 import { Ionicons } from '@expo/vector-icons'
-import {useTranslation} from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 function RestaurantCard(props) {
-
-  const {t} = useTranslation()
+  const { getTranslation: t } = useLanguage()
   const configuration = useContext(ConfigurationContext)
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
@@ -21,24 +20,12 @@ function RestaurantCard(props) {
 
   return (
     <View style={{ ...alignment.PRsmall }}>
-      <TouchableOpacity
-        style={[styles(currentTheme).offerContainer, styles().ML20]}
-        activeOpacity={1}
-        onPress={() => navigation.navigate('Restaurant', { ...props })}>
+      <TouchableOpacity style={[styles(currentTheme).offerContainer, styles().ML20]} activeOpacity={1} onPress={() => navigation.navigate('Restaurant', { ...props })}>
         <View style={styles().imageContainer}>
-          <Image
-            resizeMode="cover"
-            source={{ uri: props?.image }}
-            style={styles().restaurantImage}
-          />
+          <Image resizeMode='cover' source={{ uri: props?.image }} style={styles().restaurantImage} />
           <View style={styles().overlayContainer}>
             <View style={styles(currentTheme).deliveryOverlay}>
-              <TextDefault
-                textColor={currentTheme.fontMainColor}
-                numberOfLines={1}
-                smaller
-                bold
-                center>
+              <TextDefault textColor={currentTheme.fontMainColor} numberOfLines={1} smaller bold center>
                 {props?.deliveryTime + ' '}
                 {t('min')}
               </TextDefault>
@@ -47,49 +34,23 @@ function RestaurantCard(props) {
         </View>
         <View style={styles().descriptionContainer}>
           <View style={styles().aboutRestaurant}>
-            <TextDefault
-              style={{ width: '77%' }}
-              numberOfLines={1}
-              textColor={currentTheme.fontMainColor}
-              bolder>
+            <TextDefault style={{ width: '77%' }} numberOfLines={1} textColor={currentTheme.fontMainColor} bolder>
               {props?.name}
             </TextDefault>
             <View style={[styles().aboutRestaurant, { width: '23%' }]}>
-              <Ionicons
-                name="star"
-                size={scale(12)}
-                color={currentTheme.primary}
-              />
-              <TextDefault
-                textColor={currentTheme.fontMainColor}
-                style={styles().restaurantRatingContainer}
-                bold
-                smaller>
+              <Ionicons name='star' size={scale(12)} color={currentTheme.primary} />
+              <TextDefault textColor={currentTheme.fontMainColor} style={styles().restaurantRatingContainer} bold smaller>
                 {props?.reviewData.ratings}
               </TextDefault>
-              <TextDefault
-                textColor={currentTheme.fontSecondColor}
-                style={styles().restaurantRatingContainer}
-                bold
-                smaller>
+              <TextDefault textColor={currentTheme.fontSecondColor} style={styles().restaurantRatingContainer} bold smaller>
                 ({props?.reviewData.length})
               </TextDefault>
             </View>
           </View>
-          <TextDefault
-            textColor={currentTheme.fontSecondColor}
-            numberOfLines={1}
-            bold
-            small
-            style={styles().offerCategoty}>
-            {props?.categories.map(category => category.title).toString()}
+          <TextDefault textColor={currentTheme.fontSecondColor} numberOfLines={1} bold small style={styles().offerCategoty}>
+            {props?.categories.map((category) => category.title).toString()}
           </TextDefault>
-          <TextDefault
-            textColor={currentTheme.fontMainColor}
-            numberOfLines={1}
-            style={styles().restaurantPriceContainer}
-            bold
-            small>
+          <TextDefault textColor={currentTheme.fontMainColor} numberOfLines={1} style={styles().restaurantPriceContainer} bold small>
             {configuration.currencySymbol} {props?.minimumOrder}
             <TextDefault textColor={currentTheme.fontSecondColor} small>
               {' '}

@@ -18,6 +18,7 @@ import { HeaderBackButton } from '@react-navigation/elements'
 import analytics from '../../utils/analytics'
 import navigationService from '../../routes/navigationService'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
@@ -28,12 +29,12 @@ const SELECT_ADDRESS = gql`
 
 function CartAddresses(props) {
   const Analytics = analytics()
-  const { t, i18n } = useTranslation()
   const inset = useSafeAreaInsets()
   const { location, setLocation } = useContext(LocationContext)
   const { profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL : i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] }
+  const { getTranslation: t, dir } = useLanguage()
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const [mutate] = useMutation(SELECT_ADDRESS, { onError })
   const [selectedAddress, setSelectedAddress] = useState(null)
   const [defaultAddress, setDefaultAddress] = useState(null)
@@ -41,7 +42,7 @@ function CartAddresses(props) {
 
   useLayoutEffect(() => {
     props.navigation.setOptions({
-      title: t('cartAddresses'),
+      title: t('cart_addresses'),
       headerRight: null,
       headerTitleAlign: 'center',
       headerTitleStyle: {
@@ -61,10 +62,10 @@ function CartAddresses(props) {
       },
       headerLeft: () => (
         <HeaderBackButton
-          truncatedLabel=""
+          truncatedLabel=''
           backImage={() => (
             <View>
-              <MaterialIcons name="arrow-back" size={30} color={currentTheme.newIconColor} />
+              <MaterialIcons name='arrow-back' size={30} color={currentTheme.newIconColor} />
             </View>
           )}
           onPress={() => {
@@ -84,7 +85,10 @@ function CartAddresses(props) {
   useEffect(() => {
     if (profile?.addresses) {
       // Find the last saved address
-      const lastSavedAddress = profile?.addresses?.slice().reverse().find(address => address.selected)
+      const lastSavedAddress = profile?.addresses
+        ?.slice()
+        .reverse()
+        .find((address) => address.selected)
       if (lastSavedAddress) {
         setSelectedAddress(lastSavedAddress)
         setDefaultAddress(lastSavedAddress)
@@ -104,7 +108,7 @@ function CartAddresses(props) {
     console.log(error)
   }
 
-  const onSelectAddress = address => {
+  const onSelectAddress = (address) => {
     setLocation({
       _id: address._id,
       label: address.label,
@@ -118,9 +122,9 @@ function CartAddresses(props) {
     setIsAddressChanged(defaultAddress ? address._id !== defaultAddress._id : true)
   }
 
-  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
   if (!connect) return <ErrorView refetchFunctions={[]} />
-  
+
   return (
     <>
       <View style={[styles().flex, styles(currentTheme).cartAddress]}>
@@ -153,21 +157,14 @@ function CartAddresses(props) {
                         }}
                       />
                     </View>
-                    <TextDefault
-                      textColor={currentTheme.fontMainColor}
-                      style={{ width: '70%', textAlign: currentTheme?.isRTL ? 'right' : 'left' }}
-                      H5
-                      bold
-                      isRTL
-                    >
+                    <TextDefault textColor={currentTheme.fontMainColor} style={{ width: '70%', textAlign: currentTheme?.isRTL ? 'right' : 'left' }} H5 bold isRTL>
                       {t(address.label)}
                     </TextDefault>
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles().width10}
                       onPress={() => {
-                        const [longitude, latitude] =
-                          address.location.coordinates
+                        const [longitude, latitude] = address.location.coordinates
                         props.navigation.navigate('AddNewAddress', {
                           longitude: +longitude,
                           latitude: +latitude,
@@ -175,22 +172,12 @@ function CartAddresses(props) {
                         })
                       }}
                     >
-                      <EvilIcons
-                        name='pencil'
-                        size={scale(25)}
-                        color={currentTheme.darkBgFont}
-                        style={styles().width100}
-                      />
+                      <EvilIcons name='pencil' size={scale(25)} color={currentTheme.darkBgFont} style={styles().width100} />
                     </TouchableOpacity>
                   </View>
                   <View style={{ ...alignment.MTxSmall }}></View>
                   <View style={styles().addressDetail}>
-                    <TextDefault
-                      line={4}
-                      textColor={currentTheme.fontSecondColor}
-                      bold
-                      isRTL
-                    >
+                    <TextDefault line={4} textColor={currentTheme.fontSecondColor} bold isRTL>
                       {address.deliveryAddress}
                     </TextDefault>
                     {/* <TextDefault
@@ -223,7 +210,7 @@ function CartAddresses(props) {
               }}
             >
               <TextDefault H5 bold>
-                {t('addAddress')}
+                {t('add_address')}
               </TextDefault>
             </TouchableOpacity>
           </View>

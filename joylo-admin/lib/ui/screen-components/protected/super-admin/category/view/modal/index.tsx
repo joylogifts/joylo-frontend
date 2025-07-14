@@ -64,7 +64,7 @@ export default function SubCategoriesPreiwModal({
                 key={sub_ctg._id}
                 className="my-1 text-sm font-semibold text-primary-color"
               >
-                {sub_ctg.title}
+                {sub_ctg.title.toString()}
               </li>
             );
           })

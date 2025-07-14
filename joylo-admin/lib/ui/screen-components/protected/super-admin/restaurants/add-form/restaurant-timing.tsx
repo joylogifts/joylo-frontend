@@ -4,7 +4,7 @@ import { ErrorMessage, Form, Formik, FormikErrors } from 'formik';
 
 // Hooks
 import { useContext } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 // Interface and Types
 import { TWeekDays } from '@/lib/utils/types/days';
@@ -38,16 +38,18 @@ import useToast from '@/lib/hooks/useToast';
 import { GET_RESTAURANT_PROFILE } from '@/lib/api/graphql';
 import { UPDATE_TIMINGS } from '@/lib/api/graphql/mutations/timing';
 import { useMutation, useQuery } from '@apollo/client';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RestaurantTiming = ({
   stepperProps,
 }: IRestaurantsRestaurantTimingComponentProps) => {
   const { onStepChange } = stepperProps ?? {
-    onStepChange: () => {},
+    onStepChange: () => { },
   };
 
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -113,8 +115,8 @@ const RestaurantTiming = ({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('Add Timings'),
-          message: t('Timings have been added successfully'),
+          title: getTranslation('add_timings'),
+          message: getTranslation('timings_have_been_added_successfully'),
           duration: 3000,
         });
 
@@ -127,11 +129,11 @@ const RestaurantTiming = ({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('ActionFailedTryAgain');
+          message = getTranslation('action_failed_try_again');
         }
         showToast({
           type: 'error',
-          title: t('Error'),
+          title: getTranslation('error'),
           message,
           duration: 3000,
         });
@@ -142,7 +144,7 @@ const RestaurantTiming = ({
   return (
     <div className="flex flex-col gap-2 rounded">
       <div className="mb-2 flex flex-col">
-        <span className="text-lg">{t('Store Timing')}</span>
+        <span className="text-lg">{getTranslation('store_timing')}</span>
       </div>
       <Formik
         initialValues={initialValues}
@@ -163,11 +165,11 @@ const RestaurantTiming = ({
                           value?.times?.length > 0
                             ? []
                             : [
-                                {
-                                  startTime: '00:00',
-                                  endTime: '23:59',
-                                },
-                              ];
+                              {
+                                startTime: '00:00',
+                                endTime: '23:59',
+                              },
+                            ];
                         setFieldValue(`${dayIndex}.times`, newTimes);
                       }}
                       checked={value?.times?.length > 0}
@@ -197,16 +199,16 @@ const RestaurantTiming = ({
                                     );
                                   }}
                                   isLoading={loading}
-                                  placeholder={t('Start Time')}
+                                  placeholder={getTranslation('start_time')}
                                   style={{
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.startTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.startTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.startTime
                                         ? 'red'
                                         : '',
                                   }}
@@ -236,16 +238,16 @@ const RestaurantTiming = ({
                                     );
                                   }}
                                   isLoading={loading}
-                                  placeholder={t('End Time')}
+                                  placeholder={getTranslation('end_time')}
                                   style={{
                                     borderColor:
                                       (
                                         errors?.[dayIndex]?.times?.[
-                                          timeIndex
+                                        timeIndex
                                         ] as FormikErrors<ITimeSlot>
                                       )?.endTime &&
-                                      touched?.[dayIndex]?.times?.[timeIndex]
-                                        ?.endTime
+                                        touched?.[dayIndex]?.times?.[timeIndex]
+                                          ?.endTime
                                         ? 'red'
                                         : '',
                                   }}
@@ -295,7 +297,7 @@ const RestaurantTiming = ({
                   ) : (
                     <div className="flex min-h-10 flex-1 items-center justify-start">
                       <span className="select-none rounded-full bg-black px-3 py-1 text-xs text-white">
-                        {t('Closed all Day')}
+                        {getTranslation('closed_all_day')}
                       </span>
                     </div>
                   )}
@@ -305,7 +307,7 @@ const RestaurantTiming = ({
 
             <CustomButton
               className="mb-[2px] mr-auto mt-auto flex h-11 rounded-md border-gray-300 bg-[black] px-10 text-white"
-              label={t('Save')}
+              label={getTranslation('save')}
               rounded={false}
               disabled={loading}
               type="submit"

@@ -13,11 +13,12 @@ import {
   View,
 } from "react-native";
 import HelpAccordian from "../../accordian";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 export default function HelpMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 
   const openWhatsAppStore = () => {
     const appStoreUrl =
@@ -103,7 +104,7 @@ export default function HelpMain() {
         >
           <FontAwesome name="whatsapp" size={24} color="white" />
           <Text className="text-white font-semibold text-lg">
-            {t("whatsAppText")}
+            {t("whattsapp")}
           </Text>
         </TouchableOpacity>
       </View>

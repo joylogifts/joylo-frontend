@@ -14,7 +14,8 @@ import { useContext, useState } from 'react';
 import { ToastContext } from '@/lib/context/global/toast.context';
 import CustomInputSwitch from '../../custom-input-switch';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const FOODS_TABLE_COLUMNS = ({
   menuItems,
@@ -22,7 +23,8 @@ export const FOODS_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IFoodNew>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Context
   const { showToast } = useContext(ToastContext);
@@ -44,19 +46,19 @@ export const FOODS_TABLE_COLUMNS = ({
     onCompleted: () => {
       showToast({
         type: 'success',
-        title: t('Food Stock'),
-        message: t(`Food stock status has been changed`),
+        title: getTranslation('food_stock'),
+        message: getTranslation(`food_stock_status_has_been_changed`),
       });
       setIsFoodLoading('');
     },
     onError: ({ networkError, graphQLErrors }: ApolloError) => {
       showToast({
         type: 'error',
-        title: t('Food Stock'),
+        title: getTranslation('food_stock'),
         message:
           networkError?.message ??
           graphQLErrors[0]?.message ??
-          t('Food Stock status failed'),
+          getTranslation('food_stock_status_failed'),
       });
       setIsFoodLoading('');
     },
@@ -77,23 +79,49 @@ export const FOODS_TABLE_COLUMNS = ({
     } catch (err) {
       showToast({
         type: 'error',
-        title: t('Food Stock'),
-        message: t('Food Stock status failed'),
+        title: getTranslation('food_stock'),
+        message: getTranslation('food_stock_status_failed'),
       });
       setIsFoodLoading('');
     }
   };
 
   return [
-    { headerName: t('Title'), propertyName: 'title' },
-    { headerName: t('Description'), propertyName: 'description' },
     {
-      headerName: t('Category'),
-      propertyName: 'category.label',
-      body: (item: IFoodNew) => <div>{item?.category?.label ?? ''}</div>,
+      headerName: getTranslation('title'),
+      propertyName: 'title',
+      body: (item: IFoodNew) => (
+        <div>
+          {typeof item.title === 'object'
+            ? item.title[selectedLanguage] || ''
+            : item.title || ''}
+        </div>
+      ),
     },
     {
-      headerName: t('Image'),
+      headerName: getTranslation('description'),
+      propertyName: 'description',
+      body: (item: IFoodNew) => (
+        <div>
+          {typeof item.description === 'object'
+            ? item.description[selectedLanguage] || ''
+            : item.description || ''}
+        </div>
+      ),
+    },
+    {
+      headerName: getTranslation('category'),
+      propertyName: 'category.label',
+      body: (item: IFoodNew) => (
+        <div>
+          {typeof item?.category?.label === 'object'
+            ? item?.category?.label[selectedLanguage] || ''
+            : item?.category?.label || ''}
+        </div>
+      ),
+    },
+    {
+      headerName: getTranslation('image'),
       propertyName: 'image',
       body: (item: IFoodNew) =>
         item.image ? (
@@ -103,7 +131,7 @@ export const FOODS_TABLE_COLUMNS = ({
         ),
     },
     {
-      headerName: t('Out of Stock'),
+      headerName: getTranslation('out_of_Stock'),
       propertyName: 'isOutOfStock',
       body: (item: IFoodNew) => {
         return (

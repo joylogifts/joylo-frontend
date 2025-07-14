@@ -43,7 +43,9 @@ import {
 import { useLazyQueryQL } from '@/lib/hooks/useLazyQueryQL';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
+
 
 const initialValues: IVendorForm = {
   // name: '',
@@ -60,7 +62,8 @@ export default function VendorAddForm({
   position = 'right',
 }: IVendorAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -86,8 +89,8 @@ export default function VendorAddForm({
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('New Vendor'),
-          message: `${t('Vendor has been')} ${isEditingVendor ? t('edited') : t('added')} ${t('successfully')}`,
+          title: getTranslation('new_vendor'),
+          message: `${getTranslation('vendor_has_been')} ${isEditingVendor ? getTranslation('edited') : getTranslation('added')} ${getTranslation('successfully')}`,
           duration: 3000,
         });
 
@@ -127,8 +130,8 @@ export default function VendorAddForm({
       console.log('error during add vendor ==> ', error);
       showToast({
         type: 'error',
-        title: `${isEditingVendor ? t('Edit') : t('Create')} ${t('Vendor')}`,
-        message: `${t('Vendor')} ${isEditingVendor ? t('Edit') : t('Create')} ${t('Failed')}`,
+        title: `${isEditingVendor ? getTranslation('edit') : getTranslation('create')} ${getTranslation('vendor')}`,
+        message: `${getTranslation('vendor')} ${isEditingVendor ? getTranslation('edit') : getTranslation('create')} ${getTranslation('failed')}`,
         duration: 2500,
       });
     }
@@ -137,11 +140,11 @@ export default function VendorAddForm({
   function onError({ graphQLErrors, networkError }: ApolloError) {
     showToast({
       type: 'error',
-      title: `${isEditingVendor ? t('Edit') : t('Create')} ${t('Vendor')}`,
+      title: `${isEditingVendor ? getTranslation('edit') : getTranslation('create')} ${getTranslation('vendor')}`,
       message:
         graphQLErrors[0]?.message ??
         networkError?.message ??
-        `${t('Vendor')} ${isEditingVendor ? t('Edit') : t('Create')} ${t('Failed')}`,
+        `${getTranslation('vendor')} ${isEditingVendor ? getTranslation('edit') : getTranslation('create')} ${getTranslation('failed')}`,
       duration: 2500,
     });
   }
@@ -185,7 +188,10 @@ export default function VendorAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {isEditingVendor ? t('Edit') : t('Add')} {t('Vendor')}
+                {isEditingVendor
+                  ? getTranslation('edit')
+                  : getTranslation('add')}{' '}
+                {getTranslation('vendor')}
               </span>
             </div>
 
@@ -215,7 +221,7 @@ export default function VendorAddForm({
                         <CustomTextField
                           type="text"
                           name="firstName"
-                          placeholder={t('First Name')}
+                          placeholder={getTranslation('first_name')}
                           maxLength={35}
                           value={values.firstName}
                           onChange={handleChange}
@@ -234,7 +240,7 @@ export default function VendorAddForm({
                         <CustomTextField
                           type="text"
                           name="lastName"
-                          placeholder={t('Last Name')}
+                          placeholder={getTranslation('last_name')}
                           maxLength={35}
                           value={values.lastName}
                           onChange={handleChange}
@@ -253,7 +259,7 @@ export default function VendorAddForm({
                         <CustomIconTextField
                           type="email"
                           name="email"
-                          placeholder={t('Email')}
+                          placeholder={getTranslation('email')}
                           maxLength={35}
                           showLabel={true}
                           iconProperties={{
@@ -280,7 +286,7 @@ export default function VendorAddForm({
                           name="phoneNumber"
                           showLabel={true}
                           isLoading={loading}
-                          placeholder={t('Phone Number')}
+                          placeholder={getTranslation('phone_number')}
                           value={values.phoneNumber}
                           onChange={(e) => {
                             setFieldValue('phoneNumber', e);
@@ -300,7 +306,7 @@ export default function VendorAddForm({
 
                         <CustomPasswordTextField
                           autoComplete="new-password"
-                          placeholder={t('Password')}
+                          placeholder={getTranslation('password')}
                           name="password"
                           maxLength={20}
                           value={values.password}
@@ -320,7 +326,7 @@ export default function VendorAddForm({
 
                         <CustomPasswordTextField
                           autoComplete="new-password"
-                          placeholder={t('Confirm Password')}
+                          placeholder={getTranslation('confirm_password')}
                           name="confirmPassword"
                           maxLength={20}
                           showLabel={true}
@@ -341,7 +347,7 @@ export default function VendorAddForm({
                         <CustomUploadImageComponent
                           key="image"
                           name="image"
-                          title={t('Upload Image')}
+                          title={getTranslation('upload_image')}
                           fileTypes={['image/jpg', 'image/webp', 'image/jpeg']}
                           maxFileHeight={1080}
                           maxFileWidth={1080}
@@ -364,7 +370,11 @@ export default function VendorAddForm({
                         <div className="mt-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={isEditingVendor ? t('Update') : t('Add')}
+                            label={
+                              isEditingVendor
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={isSubmitting}
                           />

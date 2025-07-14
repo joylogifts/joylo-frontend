@@ -1,4 +1,5 @@
 // Hooks
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 import { app_theme } from "@/lib/utils/types/theme";
@@ -11,7 +12,7 @@ import { Switch } from "react-native-switch";
 
 export default function OtherDetailsSection() {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation:t } = useLanguage();
   const { dataProfile } = useUserContext();
   const { currentTheme, toggleTheme, appTheme } = useApptheme();
 
@@ -22,7 +23,7 @@ export default function OtherDetailsSection() {
           className="text-xl font-bold"
           style={{ color: appTheme.mainTextColor }}
         >
-          {t("Other information")}
+          {t("other_information")}
         </Text>
       </View>
       <View
@@ -33,7 +34,7 @@ export default function OtherDetailsSection() {
           borderColor: appTheme.borderLineColor,
         }}
       >
-        <Text style={{ color: appTheme.fontSecondColor }}>{t("Email")}</Text>
+        <Text style={{ color: appTheme.fontSecondColor }}>{t("email")}</Text>
         <View className="flex-1 h-12 text-base text-black">
           <Text className="h-12" style={{ color: appTheme.fontSecondColor }}>
             {dataProfile?.email ?? "example@email.com"}
@@ -48,7 +49,7 @@ export default function OtherDetailsSection() {
           borderColor: appTheme.borderLineColor,
         }}
       >
-        <Text style={{ color: appTheme.fontSecondColor }}>{t("Password")}</Text>
+        <Text style={{ color: appTheme.fontSecondColor }}>{t("password")}</Text>
         <View className="flex-1 h-12 text-base text-black">
           <Text className="h-12" style={{ color: appTheme.fontSecondColor }}>
             {dataProfile?.password ?? "Password@123"}
@@ -63,7 +64,7 @@ export default function OtherDetailsSection() {
           borderColor: appTheme.borderLineColor,
         }}
       >
-        <Text style={{ color: appTheme.fontSecondColor }}>{t("Phone")}</Text>
+        <Text style={{ color: appTheme.fontSecondColor }}>{t("phone_number")}</Text>
         <View className="flex-1 h-12 text-base text-black">
           <Text className="h-12" style={{ color: appTheme.fontSecondColor }}>
             {dataProfile?.phone ?? "+324 234 328979"}
@@ -77,7 +78,7 @@ export default function OtherDetailsSection() {
             color: appTheme.mainTextColor,
           }}
         >
-          {t("Theme")}
+          {t("theme")}
         </Text>
         <View className="flex flex-row gap-2 items-center justify-center">
           <Switch

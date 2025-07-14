@@ -1,39 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Offline</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    a, button {
-      margin-top: 20px;
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #0070f3;
-      color: white;
-      text-decoration: none;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:hover, a:hover {
-      background-color: #005bb5;
-    }
-  </style>
-</head>
-<body>
-  <h1>You are offline</h1>
-  <p>Sorry, this page is not available offline.</p>
-  
-  <!-- Link to go back -->
-  <a href="javascript:history.back()">Go Back</a>
-  
-  <!-- Or button to go back -->
-  <button onclick="history.back()">Go Back</button>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Offline</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 50px;
+            }
+            a,
+            button {
+                margin-top: 20px;
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #0070f3;
+                color: white;
+                text-decoration: none;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            button:hover,
+            a:hover {
+                background-color: #005bb5;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="offline_title"></h1>
+        <p id="offline_message"></p>
+        <!-- Link to go back -->
+        <a id="go_back_link" href="javascript:history.back()"></a>
+        <!-- Or button to go back -->
+        <button id="go_back_button" onclick="history.back()"></button>
+        <script>
+            // Simple i18n using en_snake.json keys
+            // You can replace this with a more advanced i18n loader if needed
+            const translations = {
+                offline_title: "You are offline",
+                offline_message: "Sorry, this page is not available offline.",
+                go_back: "Go Back",
+            };
+            document.getElementById("offline_title").innerText =
+                translations.offline_title;
+            document.getElementById("offline_message").innerText =
+                translations.offline_message;
+            document.getElementById("go_back_link").innerText =
+                translations.go_back;
+            document.getElementById("go_back_button").innerText =
+                translations.go_back;
+        </script>
+    </body>
 </html>

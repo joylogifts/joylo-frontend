@@ -6,12 +6,14 @@ import { GET_COUNTRIES } from "@/lib/api/graphql/queries/Countries";
 import ListItem from "@/lib/ui/useable-components/list-item";
 import CitiesTiles from "./CitilesTiles/CitiesTiles";
 import { CountryItem, City } from "@/lib/utils/interfaces/Home-interfaces";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 const COUNTRIES = gql`
   ${GET_COUNTRIES}
 `;
 
 const Cities = () => {
+  const { getTranslation } = useLangTranslation();
   const [toggle, setToggle] = useState(false);
   const [countryId, setCountryId] = useState("");
   const { data, loading } = useQuery(COUNTRIES, {
@@ -32,7 +34,7 @@ const Cities = () => {
       {toggle == false ?
         <>
           <div className="text-[#111827] text-xl font-semibold ">
-            Explore Countries
+            {getTranslation("explore_countries")}
           </div>
           {/* <div className="flex flex-wrap gap-6 items-center  my-[30px]"> */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-center my-[30px]">

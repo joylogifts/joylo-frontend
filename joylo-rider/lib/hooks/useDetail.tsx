@@ -29,10 +29,11 @@ import { SUBSCRIPTION_ORDERS } from "../apollo/subscriptions";
 import UserContext from "../context/global/user.context";
 import { FlashMessageComponent } from "../ui/useable-components";
 import { IOrder } from "../utils/interfaces/order.interface";
+import { useLanguage } from "../context/global/language.context";
 
 const useDetails = (orderData: IOrder) => {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { assignedOrders, loadingAssigned, userId } = useContext(UserContext);
   const [order, setOrder] = useState<IOrder>(orderData);
 
@@ -112,7 +113,7 @@ const useDetails = (orderData: IOrder) => {
   async function onCompleted(result: any) {
     if (result.updateOrderStatusRider) {
       FlashMessageComponent({
-        message: `${t("Order marked as")} ${result.updateOrderStatusRider.orderStatus}`,
+        message: `${t("order_marked_as")} ${result.updateOrderStatusRider.orderStatus}`,
       });
     }
     if (result.assignOrder) {
@@ -131,7 +132,7 @@ const useDetails = (orderData: IOrder) => {
     graphQLErrors: ReadonlyArray<GraphQLFormattedError>;
     networkError: Error | ServerParseError | ServerError | null;
   }) {
-    let message = t("Something went wrong");
+    let message = t("something_went_wrong");
     if (networkError) message = "Internal Server Error";
     if (graphQLErrors) message = graphQLErrors.map((o) => o.message).join(", ");
     if (cause) message = cause.message;

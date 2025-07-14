@@ -1,6 +1,5 @@
 import {  ICategory} from '@/lib/utils/interfaces';
 import {  ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
 import CustomInputSwitch from '../../custom-input-switch';
 
 
@@ -14,14 +13,13 @@ interface ColumnDefinition {
 
 export const CATEGORY_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
 
-
+  // const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // Define base columns
   const columns: ColumnDefinition[] = [];
   
-  columns.push({ headerName: t('Title'), propertyName: 'title' })
+  columns.push({ headerName: 'Title', propertyName: 'title' })
   
   
   // Add subcategories column if shop type is grocery

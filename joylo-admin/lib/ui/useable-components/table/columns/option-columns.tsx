@@ -75,13 +75,13 @@ export const OPTION_TABLE_COLUMNS = () => {
     { 
       headerName: t('Description'), 
       propertyName: 'description',
-      body : (item : IOptions) => {
+     /*  body : (item : IOptions) => {
         return (
           <div>
             {item.description ?? '---'}
           </div>
         )
-      }
+      } */
       
     },
     {

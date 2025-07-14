@@ -1,21 +1,5 @@
-import React, {
-  useState,
-  useContext,
-  useLayoutEffect,
-  useEffect,
-  useMemo,
-  useCallback
-} from 'react'
-import {
-  View,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  FlatList,
-  ScrollView,
-  SafeAreaView
-} from 'react-native'
+import React, { useState, useContext, useLayoutEffect, useEffect, useMemo, useCallback } from 'react'
+import { View, TouchableOpacity, KeyboardAvoidingView, Platform, StatusBar, FlatList, ScrollView, SafeAreaView } from 'react-native'
 
 import gql from 'graphql-tag'
 import { scale, verticalScale } from '../../utils/scaling'
@@ -31,7 +15,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import analytics from '../../utils/analytics'
 import { Entypo } from '@expo/vector-icons'
 
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import Spinner from '../../components/Spinner/Spinner'
 import { useQuery } from '@apollo/client'
 import { LocationContext } from '../../context/Location'
@@ -46,7 +30,6 @@ import { isOpen, sortRestaurantsByOpenStatus } from '../../utils/customFunctions
 import useNetworkStatus from '../../utils/useNetworkStatus'
 import ErrorView from '../../components/ErrorView/ErrorView'
 
-
 const RESTAURANTS = gql`
   ${FavouriteRestaurant}
 `
@@ -54,7 +37,7 @@ const RESTAURANTS = gql`
 function Profile(props) {
   const Analytics = analytics()
   const navigation = useNavigation()
-  const { t, i18n } = useTranslation()
+  const { getTranslation, dir } = useLanguage()
   const [toggleView, setToggleView] = useState(true)
   const [modelVisible, setModalVisible] = useState(false)
   const [showPass, setShowPass] = useState(false)
@@ -62,7 +45,7 @@ function Profile(props) {
 
   const { profile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
-  const currentTheme = { isRTL: i18n.dir() === "rtl", ...theme[themeContext.ThemeValue] }
+  const currentTheme = { isRTL: dir === 'rtl', ...theme[themeContext.ThemeValue] }
   const { orders } = useContext(OrdersContext)
 
   const activeOrders = useMemo(() => {
@@ -83,17 +66,15 @@ function Profile(props) {
 
   useFocusEffect(
     useCallback(() => {
-      refetch();
+      refetch()
     }, [refetch])
-  );
+  )
 
   useFocusEffect(() => {
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor(currentTheme.menuBar)
     }
-    StatusBar.setBarStyle(
-      themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content'
-    )
+    StatusBar.setBarStyle(themeContext.ThemeValue === 'Dark' ? 'light-content' : 'dark-content')
   })
 
   useEffect(() => {
@@ -125,12 +106,10 @@ function Profile(props) {
     })
   }, [props?.navigation, showPass, toggleView, themeContext.ThemeValue])
 
-  const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus()
   if (!connect) return <ErrorView refetchFunctions={[refetch]} />
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: currentTheme.themeBackground }}>
       <ChangePassword
         modalVisible={modelVisible}
         hideModal={() => {
@@ -138,33 +117,13 @@ function Profile(props) {
         }}
       />
       <View style={styles(currentTheme).formContainer}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : null}
-          style={styles(currentTheme).flex}
-        >
-          <ScrollView
-            style={styles().flex}
-            contentContainerStyle={{ flexGrow: 1 }}
-            showsVerticalScrollIndicator={false}
-            alwaysBounceVertical={false}
-          >
-            <TextDefault
-              bolder
-              style={[{ fontSize: scale(30) }, styles().padding]}
-              isRTL
-            >
-              {t('Hi') + ' ' + profile?.name + '!'}
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} style={styles(currentTheme).flex}>
+          <ScrollView style={styles().flex} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
+            <TextDefault bolder style={[{ fontSize: scale(30) }, styles().padding]} isRTL>
+              {getTranslation('hi') + ' ' + profile?.name + '!'}
             </TextDefault>
             <View style={styles(currentTheme).mainContainer}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={[
-                  styles(currentTheme).nameView,
-                  styles(currentTheme).flexRow,
-                  styles().padding
-                ]}
-                onPress={() => navigation.navigate('MyOrders')}
-              >
+              <TouchableOpacity activeOpacity={0.8} style={[styles(currentTheme).nameView, styles(currentTheme).flexRow, styles().padding]} onPress={() => navigation.navigate('MyOrders')}>
                 <View
                   style={{
                     alignItems: 'center'
@@ -175,13 +134,8 @@ function Profile(props) {
                       flex: 1
                     }}
                   >
-                    <TextDefault
-                      H5
-                      bold
-                      textColor={currentTheme.fontThirdColor}
-                      isRTL
-                    >
-                      {activeOrders?.length} {t('ActiveOrder')}
+                    <TextDefault H5 bold textColor={currentTheme.fontThirdColor} isRTL>
+                      {activeOrders?.length} {getTranslation('active_orders')}
                     </TextDefault>
                   </View>
                 </View>
@@ -191,40 +145,20 @@ function Profile(props) {
 
               {/* favourite section */}
               {loading ? (
-                <Spinner
-                  size={'small'}
-                  backColor={currentTheme.themeBackground}
-                  spinnerColor={currentTheme.main}
-                />
+                <Spinner size={'small'} backColor={currentTheme.themeBackground} spinnerColor={currentTheme.main} />
               ) : (
                 data?.userFavourite?.length >= 1 && (
                   <View style={styles().padding}>
-                    <View
-                      style={[
-                        styles(currentTheme).flexRow,
-                        styles(currentTheme).favView
-                      ]}
-                    >
+                    <View style={[styles(currentTheme).flexRow, styles(currentTheme).favView]}>
                       <View>
-                        <TextDefault
-                          H2
-                          bolder
-                          textColor={currentTheme.fontThirdColor}
-                        >
-                          {t('YourFavourites')}
+                        <TextDefault H2 bolder textColor={currentTheme.fontThirdColor}>
+                          {getTranslation('your_favourites')}
                         </TextDefault>
                       </View>
                       <View>
-                        <TouchableOpacity
-                          style={styles(currentTheme).seeAll}
-                          onPress={() => navigation.navigate('Favourite')}
-                        >
-                          <TextDefault
-                            H5
-                            bolder
-                            textColor={currentTheme.newButtonText}
-                          >
-                            {t('SeeAll')}
+                        <TouchableOpacity style={styles(currentTheme).seeAll} onPress={() => navigation.navigate('Favourite')}>
+                          <TextDefault H5 bolder textColor={currentTheme.newButtonText}>
+                            {getTranslation('see_all')}
                           </TextDefault>
                         </TouchableOpacity>
                       </View>
@@ -242,84 +176,39 @@ function Profile(props) {
                       data={sortRestaurantsByOpenStatus(data?.userFavourite || [])}
                       keyExtractor={(item) => item._id}
                       renderItem={({ item }) => {
-
-                        
                         const averageRating = item?.reviewData?.ratings
                         const numberOfReviews = item?.reviewData?.total
 
-                        const restaurantOpen = isOpen(item);
-                        return (
-                          <NewRestaurantCard
-                            {...item}
-                            reviewAverage={item.reviewAverage}
-                            reviewCount={item.reviewCount}
-                            isCategories
-                            isOpen={restaurantOpen}
-                            isAvailable={item.isAvailable || true}
-                            
-                          />
-                        )
+                        const restaurantOpen = isOpen(item)
+                        return <NewRestaurantCard {...item} reviewAverage={item.reviewAverage} reviewCount={item.reviewCount} isCategories isOpen={restaurantOpen} isAvailable={item.isAvailable || true} />
                       }}
                       inverted={currentTheme?.isRTL ? true : false}
-
                     />
                   </View>
                 )
               )}
 
               <View style={[styles().quickLinkView]}>
-                <TextDefault
-                  H2
-                  bolder
-                  textColor={currentTheme.fontThirdColor}
-                  style={styles().padding}
-                  isRTL
-                >
-                  {t('QuickLinks')}
+                <TextDefault H2 bolder textColor={currentTheme.fontThirdColor} style={styles().padding} isRTL>
+                  {getTranslation('quick_links')}
                 </TextDefault>
 
-                <ButtonContainer
-                  icon={'people-outline'}
-                  iconType={'Ionicons'}
-                  onPress={() => navigation.navigate('Help')}
-                  title={t('CustomerSupport')}
-                  currentTheme={currentTheme}
-                />
+                <ButtonContainer icon={'people-outline'} iconType={'Ionicons'} onPress={() => navigation.navigate('Help')} title={getTranslation('customer_support')} currentTheme={currentTheme} />
                 <View style={styles(currentTheme).line} />
-                <ButtonContainer
-                  icon={'file-tray-stacked-outline'}
-                  iconType={'Ionicons'}
-                  onPress={() => navigation.navigate('MyOrders')}
-                  title={t('OrderHistory')}
-                  currentTheme={currentTheme}
-                />
+                <ButtonContainer icon={'file-tray-stacked-outline'} iconType={'Ionicons'} onPress={() => navigation.navigate('MyOrders')} title={getTranslation('order_history')} currentTheme={currentTheme} />
                 <View style={styles(currentTheme).line} />
               </View>
 
               {/* order again */}
               {orderLoading ? (
-                <Spinner
-                  size={'small'}
-                  backColor={currentTheme.themeBackground}
-                  spinnerColor={currentTheme.main}
-                />
+                <Spinner size={'small'} backColor={currentTheme.themeBackground} spinnerColor={currentTheme.main} />
               ) : (
                 recentOrderRestaurantsData?.length >= 1 && (
                   <View style={styles().padding}>
-                    <View
-                      style={[
-                        styles(currentTheme).flexRow,
-                        styles(currentTheme).orderAgainView
-                      ]}
-                    >
+                    <View style={[styles(currentTheme).flexRow, styles(currentTheme).orderAgainView]}>
                       <View>
-                        <TextDefault
-                          H2
-                          bolder
-                            textColor={currentTheme.fontThirdColor}
-                            isRTL
-                        >
-                          {t('OrderAgain')}
+                        <TextDefault H2 bolder textColor={currentTheme.fontThirdColor} isRTL>
+                          {getTranslation('order_again')}
                         </TextDefault>
                       </View>
                     </View>
@@ -345,31 +234,13 @@ function Profile(props) {
               )}
 
               <View style={styles().settingView}>
-                <TextDefault
-                  H2
-                  bolder
-                  textColor={currentTheme.fontThirdColor}
-                  style={styles().padding}
-                  isRTL
-                >
-                  {t('titleSettings')}
+                <TextDefault H2 bolder textColor={currentTheme.fontThirdColor} style={styles().padding} isRTL>
+                  {getTranslation('title_settings')}
                 </TextDefault>
 
-                <ButtonContainer
-                  icon={'account-outline'}
-                  iconType={'MaterialCommunityIcons'}
-                  onPress={() => navigation.navigate('Account')}
-                  title={t('Account')}
-                  currentTheme={currentTheme}
-                />
+                <ButtonContainer icon={'account-outline'} iconType={'MaterialCommunityIcons'} onPress={() => navigation.navigate('Account')} title={getTranslation('account')} currentTheme={currentTheme} />
                 <View style={styles(currentTheme).line} />
-                <ButtonContainer
-                  icon={'location-outline'}
-                  iconType={'Ionicons'}
-                  onPress={() => navigation.navigate('Addresses')}
-                  title={t('myAddresses')}
-                  currentTheme={currentTheme}
-                />
+                <ButtonContainer icon={'location-outline'} iconType={'Ionicons'} onPress={() => navigation.navigate('Addresses')} title={getTranslation('my_addresses')} currentTheme={currentTheme} />
               </View>
             </View>
           </ScrollView>

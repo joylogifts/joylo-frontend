@@ -28,7 +28,8 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 import { generateDummyOptions } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OptionMain() {
   // Context
@@ -36,8 +37,9 @@ export default function OptionMain() {
   const restaurantId = restaurantLayoutContextData?.restaurantId || '';
 
   // Hooks
-  const t = useTranslations();
+
   const { showToast } = useToast();
+  const { getTranslation } = useLangTranslation();
 
   // State - Table
   const [deleteId, setDeleteId] = useState('');
@@ -86,16 +88,15 @@ export default function OptionMain() {
   };
 
   // Complete and Error
-  function onFetchCategoriesByRestaurantCompleted() {}
+  function onFetchCategoriesByRestaurantCompleted() { }
   function onErrorFetchCategoriesByRestaurant() {
     showToast({
       type: 'error',
-      title: t('Option Fetch'),
-      message: t('Categories fetch failed'),
+      title: getTranslation('option_fetch'),
+      message: getTranslation('categories_fetch_failed'),
       duration: 2500,
     });
   }
-
 
 
   return (
@@ -129,15 +130,15 @@ export default function OptionMain() {
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Delete Option'),
-                message: t('Option has been deleted successfully'),
+                title: getTranslation('delete_option'),
+                message: getTranslation('option_has_been_deleted_successfully'),
                 duration: 3000,
               });
               setDeleteId('');
             },
           });
         }}
-        message={t('Are you sure you want to delete this option?')}
+        message={getTranslation('are_you_sure_you_want_to_delete_this_option')}
       />
     </div>
   );

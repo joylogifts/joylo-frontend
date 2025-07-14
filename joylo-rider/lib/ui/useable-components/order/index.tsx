@@ -4,7 +4,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 // Components
 import { IconSymbol } from "@/lib/ui/useable-components/IconSymbol";
 // Interface
-import { IOrderComponentProps } from "@/lib/utils/interfaces/interface";
+import { IOrderComponentProps } from "@/lib/utils/interfaces";
 
 // Contexrtg
 // Hook
@@ -21,6 +21,7 @@ import { calculateDistance } from "@/lib/utils/methods/custom-functions";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import SpinnerComponent from "../spinner";
+import { useLanguage } from "@/lib/context/global/language.context";
 
 const Order = ({
   orderId,
@@ -36,7 +37,7 @@ const Order = ({
   tab,
 }: IOrderComponentProps) => {
   // Hooks
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
   const { appTheme } = useApptheme();
   const { time, mutateAssignOrder, loadingAssignOrder } = useOrder({
     _id,
@@ -118,7 +119,7 @@ const Order = ({
                         className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 "
                         style={{ color: appTheme.fontSecondColor }}
                       >
-                        {t("Status")}
+                        {t("status")}
                       </Text>
                       <View
                         className={`px-3 py-1 border border-1 rounded-[12px]`}
@@ -161,7 +162,7 @@ const Order = ({
                         className="font-[Inter] text-base font-bold  text-left decoration-skip-ink-0 "
                         style={{ color: appTheme.fontSecondColor }}
                       >
-                        {t("Order ID")}
+                        {t("order_id")}
                       </Text>
                       <Text
                         className="font-[Inter] text-[16px] text-base font-semibold  text-right underline-offset-auto decoration-skip-ink "
@@ -206,7 +207,7 @@ const Order = ({
                       className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink "
                       style={{ color: appTheme.fontMainColor }}
                     >
-                      {t("Pickup Order")}
+                      {t("pickup_order")}
                     </Text>
                     <Text
                       className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
@@ -236,7 +237,7 @@ const Order = ({
                       className="font-[Inter] text-base font-semibold leading-6 text-left underline-offset-auto decoration-skip-ink "
                       style={{ color: appTheme.fontMainColor }}
                     >
-                      {t("Delivery Order")}
+                      {t("delivery_order")}
                     </Text>
                     <Text
                       className="font-[Inter] text-base font-bold leading-6 text-left underline-offset-auto decoration-skip-ink "
@@ -290,7 +291,7 @@ const Order = ({
                     className="flex-1 font-[Inter] text-[16px] text-base font-[500] "
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {t("Payment Method")}
+                    {t("payment_method")}
                   </Text>
                   <Text
                     className="flex-1 font-[Inter] text-base font-semibold text-right underline-offset-auto decoration-skip-ink "
@@ -306,7 +307,7 @@ const Order = ({
                     className="flex-1 font-[Inter] text-[16px] text-base font-[500] "
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {t("Order Amount")}
+                    {t("order_amount")}
                   </Text>
 
                   <Text
@@ -315,7 +316,7 @@ const Order = ({
                   >
                     {configuration?.currencySymbol}
                     {orderAmount}
-                    {paymentStatus === "PAID" ? t("Paid") : t("(Not paid yet)")}
+                    {paymentStatus === "PAID" ? t("paid") : t("not_yet_paid")}
                   </Text>
                 </View>
 
@@ -347,13 +348,13 @@ const Order = ({
                         className="font-[Inter] text-[16px] text-base font-[500] "
                         style={{ color: appTheme.fontSecondColor }}
                       >
-                        {t("Order Comment")}
+                        {t("order_comment")}
                       </Text>
                       <Text
                         className="font-[Inter] text-[16px] italic font-medium "
                         style={{ color: appTheme.fontMainColor }}
                       >
-                        {t("No Comment")}
+                        {t("no_comment")}
                       </Text>
                     </View>
                   </View>
@@ -385,7 +386,7 @@ const Order = ({
                         className="text-center text-lg font-medium"
                         style={{ color: appTheme.black }}
                       >
-                        {t("Assign me")}
+                        {t("assign_me")}
                       </Text>
                     )}
                   </TouchableOpacity>

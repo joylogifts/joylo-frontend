@@ -204,7 +204,7 @@ export default function SubCategoriesAddForm({
                             />
                             <CustomTextField
                               name={`subCategories[${index}].title`}
-                              value={value.title}
+                              value={value.title.toString()}
                               maxLength={15}
                               onChange={handleChange}
                               placeholder={t('Title')}

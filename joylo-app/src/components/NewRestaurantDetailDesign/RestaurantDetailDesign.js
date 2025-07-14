@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState, useEffect } from 'react'
 import { View, StatusBar, Platform, Animated, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { useRestaurant } from '../../ui/hooks'
 import ConfigurationContext from '../../context/Configuration'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
@@ -24,7 +25,7 @@ const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 120 : 120
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT
 
 function NewRestaurantDetailDesign(props) {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const { cartCount } = useContext(UserContext)
   const navigation = useNavigation()
@@ -37,7 +38,7 @@ function NewRestaurantDetailDesign(props) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current
 
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
@@ -67,10 +68,8 @@ function NewRestaurantDetailDesign(props) {
   const { data: restaurantData, loading } = useRestaurant(restaurantId)
 
   // Use both route params and API data to determine if restaurant is closed
-  const isRestaurantOpen =
-    restaurant?.isOpen ?? restaurantData?.restaurant?.isOpen
-  const isAvailable =
-    restaurant?.isAvailable ?? restaurantData?.restaurant?.isAvailable
+  const isRestaurantOpen = restaurant?.isOpen ?? restaurantData?.restaurant?.isOpen
+  const isAvailable = restaurant?.isAvailable ?? restaurantData?.restaurant?.isAvailable
 
   // Calculate header animation values
   const headerHeight = scrollOffsetY.interpolate({
@@ -111,12 +110,8 @@ function NewRestaurantDetailDesign(props) {
   const mergedRestaurant = {
     ...(restaurantData?.restaurant || {}),
     ...restaurant,
-    latitude: restaurantData?.restaurant
-      ? restaurantData?.restaurant.location.coordinates[1]
-      : '',
-    longitude: restaurantData?.restaurant
-      ? restaurantData?.restaurant.location.coordinates[0]
-      : '',
+    latitude: restaurantData?.restaurant ? restaurantData?.restaurant.location.coordinates[1] : '',
+    longitude: restaurantData?.restaurant ? restaurantData?.restaurant.location.coordinates[0] : '',
     isOpen: isRestaurantOpen,
     isAvailable: isAvailable
   }
@@ -124,30 +119,16 @@ function NewRestaurantDetailDesign(props) {
   // Render the skeleton loader when data is loading
   if (loading) {
     return (
-      <SafeAreaView
-        style={styles(currentTheme).container}
-        edges={['right', 'left', 'bottom']}
-      >
-        <StatusBar
-          barStyle='light-content'
-          backgroundColor='transparent'
-          translucent={true}
-        />
+      <SafeAreaView style={styles(currentTheme).container} edges={['right', 'left', 'bottom']}>
+        <StatusBar barStyle='light-content' backgroundColor='transparent' translucent={true} />
         <RestaurantDetailSkeleton currentTheme={currentTheme} />
       </SafeAreaView>
     )
   }
 
   return (
-    <SafeAreaView
-      style={styles(currentTheme).container}
-      edges={['right', 'left', 'bottom']}
-    >
-      <StatusBar
-        barStyle='light-content'
-        backgroundColor='transparent'
-        translucent={true}
-      />
+    <SafeAreaView style={styles(currentTheme).container} edges={['right', 'left', 'bottom']}>
+      <StatusBar barStyle='light-content' backgroundColor='transparent' translucent={true} />
 
       {/* Main Header */}
       <Animated.View
@@ -160,18 +141,8 @@ function NewRestaurantDetailDesign(props) {
         ]}
       >
         {/* Original Header */}
-        <Animated.View
-          style={{ opacity: headerOpacity }}
-          pointerEvents={collapsedHeaderOpacity._value > 0.1 ? 'none' : 'auto'}
-        >
-          <RestaurantDetailHeader
-            restaurant={mergedRestaurant}
-            configuration={configuration}
-            currentTheme={currentTheme}
-            t={t}
-            navigation={props.navigation}
-            onOpenSearch={handleOpenSearch}
-          />
+        <Animated.View style={{ opacity: headerOpacity }} pointerEvents={collapsedHeaderOpacity._value > 0.1 ? 'none' : 'auto'}>
+          <RestaurantDetailHeader restaurant={mergedRestaurant} configuration={configuration} currentTheme={currentTheme} t={t} navigation={props.navigation} onOpenSearch={handleOpenSearch} />
         </Animated.View>
 
         {/* Collapsed Header */}
@@ -189,59 +160,23 @@ function NewRestaurantDetailDesign(props) {
             }
           ]}
         >
-          <RestaurantCompactHeader
-            navigation={navigation}
-            restaurantData={{ restaurant: mergedRestaurant }}
-            currentTheme={currentTheme}
-            handleOpenSearch={handleOpenSearch}
-            handleNavigateToAbout={handleNavigateToAbout}
-          />
+          <RestaurantCompactHeader navigation={navigation} restaurantData={{ restaurant: mergedRestaurant }} currentTheme={currentTheme} handleOpenSearch={handleOpenSearch} handleNavigateToAbout={handleNavigateToAbout} />
         </Animated.View>
       </Animated.View>
 
       {/* Scrollable Content with Restaurant Sections */}
-      <Animated.ScrollView
-        scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-          { useNativeDriver: false }
-        )}
-        style={styles(currentTheme).scrollView}
-        showsVerticalScrollIndicator={false}
-      >
-        <View
-          style={[
-            styles(currentTheme).contentContainer,
-            { marginTop: HEADER_MAX_HEIGHT }
-          ]}
-        >
-          <RestaurantSections
-            restaurantId={restaurantId}
-            configuration={configuration}
-            navigation={props.navigation}
-            currentTheme={currentTheme}
-            restaurant={mergedRestaurant}
-          />
+      <Animated.ScrollView scrollEventThrottle={16} onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }], { useNativeDriver: false })} style={styles(currentTheme).scrollView} showsVerticalScrollIndicator={false}>
+        <View style={[styles(currentTheme).contentContainer, { marginTop: HEADER_MAX_HEIGHT }]}>
+          <RestaurantSections restaurantId={restaurantId} configuration={configuration} navigation={props.navigation} currentTheme={currentTheme} restaurant={mergedRestaurant} />
         </View>
       </Animated.ScrollView>
 
       {/* Search Overlay */}
-      <SearchOverlay
-        isVisible={isSearchVisible}
-        onClose={handleCloseSearch}
-        currentTheme={currentTheme}
-        configuration={configuration}
-        restaurant={mergedRestaurant}
-        navigation={props.navigation}
-      />
+      <SearchOverlay isVisible={isSearchVisible} onClose={handleCloseSearch} currentTheme={currentTheme} configuration={configuration} restaurant={mergedRestaurant} navigation={props.navigation} />
 
       {cartCount > 0 && (
         <View style={styles(currentTheme).buttonContainer}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles(currentTheme).button}
-            onPress={() => navigation.navigate('Cart')}
-          >
+          <TouchableOpacity activeOpacity={0.7} style={styles(currentTheme).button} onPress={() => navigation.navigate('Cart')}>
             <View style={styles().buttontLeft}>
               <Animated.View
                 style={[
@@ -254,24 +189,10 @@ function NewRestaurantDetailDesign(props) {
                   }
                 ]}
               >
-                <Text
-                  style={[
-                    styles(currentTheme).buttonTextLeft,
-                    { fontSize: scale(10) }
-                  ]}
-                >
-                  {cartCount}
-                </Text>
+                <Text style={[styles(currentTheme).buttonTextLeft, { fontSize: scale(10) }]}>{cartCount}</Text>
               </Animated.View>
             </View>
-            <TextDefault
-              style={styles().buttonText}
-              textColor={currentTheme.buttonTextPink}
-              uppercase
-              center
-              bolder
-              small
-            >
+            <TextDefault style={styles().buttonText} textColor={currentTheme.buttonTextPink} uppercase center bolder small>
               {t('viewCart')}
             </TextDefault>
             <View style={styles().buttonTextRight} />

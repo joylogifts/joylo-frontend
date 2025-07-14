@@ -1,4 +1,4 @@
-import InstallPWA from "@/lib/ui/pwa/InstallPWA";
+// import InstallPWA from "@/lib/ui/pwa/InstallPWA";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import Script from "next/script";
@@ -49,7 +49,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}
-          <InstallPWA/>
+          {/* <InstallPWA/> */}
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,4 +1,5 @@
 // Contexts
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useApptheme } from "@/lib/context/global/theme.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 
@@ -27,7 +28,7 @@ export default function EarningBottomBar({
 }: IEarningBottomProps) {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation: t } = useLanguage();
 
   // Contexts
   const { setRiderOrderEarnings } = useUserContext();
@@ -72,7 +73,7 @@ export default function EarningBottomBar({
         className="font-bold text-xl w-full py-5 text-center"
         style={{ color: appTheme.fontMainColor }}
       >
-        {t("Earnings")}
+        {t("earnings")}
       </Text>
       <Ionicons
         name="close-circle-outline"
@@ -97,7 +98,7 @@ export default function EarningBottomBar({
           style={{ backgroundColor: appTheme.themeBackground }}
         >
           <Text className="font-bold" style={{ color: appTheme.fontMainColor }}>
-            {t("Total Earnings")}
+            {t("total_earnings")}
           </Text>
           <Text style={{ color: appTheme.fontSecondColor }}>
             ${totalEarnings}
@@ -108,7 +109,7 @@ export default function EarningBottomBar({
             className="font-bold text-md"
             style={{ color: appTheme.fontMainColor }}
           >
-            {t("Tips")}
+            {t("tips")}
           </Text>
           <Text
             className="font-bold text-md"
@@ -122,7 +123,7 @@ export default function EarningBottomBar({
             className="text-md text-[#3B82F6] font-bold"
             style={{ color: appTheme.fontMainColor }}
           >
-            {t("Deliveries")}({totalDeliveries})
+            {t("deliveries")}({totalDeliveries})
           </Text>
           <TouchableOpacity
             className="flex flex-row gap-2 items-center flex-2"

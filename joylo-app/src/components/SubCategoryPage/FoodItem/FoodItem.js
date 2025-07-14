@@ -6,13 +6,14 @@ import { Ionicons } from '@expo/vector-icons'
 import styles from './styles'
 import ShimmerImage from '../../ShimmerImage/ShimmerImage'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
 const FoodItem = ({ item, currentTheme, configuration, onPress }) => {
   const variation = item.variations?.[0]
   const price = variation?.price || 0
   const discountedPrice = variation?.discounted
   const isOutOfStock = item.isOutOfStock === true
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
 
   // Use discounted price only if it exists and is greater than 0, otherwise use base price
   const displayPrice = discountedPrice && discountedPrice > 0 ? discountedPrice : price

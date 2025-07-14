@@ -10,28 +10,28 @@ import { HeaderBackButton } from '@react-navigation/elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import navigationService from '../../routes/navigationService'
 import { scale } from '../../utils/scaling'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 
-const Help = props => {
-  const { t } = useTranslation()
+const Help = (props) => {
+  const { getTranslation: t } = useLanguage()
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
 
   const [links, setLinks] = useState([
     {
-      title: t('titleProductPage'),
+      title: t('title_product_page'),
       url: 'https://enatega.com/enatega-multi-vendor/'
     },
     {
-      title: t('titleDocs'),
+      title: t('title_docs'),
       url: 'https://enatega.com/multi-vendor-doc/'
     },
     {
-      title: t('titleBlog'),
+      title: t('title_blog'),
       url: 'https://enatega.com/blog/'
     },
     {
-      title: t('titleAboutUs'),
+      title: t('title_about_us'),
       url: 'https://ninjascode.com/about-us/'
     }
   ])
@@ -47,29 +47,26 @@ const Help = props => {
     // Update translations when the language changes
     setLinks([
       {
-        title: t('titleProductPage'),
-        url:
-          'https://enatega.com/enatega-multivendor-open-source-food-delivery-solution/'
+        title: t('title_product_page'),
+        url: 'https://enatega.com/enatega-multivendor-open-source-food-delivery-solution/'
       },
       {
-        title: t('titleDocs'),
+        title: t('title_docs'),
         url: 'https://enatega.com/multivendor-documentation/'
       },
       {
-        title: t('titleBlog'),
-        url:
-          'https://enatega.com/blogs-enatega-open-source-food-delivery-solutions/'
+        title: t('title_blog'),
+        url: 'https://enatega.com/blogs-enatega-open-source-food-delivery-solutions/'
       },
       {
-        title: t('titleAboutUs'),
-
+        title: t('title_about_us'),
         url: 'https://ninjascode.com/'
       }
     ])
   }, [])
   useEffect(() => {
     props?.navigation.setOptions({
-      headerTitle: t('titleHelp'),
+      headerTitle: t('title_help'),
       headerTitleAlign: 'center',
       headerRight: null,
       headerTitleContainerStyle: {
@@ -87,10 +84,10 @@ const Help = props => {
       },
       headerLeft: () => (
         <HeaderBackButton
-          truncatedLabel=""
+          truncatedLabel=''
           backImage={() => (
             <View style={styles(currentTheme).backImageContainer}>
-              <MaterialIcons name="arrow-back" size={30} color="black" />
+              <MaterialIcons name='arrow-back' size={30} color='black' />
             </View>
           )}
           onPress={() => {
@@ -102,32 +99,18 @@ const Help = props => {
   }, [props?.navigation])
 
   return (
-    <SafeAreaView
-      edges={['bottom', 'right', 'left']}
-      style={styles(currentTheme).flex}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={currentTheme.themeBackground}
-      />
+    <SafeAreaView edges={['bottom', 'right', 'left']} style={styles(currentTheme).flex}>
+      <StatusBar barStyle='light-content' backgroundColor={currentTheme.themeBackground} />
       <View style={styles(currentTheme).flex}>
         <View style={styles(currentTheme).mainContainer}>
           {links.map(({ title, url }, index) => (
-            <TouchableOpacity
-              style={styles(currentTheme).itemContainer}
-              onPress={() =>
-                props?.navigation.navigate('HelpBrowser', { title, url })
-              }
-              key={index}>
+            <TouchableOpacity style={styles(currentTheme).itemContainer} onPress={() => props?.navigation.navigate('HelpBrowser', { title, url })} key={index}>
               <View>
                 <TextDefault textColor={currentTheme.fontMainColor} bolder>
                   {title}{' '}
                 </TextDefault>
               </View>
-              <MaterialIcons
-                name="arrow-forward"
-                size={20}
-                color={currentTheme.darkBgFont}
-              />
+              <MaterialIcons name='arrow-forward' size={20} color={currentTheme.darkBgFont} />
             </TouchableOpacity>
           ))}
         </View>

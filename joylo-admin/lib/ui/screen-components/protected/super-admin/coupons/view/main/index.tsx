@@ -23,7 +23,7 @@ import { FilterMatchMode } from 'primereact/api';
 
 // Hooks
 import { useContext, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import { useMutation } from '@apollo/client';
 
 // Components
@@ -35,6 +35,7 @@ import CouponTableHeader from '../header/table-header';
 // Constants
 import { generateDummyCoupons } from '@/lib/utils/dummy';
 import { COUPONS_TABLE_COLUMNS } from '@/lib/ui/useable-components/table/columns/coupons-columns';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CouponsMain({
   setVisible,
@@ -42,8 +43,8 @@ export default function CouponsMain({
   setIsEditing,
 }: ICouponMainProps) {
   // Hooks
-  const t = useTranslations();
 
+  const { getTranslation } = useLangTranslation();
   // Toast
   const { showToast } = useContext(ToastContext);
 
@@ -94,18 +95,19 @@ export default function CouponsMain({
       refetchQueries: [{ query: GET_COUPONS }],
       onCompleted: () => {
         showToast({
-          title: t('Delete Coupon'),
+          title: getTranslation('delete_coupon'),
           type: 'success',
-          message: t('Coupon has been deleted successfully'),
+          message: getTranslation('coupon_has_been_deleted_successfully'),
           duration: 2000,
         });
       },
       onError: (err) => {
         showToast({
-          title: t('Delete Coupon'),
+          title: getTranslation('delete_coupon'),
           type: 'error',
           message:
-            err.message || t('An unknown error occured, please try again'),
+            err.message ||
+            getTranslation('an_unknown_error_occurred_please_try_again'),
           duration: 2000,
         });
       },
@@ -136,7 +138,7 @@ export default function CouponsMain({
   // Menu Items
   const menuItems: IActionMenuItem<ICoupon>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: ICoupon) => {
         if (data) {
           setIsEditing({
@@ -151,7 +153,7 @@ export default function CouponsMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: ICoupon) => {
         if (data) {
           setIsDeleting({
@@ -225,7 +227,7 @@ export default function CouponsMain({
         }
         visible={isDeleting.bool}
         loading={deleteCouponLoading}
-        message={t('Are you sure to delete the coupon?')}
+        message={getTranslation('are_you_sure_to_delete_the_coupon')}
       />
     </div>
   );

@@ -22,7 +22,7 @@ import useLogin from "@/lib/hooks/useLogin";
 // Interface
 import { useApptheme } from "@/lib/context/theme.context";
 import { ILoginInitialValues } from "@/lib/utils/interfaces";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { CustomContinueButton } from "../../useable-components";
 
 const initial: ILoginInitialValues = {
@@ -37,7 +37,7 @@ const LoginScreen = () => {
 
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   const { onLogin, creds } = useLogin();
 
   // Handlers
@@ -92,13 +92,13 @@ const LoginScreen = () => {
                     className="text-center text-xl font-semibold"
                     style={{ color: appTheme.fontMainColor }}
                   >
-                    {t("Enter Your Credentials to login")}
+                    {getTranslation("enter_your_credentials_to_login")}
                   </Text>
                   <Text
                     className="text-center text-sm mb-5"
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {t("We'll check if you have an account")}
+                    {getTranslation("we_ll_check_if_you_have_an_account")}
                   </Text>
 
                   {/* Email Input */}
@@ -113,7 +113,7 @@ const LoginScreen = () => {
                     <TextInput
                       className="flex-1 h-12 text-bas"
                       style={{ color: appTheme.fontMainColor }}
-                      placeholder={t("Email")}
+                      placeholder={getTranslation("email")}
                       keyboardType="email-address"
                       value={values.username}
                       onChangeText={handleChange("username")}
@@ -143,7 +143,7 @@ const LoginScreen = () => {
                     <TextInput
                       className="flex-1 h-12 text-base"
                       style={{ color: appTheme.fontMainColor }}
-                      placeholder={t("Password")}
+                      placeholder={getTranslation("password")}
                       secureTextEntry={!passwordVisible}
                       value={values.password}
                       onChangeText={handleChange("password")}
@@ -174,7 +174,7 @@ const LoginScreen = () => {
 
                   {/* Login Button */}
                   <CustomContinueButton
-                    title={t("Login")}
+                    title={getTranslation("login")}
                     onPress={() => handleSubmit()}
                   />
                   {/* <TouchableOpacity
@@ -189,7 +189,7 @@ const LoginScreen = () => {
                         className="text-center  text-lg font-medium"
                         style={{ color: appTheme.fontMainColor }}
                       >
-                        {t("Login")}
+                        {getTranslation("login")}
                       </Text>
                     )}
                   </TouchableOpacity> */}

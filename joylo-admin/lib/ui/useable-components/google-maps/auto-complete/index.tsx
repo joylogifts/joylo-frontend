@@ -1,9 +1,10 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import {
   faLocationCrosshairs,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 import {
   AutoComplete,
   AutoCompleteChangeEvent,
@@ -41,7 +42,8 @@ const CountryService: Country[] = [
 
 export default function TemplateDemo() {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [countries, setCountries] = useState<Country[]>([]);
@@ -106,7 +108,7 @@ export default function TemplateDemo() {
           suggestions={filteredCountries}
           completeMethod={search}
           onChange={(e: AutoCompleteChangeEvent) => setSelectedCountry(e.value)}
-          placeholder={t('Select Location')}
+          placeholder={getTranslation('select_location')}
         />
 
         {selectedCountry && (

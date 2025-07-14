@@ -5,7 +5,7 @@ import TextDefault from '../../Text/TextDefault/TextDefault'
 import { alignment } from '../../../utils/alignment'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import NewRestaurantCard from '../RestaurantCard/NewRestaurantCard'
 import MainLoadingUI from '../LoadingUI/MainLoadingUI'
 import { useNavigation } from '@react-navigation/native'
@@ -22,17 +22,20 @@ const ICONS = {
 }
 
 function MainRestaurantCard(props) {
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
   const navigation = useNavigation()
   const themeContext = useContext(ThemeContext)
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
 
   if (props?.loading) return <MainLoadingUI />
   if (props?.error) return <Text>Error: {props?.error?.message}</Text>
   if (props?.orders?.length <= 0) return <></>
+
+
+
   return (
     <View style={styles().orderAgainSec}>
       <View style={{ gap: scale(8) }}>
@@ -47,13 +50,7 @@ function MainRestaurantCard(props) {
             >
               {t(props?.title)}
             </TextDefault>
-            {props?.icon && (
-              <MaterialIcons
-                name={ICONS[props?.icon]}
-                size={24}
-                color={currentTheme.editProfileButton}
-              />
-            )}
+            {props?.icon && <MaterialIcons name={ICONS[props?.icon]} size={24} color={currentTheme.editProfileButton} />}
           </View>
           <Ripple
             style={styles(currentTheme).seeAllBtn}
@@ -66,7 +63,7 @@ function MainRestaurantCard(props) {
             }}
           >
             <TextDefault H5 bolder textColor={currentTheme.main}>
-              {t('SeeAll')}
+              {t('see_all')}
             </TextDefault>
           </Ripple>
         </View>

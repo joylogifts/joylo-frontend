@@ -1,11 +1,14 @@
-import { ITabItem } from "@/lib/utils/interfaces"
+import { useLangTranslation } from "@/lib/context/global/language.context";
+import { ITabItem } from "@/lib/utils/interfaces";
 
 export const TabItem: React.FC<{
-    tab: ITabItem, 
-    isActive: boolean, 
-    onClick: () => void,
-    className?: string
-  }> = ({ tab, isActive, onClick, className = "" }) => (
+  tab: ITabItem;
+  isActive: boolean;
+  onClick: () => void;
+  className?: string;
+}> = ({ tab, isActive, onClick, className = "" }) => {
+  const { getTranslation } = useLangTranslation();
+  return (
     <span
       key={tab.path}
       onClick={onClick}
@@ -14,13 +17,13 @@ export const TabItem: React.FC<{
         transition-colors 
         whitespace-nowrap 
         ${className}
-        ${isActive 
-          ? "border-b-[3px] border-black text-black" 
+        ${isActive
+          ? "border-b-[3px] border-black text-black"
           : "text-gray-500 hover:text-gray-700"
         }
       `}
     >
-      {tab.label}
+      {getTranslation(tab.label)}
     </span>
-  )
-  
+  );
+};

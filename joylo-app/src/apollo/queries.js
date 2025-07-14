@@ -1162,12 +1162,38 @@ export const GET_ADDONS_BY_CATEGORY = gql`
   query GetAddonsByCategory($storeId: String!, $categoryId: String!) {
     getAddonsByCategory(storeId: $storeId, categoryId: $categoryId) {
       _id
-      options
       title
+      options
       description
       categoryIds
-      categoryId
       isActive
     }
   }
 `
+export const GET_LANGUAGES = gql`
+  query GetLanguages {
+    languages {
+      _id
+      label
+      code
+      flag
+      processed
+      processedAt
+      isDefault
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const GET_TRANSLATIONS_BY_LANGUAGE_CODE = gql`
+  query GetTranslationsByLangCode($languageCode: String!) {
+    translations(languageCode: $languageCode) {
+      languageCode
+      translations
+      createdAt
+      updatedAt
+    }
+  }
+`;
+

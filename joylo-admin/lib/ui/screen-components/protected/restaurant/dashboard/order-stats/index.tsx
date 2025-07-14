@@ -18,13 +18,15 @@ import {
 import { useContext, useMemo } from 'react';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UserStats({
   dateFilter,
 }: IDashboardOrderStatsComponentsProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // Context
   const {
@@ -66,7 +68,7 @@ export default function UserStats({
   return (
     <div className="p-3 grid grid-cols-1 items-center gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <StatsCard
-        label={t('Total Orders')}
+        label={getTranslation('total_orders')}
         total={dashboardUsers?.totalOrders ?? 0}
         icon={faShoppingCart}
         route="/admin/store/orders"
@@ -75,7 +77,7 @@ export default function UserStats({
       />
 
       <StatsCard
-        label={t('Total COD Orders')}
+        label={getTranslation('total_cod_orders')}
         total={dashboardUsers?.totalCODOrders ?? 0}
         icon={faMoneyBillWave}
         route="/admin/store/orders"
@@ -84,7 +86,7 @@ export default function UserStats({
       />
 
       <StatsCard
-        label={t('Total Card Orders')}
+        label={getTranslation('total_card_orders')}
         total={dashboardUsers?.totalCardOrders ?? 0}
         icon={faCreditCard}
         route="/admin/store/orders"
@@ -93,7 +95,7 @@ export default function UserStats({
       />
 
       <StatsCard
-        label={t('Total Sales')}
+        label={getTranslation('total_sales')}
         total={dashboardUsers?.totalSales ?? 0}
         icon={faCashRegister}
         route="/admin/store/orders"

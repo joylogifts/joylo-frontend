@@ -16,7 +16,8 @@ import { EDIT_COUPON, GET_COUPONS } from '@/lib/api/graphql';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const COUPONS_TABLE_COLUMNS = ({
   menuItems,
@@ -26,7 +27,8 @@ export const COUPONS_TABLE_COLUMNS = ({
   // Hooks
   const { showToast } = useContext(ToastContext);
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
 
   // States
   const [editCouponLoading, setEditCouponLoading] = useState({
@@ -39,9 +41,9 @@ export const COUPONS_TABLE_COLUMNS = ({
     refetchQueries: [{ query: GET_COUPONS }],
     onCompleted: () => {
       showToast({
-        title: t('Edit Coupon'),
+        title: getTranslation('edit_coupon'),
         type: 'success',
-        message: t('Coupon Status has been edited successfully'),
+        message: getTranslation('coupon_status_has_been_edited_successfully'),
         duration: 2500,
       });
       setEditCouponLoading({
@@ -51,12 +53,12 @@ export const COUPONS_TABLE_COLUMNS = ({
     },
     onError: (err) => {
       showToast({
-        title: t('Edit Coupon'),
+        title: getTranslation('edit_coupon'),
         type: 'error',
         message:
           err.message ||
           err?.cause?.message ||
-          t('Something went wrong, please try again'),
+          getTranslation('something_went_wrong_please_try_again'),
         duration: 2500,
       });
       setEditCouponLoading({
@@ -91,29 +93,33 @@ export const COUPONS_TABLE_COLUMNS = ({
   const coupon_columns = useMemo(
     () => [
       {
-        headerName: t('Name'),
+        headerName: getTranslation('name'),
         propertyName: '__typename',
       },
       {
-        headerName: t('Code'),
+        headerName: getTranslation('code'),
         propertyName: 'title',
       },
       {
-        headerName: t('Discount'),
+        headerName: getTranslation('discount'),
         propertyName: 'discount',
         body: (rowData: ICoupon) => {
           return <span>{rowData.discount}%</span>;
         },
       },
       {
-        headerName: t('Lifetime Active'),
+        headerName: getTranslation('lifetime_active'),
         propertyName: 'lifeTimeActive',
         body: (rowData: ICoupon) => (
-          <span>{rowData.lifeTimeActive ? t('Yes') : t('No')}</span>
+          <span>
+            {rowData.lifeTimeActive
+              ? getTranslation('yes')
+              : getTranslation('no')}
+          </span>
         ),
       },
       {
-        headerName: t('End Date'),
+        headerName: getTranslation('end_date'),
         propertyName: 'endDate',
         body: (rowData: ICoupon) => (
           <span>
@@ -125,7 +131,7 @@ export const COUPONS_TABLE_COLUMNS = ({
       },
 
       {
-        headerName: t('Status'),
+        headerName: getTranslation('status'),
         propertyName: 'enabled',
         body: (rowData: ICoupon) => {
           return (

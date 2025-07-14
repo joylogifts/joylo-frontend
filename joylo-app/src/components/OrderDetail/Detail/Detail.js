@@ -2,7 +2,7 @@ import { View, Image } from 'react-native'
 import React from 'react'
 import TextDefault from '../../Text/TextDefault/TextDefault'
 import styles from './styles'
-import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import { alignment } from '../../../utils/alignment'
 import { scale } from '../../../utils/scaling'
 import { ChatButton } from './ChatButton'
@@ -11,17 +11,17 @@ import { formatNumber } from '../../../utils/formatNumber'
 
 export default function Detail({ theme, from, orderNo, deliveryAddress, items, currencySymbol, subTotal, tip, tax, deliveryCharges, total, navigation, id, rider, orderStatus }) {
   const riderPhone = rider?.phone
-  const { t } = useTranslation()
-
+  const { getTranslation: t, selectedLanguage } = useLanguage()
+  console.log(items, "items")
   return (
     <View style={styles.container(theme)}>
-      {rider && orderStatus !== ORDER_STATUS_ENUM.DELIVERED && orderStatus !== ORDER_STATUS_ENUM.CANCELLED && <ChatButton onPress={() => navigation.navigate('ChatWithRider', { id, orderNo, total, riderPhone })} title={t('chatWithRider')} description={t('askContactlessDelivery')} theme={theme} />}
+      {rider && orderStatus !== ORDER_STATUS_ENUM.DELIVERED && orderStatus !== ORDER_STATUS_ENUM.CANCELLED && <ChatButton onPress={() => navigation.navigate('ChatWithRider', { id, orderNo, total, riderPhone })} title={t('let_s_chat_with_rider')} description={t('ask_for_contactless_delivery')} theme={theme} />}
       <TextDefault textColor={theme.gray500} bolder H4 style={{ ...alignment.MBsmall }} isRTL>
         {from}
       </TextDefault>
       <View style={{ flexDirection: theme?.isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 4 }}>
         <TextDefault textColor={theme.gray500} bolder H5 style={{ ...alignment.MBmedium }} isRTL>
-          {t('yourOrder')}
+          {t('your_order')}
         </TextDefault>
         <TextDefault textColor={theme.lightBlue} bolder H4 style={{ ...alignment.MBmedium }} isRTL>
           #{orderNo}
@@ -30,7 +30,7 @@ export default function Detail({ theme, from, orderNo, deliveryAddress, items, c
 
       <View style={{ flexDirection: theme?.isRTL ? 'row-reverse' : 'row', justifyContent: 'space-between', alignItems: 'center', ...alignment.MBsmall, paddingRight: 10 }}>
         <TextDefault textColor={theme.gray500} bolder H5 bold isRTL>
-          {t('itemsAndQuantity')} ({items.length})
+          {t('items_and_quantity')} ({items.length})
         </TextDefault>
         <TextDefault textColor={theme.gray500} bolder H5 bold isRTL>
           {t('price')}
@@ -39,14 +39,15 @@ export default function Detail({ theme, from, orderNo, deliveryAddress, items, c
 
       <View style={styles.itemsContainer}>
         {items.map((item) => (
-          <ItemRow key={item._id} theme={theme} quantity={item.quantity} title={`${item.title} ${item.variation.title}`} currency={currencySymbol} price={item.variation.price} options={item.addons.map((addon) => addon.options.map(({ title }) => title))} image={item?.image} />
+          <ItemRow key={item._id} theme={theme} quantity={item.quantity} title={`${typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title} ${typeof item.variation.title === "object" ? item.variation.title[selectedLanguage] : item.variation.title}`} currency={currencySymbol} price={item.variation.price} options={item.addons.map((addon) => addon.options.map(({ title }) => typeof title === "object" ? title[selectedLanguage] : title))} image={item?.image} />
         ))}
       </View>
     </View>
   )
 }
 const ItemRow = ({ theme, quantity, title, options = ['raita', '7up'], price, currency, image }) => {
-  const { t } = useTranslation()
+  const { getTranslation: t, sendNotification } = useLanguage()
+  console.log(options, 'options')
   return (
     <View style={styles.itemRow(theme)}>
       <View>

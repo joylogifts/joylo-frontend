@@ -1,17 +1,20 @@
 // Interfaces and Types
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IUserResponse } from '@/lib/utils/interfaces/users.interface';
 
 // Icons
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTranslations } from 'next-intl';
+import { } from 'next-intl';
 
 export const USERS_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
+
   return [
     {
-      headerName: t('Name'),
+      headerName: getTranslation('name'),
       propertyName: 'name',
       body: (user: IUserResponse) => {
         return (
@@ -24,10 +27,10 @@ export const USERS_TABLE_COLUMNS = () => {
         );
       },
     },
-    { headerName: t('Email'), propertyName: 'email' },
-    { headerName: t('Phone'), propertyName: 'phone' },
+    { headerName: getTranslation('email'), propertyName: 'email' },
+    { headerName: getTranslation('phone'), propertyName: 'phone' },
     {
-      headerName: t('Created At'),
+      headerName: getTranslation('created_at'),
       propertyName: 'createdAt',
       body: (user: IUserResponse) => {
         const formattedDate = new Date(

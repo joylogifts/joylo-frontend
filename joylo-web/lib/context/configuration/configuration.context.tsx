@@ -24,8 +24,6 @@ export const ConfigurationProvider = ({
 }) => {
   const { loading, data, error } = useQuery(GET_CONFIG);
 
-
-  console.log("data : ", data)
   const configuration =
     loading || error || !data.configuration ?
       { currency: "", currencySymbol: "", deliveryRate: 0, costType: "perKM" }

@@ -14,7 +14,8 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import NoData from '@/lib/ui/useable-components/no-data';
 import VendorsLayoutRestaurantCard from '@/lib/ui/useable-components/vendors-layout-resturant-card';
-import { useTranslations } from 'next-intl';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorRestaurantsMain() {
   const {
@@ -24,7 +25,8 @@ export default function VendorRestaurantsMain() {
     onSetRestaurantContextData,
   } = useContext(VendorLayoutRestaurantContext);
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation } = useLangTranslation();
   const restaurants = restaurantContextData?.globalFilter
     ? restaurantContextData?.filtered
     : restaurantByOwnerResponse?.data?.restaurantByOwner?.restaurants;
@@ -36,16 +38,16 @@ export default function VendorRestaurantsMain() {
         <div className="border-b pb-2 pt-3">
           <div className="mb-4 flex items-center justify-between">
             <div className="hidden sm:block">
-              <HeaderText text={t('Stores')} />
+              <HeaderText text={getTranslation('stores')} />
             </div>
             <div className="flex flex-col sm:hidden">
-              <HeaderText text={t('Stores')} />
+              <HeaderText text={getTranslation('stores')} />
             </div>
             <TextIconClickable
               className="rounded border-gray-300 bg-black text-white sm:w-auto"
               icon={faAdd}
               iconStyles={{ color: 'white' }}
-              title={t('Add Store')}
+              title={getTranslation('add_store')}
               onClick={() => onSetRestaurantFormVisible(true)}
             />
           </div>
@@ -55,7 +57,7 @@ export default function VendorRestaurantsMain() {
                 type="text"
                 name="restaurantFilter"
                 maxLength={35}
-                placeholder={t('Search Stores')}
+                placeholder={getTranslation('search_stores')}
                 showLabel={false}
                 value={restaurantContextData?.globalFilter ?? ''}
                 onChange={(e) =>

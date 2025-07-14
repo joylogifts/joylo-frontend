@@ -7,6 +7,7 @@ import CategoryPageHeader from './CategoryHeader/CategoryHeader'
 import ThemeContext from '../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../utils/themeColors'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/src/context/Language'
 import callStyles from './styles'
 import { GET_SUB_CATEGORIES } from '../../apollo/queries'
 import { useRestaurant } from '../../ui/hooks'
@@ -105,7 +106,7 @@ const CategoryPage = ({ route, navigation }) => {
   const swipeInProgress = useRef(false)
 
   // Hooks
-  const { t, i18n } = useTranslation()
+  const { getTranslation: t, dir } = useLanguage()
 
   // Context
   const configuration = useContext(ConfigurationContext)
@@ -114,7 +115,7 @@ const CategoryPage = ({ route, navigation }) => {
 
   // Constants
   const currentTheme = {
-    isRTL: i18n.dir() === 'rtl',
+    isRTL: dir === 'rtl',
     ...theme[themeContext.ThemeValue]
   }
   const NO_ITEM_AVAILABLE = require('../../assets/SVG/ItemUnavailable.json')

@@ -74,11 +74,11 @@ function Favourite() {
 
   useEffect(() => {
     navigation.setOptions({
-      title: t('titleFavourite'),
+      title: t('title_favourite'),
       headerTitleAlign: 'center',
       headerRight: null,
       headerTitleStyle: {
-        color:currentTheme.newFontcolor,
+        color: currentTheme.newFontcolor,
         fontWeight: 'bold'
       },
       headerTitleContainerStyle: {
@@ -110,9 +110,9 @@ function Favourite() {
     })
   }, [navigation])
 
-    
-    const { isConnected:connect,setIsConnected :setConnect} = useNetworkStatus();
-    if (!connect) return <ErrorView refetchFunctions={[refetch]} />
+
+  const { isConnected: connect, setIsConnected: setConnect } = useNetworkStatus();
+  if (!connect) return <ErrorView refetchFunctions={[refetch]} />
 
   const emptyView = () => {
     return (
@@ -148,7 +148,7 @@ function Favourite() {
         ListHeaderComponent={null}
         renderItem={({ item }) => {
           const restaurantOpen = isOpen(item);
-        //  console.log(item)
+          //  console.log(item)
           return (
             <NewRestaurantCard
               {...item}
@@ -157,7 +157,7 @@ function Favourite() {
               isCategories
               fullWidth
               isOpen={true}
-              isAvailable={item.isAvailable ||  true}
+              isAvailable={item.isAvailable || true}
             />
           )
         }}

@@ -1,4 +1,5 @@
 import { UPDATE_WORK_SCHEDULE } from "@/lib/apollo/mutations/work-schedule";
+import { useLanguage } from "@/lib/context/global/language.context";
 import { useUserContext } from "@/lib/context/global/user.context";
 
 import { WorkSchedule } from "@/lib/utils/interfaces";
@@ -9,7 +10,6 @@ import { useApptheme } from "@/lib/context/theme.context";
 import { timeToMinutes } from "@/lib/utils/methods/helpers/work-schedule";
 import { TWeekDays } from "@/lib/utils/types/restaurant";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Animated,
   Dimensions,
@@ -52,7 +52,7 @@ const timeOptions = generateTimeSlots();
 export default function WorkScheduleMain() {
   // Hooks
   const { appTheme } = useApptheme();
-  const { t } = useTranslation();
+  const { getTranslation } = useLanguage();
   // States
   const [schedule, setSchedule] = useState<WorkSchedule[]>();
   const [dropdown, setDropdown] = useState<{
@@ -89,7 +89,7 @@ export default function WorkScheduleMain() {
       const overlapping_day = hasOverlappingSlots(schedule ?? []);
       if (overlapping_day) {
         return showMessage({
-          message: `${t(overlapping_day)} ${t("has overlapping slots")}.`,
+          message: `${getTranslation(overlapping_day)} ${getTranslation("has_overlapping_slots")}.`,
         });
       }
       // Clean the work schedule before submitting
@@ -106,7 +106,7 @@ export default function WorkScheduleMain() {
         cleanedWorkSchedule.every((day) => !day.times.length)
       ) {
         return showMessage({
-          message: t("No valid slots to submit"),
+          message: getTranslation("no_valid_slots_to_submit"),
         });
       }
 
@@ -115,13 +115,13 @@ export default function WorkScheduleMain() {
         variables: scheduleInput,
         onCompleted: () => {
           showMessage({
-            message: t("Work Schedule has been updated successfully"),
+            message: getTranslation("work_schedule_has_been_updated_successfully"),
           });
         },
         onError: (error) => {
           return showMessage({
             message:
-              error.graphQLErrors[0]?.message ?? t("Something went wrong"),
+              error.graphQLErrors[0]?.message ?? getTranslation("something_went_wrong"),
           });
         },
       });
@@ -277,7 +277,7 @@ export default function WorkScheduleMain() {
 
       if (isOverlapping) {
         return showMessage({
-          message: t("Time slot overlaps with another existing slot"),
+          message: getTranslation("time_slot_overlaps_with_another_existing_slot"),
         });
       }
 
@@ -442,7 +442,7 @@ export default function WorkScheduleMain() {
               className="font-[Inter] text-lg font-bold mb-2"
               style={{ color: appTheme.fontMainColor }}
             >
-              {t("Select Time Slot")}
+              {getTranslation("select_time_slot")}
             </Text>
             <ScrollView
               style={{ maxHeight: 300 }}
