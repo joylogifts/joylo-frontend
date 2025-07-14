@@ -33,7 +33,7 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 import {
   CREATE_FOOD,
   EDIT_FOOD,
-  GET_FOODS_BY_RESTAURANT_ID,
+  GET_PENDING_PRODUCTS,
 } from '@/lib/api/graphql';
 
 // Icons
@@ -41,6 +41,7 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Apollo
 import { useMutation } from '@apollo/client';
+import { useSearchParams } from 'next/navigation';
 
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -61,6 +62,9 @@ export default function VariationAddForm({
     order: -1,
   };
   // Hooks
+
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get('activeTab') || 'approved';
 
   const { getTranslation, selectedLanguage } = useLangTranslation();
 
@@ -102,8 +106,12 @@ export default function VariationAddForm({
     {
       refetchQueries: [
         {
-          query: GET_FOODS_BY_RESTAURANT_ID,
-          variables: { id: restaurantId },
+          query: GET_PENDING_PRODUCTS,
+          variables: { 
+            filter : { 
+              storeId : restaurantId , status : activeTab 
+            } , 
+            pagination : { pageNo : 1 , pageSize : 10 } },
         },
       ],
       onCompleted: () => {

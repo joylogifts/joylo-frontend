@@ -30,3 +30,53 @@ export const GET_FOODS_BY_RESTAURANT_ID = gql`
     }
   }
 `;
+
+
+export const GET_PENDING_PRODUCTS = gql`
+  query GetPendingProductsRequest($filter: PendingProductsFilterInput, $pagination: PaginationInput) {
+    getPendingProducts(filter: $filter, pagination: $pagination) {
+        pagination {
+             currentPage
+            totalPages
+            totalItems
+            pageSize
+            hasPrevPage
+            hasNextPage
+        }
+        data {
+            id
+            storeId
+            categoryId
+            productId
+            status
+            reason
+            approvalType
+            previousProductData {
+                _id
+                title
+                description
+                image
+                variations {
+                    _id
+                    title
+                    price
+                    discounted
+                }
+            }
+            productData {
+                _id
+                title
+                description
+                image
+                variations {
+                    _id
+                    title
+                    price
+                    discounted
+                }
+            }
+        }
+    }
+}
+
+`

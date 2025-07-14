@@ -28,7 +28,7 @@ import useCheckAllowedRoutes from '@/lib/hooks/useCheckAllowedRoutes';
 
 // Components
 import SidebarItem from './side-bar-item';
-import { } from 'next-intl';
+import {} from 'next-intl';
 import { faHeadset } from '@fortawesome/free-solid-svg-icons/faHeadset';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -225,6 +225,12 @@ export default function MakeSidebar() {
       icon: faCog,
       subMenu: [
         {
+          text: 'Products',
+          label: getTranslation('products'),
+          route: '/store-settings/products',
+          isParent: false,
+        },
+        {
           text: getTranslation('categories'),
           route: '/store-settings/category',
           isParent: false,
@@ -235,7 +241,7 @@ export default function MakeSidebar() {
           isParent: false,
         },
         {
-          text:getTranslation('addons'),
+          text: getTranslation('addons'),
           route: '/store-settings/add-ons',
           isParent: false,
         },
