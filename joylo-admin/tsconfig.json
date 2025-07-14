@@ -32,5 +32,9 @@
     "lib/context/query-context.tsx",
     "public/firebase-messaging-sw.js"
   ],
-  "exclude": ["cypress.config.ts", "cypress", "node_modules"]
+  "exclude": ["cypress.config.ts", "cypress", "node_modules"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["off"],
+  },
+
 }

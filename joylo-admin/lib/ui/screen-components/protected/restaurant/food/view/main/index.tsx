@@ -6,7 +6,7 @@ import {
   useMutation,
   useQuery,
 } from '@apollo/client';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Prime React
 import { FilterMatchMode } from 'primereact/api';
@@ -14,9 +14,6 @@ import { FilterMatchMode } from 'primereact/api';
 // Interface and Types
 import {
   IActionMenuItem,
-  IAddon,
-  IAddonByRestaurantResponse,
-  IDropdownSelectItem,
   IFood,
   IFoodByRestaurantResponse,
   IFoodNew,
@@ -46,7 +43,6 @@ import useToast from '@/lib/hooks/useToast';
 // GraphQL
 import { DELETE_FOOD } from '@/lib/api/graphql';
 import {
-  GET_ADDONS_BY_RESTAURANT_ID,
   GET_FOODS_BY_RESTAURANT_ID,
 } from '@/lib/api/graphql/queries';
 import {
@@ -84,7 +80,7 @@ export default function FoodsMain() {
     refetch,
   } = useQueryGQL(
     GET_FOODS_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    { id: restaurantId },  
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
@@ -92,14 +88,16 @@ export default function FoodsMain() {
     }
   ) as IQueryResult<IFoodByRestaurantResponse | undefined, undefined>;
 
-  const { data } = useQueryGQL(
+
+ /*  const { data } = useQueryGQL(
     GET_ADDONS_BY_RESTAURANT_ID,
     { id: restaurantId },
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
     }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>;
+  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>; */
+
   const [fetchSubcategory, { loading: subCategoriesLoading }] = useLazyQuery(
     GET_SUBCATEGORY,
     {
@@ -138,13 +136,13 @@ export default function FoodsMain() {
   });
 
   // Memoized Data
-  const addons = useMemo(
+/*   const addons = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
         return { label: addon.title, code: addon._id };
       }),
     [data?.restaurant?.addons]
-  );
+  ); */
 
   // Handlers
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,6 +178,7 @@ export default function FoodsMain() {
           },
           title: fd.title,
           variations: fd.variations,
+          isReturnAble: fd.isReturnAble
         });
       })
     );
@@ -225,18 +224,13 @@ export default function FoodsMain() {
               return {
                 ..._variation,
                 discounted: discounted,
-                addons: variation?.addons?.map((addonId) => {
+               /*  addons: variation?.addons?.map((addonId) => {
                   return (
                     addons?.find(
                       (addon: IDropdownSelectItem) => addon.code === addonId
                     ) ?? ({} as IDropdownSelectItem)
                   );
-                })?.forEach((addon) => {
-                  return {
-                    label: addon.label,
-                    code: addon.code,
-                  }
-                }) ?? [],
+                }), */
               };
             }) as IVariationForm[]) ?? ([] as IVariationForm[]);
 

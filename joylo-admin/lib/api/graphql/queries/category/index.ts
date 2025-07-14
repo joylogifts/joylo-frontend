@@ -13,3 +13,14 @@ export const GET_CATEGORY_BY_RESTAURANT_ID = gql`
     }
   }
 `;
+
+export const GET_CATEGORIES = gql`
+  query GetCategories {
+    categories {
+      _id
+      title
+      isActive
+      createdAt
+    }
+  }
+`;

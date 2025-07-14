@@ -1,10 +1,8 @@
-import { ISubCategory } from '../category.interface';
-
 export interface ICategoryForm {
   _id?: string;
-  title: Record<string, string> | string;
-  subCategories: ISubCategory[];
+  title: string;
   image?: string | null;
+  isActive?: boolean;
 }
 
 export interface ICategoryErrors {

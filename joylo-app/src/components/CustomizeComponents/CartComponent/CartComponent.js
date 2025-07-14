@@ -47,7 +47,7 @@ function CartComponent(props) {
               ? styles(currentTheme).btnContainer
               : {
                 ...styles().btnContainer,
-                backgroundColor: currentTheme.main
+                backgroundColor: currentTheme.color2
               }
           }
         >

@@ -1158,6 +1158,18 @@ export const GET_SUB_CATEGORIES_BY_PARENT_ID = gql`
   }
 `
 
+export const GET_ADDONS_BY_CATEGORY = gql`
+  query GetAddonsByCategory($storeId: String!, $categoryId: String!) {
+    getAddonsByCategory(storeId: $storeId, categoryId: $categoryId) {
+      _id
+      title
+      options
+      description
+      categoryIds
+      isActive
+    }
+  }
+`
 export const GET_LANGUAGES = gql`
   query GetLanguages {
     languages {

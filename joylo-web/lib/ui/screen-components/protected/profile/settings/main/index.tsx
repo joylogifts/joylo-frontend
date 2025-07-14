@@ -261,26 +261,33 @@ export default function SettingsMain() {
                 </div>
             </div>
             {/* Language */}
-           <div className="py-4">
+            <div className="py-4">
                 <div className="flex justify-between items-center">
                     <TextComponent
                         text={getTranslation("language")}
                         className="font-normal text-gray-700 text-base md:text-lg "
                     />
-                        <div>
-                            <Dropdown 
-                            value={selectedLanguage} 
-                            onChange={(e) => setSelectedLanguage(e.value)} 
+                    <div>
+                        <Dropdown
+                            value={selectedLanguage}
+                            onChange={(e) => setSelectedLanguage(e.value)}
                             options={languages?.map((lang: any) => ({
-                                value : lang.code,
-                                label : lang.label,
-
-                            }))} 
-                            optionLabel="label" 
-                            placeholder={getTranslation("select_language")} 
+                                value: lang.code,
+                                label: lang.label,
+                                // flag: lang.flag
+                            }))}
+                            itemTemplate={(option) => (
+                                <div className="flex items-center">
+                                    <img src={option?.flag} alt="" style={{ width: 20, marginRight: 8 }} />
+                                    <span>{option?.label}</span>
+                                </div>
+                            )}
+                            optionLabel="label"
+                            placeholder={getTranslation("select_language")}
                             className="w-full md:w-14rem" />
-                        </div>
+
                     </div>
+                </div>
             </div>
         </div>
     );

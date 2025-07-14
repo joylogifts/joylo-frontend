@@ -28,7 +28,7 @@ export const useConfiguration = () => {
   const GOOGLE_MAPS_KEY = configuration?.googleApiKey;
   const AMPLITUDE_API_KEY_WEB = configuration?.webAmplitudeApiKey;
   const AMPLITUDE_API_KEY_APP = configuration?.appAmplitudeApiKey;
-  const LIBRARIES = 'places,drawing,geometry,localContext,visualization'.split(
+  const LIBRARIES = 'places,drawing,geometry,visualization'.split(
     ','
   ) as Libraries;
   const COLORS = {
@@ -72,11 +72,13 @@ export const useConfiguration = () => {
   const ISPAID_VERSION = configuration?.isPaidVersion;
 
   return {
-    // SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
-    // WS_SERVER_URL: process.env.NEXT_PUBLIC_WS_SERVER_URL,
-    GRAPHQL_URL: 'http://192.168.1.9:8001/graphql',
-    WS_SERVER_URL: 'ws://192.168.1.9:8001/graphql',
-    SERVER_URL: 'http://192.168.1.9:8001/',
+
+    SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    WS_SERVER_URL: process.env.NEXT_PUBLIC_WS_SERVER_URL,
+    // GRAPHQL_URL: 'http://192.168.1.42:8001/graphql',
+    // WS_SERVER_URL: 'ws://192.168.1.42:8001/graphql',
+    // SERVER_URL: 'http://192.168.1.42:8001/',
+
     COLORS,
 
     // EMAIL CONFIG

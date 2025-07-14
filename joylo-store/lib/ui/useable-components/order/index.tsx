@@ -16,6 +16,8 @@ import { TimeLeftIcon } from "../svg";
 import { useApptheme } from "@/lib/context/theme.context";
 import useCancelOrder from "@/lib/hooks/useCancelOrder";
 import useOrderPickedUp from "@/lib/hooks/useOrderPickedUp";
+import { useTranslation } from "react-i18next";
+import CancelOrderButton from "./CancelOrderButton";
 
 const Order = ({
   order,
@@ -36,7 +38,7 @@ const Order = ({
   const { pickedUp, loading: loadingPicked } = useOrderPickedUp();
 
   // Ref
-  const timer = useRef<NodeJS.Timeout>();
+  const timer = useRef<NodeJS.Timeout>(null);
 
   // States
   const [isAcceptButtonVisible, setIsAcceptButtonVisible] = useState(
@@ -152,7 +154,7 @@ const Order = ({
         </View>
 
         {/* Order ID */}
-        <View className="flex-1 flex-row justify-between items-center">
+     {/*    <View className="flex-1 flex-row justify-between items-center">
           <Text
             style={{
               color: appTheme.fontMainColor,
@@ -172,7 +174,9 @@ const Order = ({
           >
             #{order?.orderId}
           </Text>
-        </View>
+        </View> */}
+
+        
 
         {/* Order Items */}
         <View className="flex-1 flex-row justify-between items-center">
@@ -196,75 +200,229 @@ const Order = ({
           </Text>
         </View>
 
-        <View>
-          {order?.items?.map((item) => {
-            return (
-              <View
-                key={item._id}
-                className="flex-1 flex-row justify-between items-center mb-6"
-              >
-                <View className="w-full flex-row justify-between">
-                  {/* Left */}
-                  <View className="flex-row gap-x-2 w-[90%]">
-                    {/* Image */}
-                    <View
-                      className="w-[60px] h-[70px] rounded-[8px] overflow-hidden"
-                      style={{
-                        backgroundColor: appTheme.lowOpacityPrimaryColor,
-                      }}
-                    >
-                      <Image
-                        src={item.image}
-                        style={{ width: 60, height: 70, borderRadius: 8 }}
-                      />
-                    </View>
 
-                    {/* Item Details */}
-                    <View className="flex-1 justify-between">
-                      <View>
-                        <Text
-                          style={{
-                            color: appTheme.fontMainColor,
-                            fontSize: 14,
-                            fontWeight: "600",
-                          }}
-                        >
-                          {getLocalizedText(item?.title, "")}
-                        </Text>
-                        <Text
-                          style={{
-                            color: appTheme.fontSecondColor,
-                            fontSize: 12,
-                          }}
-                        >
-                          {getLocalizedText(item?.description, "")}
-                        </Text>
+       
+        <View>
+            {order?.items?.map((item, itemIndex) => {
+              return (
+                <View
+                  key={item._id + itemIndex.toString()}
+                  className="flex-1 flex-row justify-between items-center mb-6"
+              
+                >
+                  <View
+                    className="w-full flex-row justify-between"
+                  
+                  >
+                    {/* Left */}
+
+                    <View
+                      className="flex-row gap-x-2 w-[90%]"
+                    
+                    >
+                      {/* Image */}
+                      <View
+                        className="w-[60px] h-[70px] rounded-[8px] overflow-hidden"
+                        style={{
+                          backgroundColor: appTheme.lowOpacityPrimaryColor,
+                        }}
+                      >
+                        <Image
+                          src={item.image}
+                          style={{ width: 60, height: 70, borderRadius: 8 }}
+                        />
                       </View>
-                      <View>
-                        <Text
-                          style={{
-                            color: appTheme.fontMainColor,
-                            fontSize: 14,
-                            fontWeight: "600",
-                          }}
+                      {/* Item Details */}
+                      <View className="flex-1 justify-between">
+                        <View>
+                          <View
+                            className="flex-row items-baseline justify-between"
+                          
+                          >
+                            <Text
+                              style={{
+                                color: appTheme.fontMainColor,
+                                fontSize: 14,
+                                fontWeight: "600",
+                              }}
+                            >
+                              {getLocalizedText(item?.title, "")}
+                            </Text>
+                            {item?.variation?.title && (
+                              <Text
+                                style={{
+                                  color: appTheme.fontSecondColor,
+                                  fontSize: 10,
+                                  fontWeight: "400",
+                                }}
+                              >
+                                ({item?.variation?.title})
+                              </Text>
+                            )}
+                          </View>
+                          <View
+                            className="flex-row items-center justify-between mt-1"
+                         
+                          >
+                            <Text
+                              style={{
+                                color: appTheme.fontMainColor,
+                                fontSize: 14,
+                                fontWeight: "600",
+                              }}
+                            >
+                              x{item?.quantity}
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              color: appTheme.fontSecondColor,
+                              fontSize: 12,
+                              marginTop: 2,
+                            }}
+                          >
+                            {getLocalizedText(item?.description, "")}
+                          </Text>
+                        </View>
+                        {/*Special Instructions*/}
+                        {item?.specialInstructions && (
+                          <View className="w-full mt-2">
+                            <Text
+                              className="font-[Inter] text-base font-[500]"
+                              style={{
+                                color: appTheme.fontSecondColor,
+                            
+                              }}
+                            >
+                              {getTranslation("item_instructions")}
+                            </Text>
+                            <Text
+                              className="font-[Inter] text-base font-semibold underline underline-offset-2 mt-1"
+                              style={{
+                                color: appTheme.fontMainColor,
+                             
+                              }}
+                            >
+                              {item?.specialInstructions}
+                            </Text>
+                          </View>
+                        )}
+                        {/* Addons */}
+                        <View
+                          className={`mt-1`}
                         >
-                          x{item?.quantity}
-                        </Text>
+                          {item?.addons?.map((addon, addonIndex) => {
+                            return (
+                              <View
+                                key={addon._id + addonIndex.toString()}
+                                className="mt-1"
+                              >
+                                <Text
+                                  style={{
+                                    color: appTheme.fontMainColor,
+                                    fontSize: 14,
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {(addonIndex + 1).toString().concat(" -")}{" "}
+                                  {addon?.title}
+                                </Text>
+                                {addon?.description ? (
+                                  <Text
+                                    style={{
+                                      color: appTheme.fontSecondColor,
+                                      fontSize: 12,
+                                    }}
+                                  >
+                                    {addon?.description}
+                                  </Text>
+                                ) : (
+                                  <></>
+                                )}
+
+                                {/* Options */}
+                                <View className="pl-2 mt-0.5">
+                                  {addon?.options?.map(
+                                    (option, optionIndex) => {
+                                      return (
+                                        <View
+                                          key={
+                                            option._id + optionIndex.toString()
+                                          }
+                                          className="flex-row justify-between my-2"
+                                         
+                                        >
+                                          <View className="flex-1">
+                                            <Text
+                                              style={{
+                                                color: appTheme.fontMainColor,
+                                                fontSize: 14,
+                                              }}
+                                            >
+                                              - {option?.title}
+                                            </Text>
+                                            {option?.description ? (
+                                              <Text
+                                                style={{
+                                                  color:
+                                                    appTheme.fontSecondColor,
+                                                  fontSize: 12,
+                                                }}
+                                              >
+                                                {option?.description}
+                                              </Text>
+                                            ) : (
+                                              <></>
+                                            )}
+                                          </View>
+                                          <View className="items-end">
+                                            <Text
+                                              style={{
+                                                color: appTheme.fontMainColor,
+                                                fontSize: 12,
+                                              }}
+                                            >
+                                              {configuration?.currencySymbol}
+                                              {option?.price}
+                                            </Text>
+                                            <Text
+                                              style={{
+                                                color: appTheme.fontSecondColor,
+                                                fontSize: 12,
+                                              }}
+                                            >
+                                              x{item?.quantity}
+                                            </Text>
+                                          </View>
+                                          {optionIndex + 1 ===
+                                            addon?.options?.length && (
+                                            <View>
+                                              <Text>{"\n"}</Text>
+                                            </View>
+                                          )}
+                                        </View>
+                                      );
+                                    },
+                                  )}
+                                </View>
+                              </View>
+                            );
+                          })}
+                        </View>
                       </View>
                     </View>
-                  </View>
-                  {/* Right */}
-                  <View className="w-auto items-end">
-                    <Text style={{ color: appTheme.fontMainColor }}>
-                      {configuration?.currencySymbol}
-                      {item?.variation.price}
-                    </Text>
+                    {/* Right */}
+                    <View className="w-auto items-end">
+                      <Text style={{ color: appTheme.fontMainColor }}>
+                        {configuration?.currencySymbol}
+                        {item?.variation.price}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
-        </View>
+              );
+            })}
+          </View>
 
         {/* Divider */}
         <View
@@ -421,8 +579,8 @@ const Order = ({
             <View className="flex-row gap-x-4 w-full mt-10">
               {/* Decline */}
               <TouchableOpacity
-                className="flex-1 h-16 items-center justify-center rounded-[30px]"
-                style={{ borderWidth: 1, borderColor: "#ef4444" }}
+                className="flex-1 h-16 items-center justify-center rounded-[30px]"style={{ borderWidth: 1, borderColor: "#ef4444" }}
+                
                 onPress={() => onCancelOrderHandler()}
               >
                 {loadingCancelOrder ? (
@@ -489,6 +647,7 @@ const Order = ({
                 </View>
               </View>
             </View>
+            
 
             {order.orderStatus === "ASSIGNED" && (
               <View className="flex-row gap-x-4 w-full mt-10">
@@ -546,9 +705,19 @@ const Order = ({
                 </TouchableOpacity>
               </View>
             )}
+
+            {
+              order?.orderStatus === 'ACCEPTED' && (
+                <View className="mt-4">
+                  <CancelOrderButton orderId={order._id} />
+                </View>
+              )
+            }
+            
           </>
         )}
       </View>
+      
     </View>
   );
 };

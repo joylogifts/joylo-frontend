@@ -13,7 +13,7 @@ function TrackingOrderDetails({
 }: {
     orderTrackingDetails: IOrderTrackingDetail;
 }) {
-    const { getTranslation } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
     const [setshowCancelOrderSuccessModal, setSetshowCancelOrderSuccessModal] =
         useState(
@@ -83,44 +83,53 @@ function TrackingOrderDetails({
                 </h3>
 
                 {/* Display each food item under Order Details */}
-                {orderTrackingDetails.items?.map((item, index) => (
+                {orderTrackingDetails?.items?.map((item, index) => (
                     <div
-                        key={item._id || index}
+                        key={item?._id || index}
                         className="flex items-center justify-between mb-4 pb-4 border-b"
                     >
                         <div className="flex gap-4 items-center">
                             <Image
                                 src={
-                                    item.image ||
+                                    item?.image ||
                                     "https://storage.googleapis.com/a1aa/image/placeholder-food.jpg"
                                 }
-                                alt={item.title}
+                                alt={typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                                 width={80}
                                 height={80}
                                 className="rounded-lg"
                             />
                             <div>
                                 <p className="font-medium text-gray-900">
-                                    {item.title}
+                                    {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                                 </p>
                                 <p className="text-sm text-gray-500">
-                                    {item.variation.title}
+                                   {typeof item?.variation?.title === "object" ? item?.variation?.title[selectedLanguage] : item?.variation?.title}
                                     <br />
-                                    {item.description?.substring(0, 50)}
-                                    {item.description?.length > 50 ? "..." : ""}
+                                    {(() => {
+                                        const desc = typeof item?.description === "object"
+                                            ? item?.description[selectedLanguage]
+                                            : item?.description;
+                                        if (typeof desc === "string") {
+                                            return desc.length > 50
+                                                ? desc.substring(0, 50) + "..."
+                                                : desc;
+                                        }
+                                        return "";
+                                    })()}
                                 </p>
 
                                 {/* Display addons */}
-                                {item.addons && item.addons.length > 0 && (
+                                {item?.addons && item?.addons?.length > 0 && (
                                     <div className="mt-1">
-                                        {item.addons.map(
+                                        {item?.addons?.map(
                                             (addon, addonIndex) => (
                                                 <div
                                                     key={
                                                         addon._id || addonIndex
                                                     }
                                                 >
-                                                    {addon.options.map(
+                                                    {addon?.options?.map(
                                                         (option, optIndex) => (
                                                             <p
                                                                 key={
@@ -129,10 +138,10 @@ function TrackingOrderDetails({
                                                                 }
                                                                 className="text-xs text-gray-500"
                                                             >
-                                                                + {option.title}
-                                                                {option.price >
-                                                                0
-                                                                    ? ` (${formatCurrency(option.price)})`
+                                                                + {typeof option?.title === "object" ? option?.title[selectedLanguage] : option?.title}
+                                                                {option?.price >
+                                                                    0
+                                                                    ? ` (${formatCurrency(option?.price)})`
                                                                     : ""}
                                                             </p>
                                                         )
@@ -145,7 +154,7 @@ function TrackingOrderDetails({
                             </div>
                         </div>
                         <span className="text-blue-600 font-semibold">
-                            {formatCurrency(item.variation.price)}
+                            {formatCurrency(item?.variation?.price)}
                         </span>
                     </div>
                 ))}
@@ -155,22 +164,22 @@ function TrackingOrderDetails({
             <div>
                 <h3 className="text-lg font-semibold mb-4">
                     {getTranslation("order_details_summary_label")} (
-                    {orderTrackingDetails.items?.length || 0}{" "}
+                    {orderTrackingDetails?.items?.length || 0}{" "}
                     {getTranslation("order_details_items_label")})
                 </h3>
                 <div className="text-sm text-gray-700 space-y-3">
                     {/* Display each item with quantity and price */}
-                    {orderTrackingDetails.items?.map((item, idx) => (
+                    {orderTrackingDetails?.items?.map((item, idx) => (
                         <div
                             key={`summary-${item._id || idx}`}
                             className="flex justify-between"
                         >
                             <span>
-                                {item.quantity}x {item.title}
+                                {item?.quantity}x {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                             </span>
                             <span>
                                 {formatCurrency(
-                                    item.variation.price * item.quantity
+                                    item?.variation?.price * item?.quantity
                                 )}
                             </span>
                         </div>
@@ -244,8 +253,8 @@ function TrackingOrderDetails({
                     <span>
                         {orderTrackingDetails.paymentMethod === "COD"
                             ? getTranslation(
-                                  "order_details_cash_on_delivery_label"
-                              )
+                                "order_details_cash_on_delivery_label"
+                            )
                             : orderTrackingDetails.paymentMethod}
                     </span>
                     <span className="ml-auto font-semibold">

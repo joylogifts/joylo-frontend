@@ -55,6 +55,7 @@ import WelldoneComponent from "@/lib/ui/useable-components/well-done";
 import { CustomMapStyles } from "@/lib/utils/constants/map";
 import { map_styles } from "@/lib/utils/constants/order-details";
 import { IOrder } from "@/lib/utils/interfaces/order.interface";
+import { router } from "expo-router";
 import { useLanguage } from "@/lib/context/global/language.context";
 
 const { height } = Dimensions.get("window");
@@ -678,31 +679,55 @@ export default function OrderDetailScreen() {
                 )}
 
               {tab == "processing" && localOrder.orderStatus === "PICKED" && (
-                <TouchableOpacity
-                  className="h-14 rounded-3xl py-3 w-full mt-4 mb-10"
-                  style={{ backgroundColor: appTheme.primary }}
-                  disabled={loadingOrderStatus}
-                  onPress={async () => {
-                    await mutateOrderStatus({
-                      variables: { id: localOrder?._id, status: "DELIVERED" },
-                      onCompleted: () => {
-                        setOrderId(localOrder?.orderId);
-                      },
-                    });
-                    setOrderId(localOrder?.orderId);
-                  }}
-                >
-                  {loadingOrderStatus ? (
-                    <SpinnerComponent color="white" />
-                  ) : (
-                    <Text
-                      className="text-center text-lg font-medium"
-                      style={{ color: appTheme.black }}
-                    >
-                      {t("mark_as_delivered")}
-                    </Text>
-                  )}
-                </TouchableOpacity>
+                <>
+                  <TouchableOpacity
+                    className="h-14 rounded-3xl py-3 w-full mt-4 mb-4"
+                    style={{ backgroundColor: appTheme.primary }}
+                    disabled={loadingOrderStatus}
+                    onPress={async () => {
+                      await mutateOrderStatus({
+                        variables: { id: localOrder?._id, status: "DELIVERED" },
+                        onCompleted: () => {
+                          setOrderId(localOrder?.orderId);
+                        },
+                      });
+                      setOrderId(localOrder?.orderId);
+                    }}
+                  >
+                    {loadingOrderStatus ? (
+                      <SpinnerComponent color="white" />
+                    ) : (
+                      <Text
+                        className="text-center text-lg font-medium"
+                        style={{ color: appTheme.black }}
+                      >
+                        {t("mark_as_delivered")}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    className="h-14 rounded-3xl py-3 w-full mb-12 border border-red-500"
+                    disabled={loadingOrderStatus}
+                    onPress={async () => {
+                      await mutateOrderStatus({
+                        variables: { id: localOrder?._id, status: "CANCELLED" , reason: 'Customer not available.' },
+                        onCompleted: () => {
+                          router.push("/(tabs)/home/orders")
+                        }
+                      });
+                    }}
+                  >
+                    {loadingOrderStatus ? (
+                      <SpinnerComponent color="white" />
+                    ) : (
+                      <Text
+                        className="text-center text-lg font-medium text-red-500"
+                      >
+                        Customer Not Available
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                </>
               )}
 
               {tab === "new_orders" &&

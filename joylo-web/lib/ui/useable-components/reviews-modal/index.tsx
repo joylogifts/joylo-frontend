@@ -28,7 +28,7 @@ const ReviewsModal = ({
     onHide,
     restaurantId,
 }: IReviewsModalProps) => {
-    const { getTranslation } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     // Fetch reviews data for the specified restaurant
     const { data, loading } = useReviews(restaurantId);
 
@@ -147,7 +147,7 @@ const ReviewsModal = ({
             visible={visible}
             onHide={onHide}
             className="md:m-10 m-2 z-[100] md:w-[905px] w-full max-h-[80vh]"
-            // width="905px"
+        // width="905px"
         >
             <div className="md:p-2 md:pt-0 pt-3 p-1 ">
                 {hasReviews ? (
@@ -229,7 +229,9 @@ const ReviewsModal = ({
                                         </span>
                                     </div>
                                     <p className="text-gray-500 font-normal md:text-lg text-sm">
-                                        {review?.description}
+                                        {typeof review?.description === "object"
+                                            ? review?.description[selectedLanguage]
+                                            : review?.description}
                                     </p>
                                 </div>
                             ))}

@@ -219,6 +219,35 @@ export default function MakeSidebar() {
       },
     },
     {
+      text: getTranslation('Store Settings'),
+      route: '/store-settings',
+      isParent: true,
+      icon: faCog,
+      subMenu: [
+        {
+          text: 'Products',
+          label: getTranslation('products'),
+          route: '/store-settings/products',
+          isParent: false,
+        },
+        {
+          text: getTranslation('Categories'),
+          route: '/store-settings/category',
+          isParent: false,
+        },
+        {
+          text: getTranslation('Options'),
+          route: '/store-settings/options',
+          isParent: false,
+        },
+        {
+          text:getTranslation('Addons'),
+          route: '/store-settings/add-ons',
+          isParent: false,
+        },
+      ],
+    },
+    {
       label: getTranslation('language_managment'),
       text: getTranslation('language_managment'),
       route: '/language-management',

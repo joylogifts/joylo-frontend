@@ -290,10 +290,6 @@ const CategoryPage = ({ route, navigation }) => {
 
         const subcategories = subcategoriesData?.subCategories?.filter((sub) => sub.parentCategoryId === category._id)
         // "parentCategoryId": "6749988ac2fa2be193d02f5d", ===  "category._id==": "67c0af4528b7eebde1764178"
-
-        console.log({ 'filtered subcategroy==': subcategoriesData.subCategories[0] })
-        console.log({ 'category._id==': category._id })
-
         subCategoriesForTabs.push(subcategories?.length > 0 ? subcategories : [])
       }
     }
@@ -358,7 +354,12 @@ const CategoryPage = ({ route, navigation }) => {
                   currentTheme={currentTheme}
                   configuration={configuration}
                   onPress={() => {
+                    const categoryId = category?.id
+                    const subCategoryId = subCategories[selectedCategoryIndex][selectedCategoryIndex]?._id ?? null
+
                     navigation.navigate('ItemDetail', {
+                      categoryId,
+                      subCategoryId,
                       food: {
                         ...item,
                         restaurant: restaurantId,

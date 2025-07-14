@@ -44,6 +44,7 @@ export interface ICategory {
   _id: string;
   title: Record<string, string> | string;
   image?: string | null;
+  isActive : boolean;
 }
 
 export interface ICategoryByRestaurantResponse {
@@ -52,6 +53,10 @@ export interface ICategoryByRestaurantResponse {
     categories: ICategory[];
     __typename: string;
   };
+}
+
+export interface ICategoriesResponse {
+  categories: ICategory[];
 }
 
 // Sub-Category
