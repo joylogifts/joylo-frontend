@@ -78,7 +78,7 @@ export default function FoodsMain() {
     refetch,
   } = useQueryGQL(
     GET_FOODS_BY_RESTAURANT_ID,
-    { id: restaurantId },
+    { id: restaurantId },  
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
