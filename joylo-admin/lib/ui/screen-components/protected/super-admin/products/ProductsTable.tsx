@@ -5,9 +5,8 @@ import useToast from '@/lib/hooks/useToast';
 import CustomDialog from '@/lib/ui/useable-components/delete-dialog';
 import Table from '@/lib/ui/useable-components/table';
 import { SUPER_ADMIN_PRODUCTS_COLUMNS } from '@/lib/ui/useable-components/table/columns/super-admin-products-columns';
-import { IActionMenuItem, IFood, IPendingProduct, IProductsPagination, IQueryResult, PendingProductResponse } from '@/lib/utils/interfaces';
+import { IActionMenuItem, IPendingProduct, IProductsPagination, IQueryResult, PendingProductResponse } from '@/lib/utils/interfaces';
 import { useMutation } from '@apollo/client';
-import { update } from 'lodash';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
@@ -119,7 +118,7 @@ const ProductsTable = ({ status }: { status: string }) => {
                             loading={loading}
                             columns={SUPER_ADMIN_PRODUCTS_COLUMNS({ menuItems , status })}
                             selectedData={[]}
-                            setSelectedData={function (value: React.SetStateAction<{ _id: string; id: string; storeId: { _id: string; name: string; }; categoryId: { _id: string; title: string; }; productId: string | null; status: 'pending' | 'approved' | 'rejected'; reason: string | null; approvalType: 'CREATE' | 'UPDATE'; previousProductData: null; productData: IFood; }[]>): void {
+                            setSelectedData={function (): void {
                                 throw new Error('Function not implemented.');
                             }}
                             onPageChange={onPageChange}

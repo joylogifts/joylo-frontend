@@ -4,7 +4,7 @@ import { useQueryGQL } from '@/lib/hooks/useQueryQL';
 import useToast from '@/lib/hooks/useToast';
 import Table from '@/lib/ui/useable-components/table';
 import { PENDING_PRODUCT_COLUMNS } from '@/lib/ui/useable-components/table/columns/pending-products-column';
-import { IFood, IPendingProduct, IProductsPagination, IQueryResult, PendingProductResponse } from '@/lib/utils/interfaces';
+import { IPendingProduct, IProductsPagination, IQueryResult, PendingProductResponse } from '@/lib/utils/interfaces';
 import { useTranslations } from 'next-intl';
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -28,7 +28,6 @@ const PendingProductsTable = ({ status } : { status : string}) => {
     const {
         data,
         loading,
-        refetch,
     } = useQueryGQL(
     GET_PENDING_PRODUCTS,
     { 
@@ -82,9 +81,9 @@ const PendingProductsTable = ({ status } : { status : string}) => {
                         loading={loading}
                         columns={PENDING_PRODUCT_COLUMNS({ status })} 
                         selectedData={[]} 
-                        setSelectedData={function (value: React.SetStateAction<{ _id: string; id: string; storeId: { _id: string; name: string; }; categoryId: { _id: string; title: string; }; productId: string | null; status: 'pending' | 'approved' | 'rejected'; reason: string | null; approvalType: 'CREATE' | 'UPDATE'; previousProductData: null; productData: IFood; }[]>): void {
+                        setSelectedData={function (): void {
                             throw new Error('Function not implemented.');
-                        } }         
+                        }}         
                         onPageChange={onPageChange}
                         currentPage={pagination.currentPage}
                         totalRecords={pagination.totalItems}   

@@ -1,5 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
-import FoodsMain from '../main';
+import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 

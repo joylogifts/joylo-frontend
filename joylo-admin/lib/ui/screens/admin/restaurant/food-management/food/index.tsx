@@ -5,7 +5,6 @@ import FoodsMain from '@/lib/ui/screen-components/protected/restaurant/food/view
 import PendingProductsTable from '@/lib/ui/screen-components/protected/restaurant/food/view/main/PendingProductsTable';
 import FoodTabs from '@/lib/ui/screen-components/protected/restaurant/food/view/tabs/FoodTabs';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 
 type TabKey = 'pending' | 'approved' | 'rejected';
 

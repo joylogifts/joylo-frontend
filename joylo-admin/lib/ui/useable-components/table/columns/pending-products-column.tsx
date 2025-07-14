@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { IPendingProduct } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
 
 export const PENDING_PRODUCT_COLUMNS = ({ status } : { status : string }) => {
 
