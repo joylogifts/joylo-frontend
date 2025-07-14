@@ -58,6 +58,7 @@ export default function RestaurantDetailsScreen() {
     clearCart,
   } = useUser();
 
+  const {getTranslation, selectedLanguage} = useLangTranslation();
   // Params from route
   const { id, slug }: { id: string; slug: string } = useParams();
 
@@ -178,7 +179,7 @@ export default function RestaurantDetailsScreen() {
     const popularDealsCategory: ICategory | null = popularFoods.length
       ? {
           _id: "popular-deals",
-          title: "Popular Deals",
+          title: getTranslation("popular_deals"),
           foods: popularFoods,
           // index can be used for custom ordering if needed
         }
@@ -453,11 +454,11 @@ export default function RestaurantDetailsScreen() {
 
       let selected = "";
       deals.forEach((category) => {
-        const element = document.getElementById(toSlug(category.title));
+        const element = document.getElementById(toSlug(typeof category.title === "object" ? category.title[selectedLanguage] : category.title));
         if (element) {
           const rect = element.getBoundingClientRect();
           if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
-            selected = toSlug(category.title);
+            selected = toSlug(typeof category.title === "object" ? category.title[selectedLanguage] : category.title);
           }
         }
       });
@@ -616,7 +617,7 @@ export default function RestaurantDetailsScreen() {
               {loading ? (
                 <Skeleton width="10rem" height="1.5rem" />
               ) : (
-                "See more information"
+                getTranslation("see_more_information")
               )}
             </a>
 
@@ -633,7 +634,7 @@ export default function RestaurantDetailsScreen() {
               {loading ? (
                 <Skeleton width="10rem" height="1.5rem" />
               ) : (
-                "See reviews"
+                getTranslation("see_reviews")
               )}
             </a>
           </div>
@@ -665,17 +666,17 @@ export default function RestaurantDetailsScreen() {
                 <ul className="flex space-x-4 items-center w-max flex-nowrap">
                   {(showAll ? deals : deals.slice(0, visibleItems)).map(
                     (category: ICategory, index: number) => {
-                      const _slug = toSlug(category.title);
+                      const _slug = toSlug(typeof category.title === "object" ? category.title[selectedLanguage] : category.title);
                       return (
                         <li key={index} className="shrink-0">
                           <button
                             type="button"
                             className={`bg-${selectedCategory.title === _slug ? "[#FFDBBB]" : "gray-100"} text-${selectedCategory.title === _slug ? "[#FFA500]" : "gray-600"} rounded-full px-3 py-2 text-[10px] sm:text-sm md:text-base font-medium whitespace-nowrap`}
                             onClick={() =>
-                              handleScroll(category._id, toSlug(category.title))
+                              handleScroll(category._id, toSlug(typeof category.title === "object" ? category.title[selectedLanguage] : category.title))
                             }
                           >
-                            {category.title}
+                            {typeof category.title === "object" ? category.title[selectedLanguage] : category.title}
                           </button>
                         </li>
                       );
@@ -729,7 +730,7 @@ export default function RestaurantDetailsScreen() {
           <FoodCategorySkeleton />
         ) : (
           deals.map((category: ICategory, catIndex: number) => {
-            const categorySlug = toSlug(category.title);
+            const categorySlug = toSlug(typeof category.title === "object" ? category.title[selectedLanguage] : category.title);
 
             return (
               <div
@@ -742,7 +743,7 @@ export default function RestaurantDetailsScreen() {
                 }}
               >
                 <h2 className="mb-4 font-inter text-gray-900 font-bold text-2xl sm:text-xl leading-snug tracking-tight">
-                  {category.title}
+                  {typeof category.title === "object" ? category.title[selectedLanguage] : category.title}
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -753,7 +754,7 @@ export default function RestaurantDetailsScreen() {
                       onClick={() => {
                         setSelectedCategory({
                           _id: category._id,
-                          title: category.title,
+                          title: typeof category.title === "object" ? category.title[selectedLanguage] : category.title,
                         });
                         handleRestaurantClick(meal);
                       }}
@@ -762,7 +763,7 @@ export default function RestaurantDetailsScreen() {
                       <div className="flex-grow text-left md:text-left space-y-2">
                         <div className="flex flex-col lg:flex-row justify-between flex-wrap">
                           <h3 className="text-gray-900 text-lg font-semibold font-inter">
-                            {meal.title}
+                            {typeof meal.title === "object" ? meal.title[selectedLanguage] : meal.title}
                           </h3>
                           {meal.isOutOfStock && (
                             <span className="text-red-500">(Out of stock)</span>
@@ -770,7 +771,7 @@ export default function RestaurantDetailsScreen() {
                         </div>
 
                         <p className="text-gray-500 text-sm text-wrap">
-                          {meal.description}
+                          {typeof meal.description === "object" ? meal.description[selectedLanguage] : meal.description}
                         </p>
 
                         <div className="flex items-center gap-2">
@@ -783,7 +784,7 @@ export default function RestaurantDetailsScreen() {
                       {/* Image */}
                       <div className="flex-shrink-0 w-24 h-24 md:w-28 md:h-28">
                         <Image
-                          alt={meal.title}
+                          alt={typeof meal.title === "object" ? meal.title[selectedLanguage] : meal.title}
                           className="w-full h-full rounded-md object-cover mx-auto md:mx-0"
                           src={meal.image}
                           width={100}
@@ -800,7 +801,7 @@ export default function RestaurantDetailsScreen() {
                             e.stopPropagation(); // Prevent triggering parent onClick
                             setSelectedCategory({
                               _id: category._id,
-                              title: category.title,
+                              title: typeof category.title === "object" ? category.title[selectedLanguage] : category.title,
                             });
                             handleRestaurantClick(meal);
                           }}
