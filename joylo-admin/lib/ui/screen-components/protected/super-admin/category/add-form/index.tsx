@@ -6,9 +6,7 @@ import { Sidebar } from 'primereact/sidebar';
 
 // Interface, Types & Schema
 import { ICategoryForm } from '@/lib/utils/interfaces/forms';
-import {
-  ICategoryAddFormComponentProps,
-} from '@/lib/utils/interfaces';
+import { ICategoryAddFormComponentProps } from '@/lib/utils/interfaces';
 import { CategorySchema } from '@/lib/utils/schema';
 
 // Components
@@ -26,13 +24,14 @@ import useToast from '@/lib/hooks/useToast';
 import {
   CREATE_CATEGORY,
   EDIT_CATEGORY,
-  GET_CATEGORIES
+  GET_CATEGORIES,
 } from '@/lib/api/graphql';
 
 // Hooks
 import { useMutation } from '@apollo/client';
-import { useTranslations } from 'next-intl';
+
 import CustomInputSwitch from '@/lib/ui/useable-components/custom-input-switch';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryAddForm({
   onHide,
@@ -41,21 +40,23 @@ export default function CategoryAddForm({
   isAddCategoryVisible,
 }: ICategoryAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
+  const { getTranslation, selectedLanguage } = useLangTranslation();
 
   // StateS
   const initialValues: ICategoryForm = {
-    title: category?.title.toString() ?? '',
-    isActive : category?.isActive ?? true
+    title: category
+      ? typeof category?.title === 'object'
+        ? category?.title[selectedLanguage]
+        : category?.title
+      : '',
+    isActive: category?.isActive ?? true,
   };
 
   // Hooks
   const { showToast } = useToast();
 
-
-
   // Mutations
-
 
   const [createCategory, { loading: mutationLoading }] = useMutation(
     category ? EDIT_CATEGORY : CREATE_CATEGORY,
@@ -63,13 +64,13 @@ export default function CategoryAddForm({
       refetchQueries: [
         {
           query: GET_CATEGORIES,
-        }
+        },
       ],
       onCompleted: () => {
         showToast({
           type: 'success',
-          title: t('New Category'),
-          message: `${t('Category has been')} ${category ? t('edited') : t('added')} ${t('successfully')}.`,
+          title: getTranslation('new_category'),
+          message: `${category ? getTranslation('category_edited_successfully') : getTranslation('category_created_successfully')}`,
           duration: 3000,
         });
         onHide();
@@ -79,11 +80,11 @@ export default function CategoryAddForm({
         try {
           message = error.graphQLErrors[0]?.message;
         } catch (err) {
-          message = t('ActionFailedTryAgain');
+          message = getTranslation('action_failed_try_again');
         }
         showToast({
           type: 'error',
-          title: t('New Category'),
+          title: getTranslation('new_category'),
           message,
           duration: 3000,
         });
@@ -94,12 +95,12 @@ export default function CategoryAddForm({
   // Form Submission
   const handleSubmit = async (values: ICategoryForm) => {
     try {
-      const body : ICategoryForm = {
+      const body: ICategoryForm = {
         title: values.title,
-        isActive: values?.isActive 
-      }
+        isActive: values?.isActive,
+      };
 
-      if(category) {
+      if (category) {
         body._id = category._id;
       }
 
@@ -112,12 +113,11 @@ export default function CategoryAddForm({
       console.error({ error });
       showToast({
         type: 'error',
-        title: `${category ? t('Edit') : t('Create')} Category`,
-        message: `${t('Failed to create Category, please try again later')}.`,
+        title: `${category ? getTranslation('edit') : getTranslation('create')} ${getTranslation('category')}`,
+        message: `${getTranslation('failed_to_create_category_please_try_again_later')}.`,
       });
     }
   };
-
 
   return (
     <Sidebar
@@ -131,7 +131,8 @@ export default function CategoryAddForm({
           <div className="flex flex-col gap-2">
             <div className="mb-2 flex flex-col">
               <span className="text-lg">
-                {category ? t('Edit') : t('Add')} {t('Category')}
+                {category ? getTranslation('edit') : getTranslation('add')}{' '}
+                {getTranslation('category')}
               </span>
             </div>
             <div>
@@ -155,7 +156,7 @@ export default function CategoryAddForm({
                           <CustomTextField
                             type="text"
                             name="title"
-                            placeholder={t('Title')}
+                            placeholder={getTranslation('title')}
                             maxLength={30}
                             value={values.title}
                             onChange={handleChange}
@@ -171,24 +172,33 @@ export default function CategoryAddForm({
                             }}
                           />
                         </div>
-                        {
-                          category && (
-                            <div>
-                              <CustomInputSwitch
-                                label="Active"
-                                onChange={(e) => setFieldValue('isActive' , e.target.checked ? true : false)}
-                                isActive={typeof values.isActive === 'boolean' && values.isActive}
-                                loading={false}
-    
-                              />
-                            </div>
-                          )
-                        }
+                        {category && (
+                          <div>
+                            <CustomInputSwitch
+                              label="Active"
+                              onChange={(e) =>
+                                setFieldValue(
+                                  'isActive',
+                                  e.target.checked ? true : false
+                                )
+                              }
+                              isActive={
+                                typeof values.isActive === 'boolean' &&
+                                values.isActive
+                              }
+                              loading={false}
+                            />
+                          </div>
+                        )}
 
                         <div className="mt-4 flex justify-end">
                           <CustomButton
                             className="h-10 w-fit border-gray-300 bg-black px-8 text-white"
-                            label={category ? t('Update') : t('Add')}
+                            label={
+                              category
+                                ? getTranslation('update')
+                                : getTranslation('add')
+                            }
                             type="submit"
                             loading={mutationLoading}
                           />

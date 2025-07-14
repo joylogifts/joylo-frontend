@@ -1,3 +1,5 @@
+"use client"
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useContext, useState, useCallback } from 'react';
 import { Dropdown } from 'primereact/dropdown';
@@ -17,6 +19,7 @@ import {
 } from '@/lib/api/graphql';
 import { IWithDrawRequest } from '@/lib/utils/interfaces/withdraw-request.interface';
 import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
   menuItems,
@@ -33,6 +36,7 @@ export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
 }) => {
   // Hooks
   const { showToast } = useContext(ToastContext);
+  const {getTranslation} = useLangTranslation()
 
   // States
   const [isChangingStatus, setIsChangingStatus] = useState({
@@ -98,38 +102,21 @@ export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
     () => [
       {
         code: 'REQUESTED',
-        label: 'Requested',
+        label: getTranslation('requested'),
       },
       {
         code: 'TRANSFERRED',
-        label: 'Transferred',
+        label: getTranslation('transferred'),
       },
       {
         code: 'CANCELLED',
-        label: 'Cancelled',
+        label: getTranslation('cancelled'),
       },
     ],
     []
   );
 
-  // const itemTemplate = (option: any) => (
-  //   <div className="flex gap-2">
-  //     <FontAwesomeIcon
-  //       icon={
-  //         option.code === 'CANCELLED'
-  //           ? faCircleXmark
-  //           : option.code === 'TRANSFERRED'
-  //             ? faArrowsRotate
-  //             : option.code === 'REQUESTED'
-  //               ? faPaperPlane
-  //               : faDashboard
-  //       }
-  //       color={option.code === 'CANCELLED' ? 'red' : 'black'}
-  //       className="h-4 w-4"
-  //     />
-  //      <span className="inline-flex items-center">{option.label}</span>
-  //   </div>
-  // );
+
 
   const itemTemplate = (option: any) => (
     <div className="flex h-6 items-center gap-2">
@@ -181,11 +168,11 @@ export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
   return useMemo(
     () => [
       {
-        headerName: 'Request ID',
+        headerName: getTranslation('request_id'),
         propertyName: 'requestId',
       },
       {
-        headerName: 'User Type',
+        headerName: getTranslation('user_type'),
         propertyName: 'rider.name',
         body: (rowData: IWithDrawRequest) => (
           <div className="flex flex-col">
@@ -199,7 +186,7 @@ export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
         ),
       },
       {
-        headerName: 'Amount',
+        headerName: getTranslation('amount'),
         propertyName: 'requestAmount',
         body: (rowData: IWithDrawRequest) => (
           <span className="font-medium">
@@ -208,7 +195,7 @@ export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
         ),
       },
       {
-        headerName: 'Date',
+        headerName: getTranslation('date'),
         propertyName: 'requestTime',
         body: (rowData: IWithDrawRequest) => {
           const date = new Date(rowData.requestTime);
@@ -217,7 +204,7 @@ export const WITHDRAW_REQUESTS_TABLE_COLUMNS = ({
         },
       },
       {
-        headerName: 'Status',
+        headerName: getTranslation('status'),
         propertyName: 'status',
         body: (rowData: IWithDrawRequest) => (
           <Dropdown

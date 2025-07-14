@@ -219,23 +219,23 @@ export default function MakeSidebar() {
       },
     },
     {
-      text: getTranslation('Store Settings'),
+      text: getTranslation('store_settings'),
       route: '/store-settings',
       isParent: true,
       icon: faCog,
       subMenu: [
         {
-          text: getTranslation('Categories'),
+          text: getTranslation('categories'),
           route: '/store-settings/category',
           isParent: false,
         },
         {
-          text: getTranslation('Options'),
+          text: getTranslation('options'),
           route: '/store-settings/options',
           isParent: false,
         },
         {
-          text:getTranslation('Addons'),
+          text:getTranslation('addons'),
           route: '/store-settings/add-ons',
           isParent: false,
         },

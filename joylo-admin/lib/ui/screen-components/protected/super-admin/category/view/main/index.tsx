@@ -33,17 +33,16 @@ import { generateDummyCategories } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function CategoryMain({
   setIsAddCategoryVisible,
   setCategory,
 }: ICategoryMainComponentsProps) {
-  // Hooks
-  const t = useTranslations();
-
 
   // Hooks
   const { showToast } = useToast();
+    const { getTranslation } = useLangTranslation();
 
   // State - Table
   const [deleteId, setDeleteId] = useState('');
@@ -58,9 +57,7 @@ export default function CategoryMain({
     GET_CATEGORIES,
     {},
     {
-      fetchPolicy: 'network-only',
-      onCompleted: onFetchCategoriesByRestaurantCompleted,
-      onError: onErrorFetchCategoriesByRestaurant,
+      fetchPolicy: 'network-only'
     }
   ) as IQueryResult<ICategoriesResponse | undefined, undefined>;
 
@@ -90,23 +87,12 @@ export default function CategoryMain({
   };
 
   
-  // Restaurant Profile Complete
-  function onFetchCategoriesByRestaurantCompleted() {}
 
-  // Restaurant Zone Info Error
-  function onErrorFetchCategoriesByRestaurant() {
-    showToast({
-      type: 'error',
-      title: t('Category Fetch'),
-      message: t('Categories fetch failed'),
-      duration: 2500,
-    });
-  }
 
   // Constants
   const menuItems: IActionMenuItem<ICategory>[] = [
     {
-      label: t('Edit'),
+      label: getTranslation('edit'),
       command: (data?: ICategory) => {
         console.log({ data })
         if (data) {
@@ -116,7 +102,7 @@ export default function CategoryMain({
       },
     },
     {
-      label: t('Delete'),
+      label: getTranslation('delete'),
       command: (data?: ICategory) => {
         if (data) {
           setDeleteId(data._id);
@@ -159,8 +145,8 @@ export default function CategoryMain({
             onCompleted: () => {
               showToast({
                 type: 'success',
-                title: t('Delete Category'),
-                message: `${t('Category has been deleted successfully')}.`,
+                title: getTranslation('delete_category'),
+                message: `${getTranslation('category_deleted_successfully')}.`,
                 duration: 3000,
               });
               setDeleteId('');
@@ -168,19 +154,19 @@ export default function CategoryMain({
             onError: (err) => {
               showToast({
                 type: 'error',
-                title: t('Delete Category'),
+                title:  getTranslation('delete_category'),
                 message:
                   err.message ||
                   err.clientErrors[0].message ||
                   err.networkError?.message ||
-                  t(
-                    'An error occured while deleteing the category, please try again later'
+                  getTranslation(
+                    'category_deletion_failed'
                   ),
               });
             },
           });
         }}
-        message={t('Are you sure you want to delete this category?')}
+        message={getTranslation('category_delete_confirmation')}
       />
     </div>
   );
