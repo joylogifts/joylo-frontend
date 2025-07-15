@@ -9,11 +9,12 @@ import {
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import { ApolloError, useMutation } from '@apollo/client';
 import useToast from '@/lib/hooks/useToast';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 
 export const ADDON_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation: t, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
 
   const {
@@ -27,7 +28,7 @@ export const ADDON_TABLE_COLUMNS = () => {
     refetchQueries: [
       {
         query: GET_ADDONS,
-        variables: { storeId : restaurantId },
+        variables: { storeId: restaurantId },
       },
     ],
     onCompleted: () => {
@@ -74,25 +75,33 @@ export const ADDON_TABLE_COLUMNS = () => {
   };
 
   return [
-    { headerName: t('Title'), propertyName: 'title' },
-    { 
-      headerName: t('Description'), 
-      propertyName: 'description',
-      body : (item : IAddon) => {
+    {
+      headerName: t('Title'), propertyName: 'title', body: (item: IAddon) => {
         return (
           <div>
-            {item?.description ?? '---'}
+            {typeof item?.title == "object" ? item?.title[selectedLanguage] : item?.title ?? '---'}
           </div>
         )
       }
     },
-    { 
-      headerName: t('Category'), 
+    {
+      headerName: t('Description'),
+      propertyName: 'description',
+      body: (item: IAddon) => {
+        return (
+          <div>
+            {typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description ?? '---'}
+          </div>
+        )
+      }
+    },
+    {
+      headerName: t('Category'),
       propertyName: 'categoryIds',
-      body : (item : IAddon) => {
+      body: (item: IAddon) => {
         return (
           <div className='flex flex-col gap-1'>
-            {item.categoryIds?.map((item :string) => <span key={item}>{item}</span>)}
+            {item.categoryIds?.map((item: string) => <span key={item}>{item}</span>)}
           </div>
         )
       }

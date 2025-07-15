@@ -1,16 +1,41 @@
 import Image from 'next/image';
 import { IPendingProduct } from '@/lib/utils/interfaces';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
-export const PENDING_PRODUCT_COLUMNS = ({ status } : { status : string }) => {
+export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 
-
+	const { selectedLanguage } = useLangTranslation();
 
 	const columns = [
-		{ headerName: 'Title', propertyName: 'productData.title' },
-		{ headerName: 'Description', propertyName: 'productData.description' },
+		{
+			headerName: 'Title', propertyName: 'productData.title', body: (item: IPendingProduct) => {
+				return (
+					<div>
+						{typeof item.productData.title === "object" ? item.productData.title[selectedLanguage] : item.productData.title ?? '---'}
+					</div>
+				)
+			}
+		},
+		{
+			headerName: 'Description', propertyName: 'productData.description',
+			body: (item: IPendingProduct) => {
+				return (
+					<div>
+						{typeof item.productData.description === "object" ? item.productData.description[selectedLanguage] : item.productData.description ?? '---'}
+					</div>
+				)
+			}
+		},
 		{
 			headerName: 'Category',
-			propertyName: 'categoryId.title'
+			propertyName: 'categoryId.title',
+			body: (item: IPendingProduct) => {
+				return (
+					<div className='flex flex-col gap-1'>
+						{typeof item.categoryId.title === "object" ? item.categoryId.title[selectedLanguage] : item.categoryId.title ?? '---'}
+					</div>
+				)
+			}
 		},
 		{
 			headerName: 'Image',
@@ -39,10 +64,17 @@ export const PENDING_PRODUCT_COLUMNS = ({ status } : { status : string }) => {
 		},
 	];
 
-	if(status === 'rejected') {
+	if (status === 'rejected') {
 		columns.push({
 			headerName: 'Rejection Reason',
-			propertyName: 'reason'
+			propertyName: 'reason',
+			body: (item: IPendingProduct) => {
+				return (
+					<div>
+						{typeof item?.reason === "object" && item?.reason !== null ? item?.reason[selectedLanguage] : item?.reason ?? '---'}
+					</div>
+				);
+			},
 		})
 	}
 

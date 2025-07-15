@@ -52,6 +52,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
 const initialFormValuesTemplate: IAddonForm = {
@@ -77,15 +78,15 @@ export default function AddonAddForm({
 
 }: IAddonAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation: t, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
   // Context
 
-  const { 
+  const {
     setIsAddOptionsVisible,
     option,
     setOption,
-    isAddOptionsVisible 
+    isAddOptionsVisible
   } = useContext(RestaurantLayoutContext);
 
   const [initialValues, setInitialValues] = useState({
@@ -120,7 +121,7 @@ export default function AddonAddForm({
   const categoriesDropdown = useMemo(
     () =>
       categoryData?.categories.map((category: ICategory) => {
-        return { label: toTextCase(category.title.toString(), 'title'), code: category._id };
+        return { label: toTextCase(typeof category.title == "object" ? category?.title[selectedLanguage].toString() : category.title, 'title'), code: category._id };
       }),
     [categoryData?.categories]
   );
@@ -130,7 +131,7 @@ export default function AddonAddForm({
   const optionsDropdown = useMemo(
     () =>
       data?.options.map((option: IOptions) => {
-        return { label: toTextCase(option.title.toString(), 'title'), code: option._id };
+        return { label: toTextCase(typeof option.title == "object" ? option?.title[selectedLanguage].toString() : option.title, 'title'), code: option._id };
       }),
     [data?.options]
   );
@@ -234,6 +235,8 @@ export default function AddonAddForm({
         {
           ...initialFormValuesTemplate,
           ...updated_addon,
+          title: typeof updated_addon?.title === "object" ? updated_addon?.title[selectedLanguage] : updated_addon?.title ?? '',
+          description: typeof updated_addon?.description === "object" ? updated_addon?.description[selectedLanguage] : updated_addon?.description ?? '',
           options: matched_options,
           categoryIds: matched_categories,
         },

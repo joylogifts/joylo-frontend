@@ -8,31 +8,20 @@ export const OPTION_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IOptions>['items'];
 }) => {
   // Hooks
-  const { getTranslation, selectedLanguage } = useLangTranslation();
-
+  const { getTranslation: t, selectedLanguage } = useLangTranslation();
   return [
     {
-      headerName: getTranslation('title'),
-      propertyName: 'title',
-      body: (option: IOptions) => (
-        <span className="text-sm">
-          {typeof option?.title === 'object'
-            ? option?.title?.[selectedLanguage] || ''
-            : option?.title || ''}
-        </span>
-      ),
+      headerName: t('title'), propertyName: 'title', body: (option: IOptions) => (
+        <span>{typeof option.title === "object" ? option.title[selectedLanguage].toString() : option?.title ?? '---'}</span>
+      )
     },
-    { headerName: getTranslation('price'), propertyName: 'price' },
+    { headerName: t('price'), propertyName: 'price' },
     {
-      headerName: getTranslation('description'),
+      headerName: t('description'),
       propertyName: 'description',
       body: (option: IOptions) => (
-        <span className="text-sm">
-          {typeof option?.description === 'object'
-            ? option?.description?.[selectedLanguage] || ''
-            : option?.description || ''}
-        </span>
-      ),
+        <span>{typeof option.description === "object" ? option.description[selectedLanguage].toString() : option.description ?? '---'}</span>
+      )
     },
     {
       propertyName: 'actions',
