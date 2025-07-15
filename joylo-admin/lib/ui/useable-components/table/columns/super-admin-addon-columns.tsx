@@ -1,6 +1,6 @@
 import { IActionMenuProps, IAddon } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 
 export const ADDON_TABLE_COLUMNS = ({
@@ -9,26 +9,34 @@ export const ADDON_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IAddon>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation: t, selectedLanguage } = useLangTranslation();
 
 
   return [
-    { headerName: t('Title'), propertyName: 'title' },
-    { 
-      headerName: t('Description'), 
-      propertyName: 'description',
-      body : (item :IAddon) => {
+    {
+      headerName: t('Title'), propertyName: 'title', body: (item: IAddon) => {
         return (
           <div>
-            {item.description ?? '---'}
+            {typeof item.title === "object" ? item?.title[selectedLanguage] : item?.title ?? '---'}
           </div>
         )
-      } 
+      }
     },
-    { 
-      headerName: t('Category'), 
-      propertyName: 'categoryIds' ,
-      body : (item : IAddon) => {
+    {
+      headerName: t('Description'),
+      propertyName: 'description',
+      body: (item: IAddon) => {
+        return (
+          <div>
+            {typeof item.description === "object" ? item?.description[selectedLanguage] : item?.description ?? '---'}
+          </div>
+        )
+      }
+    },
+    {
+      headerName: t('Category'),
+      propertyName: 'categoryIds',
+      body: (item: IAddon) => {
         return (
           <div className='flex flex-col gap-1'>
             {item.categoryIds?.length}
@@ -36,22 +44,22 @@ export const ADDON_TABLE_COLUMNS = ({
         )
       }
     },
-    { 
-      headerName: t('options'), 
-      propertyName: 'options' ,
-      body : (item: IAddon) => {
+    {
+      headerName: t('options'),
+      propertyName: 'options',
+      body: (item: IAddon) => {
         return (
-          <div key={item._id}> 
+          <div key={item._id}>
             {item.options.length ?? 0}
           </div>
         )
       }
-    
+
     },
     {
       propertyName: 'actions',
       body: (option: IAddon) => (
-        <ActionMenu items={menuItems} data={option} onToggle={() => {}} />
+        <ActionMenu items={menuItems} data={option} onToggle={() => { }} />
       ),
     },
   ];

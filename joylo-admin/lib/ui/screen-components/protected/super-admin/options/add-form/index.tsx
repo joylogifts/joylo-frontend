@@ -57,7 +57,6 @@ export default function OptionAddForm({
   isAddOptionsVisible,
 }: IOptionsAddFormComponentProps) {
   // Hooks
-
   const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
 
@@ -71,19 +70,9 @@ export default function OptionAddForm({
     options: [
       {
         ...initialFormValuesTemplate,
-        ...{
-          ...option,
-          title: option
-            ? typeof option.title === 'object'
-              ? option.title[selectedLanguage]
-              : option.title
-            : '',
-          description: option?.description
-            ? typeof option?.description === 'object'
-              ? option?.description[selectedLanguage]
-              : option?.description
-            : '',
-        },
+        ...option,
+        title: typeof option?.title === 'object' ? option.title[selectedLanguage] : option?.title || '',
+        description: typeof option?.description === 'object' ? option.description[selectedLanguage] : option?.description || '',
       },
     ],
   };
@@ -209,7 +198,7 @@ export default function OptionAddForm({
                                                     'title'
                                                   )}
                                                   maxLength={35}
-                                                  value={value.title.toString()}
+                                                  value={typeof value.title === "object" ? value.title[selectedLanguage] : value.title}
                                                   onChange={(e) =>
                                                     setFieldValue(
                                                       `options[${index}].title`,

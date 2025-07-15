@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+
 import CustomInputSwitch from '../../custom-input-switch';
 import { useContext, useState } from 'react';
 import { IOptions } from '@/lib/utils/interfaces';
@@ -6,10 +6,11 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 import useToast from '@/lib/hooks/useToast';
 import { ApolloError, useMutation } from '@apollo/client';
 import { ENABLE_STORE_OPTION, GET_OPTIONS } from '@/lib/api/graphql';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const OPTION_TABLE_COLUMNS = () => {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation: t, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
 
   const {
@@ -23,7 +24,7 @@ export const OPTION_TABLE_COLUMNS = () => {
     refetchQueries: [
       {
         query: GET_OPTIONS,
-        variables: { storeId : restaurantId },
+        variables: { storeId: restaurantId },
       },
     ],
     onCompleted: () => {
@@ -70,32 +71,40 @@ export const OPTION_TABLE_COLUMNS = () => {
   };
 
   return [
-    { headerName: t('Title'), propertyName: 'title' },
-    { headerName: t('Price'), propertyName: 'price' },
-    { 
-      headerName: t('Description'), 
-      propertyName: 'description',
-     /*  body : (item : IOptions) => {
+    {
+      headerName: t('Title'), propertyName: 'title', body: (item: IOptions) => {
         return (
           <div>
-            {item.description ?? '---'}
+            {typeof item.title === "object" ? item.title[selectedLanguage] : item.title ?? '---'}
           </div>
         )
-      } */
-      
+      }
+    },
+    { headerName: t('Price'), propertyName: 'price' },
+    {
+      headerName: t('Description'),
+      propertyName: 'description',
+      body: (item: IOptions) => {
+        return (
+          <div>
+            {typeof item.description === "object" ? item.description[selectedLanguage] : item.description ?? '---'}
+          </div>
+        )
+      }
+
     },
     {
-      headerName : 'Status',
+      headerName: 'Status',
       propertyName: 'status',
-      body : (item : IOptions) =>  {
+      body: (item: IOptions) => {
         return (
-            <CustomInputSwitch
-              isActive={item.isActive ? item.isActive : false}
-              loading={isOptionLoading === item._id}
-              onChange={() => {
-                onToggelOptionStatus(item._id.toString(), !item.isActive)
-              }}
-            />
+          <CustomInputSwitch
+            isActive={item.isActive ? item.isActive : false}
+            loading={isOptionLoading === item._id}
+            onChange={() => {
+              onToggelOptionStatus(item._id.toString(), !item.isActive)
+            }}
+          />
         )
       }
     }
