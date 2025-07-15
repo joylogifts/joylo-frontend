@@ -11,6 +11,7 @@ import { RELATED_ITEMS, FOOD } from "@/lib/api/graphql";
 // Hooks
 import useUser from "@/lib/hooks/useUser";
 import { useConfig } from "@/lib/context/configuration/configuration.context";
+import Image from "next/image";
 
 interface CartProps {
     onClose?: () => void;
@@ -137,7 +138,7 @@ export default function Cart({ onClose }: CartProps) {
                         >
                             <div className="flex-grow">
                                 <div className="flex sm:flex-row flex-col sm:items-center gap-4">
-                                    <img
+                                    <Image
                                         src={item.image}
                                         alt="item image"
                                         className="w-28 h-28 object-cover rounded-md mb-2"
@@ -231,7 +232,7 @@ export default function Cart({ onClose }: CartProps) {
                                                    transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg cursor-pointer group"
                                     >
                                         {food?.image && (
-                                            <img
+                                            <Image
                                                 src={food?.image}
                                                 alt={typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title}
                                                 className="w-full h-36 object-cover group-hover:opacity-80 transition-opacity duration-300"

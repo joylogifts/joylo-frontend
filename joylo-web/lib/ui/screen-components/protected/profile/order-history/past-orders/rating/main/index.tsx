@@ -99,7 +99,7 @@ export default function RatingModal({
                         />
                     ) : (
                         <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                            <img
+                            <Image
                                 src="https://placehold.co/600x400"
                                 alt={getTranslation("restaurant_label")}
                                 className="w-full h-full object-cover"
