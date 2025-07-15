@@ -235,7 +235,7 @@ export default function FoodsMain() {
             }) as IVariationForm[]) ?? ([] as IVariationForm[]);
 
           if (!subCategoriesLoading) {
-            await onSetFoodContextData({
+            onSetFoodContextData({
               food: {
                 _id: data._id ?? null,
                 data: data,

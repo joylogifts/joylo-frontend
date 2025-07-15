@@ -4,11 +4,11 @@ import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 
-	const { selectedLanguage } = useLangTranslation();
+	const { getTranslation, selectedLanguage } = useLangTranslation();
 
 	const columns = [
 		{
-			headerName: 'Title', propertyName: 'productData.title', body: (item: IPendingProduct) => {
+			headerName: getTranslation('title'), propertyName: 'productData.title', body: (item: IPendingProduct) => {
 				return (
 					<div>
 						{typeof item.productData.title === "object" ? item.productData.title[selectedLanguage] : item.productData.title ?? '---'}
@@ -17,7 +17,7 @@ export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 			}
 		},
 		{
-			headerName: 'Description', propertyName: 'productData.description',
+			headerName: getTranslation('description'), propertyName: 'productData.description',
 			body: (item: IPendingProduct) => {
 				return (
 					<div>
@@ -27,7 +27,7 @@ export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 			}
 		},
 		{
-			headerName: 'Category',
+			headerName: getTranslation('category'),
 			propertyName: 'categoryId.title',
 			body: (item: IPendingProduct) => {
 				return (
@@ -38,7 +38,7 @@ export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 			}
 		},
 		{
-			headerName: 'Image',
+			headerName:getTranslation('image'),
 			propertyName: 'productData.image',
 			body: (item: IPendingProduct) =>
 				item.productData.image ? (
@@ -48,7 +48,7 @@ export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 				),
 		},
 		{
-			headerName: 'Status',
+			headerName:  getTranslation('status'),
 			propertyName: 'status',
 			body: (item: IPendingProduct) => {
 				console.log({ item })
@@ -66,7 +66,7 @@ export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 
 	if (status === 'rejected') {
 		columns.push({
-			headerName: 'Rejection Reason',
+			headerName: getTranslation('rejection_reason'),
 			propertyName: 'reason',
 			body: (item: IPendingProduct) => {
 				return (

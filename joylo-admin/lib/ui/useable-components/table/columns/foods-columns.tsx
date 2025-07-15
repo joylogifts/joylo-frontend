@@ -131,7 +131,7 @@ export const FOODS_TABLE_COLUMNS = ({
         ),
     },
     {
-      headerName: getTranslation('out_of_Stock'),
+      headerName: getTranslation('out_of_stock'),
       propertyName: 'isOutOfStock',
       body: (item: IFoodNew) => {
         return (
