@@ -64,7 +64,7 @@ const Banner = ({ banners }) => {
         {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.name}
       </TextDefault>
       <TextDefault bolder textColor='#fff' style={{ marginHorizontal: scale(5), marginBottom: scale(5) }}>
-        {typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description}
+        {typeof item?.description === "object" ? item?.description?.[selectedLanguage] : item?.description}
       </TextDefault>
     </View>
   )

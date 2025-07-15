@@ -89,7 +89,7 @@ export const ADDON_TABLE_COLUMNS = () => {
       body: (item: IAddon) => {
         return (
           <div>
-            {typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description ?? '---'}
+            {typeof item?.description === "object" ? item?.description?.[selectedLanguage] : item?.description ?? '---'}
           </div>
         )
       }

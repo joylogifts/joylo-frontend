@@ -21,7 +21,7 @@ export const PENDING_PRODUCT_COLUMNS = ({ status }: { status: string }) => {
 			body: (item: IPendingProduct) => {
 				return (
 					<div>
-						{typeof item.productData.description === "object" ? item.productData.description[selectedLanguage] : item.productData.description ?? '---'}
+						{typeof item.productData.description === "object" ? item.productData.description?.[selectedLanguage] : item.productData.description ?? '---'}
 					</div>
 				)
 			}

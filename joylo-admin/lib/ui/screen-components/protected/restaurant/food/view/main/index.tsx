@@ -1,8 +1,6 @@
 // Core
 import {
-  LazyQueryResultTuple,
   QueryResult,
-  useLazyQuery,
   useMutation,
   useQuery,
 } from '@apollo/client';
@@ -19,7 +17,6 @@ import {
   IFoodNew,
   IQueryResult,
   ISubCategoryResponse,
-  ISubCategorySingleResponse,
   IVariationForm,
 } from '@/lib/utils/interfaces';
 
@@ -42,12 +39,9 @@ import useToast from '@/lib/hooks/useToast';
 
 // GraphQL
 import { DELETE_FOOD } from '@/lib/api/graphql';
-import {
-  GET_FOODS_BY_RESTAURANT_ID,
-} from '@/lib/api/graphql/queries';
+import { GET_FOODS_BY_RESTAURANT_ID } from '@/lib/api/graphql/queries';
 import {
   GET_SUBCATEGORIES,
-  GET_SUBCATEGORY,
 } from '@/lib/api/graphql/queries/sub-categories';
 
 import { useLangTranslation } from '@/lib/context/global/language.context';
@@ -80,37 +74,13 @@ export default function FoodsMain() {
     refetch,
   } = useQueryGQL(
     GET_FOODS_BY_RESTAURANT_ID,
-    { id: restaurantId },  
+    { id: restaurantId },
     {
       fetchPolicy: 'network-only',
       enabled: !!restaurantId,
       onError: onErrorFetchFoodsByRestaurant,
     }
   ) as IQueryResult<IFoodByRestaurantResponse | undefined, undefined>;
-
-
- /*  const { data } = useQueryGQL(
-    GET_ADDONS_BY_RESTAURANT_ID,
-    { id: restaurantId },
-    {
-      fetchPolicy: 'network-only',
-      enabled: !!restaurantId,
-    }
-  ) as IQueryResult<IAddonByRestaurantResponse | undefined, undefined>; */
-
-  const [fetchSubcategory, { loading: subCategoriesLoading }] = useLazyQuery(
-    GET_SUBCATEGORY,
-    {
-      fetchPolicy: 'network-only',
-      refetchWritePolicy: 'overwrite',
-      onError(err) {
-        console.log({ err });
-      },
-    }
-  ) as LazyQueryResultTuple<
-    ISubCategorySingleResponse | undefined,
-    { id: string }
-  >;
 
   const { data: sub_categories } = useQuery(
     GET_SUBCATEGORIES
@@ -136,7 +106,7 @@ export default function FoodsMain() {
   });
 
   // Memoized Data
-/*   const addons = useMemo(
+  /*   const addons = useMemo(
     () =>
       data?.restaurant?.addons.map((addon: IAddon) => {
         return { label: addon.title, code: addon._id };
@@ -178,7 +148,7 @@ export default function FoodsMain() {
           },
           title: fd.title,
           variations: fd.variations,
-          isReturnAble: fd.isReturnAble
+          isReturnAble: fd.isReturnAble,
         });
       })
     );
@@ -200,51 +170,28 @@ export default function FoodsMain() {
     {
       label: getTranslation('edit'),
       command: async (data?: IFoodNew) => {
-        if (subCategoriesLoading) {
-          return console.log({ subCategoriesLoading });
-        }
-
-        const sub_ctg_id = foodsData?.restaurant.categories.flatMap((fd) =>
-          fd.foods.filter((_fd) => _fd._id === data?._id)
-        )[0].subCategory;
-
-        await fetchSubcategory({
-          variables: {
-            id: sub_ctg_id || '',
-          },
-        });
-
-        if (data && !subCategoriesLoading) {
+    
+        if (data) {
           let _variation = null;
           const _variations =
             (data?.variations?.map(({ discounted, ...variation }) => {
               _variation = { ...variation };
-              // delete _variation.__typename;
-
+             
               return {
                 ..._variation,
                 discounted: discounted,
-               /*  addons: variation?.addons?.map((addonId) => {
-                  return (
-                    addons?.find(
-                      (addon: IDropdownSelectItem) => addon.code === addonId
-                    ) ?? ({} as IDropdownSelectItem)
-                  );
-                }), */
               };
             }) as IVariationForm[]) ?? ([] as IVariationForm[]);
 
-          if (!subCategoriesLoading) {
-            onSetFoodContextData({
-              food: {
-                _id: data._id ?? null,
-                data: data,
-                variations: _variations,
-              },
-              isEditing: true,
-            });
-            onFoodFormVisible(true);
-          }
+          onSetFoodContextData({
+            food: {
+              _id: data._id ?? null,
+              data: data,
+              variations: _variations,
+            },
+            isEditing: true,
+          });
+          onFoodFormVisible(true);
         }
       },
     },

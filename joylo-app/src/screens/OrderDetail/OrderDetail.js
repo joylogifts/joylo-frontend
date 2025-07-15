@@ -68,7 +68,6 @@ function OrderDetail(props) {
   const [cancelOrder, { loading: loadingCancel }] = useMutation(CANCEL_ORDER, {
     onError,
     onCompleted: (data) => {
-      console.log({ data })
       navigation.navigate('Main')
     },
     variables: { orderId : id }

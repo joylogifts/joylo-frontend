@@ -87,7 +87,7 @@ export const OPTION_TABLE_COLUMNS = () => {
       body: (item: IOptions) => {
         return (
           <div>
-            {typeof item.description === "object" ? item.description[selectedLanguage] : item.description ?? '---'}
+            {typeof item.description === "object" ? item.description?.[selectedLanguage] : item.description ?? '---'}
           </div>
         )
       }

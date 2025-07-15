@@ -122,7 +122,7 @@ export default function FoodDetails({
           : values.title || '',
       description:
         typeof values.description === 'object'
-          ? values.description[selectedLanguage] || ''
+          ? values.description?.[selectedLanguage] || ''
           : values.description || '',
 
       category: values.category,

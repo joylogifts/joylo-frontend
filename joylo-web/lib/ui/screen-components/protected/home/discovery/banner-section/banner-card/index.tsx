@@ -59,7 +59,7 @@ const BannerCard:React.FC<IBannerItemProps> = ({item}) => {
              {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
             </p>
             <p className="text-xs sm:text-sm font-medium">
-             {typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description}
+             {typeof item?.description === "object" ? item?.description?.[selectedLanguage] : item?.description}
             </p>
           </div>
         </div>

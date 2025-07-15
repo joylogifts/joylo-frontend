@@ -104,7 +104,7 @@ export const FOODS_TABLE_COLUMNS = ({
       body: (item: IFoodNew) => (
         <div>
           {typeof item.description === 'object'
-            ? item.description[selectedLanguage] || ''
+            ? item.description?.[selectedLanguage] || ''
             : item.description || ''}
         </div>
       ),

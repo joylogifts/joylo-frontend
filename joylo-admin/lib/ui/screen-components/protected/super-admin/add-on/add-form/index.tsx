@@ -235,7 +235,7 @@ export default function AddonAddForm({
           ...initialFormValuesTemplate,
           ...updated_addon,
           title: typeof updated_addon?.title === "object" ? updated_addon?.title[selectedLanguage] : updated_addon?.title ?? '',
-          description: typeof updated_addon?.description === "object" ? updated_addon?.description[selectedLanguage] : updated_addon?.description ?? '',
+          description: typeof updated_addon?.description === "object" ? updated_addon?.description?.[selectedLanguage] : updated_addon?.description ?? '',
           options: matched_options,
           categoryIds: matched_categories,
         },

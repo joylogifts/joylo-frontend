@@ -365,7 +365,7 @@ function ItemDetail(props) {
                 }
               ]}
             >
-              {typeof food?.description === "object" ? food?.description[selectedLanguage] : food?.description}
+              {typeof food?.description === "object" ? food?.description?.[selectedLanguage] : food?.description}
             </Text>}
             <HeadingComponent title={typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title} price={calculatePrice()} />
           </View>
@@ -387,7 +387,7 @@ function ItemDetail(props) {
               )}
               {addonsByCategory?.getAddonsByCategory?.map((addon) => (
                 <View key={addon?._id}>
-                  <TitleComponent title={typeof addon?.title === "object" ? addon?.title[selectedLanguage] : addon?.title} subTitle={typeof addon?.description === "object" ? addon?.description[selectedLanguage] : addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? getTranslation('optional') : `${addon?.quantityMinimum} ${getTranslation('required')}`} />
+                  <TitleComponent title={typeof addon?.title === "object" ? addon?.title[selectedLanguage] : addon?.title} subTitle={typeof addon?.description === "object" ? addon?.description?.[selectedLanguage] : addon?.description} error={addon.error} status={addon?.quantityMinimum === 0 ? getTranslation('optional') : `${addon?.quantityMinimum} ${getTranslation('required')}`} />
                   <Options addon={addon} onSelectOption={onSelectOption} addonRefs={addonRefs} />
                 </View>
               ))}

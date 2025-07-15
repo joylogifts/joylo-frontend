@@ -13,7 +13,7 @@ export const UserContext = createContext<IUserContext | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { setSelectedLanguage, handleDefaultLanguage } = useLangTranslation();
+  const {languages, setSelectedLanguage, handleDefaultLanguage } = useLangTranslation();
   const [user, setUser] = useState<ILoginResponse | null>(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     } else {
       handleDefaultLanguage();
     }
-  }, [user]);
+  }, [user,languages]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
