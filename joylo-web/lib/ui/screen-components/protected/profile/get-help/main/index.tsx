@@ -195,7 +195,7 @@ export default function GetHelpMain() {
             <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
                 <div className="mb-6">
                     <TextComponent
-                        text={`${getTranslation("welcome_user")}${userName} 👋`}
+                        text={`${getTranslation("welcome_user")} ${userName} 👋`}
                         className="text-xl md:text-2xl font-bold mb-2"
                     />
                     <TextComponent
@@ -269,7 +269,7 @@ export default function GetHelpMain() {
                     <div className="flex-1 p-4 overflow-y-auto">
                         <div className="mb-6">
                             <h2 className="text-lg font-semibold mb-2">
-                                {getTranslation("hi_label")}, {userName}
+                                {getTranslation("welcome_user")}, {userName}
                             </h2>
                             <p className="text-sm text-gray-600">
                                 {getTranslation("email_label")}: {userEmail}

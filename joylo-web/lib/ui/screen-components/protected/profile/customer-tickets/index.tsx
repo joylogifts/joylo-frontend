@@ -174,7 +174,7 @@ export default function CustomerTicketsMain() {
         <div className="w-full mx-auto">
             <div className="mb-6">
                 <TextComponent
-                    text={`${getTranslation("welcome_user")}${userName} 👋`}
+                    text={`${getTranslation("welcome_user")} ${userName} 👋`}
                     className="text-xl md:text-2xl font-bold mb-2"
                 />
                 <div className="flex justify-between items-center">
@@ -203,7 +203,7 @@ export default function CustomerTicketsMain() {
                                         className="font-medium text-lg text-gray-800"
                                     />
                                     <p className="text-sm text-gray-500">
-                                        {getTranslation("ticket_id_label")}:{" "}
+                                        {getTranslation("ticket_id_label")}:
                                         {ticket._id}
                                     </p>
                                 </div>

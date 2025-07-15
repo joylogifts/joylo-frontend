@@ -23,8 +23,6 @@ import { Dropdown } from 'primereact/dropdown';
 export default function SettingsMain() {
     const { getTranslation } = useLangTranslation();
     const { languages, selectedLanguage, setSelectedLanguage } = useLangTranslation();
-    console.log("languages------->>>>>>>>>>>>>", languages);
-
     // States for current values
     const [sendReceipts, setSendReceipts] = useState<boolean>(false);
     const [deleteAccount, setDeleteAccount] = useState<boolean>(false);

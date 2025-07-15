@@ -3,10 +3,11 @@ import SliderCard from "@/lib/ui/useable-components/slider-card";
 import useNearByRestaurantsPreview from "@/lib/hooks/useNearByRestaurantsPreview";
 // loading skeleton
 import SliderSkeleton from "@/lib/ui/useable-components/custom-skeletons/slider.loading.skeleton";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 function RestaurantsNearYou() {
   const { queryData, error, loading } = useNearByRestaurantsPreview();
-
+  const { getTranslation } = useLangTranslation();
   if (loading) {
     return <SliderSkeleton/>;
   }
@@ -16,7 +17,7 @@ function RestaurantsNearYou() {
   }
   return (
     <SliderCard
-      title="Restaurants near you"
+      title={getTranslation("restaurants_near_you")}
       data={queryData || []}
     />
   );
