@@ -1,6 +1,6 @@
 import { IActionMenuProps, IZoneResponse } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const ZONE_TABLE_COLUMNS = ({

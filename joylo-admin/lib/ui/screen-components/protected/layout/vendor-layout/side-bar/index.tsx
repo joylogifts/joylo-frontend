@@ -23,7 +23,7 @@ import {
 // Components
 import SidebarItem from './side-bar-item';
 import { onUseLocalStorage } from '@/lib/utils/methods';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 function VendorSidebar({ children }: IGlobalComponentProps) {

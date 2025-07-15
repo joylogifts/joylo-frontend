@@ -29,7 +29,6 @@ import { DELETE_OPTION, GET_OPTIONS } from '@/lib/api/graphql';
 import { generateDummyOptions } from '@/lib/utils/dummy';
 import { useMutation } from '@apollo/client';
 import CategoryTableHeader from '../header/table-header';
-import { useTranslations } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OptionMain({

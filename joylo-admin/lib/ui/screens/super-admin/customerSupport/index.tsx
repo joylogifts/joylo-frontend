@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import CustomerSupportMain from '@/lib/ui/screen-components/protected/super-admin/customerSupport/view/main';
 import CustomerSupportMobilesTabs from '@/lib/ui/screen-components/protected/super-admin/customerSupport/view/mobile-tabs';
-import { } from 'next-intl';
+
 import HeaderText from '@/lib/ui/useable-components/header-text';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 

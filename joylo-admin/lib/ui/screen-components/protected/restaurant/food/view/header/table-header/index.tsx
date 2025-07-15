@@ -4,7 +4,7 @@ import CustomTextField from '@/lib/ui/useable-components/input-field';
 
 // Interfaces
 import { IFoodTableHeaderProps } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 
 export default function FoodsTableHeader({
   globalFilterValue,

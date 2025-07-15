@@ -1,5 +1,5 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
-import { } from 'next-intl';
+
 import React from 'react';
 
 export default function NoData({

@@ -13,7 +13,7 @@ import { IRiderResponse } from '@/lib/utils/interfaces/rider.interface';
 import { GET_RIDERS, TOGGLE_RIDER } from '@/lib/api/graphql';
 import { useMutation } from '@apollo/client';
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { } from 'next-intl';
+
 import { toTextCase } from '@/lib/utils/methods';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 // import { toTextCase } from '@/lib/utils/methods';

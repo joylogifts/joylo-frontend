@@ -49,7 +49,7 @@ import {
   GET_SUBCATEGORIES,
   GET_SUBCATEGORY,
 } from '@/lib/api/graphql/queries/sub-categories';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function FoodsMain() {

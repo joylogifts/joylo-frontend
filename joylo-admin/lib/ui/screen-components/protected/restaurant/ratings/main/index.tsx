@@ -6,7 +6,7 @@ import RatingsHeaderDataView from '../header/table-header';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
 import RatingSkeleton from '@/lib/ui/useable-components/custom-skeletons/rating.card.skeleton';
 import { IItem, IReview } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const RatingMain: React.FC = () => {

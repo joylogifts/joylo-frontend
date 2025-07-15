@@ -35,7 +35,6 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext } from 'react';
-import { useTranslations } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State
@@ -58,7 +57,7 @@ export default function OptionAddForm({
   isAddOptionsVisible,
 }: IOptionsAddFormComponentProps) {
   // Hooks
-  const t = useTranslations();
+
   const { getTranslation, selectedLanguage } = useLangTranslation();
   const { showToast } = useToast();
 

@@ -20,7 +20,7 @@ import {
   IUpdateBussinessDetailsForm,
 } from '@/lib/utils/interfaces';
 import { BussinessDetailsSchema } from '@/lib/utils/schema';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UpdateBusinessDetails({

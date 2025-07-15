@@ -1,7 +1,6 @@
 import { IActionMenuProps, ICategory } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
 import { ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 interface ColumnDefinition {

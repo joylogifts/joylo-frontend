@@ -11,7 +11,7 @@ import {
   ICommissionColumnProps,
   IRestaurantResponse,
 } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const COMMISSION_RATE_COLUMNS = ({

@@ -16,7 +16,7 @@ import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaur
 import { useMutation } from '@apollo/client';
 import { EDIT_RESTAURANT_COUPON } from '@/lib/api/graphql/mutations/coupons-restaurant';
 import { GET_RESTAURANT_COUPONS } from '@/lib/api/graphql/queries/coupons-restaurant';
-import { } from 'next-intl';
+
 import moment from 'moment';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 

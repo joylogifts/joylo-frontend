@@ -8,7 +8,7 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { } from 'next-intl';
+
 import { useContext } from 'react';
 
 const FoodHeader = () => {

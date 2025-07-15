@@ -8,7 +8,7 @@ import { ICouponScreenHeaderProps } from '@/lib/utils/interfaces/coupons.interfa
 
 //Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { } from 'next-intl';
+
 
 export default function CouponScreenHeader({
   handleButtonClick,

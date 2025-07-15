@@ -9,7 +9,7 @@ import { ICouponTableHeaderProps } from '@/lib/utils/interfaces/coupons.interfac
 
 // Icons
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { } from 'next-intl';
+
 
 // Prime react
 import { Checkbox } from 'primereact/checkbox';

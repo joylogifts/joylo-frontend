@@ -39,7 +39,7 @@ import {
   ICuisine,
   IGetCuisinesData,
 } from '@/lib/utils/interfaces/cuisine.interface';
-import { } from 'next-intl';
+
 import CustomPhoneTextField from '@/lib/ui/useable-components/phone-input-field';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 

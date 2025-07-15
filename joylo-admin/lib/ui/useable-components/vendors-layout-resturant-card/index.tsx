@@ -40,7 +40,7 @@ import { VendorLayoutRestaurantContext } from '@/lib/context/vendor/restaurant.c
 import { FrameSVG } from '@/lib/utils/assets/svgs/Frame';
 import { CarSVG } from '@/lib/utils/assets/svgs/Car';
 import { ConfigurationContext } from '@/lib/context/global/configuration.context';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorsLayoutRestaurantCard({

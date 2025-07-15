@@ -8,7 +8,7 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 // Icons
 import { ICategoryHeaderProps } from '@/lib/utils/interfaces';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { useTranslations } from 'next-intl';
+
 
 const CategoryHeader = ({ setIsAddCategoryVisible }: ICategoryHeaderProps) => {
   // Hooks
