@@ -69,6 +69,7 @@ export const STORE_PROFILE = gql`
       unique_restaurant_id
       orderId
       orderPrefix
+      languageCode
       name
       image
       logo

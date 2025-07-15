@@ -24,6 +24,7 @@ import {
 
 // Services
 import { asyncStorageEmitter } from "@/lib/services";
+import { useLanguage } from "./language.context";
 
 const UserContext = createContext<IUserContextProps>({} as IUserContextProps);
 
@@ -45,6 +46,8 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     IStoreEarningsArray[] | null
   >(null);
 
+  const { setSelectedLanguage, handleStoreDefaultLanguage } = useLanguage();
+
   const {
     loading: loadingProfile,
     error: errorProfile,
@@ -60,12 +63,24 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
     { restaurantId: string }
   >;
 
+
+
   const getUserId = useCallback(async () => {
     const id = await AsyncStorage.getItem("store-id");
     if (id) {
       setUserId(id);
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (dataProfile?.restaurant?.languageCode) {
+      setSelectedLanguage(dataProfile?.restaurant?.languageCode)
+    }
+    else {
+      handleStoreDefaultLanguage();
+    }
+  }, [dataProfile])
+
 
   useEffect(() => {
     const listener = asyncStorageEmitter.addListener("store-id", (data) => {

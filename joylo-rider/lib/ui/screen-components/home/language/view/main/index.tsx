@@ -23,6 +23,8 @@ export default function LanguageMain() {
   const { appTheme } = useApptheme();
   const { getTranslation: t, languages, languagesLoading, languagesError, selectedLanguage, setSelectedLanguage } = useLanguage();
 
+  const [localSelectedLanguage, setLocalSelectedLanguage] = useState(selectedLanguage)
+
   // Handlers
   const handleLanguageSelection = async (selectedLanguage: string) => {
     setIsSelected(selectedLanguage);
@@ -45,6 +47,9 @@ export default function LanguageMain() {
   };
   const handleSubmission = async () => {
     try {
+      if (localSelectedLanguage !== selectedLanguage) {
+        setSelectedLanguage(localSelectedLanguage)
+      }
       // setIsChangingLang(true);
       // await AsyncStorage.setItem("lang", isSelected);
       // changeLanguage(isSelected);
@@ -85,9 +90,9 @@ export default function LanguageMain() {
             <View>
               <CustomRadioButton
                 label={lng.code}
-                isSelected={lng.code === selectedLanguage}
+                isSelected={lng.code === localSelectedLanguage}
                 showLabel={false}
-                onPress={() => setSelectedLanguage(lng.code)}
+                onPress={() => setLocalSelectedLanguage(lng.code)}
               />
             </View>
           </View>

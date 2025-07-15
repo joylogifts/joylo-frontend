@@ -63,6 +63,7 @@ export const RIDER_PROFILE = gql`
   query rider($id: String!) {
     rider(id: $id) {
       accountNumber
+      languageCode
       assigned
       available
       _id

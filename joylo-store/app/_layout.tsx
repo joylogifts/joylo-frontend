@@ -77,12 +77,12 @@ function RootLayout() {
                   style={currentTheme ?? "dark"}
                   backgroundColor={appTheme.themeBackground ?? ""}
                 />
-                <UserProvider>
-                  <LanguageProvider>
+                <LanguageProvider>
+                  <UserProvider>
                     <UnavailableStatus />
                     <Slot />
-                  </LanguageProvider>
-                </UserProvider>
+                  </UserProvider>
+                </LanguageProvider>
               </AuthProvider>
             </ConfigurationProvider>
           </InternetProvider>
