@@ -1,5 +1,4 @@
 import { IAddon } from '@/lib/utils/interfaces';
-import { useTranslations } from 'next-intl';
 import CustomInputSwitch from '../../custom-input-switch';
 import { useContext, useState } from 'react';
 import {

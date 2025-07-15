@@ -51,7 +51,6 @@ import { faAdd, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fieldset } from 'primereact/fieldset';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // State

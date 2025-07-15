@@ -32,7 +32,6 @@ import { DELETE_ADDON } from '@/lib/api/graphql';
 import { GET_ADDONS } from '@/lib/api/graphql/queries/addon';
 
 // Context
-import { useTranslations } from 'next-intl';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 
@@ -43,7 +42,7 @@ export default function OptionMain({
   // Context
 
   // Hooks
-  const { getTranslation: t, selectedLanguage } = useLangTranslation();
+  const { getTranslation: t, } = useLangTranslation();
   const { showToast } = useToast();
 
   // State - Table

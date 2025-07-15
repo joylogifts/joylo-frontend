@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+
 import CustomInputSwitch from '../../custom-input-switch';
 import { useContext, useState } from 'react';
 import { IOptions } from '@/lib/utils/interfaces';
