@@ -33,6 +33,7 @@ import { GET_ADDONS } from '@/lib/api/graphql/queries/addon';
 
 // Context
 import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function OptionMain({
   setIsAddAddonVisible,
@@ -91,7 +92,6 @@ export default function OptionMain({
   function onFetchAddonsByRestaurantCompleted() {}
   // Restaurant Zone Info Error
   function onErrorFetchAddonsByRestaurant() {
-
     showToast({
       type: 'error',
       title: t('Addons Fetch'),
