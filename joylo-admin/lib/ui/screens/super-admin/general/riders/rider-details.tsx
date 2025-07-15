@@ -5,7 +5,7 @@ import { GET_RIDER } from '@/lib/api/graphql';
 
 // Hooks
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { } from 'next-intl';
+
 import { useParams } from 'next/navigation';
 
 // Interfaces

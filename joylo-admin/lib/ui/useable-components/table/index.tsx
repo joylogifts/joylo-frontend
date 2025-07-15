@@ -12,7 +12,7 @@ import {
   DataTablePageEvent,
 } from 'primereact/datatable';
 import DataTableColumnSkeleton from '../custom-skeletons/datatable.column.skeleton';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const Table = <T extends ITableExtends>({

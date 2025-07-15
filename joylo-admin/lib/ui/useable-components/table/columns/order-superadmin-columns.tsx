@@ -1,6 +1,6 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IExtendedOrder } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',

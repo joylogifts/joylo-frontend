@@ -12,7 +12,7 @@ import { useMutation } from '@apollo/client';
 import { EDIT_STAFF } from '@/lib/api/graphql/mutations/staff';
 import { GET_STAFFS } from '@/lib/api/graphql/queries/staff';
 import useToast from '@/lib/hooks/useToast';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const STAFF_TABLE_COLUMNS = ({

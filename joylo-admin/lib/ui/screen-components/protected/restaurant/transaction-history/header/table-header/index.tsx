@@ -6,7 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { ITransactionHistoryTableHeaderProps } from '@/lib/utils/interfaces';
 
 // Hooks
-import { } from 'next-intl';
+
 import { useState } from 'react';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 

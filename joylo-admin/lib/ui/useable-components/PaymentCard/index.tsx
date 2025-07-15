@@ -3,7 +3,7 @@ import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import { TPaymentType } from '@/lib/utils/types/payment-type';
 import { StripeSVG } from '@/lib/utils/assets/svgs/stripe';
 import { IPaymentCardProps } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function PaymentCard({

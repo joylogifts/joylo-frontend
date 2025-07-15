@@ -5,7 +5,7 @@ import StatsCard from '@/lib/ui/useable-components/stats-card';
 // Icons
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-import { } from 'next-intl';
+
 import { IEarningsRestaurantHeaderComponentProps } from '@/lib/utils/interfaces/earnings.interface';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 

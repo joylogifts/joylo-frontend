@@ -1,7 +1,7 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IActionMenuProps } from '@/lib/utils/interfaces';
 import { IEarning } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 
 export const EARNING_COLUMNS = ({
   isSuperAdmin = false,

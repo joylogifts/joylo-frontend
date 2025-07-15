@@ -17,7 +17,7 @@ import { IFoodAddFormComponentProps } from '@/lib/utils/interfaces';
 // Components
 import FoodDetails from './food.index';
 import VariationAddForm from './variations';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const FoodForm = ({ position = 'right' }: IFoodAddFormComponentProps) => {

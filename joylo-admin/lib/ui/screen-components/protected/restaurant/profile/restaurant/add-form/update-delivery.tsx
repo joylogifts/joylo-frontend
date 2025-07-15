@@ -32,7 +32,7 @@ import { onErrorMessageMatcher } from '@/lib/utils/methods/error';
 import { UPDATE_RESTAURANT_DELIVERY } from '@/lib/api/graphql';
 import { ApolloError, useMutation } from '@apollo/client';
 import UpdateRestaurantLocation from './update-restaurant-location';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UpdateDelivery({

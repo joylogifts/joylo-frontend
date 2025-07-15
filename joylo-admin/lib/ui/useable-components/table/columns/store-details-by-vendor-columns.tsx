@@ -1,7 +1,7 @@
 // Interfaces and Types
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import { IVendorStoreDetails } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 
 export const VENDOR_STORE_DETAILS_COLUMN = () => {
   // Hooks

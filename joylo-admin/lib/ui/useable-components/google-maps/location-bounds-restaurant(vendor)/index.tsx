@@ -60,7 +60,7 @@ import CustomRadiusInputField from '../../custom-radius-input';
 import CustomShape from '../shapes';
 import useLocation from '@/lib/hooks/useLocation';
 import calculateZoom from '@/lib/utils/methods/zoom-calculator';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const autocompleteService: {

@@ -13,7 +13,7 @@ import { generateSkeletonTransactionHistory } from '@/lib/utils/dummy';
 import EarningRestaurantTableHeader from '../header/table-header';
 import { UserTypeEnum } from '@/lib/utils/interfaces';
 import { RestaurantLayoutContext } from '@/lib/context/restaurant/layout-restaurant.context';
-import { } from 'next-intl';
+
 import useDebounce from '@/lib/hooks/useDebounce';
 
 import { useLangTranslation } from '@/lib/context/global/language.context';

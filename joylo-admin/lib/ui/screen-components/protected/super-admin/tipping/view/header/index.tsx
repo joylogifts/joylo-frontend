@@ -1,9 +1,11 @@
+"use client"
 // Interface and Types
 
 // Components
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 import HeaderText from '@/lib/ui/useable-components/header-text';
-import { } from 'next-intl';
+
 
 const TippingHeader = () => {
   // Hooks

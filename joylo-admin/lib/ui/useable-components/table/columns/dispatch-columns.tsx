@@ -32,7 +32,7 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 // CSS
 import classes from '@/lib/ui/screen-components/protected/super-admin/dispatch/view/main/index.module.css';
 import { useQueryGQL } from '@/lib/hooks/useQueryQL';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 // Status templates

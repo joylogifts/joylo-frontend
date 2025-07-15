@@ -5,7 +5,7 @@ import {
   formatNumber,
   formatNumberWithCurrency,
 } from '@/lib/utils/methods/currency';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function DashboardStatsTable({

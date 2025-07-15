@@ -60,7 +60,7 @@ import CustomShape from '../shapes';
 import useLocation from '@/lib/hooks/useLocation';
 import { RestaurantsContext } from '@/lib/context/super-admin/restaurants.context';
 import calculateZoom from '@/lib/utils/methods/zoom-calculator';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const autocompleteService: {

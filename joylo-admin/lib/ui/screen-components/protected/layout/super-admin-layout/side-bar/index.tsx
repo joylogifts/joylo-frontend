@@ -28,7 +28,7 @@ import useCheckAllowedRoutes from '@/lib/hooks/useCheckAllowedRoutes';
 
 // Components
 import SidebarItem from './side-bar-item';
-import { } from 'next-intl';
+import {} from 'next-intl';
 import { faHeadset } from '@fortawesome/free-solid-svg-icons/faHeadset';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
@@ -219,7 +219,7 @@ export default function MakeSidebar() {
       },
     },
     {
-      text: getTranslation('Store Settings'),
+      text: getTranslation('store_settings'),
       route: '/store-settings',
       isParent: true,
       icon: faCog,
@@ -231,17 +231,17 @@ export default function MakeSidebar() {
           isParent: false,
         },
         {
-          text: getTranslation('Categories'),
+          text: getTranslation('categories'),
           route: '/store-settings/category',
           isParent: false,
         },
         {
-          text: getTranslation('Options'),
+          text: getTranslation('options'),
           route: '/store-settings/options',
           isParent: false,
         },
         {
-          text:getTranslation('Addons'),
+          text: getTranslation('addons'),
           route: '/store-settings/add-ons',
           isParent: false,
         },

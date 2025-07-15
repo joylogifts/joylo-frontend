@@ -31,7 +31,7 @@ import useToast from '@/lib/hooks/useToast';
 import { GET_RESTAURANT_PROFILE } from '@/lib/api/graphql';
 import { UPDATE_TIMINGS } from '@/lib/api/graphql/mutations/timing';
 import { useMutation, useQuery } from '@apollo/client';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const TimingAddForm = () => {

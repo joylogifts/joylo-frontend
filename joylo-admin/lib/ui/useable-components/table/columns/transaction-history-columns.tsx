@@ -1,7 +1,7 @@
 import { IActionMenuProps } from '@/lib/utils/interfaces/action-menu.interface';
 import { ITransactionHistory } from '@/lib/utils/interfaces';
 import ActionMenu from '@/lib/ui/useable-components/action-menu';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const TRANSACTION_HISTORY_COLUMNS = ({

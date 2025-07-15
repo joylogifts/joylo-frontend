@@ -62,7 +62,7 @@ export const CUISINE_TABLE_COLUMNS = ({
         body: (data: ICuisine) => (
           <span className="text-sm">
             {typeof data?.description === 'object'
-              ? data?.description[selectedLanguage] || ''
+              ? data?.description?.[selectedLanguage] || ''
               : data?.description || ''}
           </span>
         ),

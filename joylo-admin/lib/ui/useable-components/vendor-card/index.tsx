@@ -39,7 +39,7 @@ import { ToastContext } from '@/lib/context/global/toast.context';
 
 // Utils & Constants
 import { SELECTED_VENDOR_EMAIL } from '@/lib/utils/constants';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function VendorCard({

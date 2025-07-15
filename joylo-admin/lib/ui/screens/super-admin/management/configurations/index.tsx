@@ -5,7 +5,7 @@ import NoData from '@/lib/ui/useable-components/no-data';
 
 // Hooks
 import { useConfiguration } from '@/lib/hooks/useConfiguration';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function ConfigurationsScreen() {
