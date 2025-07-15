@@ -88,7 +88,7 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
 
   return (
     <LangTranslationContext.Provider value={contextValue}>
-      {children}
+      {translationsQueryLoading ? null : children}
     </LangTranslationContext.Provider>
   );
 }
