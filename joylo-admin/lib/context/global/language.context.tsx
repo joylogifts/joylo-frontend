@@ -34,6 +34,7 @@ interface LangTranslationContextType {
   translations: Record<string, string>;
   translationsLoading: boolean;
   getTranslation: (key: string) => string;
+  handleDefaultLanguage: () => void;
 }
 
 const LangTranslationContext = createContext<LangTranslationContextType | null>(
@@ -83,6 +84,12 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     await setUserLanguageMutation({ variables: { languageCode: code } })
   }
 
+  const handleDefaultLanguage = () => {
+    if (!languagesData || languagesLoading) return;
+    const languages = languagesData.languages || [];
+    const defaultLang = languages.find((l: Language) => l.isDefault)?.code;
+    setSelectedLanguage((prev) => prev || defaultLang);
+  }
   // useEffect(() => {
   //   if (!languagesData || languagesLoading) return;
 
@@ -130,6 +137,7 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     translations,
     translationsLoading,
     getTranslation,
+    handleDefaultLanguage,
   };
 
   return (
