@@ -40,21 +40,21 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
 
   const { showToast } = useToast();
   const [setUserLanguageMutation] = useMutation(SET_USER_LANGUAGE, {
-    onCompleted: (data) => {
-      if (data.setUserLanguage) {
-        showToast({
-          type: "success",
-          title: "Success",
-          message: "Language updated successfully!",
-        });
-      } else {
-        showToast({
-          type: "error",
-          title: "Error",
-          message: "Something went wrong.",
-        });
-      }
-    },
+    // onCompleted: () => {
+    // if (data.setUserLanguage) {
+    //   showToast({
+    //     type: "success",
+    //     title: "Success",
+    //     message: "Language updated successfully!",
+    //   });
+    // } else {
+    //   showToast({
+    //     type: "error",
+    //     title: "Error",
+    //     message: "Something went wrong.",
+    //   });
+    // }
+    // },
     onError: (error) => {
       showToast({
         type: "error",

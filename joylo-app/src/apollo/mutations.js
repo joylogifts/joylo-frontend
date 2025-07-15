@@ -389,8 +389,8 @@ export const cancelOrder = `
               _id
               orderStatus
             }
-          }`    
-          
+          }`
+
 export const cancelOrderByCustomer = `
   mutation($orderId: String) {
     cancelOrderByCustomer(orderId: $orderId) {
@@ -398,7 +398,7 @@ export const cancelOrderByCustomer = `
         orderStatus
       }
     }
-  ` 
+  `
 
 export const createActivity = `
    mutation createActivity(
@@ -427,3 +427,7 @@ export const createRiderReview = `mutation CreateRiderReview($input: CreateRider
     updatedAt
   }
 }`;
+
+export const SET_USER_LANGUAGE = `mutation SetUserLanguage($languageCode: String!) {
+    setUserLanguage(languageCode: $languageCode)
+  }`;

@@ -1,7 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import { useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { GET_LANGUAGES, GET_TRANSLATIONS_BY_LANGUAGE_CODE } from '../apollo/queries'
 import { useTranslation } from 'react-i18next'
+import { SET_USER_LANGUAGE } from '../apollo/mutations'
+
+const SET_USER_LANGUAGE_API = gql`${SET_USER_LANGUAGE}`;
+
 const LanguageContext = createContext(null)
 
 export const LanguageProvider = ({ children }) => {
@@ -11,18 +15,62 @@ export const LanguageProvider = ({ children }) => {
   const rtlLanguages = ['ar', 'he', 'fa', 'ur']
   const [dir, setDir] = useState('ltr')
 
-  const [selectedLanguage, setSelectedLanguage] = useState("en")
+  const [selectedLanguage, setSelectedLanguage] = useState("")
   const [translations, setTranslations] = useState({})
   const [translationsLoading, setTranslationsLoading] = useState(false)
 
-  useEffect(() => {
+  const [setUserLanguageMutation] = useMutation(SET_USER_LANGUAGE_API, {
+    onCompleted: (data) => {
+      // if (data.setUserLanguage) {
+      //   showToast({
+      //     type: "success",
+      //     title: "Success",
+      //     message: "Language updated successfully!",
+      //   });
+      // } else {
+      //   showToast({
+      //     type: "error",
+      //     title: "Error",
+      //     message: "Something went wrong.",
+      //   });
+      // }
+    },
+    onError: (error) => {
+      // showToast({
+      //   type: "error",
+      //   title: "Error",
+      //   message: error.message || "Something went wrong.",
+      // });
+    },
+  });
+
+
+  const handleStoreLanguage = async (code) => {
+    await setUserLanguageMutation({ variables: { languageCode: code } })
+  }
+
+  const handleDefaultLanguage = () => {
     if (!languagesLoading && languagesData?.languages) {
       const defaultLang = languagesData.languages.find((l) => l.isDefault)?.code
       if (defaultLang) {
         setSelectedLanguage((prev) => prev || defaultLang)
       }
     }
-  }, [languagesData, languagesLoading])
+  }
+  // useEffect(() => {
+  //   if (!languagesLoading && languagesData?.languages) {
+  //     const defaultLang = languagesData.languages.find((l) => l.isDefault)?.code
+  //     if (defaultLang) {
+  //       setSelectedLanguage((prev) => prev || defaultLang)
+  //     }
+  //   }
+  // }, [languagesData, languagesLoading])
+
+  useEffect(() => {
+    if (selectedLanguage) {
+      handleStoreLanguage(selectedLanguage);
+    }
+  }, [selectedLanguage]);
 
   const { data: translationsData, loading: translationsQueryLoading } = useQuery(GET_TRANSLATIONS_BY_LANGUAGE_CODE, {
     variables: { languageCode: selectedLanguage || '' },
@@ -55,6 +103,7 @@ export const LanguageProvider = ({ children }) => {
     translations,
     translationsLoading,
     getTranslation,
+    handleDefaultLanguage,
     dir
   }
 

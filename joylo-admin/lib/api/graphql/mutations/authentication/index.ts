@@ -18,6 +18,7 @@ export const OWNER_LOGIN = gql`
       userTypeId
       image
       name
+      languageCode
     }
   }
 `;
