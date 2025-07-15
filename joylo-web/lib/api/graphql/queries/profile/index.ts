@@ -21,6 +21,7 @@ export const GET_USER_PROFILE = gql`
               selected
             }
             favourite
+            languageCode
           }
         }`;
 

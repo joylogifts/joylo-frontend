@@ -87,6 +87,7 @@ export interface ProfileType {
     selected: boolean;
   }>;
   favourite: string[];
+  languageCode: string;
 }
 
 export interface OrderType {
@@ -161,9 +162,9 @@ export interface UserContextType {
   addQuantity: (key: string, quantity?: number) => Promise<void>;
   removeQuantity: (key: string) => Promise<void>;
   addItem: (
-    image : string,
+    image: string,
     foodId: string,
-    variationId: string,    
+    variationId: string,
     restaurantId: string,
     quantity?: number,
     addons?: Array<{
@@ -196,7 +197,7 @@ export interface UserContextType {
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
-  const {selectedLanguage} = useLangTranslation()
+  const { selectedLanguage, setSelectedLanguage } = useLangTranslation()
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const client = useApolloClient();
   const [token, setToken] = useState<string | null>(
@@ -204,6 +205,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
   );
   const [cart, setCart] = useState<CartItem[]>([]);
   const [restaurant, setRestaurant] = useState<string | null>(null);
+
 
   const [saveNotificationToken] = useMutation(SAVE_NOTIFICATION_TOKEN_WEB, {
     onError,
@@ -268,14 +270,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
 
         // Create the full title
         const foodTitle = typeof foodItem.title === "object"
-        ? foodItem.title[selectedLanguage]
-        : foodItem.title;
+          ? foodItem.title[selectedLanguage]
+          : foodItem.title;
         const variationTitle = typeof variationItem.title === "object"
-        ? variationItem.title[selectedLanguage]
-        : variationItem.title;
+          ? variationItem.title[selectedLanguage]
+          : variationItem.title;
 
         const title = `${foodTitle} (${foodTitle})`;
-        
+
         // Calculate price
         let totalPrice = variationItem.price;
 
@@ -316,17 +318,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
 
   const onInit = async (isSubscribed: boolean) => {
     if (!isSubscribed) return;
-    
+
     setIsLoading(true);
-    
+
     const _token = localStorage.getItem("token") || null;
     setToken(_token);
-    
+
     if (_token) {
       await fetchProfile();
       await fetchOrders();
     }
-    
+
     setIsLoading(false);
   };
 
@@ -370,7 +372,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
     return () => {
       isSubscribed = false;
     };
-  // Important: Include token as a dependency to refetch when it changes
+    // Important: Include token as a dependency to refetch when it changes
   }, [token]);
 
   // Setup subscription when profile is loaded
@@ -389,7 +391,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
     console.log("error", error.message);
   }
 
-  const setTokenAsync = async (tokenReq: string, cb: () => void = () => {}) => {
+  const setTokenAsync = async (tokenReq: string, cb: () => void = () => { }) => {
     setToken(tokenReq);
     if (typeof window !== "undefined") {
       localStorage.setItem("token", tokenReq);
@@ -587,7 +589,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
   // Enhanced method that replaces the old addCartItem - uses setCartRestaurant which is defined above
   const addItem = useCallback(
     async (
-      image : string,
+      image: string,
       foodId: string,
       variationId: string,
       restaurantId: string,
@@ -794,6 +796,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = (props) => {
   // Setup subscription when profile is loaded
   useEffect(() => {
     if (!dataProfile) return;
+    if (dataProfile?.profile?.languageCode) {
+      setSelectedLanguage(dataProfile.profile.languageCode);
+    }
     subscribeOrders();
   }, [dataProfile]);
 

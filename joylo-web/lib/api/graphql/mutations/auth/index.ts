@@ -145,3 +145,9 @@ export const DEACTIVATE_USER = gql`
     }
   }
 `;
+
+export const SET_USER_LANGUAGE = gql`
+  mutation SetUserLanguage($languageCode: String!) {
+    setUserLanguage(languageCode: $languageCode)
+  }
+`;

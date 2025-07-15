@@ -3,8 +3,9 @@
 import {
   GET_LANGUAGES,
   GET_TRANSLATIONS_BY_LANGUAGE_CODE,
+  SET_USER_LANGUAGE,
 } from '@/lib/api/graphql';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   createContext,
   useState,
@@ -12,6 +13,7 @@ import {
   useContext,
   ReactNode,
 } from 'react';
+import useToast from '@/lib/hooks/useToast';
 
 interface LangTranslationContextType {
   languages: any[];
@@ -36,6 +38,35 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     error: languagesError,
   } = useQuery(GET_LANGUAGES);
 
+  const { showToast } = useToast();
+  const [setUserLanguageMutation] = useMutation(SET_USER_LANGUAGE, {
+    onCompleted: (data) => {
+      if (data.setUserLanguage) {
+        showToast({
+          type: "success",
+          title: "Success",
+          message: "Language updated successfully!",
+        });
+      } else {
+        showToast({
+          type: "error",
+          title: "Error",
+          message: "Something went wrong.",
+        });
+      }
+    },
+    onError: (error) => {
+      showToast({
+        type: "error",
+        title: "Error",
+        message: error.message || "Something went wrong.",
+      });
+    },
+  });
+
+  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [translationsLoading, setTranslationsLoading] = useState(false);
+
   // Initialize selectedLanguage from localStorage if available
   const [selectedLanguage, setSelectedLanguageState] = useState<string>(() => {
     if (typeof window !== "undefined") {
@@ -43,16 +74,25 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     }
     return "en";
   });
-  const [translations, setTranslations] = useState<Record<string, string>>({});
-  const [translationsLoading, setTranslationsLoading] = useState(false);
 
+
+  const handleStoreLanguage = async (code: string) => {
+    await setUserLanguageMutation({ variables: { languageCode: code } })
+  }
 
   useEffect(() => {
-    if (!languagesData || languagesLoading) return;
-    const languages = languagesData.languages || [];
-    const defaultLang = languages.find((l: any) => l.isDefault)?.code;
-    setSelectedLanguageState((prev) => prev || defaultLang);
-  }, [languagesData, languagesLoading]);
+    if (selectedLanguage) {
+      handleStoreLanguage(selectedLanguage);
+    }
+  }, [selectedLanguage, setUserLanguageMutation]);
+
+
+  // useEffect(() => {
+  //   if (!languagesData || languagesLoading) return;
+  //   const languages = languagesData.languages || [];
+  //   const defaultLang = languages.find((l: any) => l.isDefault)?.code;
+  //   setSelectedLanguageState((prev) => prev || defaultLang);
+  // }, [languagesData, languagesLoading]);
 
 
   useEffect(() => {
@@ -101,6 +141,7 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     </LangTranslationContext.Provider>
   );
 }
+
 
 // Hook to use anywhere
 export const useLangTranslation = () => {
