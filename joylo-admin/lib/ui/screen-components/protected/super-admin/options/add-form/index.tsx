@@ -72,7 +72,7 @@ export default function OptionAddForm({
         ...initialFormValuesTemplate,
         ...option,
         title: typeof option?.title === 'object' ? option.title[selectedLanguage] : option?.title || '',
-        description: typeof option?.description === 'object' ? option.description[selectedLanguage] : option?.description || '',
+        description: typeof option?.description === 'object' ? option?.description?.[selectedLanguage] : option?.description || '',
       },
     ],
   };

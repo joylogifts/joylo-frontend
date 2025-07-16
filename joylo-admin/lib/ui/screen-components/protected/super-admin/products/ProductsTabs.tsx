@@ -1,10 +1,11 @@
+import { useLangTranslation } from '@/lib/context/global/language.context';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 const tabs = [
-    { key: 'pending', label: 'Pending' },
-    { key: 'approved', label: 'Approved' },
-    { key: 'rejected', label: 'Rejected' },
+    { key: 'pending', label: 'pending' },
+    { key: 'approved', label: 'approved' },
+    { key: 'rejected', label: 'rejected' },
 ];
 
 type TabKey = 'pending' | 'approved' | 'rejected'
@@ -14,6 +15,9 @@ const ProductsTabs = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const activeTab = searchParams.get('activeTab') || 'pending'; 
+
+     // Hooks
+      const {getTranslation}= useLangTranslation();
     
     const handleTabClick = (tab: TabKey) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -38,7 +42,7 @@ const ProductsTabs = () => {
                                 : 'text-gray-500 hover:text-orange-400'
                             }
                         `}>
-                            {tab.label}
+                            {getTranslation(tab.label)}
                         </button>
                     ))
                 }

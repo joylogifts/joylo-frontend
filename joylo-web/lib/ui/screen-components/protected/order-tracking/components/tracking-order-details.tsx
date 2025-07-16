@@ -108,7 +108,7 @@ function TrackingOrderDetails({
                                     <br />
                                     {(() => {
                                         const desc = typeof item?.description === "object"
-                                            ? item?.description[selectedLanguage]
+                                            ? item?.description?.[selectedLanguage]
                                             : item?.description;
                                         if (typeof desc === "string") {
                                             return desc.length > 50

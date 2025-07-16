@@ -55,7 +55,7 @@ export const BANNERS_TABLE_COLUMNS = ({
       body: (banner: IBannersResponse) => (
         <span className="text-sm">
           {typeof banner.description === 'object'
-            ? banner.description[selectedLanguage] || ''
+            ? banner.description?.[selectedLanguage] || ''
             : banner.description || ''}
         </span>
       ),
@@ -66,7 +66,7 @@ export const BANNERS_TABLE_COLUMNS = ({
       body: (banner: IBannersResponse) => (
         <span className="text-sm">
           {typeof banner.description === 'object'
-            ? banner.description[selectedLanguage] || ''
+            ? banner.description?.[selectedLanguage] || ''
             : banner.description || ''}
         </span>
       ),

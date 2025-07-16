@@ -9,10 +9,10 @@ interface Props {
 }
 
 export const SUPER_ADMIN_PRODUCTS_COLUMNS = ({ menuItems, status }: Props) => {
-    const { selectedLanguage } = useLangTranslation();
+    const { getTranslation, selectedLanguage } = useLangTranslation();
     const columns = [
         {
-            headerName: 'Title', propertyName: 'productData.title', body: (item: IPendingProduct) => {
+            headerName: getTranslation('title'), propertyName: 'productData.title', body: (item: IPendingProduct) => {
                 return (
                     <div>
                         {typeof item.productData.title === "object" ? item.productData.title[selectedLanguage] : item.productData.title ?? '---'}
@@ -20,9 +20,9 @@ export const SUPER_ADMIN_PRODUCTS_COLUMNS = ({ menuItems, status }: Props) => {
                 )
             }
         },
-        { headerName: 'Store', propertyName: 'storeId.name' },
+        { headerName: getTranslation('store'), propertyName: 'storeId.name' },
         {
-            headerName: 'Category',
+            headerName: getTranslation('category'),
             propertyName: 'categoryId.title',
             body: (item: IPendingProduct) => {
                 return (
@@ -33,7 +33,7 @@ export const SUPER_ADMIN_PRODUCTS_COLUMNS = ({ menuItems, status }: Props) => {
             }
         },
         {
-            headerName: 'Image',
+            headerName: getTranslation('image'),
             propertyName: 'productData.image',
             body: (item: IPendingProduct) =>
                 item.productData.image ? (
@@ -46,7 +46,7 @@ export const SUPER_ADMIN_PRODUCTS_COLUMNS = ({ menuItems, status }: Props) => {
                 ) : null,
         },
         {
-            headerName: 'Status',
+            headerName: getTranslation('status'),
             propertyName: 'status',
             body: (item: IPendingProduct) => (
                 <div
@@ -61,7 +61,7 @@ export const SUPER_ADMIN_PRODUCTS_COLUMNS = ({ menuItems, status }: Props) => {
 
     if (status === 'pending') {
         columns.push({
-            headerName: 'Actions',
+            headerName: getTranslation('actions'),
             propertyName: 'actions',
             body: (item: IPendingProduct) => (
                 <ActionMenu items={menuItems} data={item} />
@@ -71,7 +71,7 @@ export const SUPER_ADMIN_PRODUCTS_COLUMNS = ({ menuItems, status }: Props) => {
 
     if (status === 'rejected') {
         columns.push({
-            headerName: 'Reason',
+            headerName: getTranslation('reason'),
             propertyName: 'reason'
         });
     }

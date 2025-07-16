@@ -771,7 +771,7 @@ export default function RestaurantDetailsScreen() {
                         </div>
 
                         <p className="text-gray-500 text-sm text-wrap">
-                          {typeof meal.description === "object" ? meal.description[selectedLanguage] : meal.description}
+                          {typeof meal.description === "object" ? meal.description?.[selectedLanguage] : meal.description}
                         </p>
 
                         <div className="flex items-center gap-2">
