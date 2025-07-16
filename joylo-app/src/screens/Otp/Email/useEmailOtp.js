@@ -2,7 +2,6 @@ import { useState, useContext, useEffect, useRef } from 'react'
 import { sendOtpToEmail, createUser } from '../../../apollo/mutations'
 import gql from 'graphql-tag'
 import Constants from 'expo-constants'
-import Constants from 'expo-constants'
 import { useMutation } from '@apollo/client'
 import ThemeContext from '../../../ui/ThemeContext/ThemeContext'
 import { theme } from '../../../utils/themeColors'
@@ -51,6 +50,10 @@ const useEmailOtp = () => {
       FlashMessage({
         message: error.graphQLErrors[0].message
       })
+    } else {
+      FlashMessage({
+        message: t("somethingWentWrong")
+      })
     }
   }
 
@@ -68,6 +71,10 @@ const useEmailOtp = () => {
     } else if (error.graphQLErrors) {
       FlashMessage({
         message: error.graphQLErrors[0].message
+      })
+    } else {
+      FlashMessage({
+        message: t("somethingWentWrong")
       })
     }
   }

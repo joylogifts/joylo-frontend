@@ -42,7 +42,7 @@ const FoodItem = ({ item, currentTheme, configuration, onPress }) => {
           <TextDefault H5 bold textColor={currentTheme.fontMainColor} style={{ }}>
             {configuration.currencySymbol} {price}
           </TextDefault>
-          {discountedPrice && discountedPrice > 0 && (
+          {discountedPrice > 0 && (
             <TextDefault small bold textColor={currentTheme.fontSecondColor} style={{textDecorationLine:  'line-through' }}>
               {configuration.currencySymbol} {withoutDiscountPrice}
             </TextDefault>

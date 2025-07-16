@@ -30,7 +30,7 @@ const LOGIN = gql`
 export const useCreateAccount = () => {
   const Analytics = analytics();
   const navigation = useNavigation();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [mutate] = useMutation(LOGIN, { onCompleted, onError });
   const [enableApple, setEnableApple] = useState(false);
   const [loginButton, loginButtonSetter] = useState(null);
@@ -38,7 +38,7 @@ export const useCreateAccount = () => {
   const { setTokenAsync } = useContext(AuthContext);
   const themeContext = useContext(ThemeContext);
   const [googleUser, setGoogleUser] = useState(null);
-  const currentTheme = { isRTL: i18n.dir() === 'rtl', ...theme[themeContext.ThemeValue] };
+  const currentTheme = theme[themeContext.ThemeValue];
 
   const {
     IOS_CLIENT_ID_GOOGLE,
