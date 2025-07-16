@@ -28,6 +28,7 @@ export interface ILoginResponse {
   restaurants: ISignInOwnerRestaurants[];
   permissions?: String[];
   __typename: string;
+  languageCode: string;
 }
 
 export interface IOwnerLoginDataResponse {

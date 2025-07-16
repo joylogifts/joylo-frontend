@@ -68,7 +68,6 @@ function OrderDetail(props) {
   const [cancelOrder, { loading: loadingCancel }] = useMutation(CANCEL_ORDER, {
     onError,
     onCompleted: (data) => {
-      console.log({ data })
       navigation.navigate('Main')
     },
     variables: { orderId : id }
@@ -286,7 +285,7 @@ function OrderDetail(props) {
         <PriceRow theme={currentTheme} title={getTranslation('total')} currency={configuration.currencySymbol} price={total.toFixed(2)} />
 
         {
-          ORDER_STATUS_ENUM.DELIVERED &&
+          order?.orderStatus === ORDER_STATUS_ENUM.DELIVERED &&
           <View style={{ marginTop: scale(20), marginRight: scale(20), marginLeft: scale(20), marginBottom: scale(3) }}>
             <Button text={getTranslation('rate_your_rider')} buttonProps={{ onPress: handleRatingYourRiderBtn }} buttonStyles={styles().ratingButtonContainer(currentTheme)} textProps={{ textColor: currentTheme.black }} textStyles={{ ...alignment.Pmedium }}></Button>
           </View>

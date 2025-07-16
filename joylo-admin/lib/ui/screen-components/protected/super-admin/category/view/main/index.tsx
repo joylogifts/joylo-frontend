@@ -93,7 +93,7 @@ export default function CategoryMain({
     {
       label: getTranslation('edit'),
       command: (data?: ICategory) => {
-        console.log({ data })
+
         if (data) {
           setIsAddCategoryVisible(true);
           setCategory(data);

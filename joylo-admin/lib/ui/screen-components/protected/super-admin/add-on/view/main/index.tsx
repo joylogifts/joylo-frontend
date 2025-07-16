@@ -32,7 +32,7 @@ import { DELETE_ADDON } from '@/lib/api/graphql';
 import { GET_ADDONS } from '@/lib/api/graphql/queries/addon';
 
 // Context
-import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 
 export default function OptionMain({
@@ -42,7 +42,7 @@ export default function OptionMain({
   // Context
 
   // Hooks
-  const t = useTranslations();
+  const { getTranslation: t, } = useLangTranslation();
   const { showToast } = useToast();
 
   // State - Table
@@ -89,7 +89,7 @@ export default function OptionMain({
   };
 
   // Restaurant Profile Complete
-  function onFetchAddonsByRestaurantCompleted() {}
+  function onFetchAddonsByRestaurantCompleted() { }
   // Restaurant Zone Info Error
   function onErrorFetchAddonsByRestaurant() {
     showToast({

@@ -241,7 +241,7 @@ const Reviews = ({ navigation, route }) => {
           </View>
           <View style={{ ...alignment.MBlarge }}>
             {sorted.map((review) => (
-              <ReviewCard key={review._id} name={review.order.user.name} description={typeof review.description === "object" ? review.description[selectedLanguage] : review.description} rating={review.rating} date={calculateDaysAgo(review.createdAt)} theme={currentTheme} />
+              <ReviewCard key={review._id} name={review.order.user.name} description={typeof review.description === "object" ? review.description?.[selectedLanguage] : review.description} rating={review.rating} date={calculateDaysAgo(review.createdAt)} theme={currentTheme} />
             ))}
           </View>
           <View style={{ ...alignment.MTlarge }}>

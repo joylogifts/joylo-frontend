@@ -27,9 +27,9 @@ export const ConfigurationProvider = ({
   const configuration =
     loading || error || !data.configuration ?
       { currency: "", currencySymbol: "", deliveryRate: 0, costType: "perKM" }
-    : data.configuration;
+      : data.configuration;
 
-  
+
   const GOOGLE_CLIENT_ID = configuration.webClientID;
   const STRIPE_PUBLIC_KEY = configuration.publishableKey;
   const PAYPAL_KEY = configuration.clientId;
@@ -58,6 +58,7 @@ export const ConfigurationProvider = ({
   const FIREBASE_AUTH_DOMAIN = configuration?.authDomain;
 
   const { SERVER_URL } = getEnv(ENV);
+
 
   return (
     <ConfigurationContext.Provider

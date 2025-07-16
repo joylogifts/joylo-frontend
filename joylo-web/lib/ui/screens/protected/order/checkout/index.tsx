@@ -65,6 +65,7 @@ import HomeIcon from "../../../../../assets/home_icon.png";
 import RestIcon from "../../../../../assets/rest_icon.png";
 import { onUseLocalStorage } from "@/lib/utils/methods/local-storage";
 import { useLangTranslation } from "@/lib/context/global/language.context";
+import Image from "next/image";
 
 export default function OrderCheckoutScreen() {
     const { getTranslation, selectedLanguage } = useLangTranslation();
@@ -247,9 +248,9 @@ export default function OrderCheckoutScreen() {
                 variation: food.variation._id,
                 addons: food.addons
                     ? food.addons.map(({ _id, options }) => ({
-                          _id,
-                          options: options.map(({ _id }) => _id),
-                      }))
+                        _id,
+                        options: options.map(({ _id }) => _id),
+                    }))
                     : [],
                 specialInstructions: food.specialInstructions,
             };
@@ -775,7 +776,7 @@ export default function OrderCheckoutScreen() {
                     </GoogleMap>
                 ) : (
                     <>
-                        <img
+                        <Image
                             alt="Map showing delivery route"
                             className="w-full h-64 object-cover"
                             height="300"
@@ -913,7 +914,7 @@ export default function OrderCheckoutScreen() {
                                         className="flex items-center justify-between mb-2"
                                     >
                                         <div className="flex items-start">
-                                            <img
+                                            <Image
                                                 alt="Big Share meal"
                                                 className="w-12 h-12 rounded-full mr-2"
                                                 height="50"
@@ -937,7 +938,7 @@ export default function OrderCheckoutScreen() {
                                                                 >
                                                                     +{" "}
                                                                     {
-                                                                         typeof optionTitle === "object" ?optionTitle[selectedLanguage] : optionTitle
+                                                                        typeof optionTitle === "object" ? optionTitle[selectedLanguage] : optionTitle
                                                                     }
                                                                 </p>
                                                             );
@@ -1159,7 +1160,7 @@ export default function OrderCheckoutScreen() {
                             {deliveryType === "Delivery" && (
                                 <div className="flex justify-between mb-1 text-xs lg:text-[14px]">
                                     <span className="font-inter text-gray-900 leading-5">
-                                        
+
                                         {getTranslation("delivery_with_distance_label").replace("{distance}", distance)}
                                     </span>
                                     <span className="font-inter text-gray-900 leading-5">
@@ -1253,7 +1254,7 @@ export default function OrderCheckoutScreen() {
                             id="price-summary"
                         >
                             <h2 className="text-sm lg:text-base font-semibold text-left flex justify-between">
-                                {getTranslation("prices_in_label")} 
+                                {getTranslation("prices_in_label")}
                                 <InfoSvg />
                             </h2>
                             <p className="text-gray-400 mb-3 text-left leading-5 tracking-normal font-inter text-xs lg:text-[10px]">
@@ -1276,7 +1277,7 @@ export default function OrderCheckoutScreen() {
                                         {getTranslation(
                                             "delivery_with_distance_label"
                                         ) +
-                                        distance}
+                                            distance}
                                     </span>
                                     <span className="font-inter text-gray-900 leading-5">
                                         {CURRENCY_SYMBOL}

@@ -199,7 +199,7 @@ const BannersAddForm = ({
                             name="description"
                             placeholder={getTranslation('description')}
                             maxLength={35}
-                            value={typeof values.description === "object" ? values.description[selectedLanguage] || '' : values.description || ''}
+                            value={typeof values.description === "object" ? values.description?.[selectedLanguage] || '' : values.description || ''}
                             onChange={handleChange}
                             showLabel={true}
                             style={{

@@ -61,7 +61,7 @@ export default function CuisineForm({
       : '',
     description: isEditing.bool
       ? typeof isEditing?.data?.description === 'object'
-        ? isEditing?.data?.description[selectedLanguage]
+        ? isEditing?.data?.description?.[selectedLanguage]
         : isEditing?.data?.description
       : '',
     shopType: {

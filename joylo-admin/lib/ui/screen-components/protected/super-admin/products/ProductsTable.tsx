@@ -10,7 +10,7 @@ import { useMutation } from '@apollo/client';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
-const initState = { pendingProductRequestId : '' , status : ''}
+const initState = { pendingProductRequestId: '', status: '' }
 
 const ProductsTable = ({ status }: { status: string }) => {
     const t = useTranslations();
@@ -18,27 +18,27 @@ const ProductsTable = ({ status }: { status: string }) => {
 
 
     const [products, setProducts] = useState<IPendingProduct[]>([]);
-    const [pagination , setPagination] = useState<IProductsPagination>({
-        currentPage : 1,
-        totalPages : 1,
-        totalItems : 1,
-        pageSize : 10
+    const [pagination, setPagination] = useState<IProductsPagination>({
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: 1,
+        pageSize: 10
     })
 
     const [updatedData, setUpdatedData] = useState(initState);
-    const [reason , setReason] = useState<string>('');
+    const [reason, setReason] = useState<string>('');
 
 
     const {
         data,
-        loading,
+        loading
     } = useQueryGQL(
         GET_PENDING_PRODUCTS,
-        { 
-            filter: { status } ,
-            pagination : { 
-                pageNo : pagination.currentPage , 
-                pageSize : 10 
+        {
+            filter: { status },
+            pagination: {
+                pageNo: pagination.currentPage,
+                pageSize: 10
             }
         },
         {
@@ -58,13 +58,13 @@ const ProductsTable = ({ status }: { status: string }) => {
     useEffect(() => {
         if (data?.getPendingProducts) {
             setProducts(data.getPendingProducts.data);
-            setPagination({...data.getPendingProducts.pagination , pageSize : 10 })
+            setPagination({ ...data.getPendingProducts.pagination, pageSize: 10 })
         }
     }, [data]);
 
-    const onPageChange = ( page : number ) => {
-        setPagination((prev : IProductsPagination) => {
-            return {...prev , currentPage : page }
+    const onPageChange = (page: number) => {
+        setPagination((prev: IProductsPagination) => {
+            return { ...prev, currentPage: page }
         })
     }
 
@@ -76,7 +76,13 @@ const ProductsTable = ({ status }: { status: string }) => {
             refetchQueries: [
                 {
                     query: GET_PENDING_PRODUCTS,
-                    variables: { status }
+                    variables: {
+                        filter: { status },
+                        pagination: {
+                            pageNo: 1,
+                            pageSize: 10
+                        }
+                    },
                 },
             ],
         }
@@ -88,7 +94,7 @@ const ProductsTable = ({ status }: { status: string }) => {
             label: t('Approve'),
             command: (item?: IPendingProduct) => {
                 if (item?._id) {
-                    setUpdatedData({ pendingProductRequestId: item?._id, status: 'approved'})
+                    setUpdatedData({ pendingProductRequestId: item?._id, status: 'approved' })
                 }
             },
         },
@@ -112,18 +118,19 @@ const ProductsTable = ({ status }: { status: string }) => {
                         Loading...
                     </div>
                 :
+                
                     <>
                         <Table
                             data={products.map((item) => ({ _id: item.id, ...item }))}
                             loading={loading}
-                            columns={SUPER_ADMIN_PRODUCTS_COLUMNS({ menuItems , status })}
+                            columns={SUPER_ADMIN_PRODUCTS_COLUMNS({ menuItems, status })}
                             selectedData={[]}
                             setSelectedData={function (): void {
                                 throw new Error('Function not implemented.');
                             }}
                             onPageChange={onPageChange}
                             currentPage={pagination.currentPage}
-                            totalRecords={pagination.totalItems}   
+                            totalRecords={pagination.totalItems}
                             rowsPerPage={pagination.pageSize}
                         />
                         <CustomDialog
@@ -133,13 +140,13 @@ const ProductsTable = ({ status }: { status: string }) => {
                                 setUpdatedData(initState);
                             }}
                             buttonConfig={{
-                                primaryButtonProp : {
-                                    bgColor : updatedData.status === 'approved' ? 'bg-green-500' : 'bg-red-500'
+                                primaryButtonProp: {
+                                    bgColor: updatedData.status === 'approved' ? 'bg-green-500' : 'bg-red-500'
                                 }
                             }}
                             onConfirm={() => {
                                 updateStatus({
-                                    variables: {...updatedData , reason },
+                                    variables: { ...updatedData, reason },
                                     onCompleted: () => {
                                         showToast({
                                             type: 'success',

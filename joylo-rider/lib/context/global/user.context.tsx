@@ -30,6 +30,7 @@ import {
   IRiderEarningsArray,
 } from "@/lib/utils/interfaces/rider-earnings.interface";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLanguage } from "./language.context";
 
 const UserContext = createContext<IUserContextProps>({} as IUserContextProps);
 
@@ -58,6 +59,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
 
   // Context
   // const { locationPermission } = useLocationContext()
+  const { setSelectedLanguage, handleStoreDefaultLanguage } = useLanguage();
 
   const {
     loading: loadingProfile,
@@ -166,9 +168,9 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
           if (!token) return;
           if (
             coordinatesRef.current?.coords?.latitude ===
-              location.coords?.latitude &&
+            location.coords?.latitude &&
             coordinatesRef.current?.coords?.longitude ===
-              location.coords?.longitude
+            location.coords?.longitude
           )
             return;
           coordinatesRef.current = location;
@@ -209,6 +211,18 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
       }
     };
   }, [dataProfile]);
+
+
+  useEffect(() => {
+    console.log("dataProfile?.rider?.languageCode", dataProfile?.rider?.languageCode)
+    if (dataProfile?.rider?.languageCode) {
+
+      setSelectedLanguage(dataProfile?.rider?.languageCode)
+    } else {
+      handleStoreDefaultLanguage();
+    }
+  }, [dataProfile])
+
 
   useEffect(() => {
     if (!userId) return;

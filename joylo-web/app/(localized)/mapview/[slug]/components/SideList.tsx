@@ -1,4 +1,5 @@
 import { useLangTranslation } from '@/lib/context/global/language.context';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 
@@ -19,10 +20,10 @@ interface SideListProps {
 }
 
 const SideList: React.FC<SideListProps> = ({ data, onHover }) => {
-    const {getTranslation} = useLangTranslation();
+    const { getTranslation } = useLangTranslation();
     const router = useRouter();
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-    
+
     const getRedirectUrl = (item) => {
         return `/${item.shopType === "restaurant" ? "restaurant" : "store"}/${item?.slug}/${item._id}`;
     };
@@ -79,7 +80,7 @@ const SideList: React.FC<SideListProps> = ({ data, onHover }) => {
                         {getTranslation("no_data_available_to_show")}
                     </div>
                 ) : (
-                    data.map((item,index) => (
+                    data.map((item, index) => (
                         <div
                             key={item._id}
                             ref={(el) => {
@@ -94,7 +95,7 @@ const SideList: React.FC<SideListProps> = ({ data, onHover }) => {
                                 router.push(getRedirectUrl(item));
                             }}
                         >
-                            <img
+                            <Image
                                 src={item.image}
                                 alt={item.name}
                                 className="w-16 h-16 object-cover rounded-md mr-4"

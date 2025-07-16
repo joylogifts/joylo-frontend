@@ -19,6 +19,7 @@ import { useLangTranslation } from "@/lib/context/global/language.context";
 import useToast from "@/lib/hooks/useToast";
 import NameUpdateModal from "./update-name";
 import { Dropdown } from 'primereact/dropdown';
+import Image from "next/image";
 
 export default function SettingsMain() {
     const { getTranslation } = useLangTranslation();
@@ -276,7 +277,7 @@ export default function SettingsMain() {
                             }))}
                             itemTemplate={(option) => (
                                 <div className="flex items-center">
-                                    <img src={option?.flag} alt="" style={{ width: 20, marginRight: 8 }} />
+                                    <Image src={option?.flag} alt="" style={{ width: 20, marginRight: 8 }} />
                                     <span>{option?.label}</span>
                                 </div>
                             )}

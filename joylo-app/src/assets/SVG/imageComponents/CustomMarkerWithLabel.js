@@ -20,8 +20,8 @@ const getStyles = (currentTheme) => StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 32,
+    height: 32,
   },
   label: {
     marginTop: 2,

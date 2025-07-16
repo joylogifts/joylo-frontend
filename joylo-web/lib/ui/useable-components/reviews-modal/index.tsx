@@ -230,7 +230,7 @@ const ReviewsModal = ({
                                     </div>
                                     <p className="text-gray-500 font-normal md:text-lg text-sm">
                                         {typeof review?.description === "object"
-                                            ? review?.description[selectedLanguage]
+                                            ? review?.description?.[selectedLanguage]
                                             : review?.description}
                                     </p>
                                 </div>

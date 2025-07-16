@@ -76,7 +76,7 @@ const ItemDetails = ({
                     className="font-[Inter] text-[12px] font-semibold text-left"
                     style={{ color: appTheme.fontSecondColor }}
                   >
-                    {typeof item.description === "object"? item?.description[selectedLanguage]: item?.description ?? "-"}
+                    {typeof item.description === "object"? item?.description?.[selectedLanguage]: item?.description ?? "-"}
                   </Text>
                 </View>
                 <View>

@@ -52,3 +52,9 @@ export const MODIFY_TRANSLATIONS = gql`
     upsertDefaultTranslations(inputs: $inputs)
   }
 `;
+
+export const SET_USER_LANGUAGE = gql`
+  mutation SetUserLanguage($languageCode: String!) {
+    setUserLanguage(languageCode: $languageCode)
+  }
+`;

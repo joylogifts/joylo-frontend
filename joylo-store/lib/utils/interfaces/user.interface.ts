@@ -37,6 +37,7 @@ export interface IStoreProfile {
   __typename: string;
   _id: string;
   unique_restaurant_id: string;
+  languageCode?: string;
   orderId: number;
   orderPrefix: string;
   name: string;

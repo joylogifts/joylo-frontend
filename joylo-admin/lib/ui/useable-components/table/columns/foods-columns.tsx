@@ -104,7 +104,7 @@ export const FOODS_TABLE_COLUMNS = ({
       body: (item: IFoodNew) => (
         <div>
           {typeof item.description === 'object'
-            ? item.description[selectedLanguage] || ''
+            ? item.description?.[selectedLanguage] || ''
             : item.description || ''}
         </div>
       ),
@@ -131,7 +131,7 @@ export const FOODS_TABLE_COLUMNS = ({
         ),
     },
     {
-      headerName: getTranslation('out_of_Stock'),
+      headerName: getTranslation('out_of_stock'),
       propertyName: 'isOutOfStock',
       body: (item: IFoodNew) => {
         return (
