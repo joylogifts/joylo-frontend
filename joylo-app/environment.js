@@ -32,6 +32,9 @@ const useEnvVars = (env = Updates.channel) => {
   }
 ``
   return {
+    // GRAPHQL_URL: 'http:/localhost:8001/graphql',
+    // WS_GRAPHQL_URL: 'ws://localhost:8001/graphql',
+    // SERVER_URL: 'http://localhost:8001/',
     GRAPHQL_URL: 'https://base.clobit.com/graphql',
     WS_GRAPHQL_URL: 'wss://base.clobit.com/graphql',
     SERVER_URL: 'https://base.clobit.com/',

@@ -4,6 +4,7 @@ import 'react-native-get-random-values';
 
 import { ApolloProvider } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import 'react-native-get-random-values';
 // import 'expo-dev-client'
 import * as Device from 'expo-device'
 import * as Font from 'expo-font'
@@ -12,8 +13,8 @@ import * as Updates from 'expo-updates'
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { ActivityIndicator, BackHandler, I18nManager, LogBox, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native'
 import FlashMessage from 'react-native-flash-message'
-
-// import * as Sentry from 'sentry-expo'
+import 'react-native-gesture-handler'
+import * as Sentry from '@sentry/react-native'
 import useEnvVars, { isProduction } from './environment'
 import setupApolloClient from './src/apollo/index'
 import { MessageComponent } from './src/components/FlashMessage/MessageComponent'
@@ -39,14 +40,12 @@ import TextDefault from './src/components/Text/TextDefault/TextDefault'
 import { LanguageProvider } from './src/context/Language'
 
 
-// LogBox.ignoreLogs([
-//   // 'Warning: ...',
-//   // 'Sentry Logger ',
-//   'Constants.deviceYearClass'
-// ]) // Ignore log notification by message
-// LogBox.ignoreAllLogs() // Ignore all log notifications
-
-
+LogBox.ignoreLogs([
+  // 'Warning: ...',
+  'Sentry Logger ',
+  'Constants.deviceYearClass'
+]) // Ignore log notification by message
+LogBox.ignoreAllLogs() // Ignore all log notifications
 
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => {
@@ -66,7 +65,7 @@ export default function App() {
   const responseListener = useRef()
   const [orderId, setOrderId] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
-  // const { SENTRY_DSN } = useEnvVars()
+  const { SENTRY_DSN } = useEnvVars()
   const client = setupApolloClient()
 
   useKeepAwake()
@@ -139,19 +138,17 @@ export default function App() {
   }, [])
 
   // For Sentry
-  // useEffect(() => {
-  //   // if (SENTRY_DSN) {
-  //   if (false) {
-  //     Sentry.init({
-  //       dsn: SENTRY_DSN,
-  //       enableInExpoDevelopment: !isProduction ? true : false,
-  //       environment: isProduction ? 'production' : 'development',
-  //       debug: !isProduction,
-  //       tracesSampleRate: 1.0,
-  //       enableTracing: true
-  //     })
-  //   }
-  // }, [SENTRY_DSN])
+  useEffect(() => {
+      Sentry.init({
+        dsn: SENTRY_DSN,
+        enableInExpoDevelopment: !isProduction ? true : false,
+        environment: isProduction ? 'production' : 'development',
+        debug: !isProduction,
+        tracesSampleRate: 1.0,
+        enableTracing: true
+      })
+  }, [SENTRY_DSN])
+
 
   // For App Update
   useEffect(() => {

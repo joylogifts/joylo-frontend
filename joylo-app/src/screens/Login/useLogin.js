@@ -142,15 +142,19 @@ export const useLogin = () => {
     try {
       if (validateCredentials()) {
         let notificationToken = null
-        if (Device.isDevice) {
-          const { status: existingStatus } = await Notifications.getPermissionsAsync()
-          if (existingStatus === 'granted') {
-            notificationToken = (
-              await Notifications.getExpoPushTokenAsync({
-                projectId: Constants.expoConfig.extra.eas.projectId
-              })
-            ).data
+        try {
+          if (Device.isDevice) {
+            const { status: existingStatus } = await Notifications.getPermissionsAsync()
+            if (existingStatus === 'granted') {
+              notificationToken = (
+                await Notifications.getExpoPushTokenAsync({
+                  projectId: Constants.expoConfig.extra.eas.projectId
+                })
+              ).data
+            }
           }
+        } catch (error) {
+          console.log(error)
         }
         LoginMutation({
           variables: {

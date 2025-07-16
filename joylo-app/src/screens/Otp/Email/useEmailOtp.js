@@ -50,6 +50,10 @@ const useEmailOtp = () => {
       FlashMessage({
         message: error.graphQLErrors[0].message
       })
+    } else {
+      FlashMessage({
+        message: t("somethingWentWrong")
+      })
     }
   }
 
@@ -67,6 +71,10 @@ const useEmailOtp = () => {
     } else if (error.graphQLErrors) {
       FlashMessage({
         message: error.graphQLErrors[0].message
+      })
+    } else {
+      FlashMessage({
+        message: t("somethingWentWrong")
       })
     }
   }
@@ -112,9 +120,14 @@ const useEmailOtp = () => {
     try {
       let notificationToken = null
       if (Device.isDevice) {
-        const { status } = await Notifications.requestPermissionsAsync()
-        if (status === 'granted') {
-          notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data
+        try {
+          const { status } = await Notifications.requestPermissionsAsync()
+          if (status === 'granted') {
+            notificationToken = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data
+          }
+        } catch (error) {
+          console.log('mutateRegister error=>', error)
+          notificationToken = null
         }
       }
       mutateUser({
@@ -124,7 +137,8 @@ const useEmailOtp = () => {
           password: user.password,
           name: user.name,
           picture: '',
-          notificationToken: notificationToken
+          notificationToken: notificationToken,
+          phoneIsVerified: false
         }
       })
     } catch (error) {

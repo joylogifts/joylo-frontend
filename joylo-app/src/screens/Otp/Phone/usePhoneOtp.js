@@ -43,6 +43,10 @@ const usePhoneOtp = () => {
       FlashMessage({
         message: error.graphQLErrors[0].message
       })
+    } else {
+      FlashMessage({
+        message: t("somethingWentWrong")
+      })
     }
   }
 
@@ -60,6 +64,10 @@ const usePhoneOtp = () => {
     } else if (error.graphQLErrors) {
       FlashMessage({
         message: error.graphQLErrors[0].message
+      })
+    } else {
+      FlashMessage({
+        message: t("somethingWentWrong")
       })
     }
   }
@@ -165,32 +173,6 @@ const usePhoneOtp = () => {
       timer && clearTimeout(timer)
     }
   }, [configuration, profile])
-
-  const phoneOtp = async () => {
-    try {
-      setOtpError(false)
-      // Works on both Android and iOS
-      if (otp === TEST_OTP) {
-        if (!profile?.phone && !phone) {
-          FlashMessage({
-            message: getTranslation('mobile_err_1')
-          })
-          return
-        }
-        mutateUser({
-          variables: {
-            name: name ?? profile?.name,
-            phone: phone ?? profile?.phone,
-            phoneIsVerified: true
-          }
-        })
-      }
-    } catch (err) {
-      FlashMessage({
-        message: getTranslation('something_went_wrong')
-      })
-    }
-  }
 
   return {
     otp,

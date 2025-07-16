@@ -2,7 +2,7 @@
   "expo": {
     "name": "joylo",
     "scheme": "joylo-app",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "Joylo is a starter kit food ordering app built in React Native using Expo for IOS and Android. It's made keeping good aesthetics in mind as well keeping the best coding practices in mind. Its fully customisable to easily help you in your next food delivery project. https://market.nativebase.io/view/react-native-food-delivery-backend-app",
     "slug": "joylo-app",
     "owner": "joylogifts",
@@ -49,7 +49,7 @@
       "androidCollapsedTitle": "Joylo Multivendor"
     },
     "android": {
-      "versionCode": 1,
+      "versionCode": 3,
       "package": "com.joylo.multivendor",
       "googleServicesFile": "./google-services.json",
       "userInterfaceStyle": "automatic",
@@ -100,21 +100,17 @@
         }
       ],
       [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $Joylo Multivendor to use your location."
         }
       ],
-      "react-native-video",
       "expo-font",
       "expo-localization",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-apple-authentication",
+      "expo-video",
+      "expo-apple-authentication"
     ],
     "extra": {
       "eas": {
