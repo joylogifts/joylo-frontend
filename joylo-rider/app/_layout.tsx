@@ -74,26 +74,26 @@ function RootLayout() {
     <AnimatedSplashScreen>
       <AppThemeProvidor>
         <ApolloProvider client={client}>
-          <AuthProvider client={client}>
-            <LanguageProvider>
-            <UserProvider>
-              <InternetProvider>
-                <ConfigurationProvider>
-                  <LocationProvider>
-                    <SoundProvider>
-                      <LocationPermissionComp>
-                        <RootStackLayout />
-                        <UnavailableStatus />
-                      </LocationPermissionComp>
-                      <StatusBar style="inverted" />
-                      <FlashMessage position="bottom" />
-                    </SoundProvider>
-                  </LocationProvider>
-                </ConfigurationProvider>
-              </InternetProvider>
-            </UserProvider>
-            </LanguageProvider>
-          </AuthProvider>
+          <LanguageProvider>
+            <AuthProvider client={client}>
+              <UserProvider>
+                <InternetProvider>
+                  <ConfigurationProvider>
+                    <LocationProvider>
+                      <SoundProvider>
+                        <LocationPermissionComp>
+                          <RootStackLayout />
+                          <UnavailableStatus />
+                        </LocationPermissionComp>
+                        <StatusBar style="inverted" />
+                        <FlashMessage position="bottom" />
+                      </SoundProvider>
+                    </LocationProvider>
+                  </ConfigurationProvider>
+                </InternetProvider>
+              </UserProvider>
+            </AuthProvider>
+          </LanguageProvider>
         </ApolloProvider>
       </AppThemeProvidor>
     </AnimatedSplashScreen>

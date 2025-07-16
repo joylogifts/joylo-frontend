@@ -25,3 +25,10 @@ export const DEFAULT_STORE_CREDS = gql`
     }
   }
 `;
+
+
+export const SET_USER_LANGUAGE = gql`
+  mutation SetUserLanguage($languageCode: String!) {
+    setUserLanguage(languageCode: $languageCode)
+  }
+`;

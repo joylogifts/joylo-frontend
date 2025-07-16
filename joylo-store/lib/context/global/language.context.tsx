@@ -1,9 +1,10 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react'
-import { useQuery, ApolloError } from '@apollo/client'
+import { useQuery, ApolloError, useMutation } from '@apollo/client'
 import { GET_LANGUAGES, GET_TRANSLATIONS_BY_LANGUAGE_CODE } from '../../apollo/queries/language.query'
 import { useTranslation } from 'react-i18next'
 import { i18n } from 'i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { SET_USER_LANGUAGE } from '@/lib/api/graphql'
 
 interface Language {
   _id: string
@@ -36,7 +37,8 @@ interface LanguageContextType {
   translations: Record<string, string>
   translationsLoading: boolean
   getTranslation: (key: string) => string
-  i18n: i18n
+  i18n: i18n,
+  handleStoreDefaultLanguage: () => void
 }
 
 const LanguageContext = createContext<LanguageContextType | null>(null)
@@ -54,18 +56,60 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [translations, setTranslations] = useState<Record<string, string>>({})
   const [translationsLoading, setTranslationsLoading] = useState(false)
 
+
+  const [setUserLanguageMutation] = useMutation(SET_USER_LANGUAGE, {
+    onCompleted: (data) => {
+      // if (data.setUserLanguage) {
+      //   showToast({
+      //     type: "success",
+      //     title: "Success",
+      //     message: "Language updated successfully!",
+      //   });
+      // } else {
+      //   showToast({
+      //     type: "error",
+      //     title: "Error",
+      //     message: "Something went wrong.",
+      //   });
+      // }
+    },
+    onError: (error) => {
+      // showToast({
+      //   type: "error",
+      //   title: "Error",
+      //   message: error.message || "Something went wrong.",
+      // });
+    },
+  });
+
+
+  const handleStoreLanguage = async (code: string) => {
+    await setUserLanguageMutation({ variables: { languageCode: code } })
+  }
+
+  const handleStoreDefaultLanguage = async () => {
+    if (!languagesLoading && languagesData?.languages) {
+      const defaultLang = languagesData.languages.find((l) => l.isDefault)?.code;
+      if (defaultLang) {
+        setSelectedLanguage(defaultLang);
+      }
+    }
+  }
+
+
+
   // Initialize language from AsyncStorage
   useEffect(() => {
     const initLanguage = async () => {
       try {
         const storedLang = await AsyncStorage.getItem('lang')
         if (storedLang) {
-          setSelectedLanguage(storedLang)
+          // setSelectedLanguage(storedLang)
           await i18n.changeLanguage(storedLang)
         } else if (!languagesLoading && languagesData?.languages) {
           const defaultLang = languagesData.languages.find((l: Language) => l.isDefault)?.code
           if (defaultLang) {
-            setSelectedLanguage(defaultLang)
+            // setSelectedLanguage(defaultLang)
             await i18n.changeLanguage(defaultLang)
             await AsyncStorage.setItem('lang', defaultLang)
           }
@@ -80,6 +124,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   // Update translations when language changes
   useEffect(() => {
     if (selectedLanguage) {
+      handleStoreLanguage(selectedLanguage)
       i18n.changeLanguage(selectedLanguage)
       AsyncStorage.setItem('lang', selectedLanguage)
     }
@@ -103,7 +148,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const getTranslation = (key: string): string => {
     return translations[key] ?? key
   }
-  
+
 
   const value: LanguageContextType = {
     languages: languagesData?.languages || [],
@@ -114,7 +159,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     translations,
     translationsLoading,
     getTranslation,
-    i18n
+    i18n,
+    handleStoreDefaultLanguage
   }
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
