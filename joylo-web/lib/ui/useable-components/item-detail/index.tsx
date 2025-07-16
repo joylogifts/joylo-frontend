@@ -271,7 +271,7 @@ export default function FoodItemDetail(props: IFoodItemDetalComponentProps) {
           {selectedVariation?.price.toFixed(2)}
         </p>
         <p className="font-inter font-normal text-gray-500 text-[12px] md:text-[13px] lg:text-[14px] leading-[18px] md:leading-[20px]">
-          {typeof foodItem?.description === "object" ? foodItem?.description[selectedLanguage] : foodItem?.description}
+          {typeof foodItem?.description === "object" ? foodItem?.description?.[selectedLanguage] : foodItem?.description}
         </p>
 
         <Divider />

@@ -4,8 +4,8 @@
 import { useState } from 'react';
 
 // Component
-import LanguageAddForm from '@/lib/ui/screen-components/protected/super-admin/language-management/form/language-add-form';
-import DefaultTranslationAddForm from '@/lib/ui/screen-components/protected/super-admin/language-management/form/default-translation-add-form';
+import LanguageAddForm from '@/lib/ui/screen-components/protected/super-admin/language-management/form';
+import DefaultTranslationAddForm from '@/lib/ui/screen-components/protected/super-admin/language-management/form';
 import LanguageManagementHeader from '@/lib/ui/screen-components/protected/super-admin/language-management/view/header';
 import LanguageManagementMain from '@/lib/ui/screen-components/protected/super-admin/language-management/view/main';
 import LanguageManagementMobilesTabs from '@/lib/ui/screen-components/protected/super-admin/language-management/view/mobile-tabs';

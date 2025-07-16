@@ -20,7 +20,7 @@ import {
   faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function UserStats() {

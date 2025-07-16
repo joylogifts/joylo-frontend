@@ -344,6 +344,7 @@ export const profile = `
               selected
             }
             favourite
+            languageCode
           }
         }`
 

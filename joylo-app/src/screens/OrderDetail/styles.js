@@ -62,6 +62,14 @@ const styles = (props = null) =>
       borderColor: theme.borderLight,
       borderTopWidth: StyleSheet.hairlineWidth
     }),
+    ratingButtonContainer: theme => ({
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme !== null ? theme?.buttonBackground : 'grey',
+      borderRadius: scale(25),
+
+
+    }),
     cancelButtonContainer: theme => ({
       alignItems: 'center',
       justifyContent: 'center',

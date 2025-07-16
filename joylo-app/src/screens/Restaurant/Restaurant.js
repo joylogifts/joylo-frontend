@@ -124,7 +124,7 @@ function Restaurant(props) {
           const _title = typeof deals.title === 'object' ? deals.title[selectedLanguage] : deals.title
           const title = _title.search(regex)
           if (title < 0) {
-            const _description = typeof deals.description === 'object' ? deals.description[selectedLanguage] : deals.description
+            const _description = typeof deals.description === 'object' ? deals.description?.[selectedLanguage] : deals.description
             const description = _description.search(regex)
             if (description > 0) {
               filteredData.push(deals)
@@ -544,7 +544,7 @@ function Restaurant(props) {
                               {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                             </TextDefault>
                             <TextDefault style={styles(currentTheme).priceText} small isRTL>
-                              {wrapContentAfterWords(typeof item?.description === "object" ? item?.description[selectedLanguage] : item?.description, 5)}
+                              {wrapContentAfterWords(typeof item?.description === "object" ? item?.description?.[selectedLanguage] : item?.description, 5)}
                             </TextDefault>
                             <View style={styles(currentTheme).dealPrice}>
                               <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>
@@ -689,7 +689,7 @@ function Restaurant(props) {
                               {typeof item?.title === "object" ? item?.title[selectedLanguage] : item?.title}
                             </TextDefault>
                             <TextDefault style={styles(currentTheme).priceText} small isRTL>
-                              {wrapContentAfterWords(typeof item?.description === "object" ? item?.description[selectedLanguage] : item.description, 5)}
+                              {wrapContentAfterWords(typeof item?.description === "object" ? item?.description?.[selectedLanguage] : item.description, 5)}
                             </TextDefault>
                             <View style={styles(currentTheme).dealPrice}>
                               <TextDefault numberOfLines={1} textColor={currentTheme.fontMainColor} style={styles(currentTheme).priceText} bolder small isRTL>

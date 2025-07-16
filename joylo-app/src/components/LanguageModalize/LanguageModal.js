@@ -52,6 +52,8 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
   const [loadinglang, setLoadingLang] = useState(false)
   const [languageName, languageNameSetter] = useState('English')
 
+  const [localSelectedLanguage, setLocalSelectedLanguage] = useState(selectedLanguage)
+
   useEffect(() => {
     if (modalVisible) {
       determineInitialLanguage()
@@ -94,18 +96,19 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
 
   async function onSelectedLanguage() {
     try {
-      setLoadingLang(true)
-      const languageInd = activeRadio
-      const languageCode = languageTypes[languageInd].code
-      const languageVal = languageTypes[languageInd].value
+      setSelectedLanguage(localSelectedLanguage)
+      // setLoadingLang(true)
+      // const languageInd = activeRadio
+      // const languageCode = languageTypes[languageInd].code
+      // const languageVal = languageTypes[languageInd].value
 
-      // Save language preferences
-      await AsyncStorage.setItem('enatega-language', languageCode)
-      await AsyncStorage.setItem('enatega-language-name', languageVal)
+      // // Save language preferences
+      // await AsyncStorage.setItem('enatega-language', languageCode)
+      // await AsyncStorage.setItem('enatega-language-name', languageVal)
 
-      // Change app language
-      i18next.changeLanguage(languageCode)
-      languageNameSetter(languageVal)
+      // // Change app language
+      // i18next.changeLanguage(languageCode)
+      // languageNameSetter(languageVal)
     } catch (error) {
       console.error('Error during language selection:', error)
     } finally {
@@ -159,8 +162,8 @@ const LanguageModal = ({ modalVisible, setModalVisible, currentTheme, showCrossB
               </TouchableOpacity>
             ))} */}
             {!languagesLoading && !languagesLoading && languages.map((item, index) => (
-              <TouchableOpacity activeOpacity={0.7} key={index} onPress={() => setSelectedLanguage(item.code)} style={[styles(currentTheme).radioContainer]}>
-                <RadioButton animation={'bounceIn'} size={13} outerColor={currentTheme.iconColorDark} innerColor={currentTheme.main} isSelected={selectedLanguage === item.code} onPress={() => setSelectedLanguage(item.code)} />
+              <TouchableOpacity activeOpacity={0.7} key={index} onPress={() => setLocalSelectedLanguage(item.code)} style={[styles(currentTheme).radioContainer]}>
+                <RadioButton animation={'bounceIn'} size={13} outerColor={currentTheme.iconColorDark} innerColor={currentTheme.main} isSelected={localSelectedLanguage === item.code} onPress={() => setLocalSelectedLanguage(item.code)} />
                 {
                   item?.flag && (
                     <Image

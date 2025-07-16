@@ -7,7 +7,7 @@ import {
   OrderTypeEnum,
   PaymentMethodEnum,
 } from '@/lib/utils/interfaces/earnings.interface';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export default function EarningRestaurantTableHeader({

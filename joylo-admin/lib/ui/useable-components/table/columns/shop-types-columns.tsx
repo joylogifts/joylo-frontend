@@ -14,7 +14,7 @@ import { GET_COUPONS, UPDATE_SHOP_TYPE } from '@/lib/api/graphql';
 
 // Contexts
 import { ToastContext } from '@/lib/context/global/toast.context';
-import { } from 'next-intl';
+
 import Image from 'next/image';
 import { useLangTranslation } from '@/lib/context/global/language.context';
 

@@ -39,7 +39,7 @@ import { AutoComplete, AutoCompleteSelectEvent } from 'primereact/autocomplete';
 import { GoogleMapsContext } from '@/lib/context/global/google-maps.context';
 import CustomShape from '../shapes';
 import { DEFAULT_CENTER, DEFAULT_POLYGON } from '@/lib/utils/constants';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const autocompleteService: {

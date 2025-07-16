@@ -5,7 +5,7 @@ import { IUserResponse } from '@/lib/utils/interfaces/users.interface';
 // Icons
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { } from 'next-intl';
+
 
 export const USERS_TABLE_COLUMNS = () => {
   // Hooks

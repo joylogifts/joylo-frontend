@@ -1,6 +1,6 @@
 import { IActionMenuProps, IOptions } from '@/lib/utils/interfaces';
 import ActionMenu from '../../action-menu';
-import { useTranslations } from 'next-intl';
+import { useLangTranslation } from '@/lib/context/global/language.context';
 
 export const OPTION_TABLE_COLUMNS = ({
   menuItems,
@@ -8,15 +8,19 @@ export const OPTION_TABLE_COLUMNS = ({
   menuItems: IActionMenuProps<IOptions>['items'];
 }) => {
   // Hooks
-  const t = useTranslations();
+  const { getTranslation: t, selectedLanguage } = useLangTranslation();
   return [
-    { headerName: t('Title'), propertyName: 'title' },
-    { headerName: t('Price'), propertyName: 'price' },
-    { 
-      headerName: t('Description'), 
-      propertyName: 'description', 
+    {
+      headerName: t('title'), propertyName: 'title', body: (option: IOptions) => (
+        <span>{typeof option.title === "object" ? option.title[selectedLanguage].toString() : option?.title ?? '---'}</span>
+      )
+    },
+    { headerName: t('price'), propertyName: 'price' },
+    {
+      headerName: t('description'),
+      propertyName: 'description',
       body: (option: IOptions) => (
-        <span>{option.description.toString() ?? '---'}</span>
+        <span>{typeof option.description === "object" ? option?.description?.[selectedLanguage]?.toString() : option.description ?? '---'}</span>
       )
     },
     {

@@ -26,7 +26,8 @@ const UserContext = React.createContext({})
 export const UserProvider = (props) => {
   const Analytics = analytics()
 
-  const { getTranslation: t } = useLanguage()
+
+  const { getTranslation: t, setSelectedLanguage, handleDefaultLanguage } = useLanguage()
 
   const { token, setToken } = useContext(AuthContext)
   const client = useApolloClient()
@@ -79,6 +80,11 @@ export const UserProvider = (props) => {
     await Analytics.track(Analytics.events.USER_RECONNECTED, {
       userId: data?.profile?._id
     })
+    if (data?.profile?.languageCode) {
+      setSelectedLanguage(data?.profile?.languageCode)
+    } else {
+      handleDefaultLanguage();
+    }
   }
 
   const logout = async () => {

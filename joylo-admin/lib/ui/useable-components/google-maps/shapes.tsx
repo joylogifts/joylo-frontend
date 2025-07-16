@@ -3,7 +3,7 @@ import { CircleSVG } from '@/lib/utils/assets/svgs/circle';
 import { PointLineSVG } from '@/lib/utils/assets/svgs/point-line';
 import { PolygonSVG } from '@/lib/utils/assets/svgs/polygon';
 import { ICustomShapeComponentProps } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 
 export default function CustomShape({
   selected,

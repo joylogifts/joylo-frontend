@@ -1,7 +1,7 @@
 // Interface
 import { ICustomTabProps } from '@/lib/utils/interfaces';
 import OrdersDashboardDateFilter from '../orders-date-filter';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const CustomTab = ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog } from 'primereact/dialog';
 import { ITransactionHistory } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 import { Rating } from 'primereact/rating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';

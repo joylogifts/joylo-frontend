@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { } from 'next-intl';
+
 import { useQuery, useMutation, useApolloClient } from '@apollo/client';
 import {
   GET_TICKET_USERS,

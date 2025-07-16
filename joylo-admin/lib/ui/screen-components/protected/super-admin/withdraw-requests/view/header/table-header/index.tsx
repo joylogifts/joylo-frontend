@@ -1,3 +1,6 @@
+'use client';
+
+import { useLangTranslation } from '@/lib/context/global/language.context';
 // CSS
 import classes from './table-header.module.css';
 
@@ -26,6 +29,8 @@ export default function WithdrawRequestSuperAdminTableHeader({
   selectedActions,
   setSelectedActions,
 }: IWithdrawRequestsTableHeaderProps) {
+  const { getTranslation } = useLangTranslation();
+
   // Refs
   // const statusOverlayRef = useRef<OverlayPanel>(null);
   const userTypeOverlayRef = useRef<OverlayPanel>(null);
@@ -34,28 +39,13 @@ export default function WithdrawRequestSuperAdminTableHeader({
   const [searchValue, setSearchValue] = useState('');
 
   const filterOptions: FilterOption[] = [
-    // {
-    //   label: 'Transferred',
-    //   value: 'TRANSFERRED',
-    //   type: 'status',
-    // },
-    // {
-    //   label: 'Cancelled',
-    //   value: 'CANCELLED',
-    //   type: 'status',
-    // },
-    // {
-    //   label: 'Requested',
-    //   value: 'REQUESTED',
-    //   type: 'status',
-    // },
     {
-      label: 'Rider',
+      label: getTranslation('rider'),
       value: 'RIDER',
       type: 'userType',
     },
     {
-      label: 'Store',
+      label: getTranslation('store'),
       value: 'STORE',
       type: 'userType',
     },
@@ -110,7 +100,7 @@ export default function WithdrawRequestSuperAdminTableHeader({
             showLabel={false}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={'Keyword Search'}
+            placeholder={getTranslation('keyword_search')}
             className="w-[14rem] h-10 border-[1px] border-gray-300 rounded-[0.3rem] pl-3 pr-3"
           />
         </div>
@@ -130,11 +120,10 @@ export default function WithdrawRequestSuperAdminTableHeader({
             icon={faAdd}
             iconStyles={{ color: 'black' }}
             title={
-              selectedActions.find(
-                (action) =>
-                  filterOptions.find((opt) => opt.value === action)?.type ===
-                  'userType'
-              ) || 'User'
+              filterOptions.find(
+                (opt) =>
+                  opt.type === 'userType' && selectedActions.includes(opt.value)
+              )?.label || getTranslation('user') // → string | undefined
             }
             onClick={(e) => userTypeOverlayRef.current?.toggle(e)}
           />
@@ -145,7 +134,7 @@ export default function WithdrawRequestSuperAdminTableHeader({
                 <CustomTextField
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Search"
+                  placeholder={getTranslation('search')}
                   className="h-8 w-full"
                   type="text"
                   name="search"

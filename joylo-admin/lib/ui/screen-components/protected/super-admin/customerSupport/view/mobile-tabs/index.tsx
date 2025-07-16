@@ -1,7 +1,7 @@
 // Path: /index.tsx/mobile-tabs/view/customerSupport/super-admin/protected/screen-components/ui/lib
 
 import { useLangTranslation } from '@/lib/context/global/language.context';
-import { } from 'next-intl';
+
 
 // Interface
 export interface ICustomerSupportMobileTabsProps {

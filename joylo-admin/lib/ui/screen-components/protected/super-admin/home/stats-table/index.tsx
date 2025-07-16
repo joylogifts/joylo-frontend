@@ -11,7 +11,7 @@ import {
   IDashboardSalesByTypeResponseGraphQL,
   IQueryResult,
 } from '@/lib/utils/interfaces';
-import { } from 'next-intl';
+
 import React, { useMemo } from 'react';
 
 export default function StatesTable() {

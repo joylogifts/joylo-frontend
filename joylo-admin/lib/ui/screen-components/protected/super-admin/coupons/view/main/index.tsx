@@ -23,7 +23,7 @@ import { FilterMatchMode } from 'primereact/api';
 
 // Hooks
 import { useContext, useEffect, useState } from 'react';
-import { } from 'next-intl';
+
 import { useMutation } from '@apollo/client';
 
 // Components

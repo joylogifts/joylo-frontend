@@ -86,6 +86,7 @@ export interface IRiderProfile {
   };
   timeZone: string;
   workSchedule: WorkSchedule[];
+  languageCode?: string;
 }
 
 export interface IRiderProfileResponse {

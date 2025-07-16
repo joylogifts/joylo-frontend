@@ -4,7 +4,7 @@ import HeaderText from '@/lib/ui/useable-components/header-text';
 import TextIconClickable from '@/lib/ui/useable-components/text-icon-clickable';
 import { faWrench } from '@fortawesome/free-solid-svg-icons';
 import { ProfileContext } from '@/lib/context/restaurant/profile.context';
-import { } from 'next-intl';
+
 import { useLangTranslation } from '@/lib/context/global/language.context';
 
 const ProfileHeader: React.FC = () => {
