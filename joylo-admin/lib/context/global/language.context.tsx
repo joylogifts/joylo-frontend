@@ -80,8 +80,11 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
   });
 
   const handleStoreLanguage = async (code: string) => {
-    const token = localStorage.getItem(`user-${APP_NAME}`);
-    if (!token) return;
+    const authData = JSON.parse(
+      localStorage.getItem(`user-${APP_NAME}`) || '{}'
+    );
+
+    if (!authData.token) return;
 
     await setUserLanguageMutation({ variables: { languageCode: code } });
   };
