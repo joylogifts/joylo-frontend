@@ -709,7 +709,7 @@ export default function RestaurantDetailsScreen() {
                     position: "left",
                     style: { marginTop: "-10px" },
                   }}
-                  placeholder="Search for food items"
+                  placeholder={getTranslation("search_for_food_items_placeholder")}
                   type="text"
                   name="search"
                   showLabel={false}

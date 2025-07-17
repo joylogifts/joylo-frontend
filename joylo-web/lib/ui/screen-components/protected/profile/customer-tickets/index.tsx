@@ -174,7 +174,7 @@ export default function CustomerTicketsMain() {
         <div className="w-full mx-auto">
             <div className="mb-6">
                 <TextComponent
-                    text={`${getTranslation("welcome_user")}${userName} 👋`}
+                    text={`${getTranslation("welcome_user")} ${userName} 👋`}
                     className="text-xl md:text-2xl font-bold mb-2"
                 />
                 <div className="flex justify-between items-center">
@@ -189,9 +189,9 @@ export default function CustomerTicketsMain() {
                 </div>
             </div>
 
-            {sortedTickets.length > 0 ? (
+            {sortedTickets?.length > 0 ? (
                 <div className="space-y-4">
-                    {sortedTickets.map((ticket) => (
+                    {sortedTickets?.map((ticket) => (
                         <div
                             key={ticket._id}
                             className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
@@ -199,11 +199,11 @@ export default function CustomerTicketsMain() {
                             <div className="flex justify-between items-start mb-2">
                                 <div>
                                     <TextComponent
-                                        text={ticket.title}
+                                        text={ticket?.title}
                                         className="font-medium text-lg text-gray-800"
                                     />
                                     <p className="text-sm text-gray-500">
-                                        {getTranslation("ticket_id_label")}:{" "}
+                                        {getTranslation("ticket_id_label")}:
                                         {ticket._id}
                                     </p>
                                 </div>
@@ -212,12 +212,12 @@ export default function CustomerTicketsMain() {
                                 >
                                     {ticket.status === "inProgress"
                                         ? getTranslation(
-                                              "in_progress_status_label"
-                                          )
+                                            "in_progress_status_label"
+                                        )
                                         : ticket.status
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                          ticket.status.slice(1)}
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                        ticket.status.slice(1)}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm text-gray-500">

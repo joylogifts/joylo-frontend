@@ -14,6 +14,7 @@ import CustomButton from "../button";
 import { useRouter } from "next/navigation";
 import { saveSearchedKeyword } from "@/lib/utils/methods";
 import EmptySearch from "../empty-search-results";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 function MainSection({
   title,
@@ -24,7 +25,7 @@ function MainSection({
 }: IMainSectionProps) {
   const router = useRouter();
   const { isSearchFocused, setIsSearchFocused, filter } = useSearchUI();
-
+const { getTranslation } = useLangTranslation();
   const [isModalOpen, setIsModalOpen] = useState({value: false, id: ""});
 
   const handleUpdateIsModalOpen = useCallback((value: boolean, id: string) => {
@@ -65,7 +66,7 @@ function MainSection({
         </span>
         {search && (
           <CustomButton
-            label="See all"
+            label={getTranslation("see_all")}
             onClick={onSeeAllClick}
             className="text-[#0EA5E9] transition-colors duration-200 text-sm md:text-base"
           />
