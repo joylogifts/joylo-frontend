@@ -3,9 +3,9 @@ import React from "react";
 import Image from "next/image";
 
 const PlayStoreLink =
-  "https://play.google.com/store/apps/details?id=com.enatega.multivendor&hl=en_IE";
+  "https://play.google.com/store/apps/details?id=com.joylo.multivendor";
 const AppleStoreLink =
-  "https://apps.apple.com/pk/app/enatega-multivendor/id1526488093";
+  "https://apps.apple.com/us/app/joylo/id6747881693";
 import Logo from "@/lib/utils/assets/svg/Logo";
 
 const AppLinks = () => {

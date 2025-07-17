@@ -31,12 +31,12 @@ const AppFooter = () => {
         links: [
             {
                 label: getTranslation("joylo_rider_label"),
-                link: "https://play.google.com/store/apps/details?id=com.enatega.multirider&hl=en",
+                link: "https://play.google.com/store/apps/details?id=com.joylo.rider",
                 internal: false,
             },
             {
                 label: getTranslation("joylo_restaurant_label"),
-                link: "https://play.google.com/store/apps/details?id=multivendor.enatega.restaurant&hl=en",
+                link: "https://play.google.com/store/apps/details?id=com.joylo.multivendor",
                 internal: false,
             },
         ],
@@ -47,8 +47,8 @@ const AppFooter = () => {
         links: [
             {
                 label: getTranslation("about_us_label"),
-                link: "https://ninjascode.com/",
-                internal: false,
+                link: "/",
+                internal: true,
             },
             {
                 label: getTranslation("terms_conditions_label"),
@@ -62,13 +62,13 @@ const AppFooter = () => {
             },
             {
                 label: getTranslation("contact_label"),
-                link: "https://ninjascode.com/",
-                internal: false,
+                link: "/",
+                internal: true,
             },
             {
                 label: getTranslation("developers_label"),
-                link: "https://ninjascode.com/",
-                internal: false,
+                link: "/",
+                internal: true,
             },
         ],
     };
@@ -78,22 +78,22 @@ const AppFooter = () => {
         links: [
             {
                 label: getTranslation("blog_label"),
-                link: "https://ninjascode.com/blog",
-                internal: false,
+                link: "/",
+                internal: true,
             },
             {
                 label: getTranslation("instagram_label"),
-                link: "https://www.instagram.com/ninjascodeofficial?igsh=ajFoeGxud3FqYnd3",
+                link: "https://www.instagram.com/",
                 internal: false,
             },
             {
                 label: getTranslation("facebook_label"),
-                link: "https://www.facebook.com/enatega/",
+                link: "https://www.facebook.com/",
                 internal: false,
             },
             {
                 label: getTranslation("linkedin_label"),
-                link: "https://www.linkedin.com/company/enatega/?originalSubdomain=pk",
+                link: "https://www.linkedin.com/company/",
                 internal: false,
             },
         ],

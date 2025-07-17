@@ -15,8 +15,10 @@ import HeaderFavourite from "../header";
 import FavoritesEmptyState from "@/lib/ui/useable-components/favorites-empty-state";
 //Methods
 import useDebounceFunction from "@/lib/hooks/useDebounceForFunction";
+import { useLangTranslation } from "@/lib/context/global/language.context";
 
 const FavouriteProducts = () => {
+  const { getTranslation } = useLangTranslation()
   const router= useRouter()
   // Get Fav Restaurants by using the query
   const {
@@ -45,7 +47,7 @@ const FavouriteProducts = () => {
   return (
     <div className="w-full py-6 flex flex-col gap-6">
       <HeaderFavourite
-        title="Your Favourites"
+        title={getTranslation("your_favourites")}
         onSeeAllClick={handleSeeAllClick}
       />
       {isFavouriteRestaurantsLoading ? (

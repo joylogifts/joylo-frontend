@@ -79,24 +79,7 @@ const variants = {
     }),
 };
 
-const LOCATIONT_TYPE = [
-    {
-        name: "House",
-        icon: (color?: string) => <HomeSvg color={color || "#0F172A"} />,
-    },
-    {
-        name: "Office",
-        icon: (color?: string) => <OfficeSvg color={color || "#0F172A"} />,
-    },
-    {
-        name: "Apartment",
-        icon: (color?: string) => <ApartmentSvg color={color || "#0F172A"} />,
-    },
-    {
-        name: "Other",
-        icon: (color?: string) => <OtherSvg color={color || "#0F172A"} />,
-    },
-];
+
 
 const autocompleteService: {
     current: google.maps.places.AutocompleteService | null;
@@ -378,7 +361,24 @@ export default function UserAddressComponent(
             message: getTranslation("address_update_failed"),
         });
     }
-
+    const LOCATIONT_TYPE = [
+        {
+            name: getTranslation("house"),
+            icon: (color?: string) => <HomeSvg color={color || "#0F172A"} />,
+        },
+        {
+            name: getTranslation("office"),
+            icon: (color?: string) => <OfficeSvg color={color || "#0F172A"} />,
+        },
+        {
+            name: getTranslation("apartment"),
+            icon: (color?: string) => <ApartmentSvg color={color || "#0F172A"} />,
+        },
+        {
+            name: getTranslation("other"),
+            icon: (color?: string) => <OtherSvg color={color || "#0F172A"} />,
+        },
+    ];
     /*
   ################
   Templates
@@ -424,7 +424,7 @@ export default function UserAddressComponent(
                                         <OfficeSvg
                                             color={
                                                 address.selected &&
-                                                !hasCurrentLocation
+                                                    !hasCurrentLocation
                                                     ? "#0EA5E9"
                                                     : undefined
                                             }
@@ -435,7 +435,7 @@ export default function UserAddressComponent(
                                             height={18}
                                             color={
                                                 address.selected &&
-                                                !hasCurrentLocation
+                                                    !hasCurrentLocation
                                                     ? "#0EA5E9"
                                                     : "black"
                                             }
@@ -445,7 +445,7 @@ export default function UserAddressComponent(
                                         <AppartmentSvg
                                             color={
                                                 address.selected &&
-                                                !hasCurrentLocation
+                                                    !hasCurrentLocation
                                                     ? "#0EA5E9"
                                                     : undefined
                                             }
@@ -455,7 +455,7 @@ export default function UserAddressComponent(
                                         <OtherSvg
                                             color={
                                                 address.selected &&
-                                                !hasCurrentLocation
+                                                    !hasCurrentLocation
                                                     ? "#0EA5E9"
                                                     : undefined
                                             }
@@ -625,9 +625,9 @@ export default function UserAddressComponent(
                                             offset: number;
                                             length: number;
                                         }) => [
-                                            match.offset,
-                                            match.offset + match.length,
-                                        ]
+                                                match.offset,
+                                                match.offset + match.length,
+                                            ]
                                     )
                                 );
                             }
@@ -755,7 +755,7 @@ export default function UserAddressComponent(
                                 0,
                         }}
                         zoom={13}
-                        onCenterChanged={() => {}}
+                        onCenterChanged={() => { }}
                     >
                         {editAddress?.location?.coordinates && (
                             <Marker
@@ -847,9 +847,9 @@ export default function UserAddressComponent(
                                             offset: number;
                                             length: number;
                                         }) => [
-                                            match.offset,
-                                            match.offset + match.length,
-                                        ]
+                                                match.offset,
+                                                match.offset + match.length,
+                                            ]
                                     )
                                 );
                             }

@@ -142,6 +142,8 @@ export default function Cart({ onClose }: CartProps) {
                                         src={item.image}
                                         alt="item image"
                                         className="w-28 h-28 object-cover rounded-md mb-2"
+                                        width={112}
+                                        height={112}
                                     />
                                     <div>
                                         <h3 className="font-inter font-semibold text-sm text-gray-700">
@@ -236,6 +238,8 @@ export default function Cart({ onClose }: CartProps) {
                                                 src={food?.image}
                                                 alt={typeof food?.title === "object" ? food?.title[selectedLanguage] : food?.title}
                                                 className="w-full h-36 object-cover group-hover:opacity-80 transition-opacity duration-300"
+                                                width={144}
+                                                height={144}
                                             />
                                         )}
                                         <div className="p-2">
