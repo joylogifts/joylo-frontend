@@ -40,21 +40,6 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
 
   const { showToast } = useToast();
   const [setUserLanguageMutation] = useMutation(SET_USER_LANGUAGE, {
-    // onCompleted: () => {
-    // if (data.setUserLanguage) {
-    //   showToast({
-    //     type: "success",
-    //     title: "Success",
-    //     message: "Language updated successfully!",
-    //   });
-    // } else {
-    //   showToast({
-    //     type: "error",
-    //     title: "Error",
-    //     message: "Something went wrong.",
-    //   });
-    // }
-    // },
     onError: (error) => {
       showToast({
         type: "error",
@@ -77,6 +62,11 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
 
 
   const handleStoreLanguage = async (code: string) => {
+
+    const userToken = localStorage.getItem("token");
+    if (!userToken) {
+      return
+    }
     await setUserLanguageMutation({ variables: { languageCode: code } })
   }
 
@@ -86,20 +76,6 @@ export function LangTranslationProvider({ children }: { children: ReactNode }) {
     }
   }, [selectedLanguage, setUserLanguageMutation]);
 
-
-  // useEffect(() => {
-  //   if (!languagesData || languagesLoading) return;
-  //   const languages = languagesData.languages || [];
-  //   const defaultLang = languages.find((l: any) => l.isDefault)?.code;
-  //   setSelectedLanguageState((prev) => prev || defaultLang);
-  // }, [languagesData, languagesLoading]);
-
-
-  useEffect(() => {
-    if (selectedLanguage) {
-      localStorage.setItem(LANGUAGE_KEY, selectedLanguage);
-    }
-  }, [selectedLanguage]);
 
   // TRANSLATIONS
   const { data: translationsData, loading: translationsQueryLoading } =
