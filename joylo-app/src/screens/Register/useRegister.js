@@ -117,12 +117,22 @@ const useRegister = () => {
           message: getTranslation('phone_number_exist')
         })
       } else {
-        navigation.navigate('Otp', {
-          email,
-          password,
-          name: `${firstname} ${lastname}`,
-          phone: `+${country.callingCode[0]}${phone}`
+        // navigation.navigate('Otp', {
+        //   email,
+        //   password,
+        //   name: `${firstname} ${lastname}`,
+        //   phone: `+${country.callingCode[0]}${phone}`
+        // })
+
+        navigation.navigate('EmailOtp', {
+          user: {
+            phone: '+'.concat(country.callingCode[0]).concat(phone),
+            email: email.toLowerCase().trim(),
+            password: password,
+            name: firstname + ' ' + lastname
+          }
         })
+        
       }
     } catch (e) {
       FlashMessage({
