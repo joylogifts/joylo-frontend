@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Modal, TouchableOpacity, Pressable, ScrollView, Dimensions } from 'react-native'
+import { View, Modal, TouchableOpacity, Pressable, ScrollView, Dimensions, Image } from 'react-native'
 import * as Localization from 'expo-localization'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import i18next from 'i18next'

@@ -32,6 +32,7 @@ const usePhoneOtp = () => {
   const { profile, loadingProfile } = useContext(UserContext)
   const themeContext = useContext(ThemeContext)
   const currentTheme = theme[themeContext.ThemeValue]
+  const [seconds, setSeconds] = useState(30)
   const { name, phone, screen } = route?.params || {}
 
   function onError(error) {
@@ -45,7 +46,7 @@ const usePhoneOtp = () => {
       })
     } else {
       FlashMessage({
-        message: t("somethingWentWrong")
+        message: t('somethingWentWrong')
       })
     }
   }
@@ -67,7 +68,7 @@ const usePhoneOtp = () => {
       })
     } else {
       FlashMessage({
-        message: t("somethingWentWrong")
+        message: getTranslation('something_went_wrong')
       })
     }
   }

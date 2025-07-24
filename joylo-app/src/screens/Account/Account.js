@@ -3,7 +3,7 @@ import { View, TouchableOpacity, KeyboardAvoidingView, Platform, StatusBar, Moda
 import { useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
 import { scale } from '../../utils/scaling'
-import { Deactivate } from '../../apollo/mutations'
+import { Deactivate, REQUEST_DELETE_USER_ACCOUNT } from '../../apollo/mutations'
 import { FavouriteRestaurant, profile } from '../../apollo/queries'
 import { theme } from '../../utils/themeColors'
 import UserContext from '../../context/User'
@@ -84,10 +84,16 @@ function Account(props) {
     ...theme[themeContext.ThemeValue]
   }
 
-  const [deactivated, { loading: deactivateLoading }] = useMutation(DEACTIVATE, {
+  const [deleteUserAccount, { loading: deactivateLoading }] = useMutation(REQUEST_DELETE_USER_ACCOUNT, {
     onCompleted: onCompletedDeactivate,
     onError: onErrorDeactivate
   })
+/*   const [deactivated, { loading: deactivateLoading }] = useMutation(DEACTIVATE, {
+    onCompleted: onCompletedDeactivate,
+    onError: onErrorDeactivate
+  }) */
+
+
   useEffect(() => {
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor(currentTheme.menuBar)
@@ -277,9 +283,7 @@ function Account(props) {
 
   async function deactivatewithemail() {
     try {
-      await deactivated({
-        variables: { isActive: false, email: profile?.email }
-      })
+      await deleteUserAccount()
       setDeleteModalVisible(false)
       await logout()
       navigation.reset({
@@ -375,12 +379,12 @@ function Account(props) {
 
               <View style={styles(currentTheme).subContainer}>
                 <View>
-                  <ButtonContainer title={getTranslation('email')} detail={profile?.email} status={profile?.emailIsVerified ? getTranslation('verified') : getTranslation('not_verified')} onPress='null' />
+                  <ButtonContainer title={getTranslation('email')} detail={profile?.email} status={profile?.emailIsVerified ? getTranslation('verified') : getTranslation('not_verified_label')} onPress='null' />
                   <View style={styles(currentTheme).line} />
                   <ButtonContainer
                     title={getTranslation('phone')}
                     detail={profile?.phone}
-                    status={profile?.phoneIsVerified ? getTranslation('verified') : getTranslation('not_verified')}
+                    status={profile?.phoneIsVerified ? getTranslation('verified') : getTranslation('not_verified_label')}
                     onPress={() =>
                       navigation.navigate('PhoneNumber', {
                         prevScreen: 'Account'
@@ -490,7 +494,6 @@ function Account(props) {
                           style={alignment.MLsmall}
                           isRTL
                         >
-                          {' '}
                           {getTranslation('receive_offer_by_email')}{' '}
                         </TextDefault>
                       </View>
@@ -541,6 +544,7 @@ function Account(props) {
                   />
                 </View>
 
+             
                 <View style={styles(currentTheme).containerButton}>
                   <TouchableOpacity activeOpacity={0.5} style={styles(currentTheme).addButton} onPress={logoutClick}>
                     <View style={styles(currentTheme).contentContainer}>

@@ -13,12 +13,13 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
 import { scale } from '../../../utils/scaling'
 import SignUpSvg from '../../../assets/SVG/imageComponents/SignUpSvg'
+import { useLanguage } from '@/src/context/Language'
 
 function EmailOtp(props) {
   const { otp, setOtp, otpError, seconds, loading, updateUserLoading, onCodeFilled, resendOtp, currentTheme, themeContext } = useEmailOtp()
 
   const route = useRoute()
-  const userData = route.params?.user
+  const {getTranslation} = useLanguage()
 
   useLayoutEffect(() => {
     props?.navigation.setOptions(
@@ -51,7 +52,7 @@ function EmailOtp(props) {
                 }}
                 isRTL
               >
-                {t('verifyEmail')}
+                {getTranslation('verify_email')}
               </TextDefault>
               <TextDefault
                 H5
@@ -62,7 +63,7 @@ function EmailOtp(props) {
                 //   paddingBottom: scale(5)
                 // }}
               >
-                {t('otpSentToEmail')}
+                {getTranslation('otp_sent_to_email')}
               </TextDefault>
               {/* <TextDefault H5 bold  textColor={currentTheme.newFontcolor}>
               {userData.email}
@@ -86,7 +87,7 @@ function EmailOtp(props) {
               />
               {otpError && (
                 <TextDefault style={styles(currentTheme).error} bold textColor={currentTheme.textErrorColor}>
-                  {t('wrongOtp')}
+                  {getTranslation('wrong_otp')}
                 </TextDefault>
               )}
             </View>
@@ -102,7 +103,7 @@ function EmailOtp(props) {
           >
             <View style={alignment.MBxSmall}>
               <TextDefault center H4 bold style={alignment.MTsmall} textColor={currentTheme.fontNewColor}>
-                {seconds === 0 ? '' : `${t('retry')} ${seconds}s`}
+                {seconds === 0 ? '' : `${getTranslation('retry')} ${seconds}s`}
               </TextDefault>
             </View>
             {loading || updateUserLoading ? (
@@ -110,7 +111,7 @@ function EmailOtp(props) {
             ) : (
               <TouchableOpacity activeOpacity={0.7} style={[styles(currentTheme).btn, seconds !== 0 && styles(currentTheme).disabledBtn]} disabled={seconds !== 0} onPress={() => resendOtp()}>
                 <TextDefault H4 textColor={currentTheme.black} bold>
-                  {t('resendOtpBtn')}
+                  {getTranslation('resend_otp')}
                 </TextDefault>
               </TouchableOpacity>
             )}

@@ -1,3 +1,5 @@
+import gql from 'graphql-tag'
+
 export const sendChatMessage = `mutation SendChatMessage($orderId: ID!, $messageInput: ChatMessageInput!) {
     sendChatMessage(message: $messageInput, orderId: $orderId) {
       success
@@ -91,7 +93,6 @@ export const placeOrder = `
       instructions
     }
   }`
-
 
 export const pushToken = `mutation PushToken($token:String){
     pushToken(token:$token){
@@ -329,6 +330,17 @@ export const Deactivate = `
     }
   }
   `
+
+export const REQUEST_DELETE_USER_ACCOUNT = gql`
+  mutation RequestDeleteUserAccount {
+    deleteUser {
+      message
+      description
+      status
+    }
+  }
+`
+
 export const login = `
   mutation Login($email:String,$password:String,$type:String!,$appleId:String,$name:String,$notificationToken:String){
     login(email:$email,password:$password,type:$type,appleId:$appleId,name:$name,notificationToken:$notificationToken){
@@ -426,8 +438,8 @@ export const createRiderReview = `mutation CreateRiderReview($input: CreateRider
     createdAt
     updatedAt
   }
-}`;
+}`
 
 export const SET_USER_LANGUAGE = `mutation SetUserLanguage($languageCode: String!) {
     setUserLanguage(languageCode: $languageCode)
-  }`;
+  }`
